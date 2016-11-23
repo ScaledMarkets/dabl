@@ -1,0 +1,76 @@
+/*
+	Dabl file for building ABC.
+	DABL = Dependent Artifact Build Language.
+*/
+
+//*
+	Define a product of this script, how to make it, and its component
+	compatibilities.
+	
+	To build this, one would use the command 'dabl build ABC' in this directory.
+	To deploy this, one would use the command 'dabl deploy ABC' in this directory.
+	Or, could could call the tasks directly, with 'dabl makethejar' and 'dabl uploadabc',
+	respectively.
+*//
+artifact ABC version 2.1 {
+	// Specify how to perform lifecycle functions that are applicable:
+	to create { makethejar }  // 'create' is a dabl verb.
+	to deploy { uploadabc }	// 'upload' is also a dabl verb.
+	
+	// Specify compatibilities:
+	tested with XYZ 3.3-3.4  // (see tasks test_3_3 and test_3_4)
+	assume compatible with XYZ 3.x
+}
+
+
+
+task compileit {
+	when inputs A newer than outputs  // this rule is implied if absent
+	inputs A ./**.java from git repo {
+		url "..."
+		as user 'johnsmith' with key ...
+	}
+	inputs XYZ;
+	outputs ./**.class, ./**.txt
+	bash "
+		javac ...
+	"
+}
+
+task makethejar {
+	inputs ./**.class
+	outputs abc.jar
+	bash """
+		echo "...${ABC.version}..." > manifest.txt  # Create the manifest file.
+		jar ...
+	"""
+}
+
+files XYZ from maven repo {
+	prefer latest compatible  // it will print which version it actually pulls.
+			// It will decide based on compatibility across all inputs.
+	...specify the binaries or sources that are needed
+}
+
+task test_3_3 {
+	inputs XYZ 3.3, abc.jar
+	outputs ./tests/results/3.3/**
+	...
+}
+
+task test_3_4 {
+	inputs XYZ 3.4, abc.jar
+	outputs ./tests/results/3.4/**
+	...
+}
+
+task uploadabc {
+	when inputs A newer than outputs and test_3_4 succeeded and test_3_4 succeeded
+	inputs ./tests/results/3.3/* ./tests/results/3.4/**
+	ssh as user 'johnsmith' with key "~/mykey.pem" "
+		....
+	"
+	report "Success"
+}
+
+

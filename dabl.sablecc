@@ -1,0 +1,214 @@
+// SableCC grammar for Dependent Artifact Build Language (DABL).
+// For a good SableCC reference, see http://www.natpryce.com/articles/000531.html
+
+
+Package scaledmarkets.dabl;
+
+
+Helpers
+
+	any_character = [0x0 .. 0xfffff];
+	tab   = 9;
+	cr    = 13;
+	nl    = 10;
+	dollar = '$';
+	blank = ' ' | nl | cr nl | tab;
+	lcletter = ['a' .. 'z'];
+	ucletter = ['A' .. 'Z'];
+	underscore = '_';
+	letter = (lcletter | ucletter | underscore);
+	digit = ['0' .. '9'];
+	escape = '%' digit digit;
+	quote = '"';
+	slashslash = '//';
+	slashstar = '/*';
+	slashslashstar = '//*'
+
+
+Tokens
+
+	plus = '+';
+	minus = '-';
+	mul = '*';
+	div = '/';
+	gt = '>';
+	lt = '<';
+	ge = '>=';
+	le = '<=';
+	eq = '=';
+	ne = '!=';
+	colon = ':';
+	semicolon = ';';
+	per = '.';
+	dotdot = '..';
+	comma = ',';
+	qmark = '?';
+	def = 'def';
+	left_paren = '(';
+	right_paren = ')';
+	left_cur = '{';
+	right_cur = '}';
+	left_brack = '[';
+	right_brack = ']';
+	number = digit+;
+	whitespace = (blank)+;
+	id = letter ( letter | digit | dollar | escape )*;
+	string = quote [ any_character - quote]* quote;
+	slashcomment = slashslash [ any_character - nl ]* nl;
+	
+	from = 'from';
+	to = 'to';
+	in = 'in';
+	for = 'for';
+	with = 'with';
+	namespace = 'namespace';
+	import = 'import';
+	tab_keyword = 'tab'
+	equivalent = 'equivalent';
+	spaces_keyword = 'spaces';
+	artifact = 'artifact';
+	task = 'task';
+	public = 'public';
+	repo = 'repo';
+	type = 'type';
+	git = 'git';
+	maven = 'maven';
+	files = 'files';
+	shell = 'shell';
+	translation = 'translation';
+	translate = 'translate';
+	filename = 'filename';
+	prefer = 'prefer';
+	latest = 'latest';
+	compatible = 'compatible';
+	tested = 'tested';
+
+
+Ignored Tokens
+
+	slashcomment,
+	whitespace;
+
+
+Productions
+
+
+  // Statement syntax.
+  
+	specification =
+		spec_elt ;
+	
+	spec_elt =
+		namespace_decl
+	  | import_decl
+	  | tab_decl
+	  | artifact_decl
+	  | task_decl
+	  | repo_decl
+	  | files_decl
+	  | shell_decl
+	  ;
+	
+	namespace_decl =
+		namespace path;
+	
+	import_decl =
+		import path;
+	
+	tab_decl =
+		tab_keyword equivalent to number spaces_keyword;
+		
+	artifact_decl =
+		artifact id colon expression per expression artifact_stmts;
+	
+	artifact_stmts =
+		artifact_stmt artifact_stmts
+	  | artifact_stmt
+	  | ;
+	
+	artifact_stmt =
+		....
+	
+	scope_decl =
+		public
+	  | ;
+	
+	task_decl =
+		scope_decl task id task_stmts;
+	
+	task_stmts =
+		task_stmt task_stmts
+	  | task_stmt
+	  | ;
+	  
+	task_stmt =
+		....
+	
+	repo_decl =
+		repo id type repo_type repo_stmts;
+	
+	repo_stmts =
+		repo_stmt repo_stmts
+	  | repo_stmt
+	  | ;
+	
+	repo_type =
+		git
+	  | maven
+	  ;
+	
+	files_decl =
+		files id from string in id files_stmts;
+	
+	files_stmts =
+		files_stmt files_stmts
+	  | files_stmt
+	  | ;
+	
+	files_stmt =
+		prefer_stmt;
+	
+	prefer_stmt =
+		prefer preference;
+	
+	preference =
+		latest version_criteria
+	  | version_spec;
+	
+	version_criteria =
+		compatible with
+	  | tested with
+	  ;
+	
+	version_spec =
+		range_spec per version_spec
+	  | range_spec
+	  ;
+	
+	range_spec =
+		number minus number
+	  | number
+	  | mul
+	  ;
+	
+	translation_decl =
+		shell translation for string translation_stmts;
+	
+	translation_stmts =
+		translation_stmt translation_stmts
+	  | translation_stmt
+	  | ;
+	
+	translation_stmt =
+		translate filename string to string;
+	
+	path {-> id*} =
+		{path} id per path                          {-> [id, path.id]}
+	  | {id} id                                     {-> [id]};
+
+
+Abstract Syntax Tree
+
+	spec =
+		  
+
