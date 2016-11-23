@@ -189,8 +189,8 @@ Productions
 	  ;
 	
 	range_spec =
-		number dash number
-	  | number
+		numeric_value dash numeric_value
+	  | numeric_value
 	  | asterisk
 	  ;
 	
@@ -204,6 +204,17 @@ Productions
 	
 	translation_stmt =
 		translate filename string to string;
+	
+	numeric_value =
+		number
+	  | variable
+	  ;
+	
+	variable =
+		shell_variable_ref;
+	
+	shell_variable_ref =
+		dollar id;
 	
 	path {-> id*} =
 		{path} id per path                          {-> [id, path.id]}
