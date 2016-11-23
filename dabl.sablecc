@@ -28,8 +28,8 @@ Helpers
 Tokens
 
 	plus = '+';
-	minus = '-';
-	mul = '*';
+	dash = '-';
+	asterisk = '*';
 	div = '/';
 	gt = '>';
 	lt = '<';
@@ -186,9 +186,9 @@ Productions
 	  ;
 	
 	range_spec =
-		number minus number
+		number dash number
 	  | number
-	  | mul
+	  | asterisk
 	  ;
 	
 	translation_decl =
