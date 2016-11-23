@@ -157,6 +157,9 @@ Productions
 	  | maven
 	  ;
 	
+	repo_stmt =
+		....
+	
 	files_decl =
 		files id from string in id files_stmts;
 	
