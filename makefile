@@ -25,7 +25,7 @@ Config:
 	echo "public static final String DeclVersion = \"$(DECL_VERSION)\";" >> $(src_dir)/$(package)/Config.java
 	echo "}" >> $(src_dir)/$(package)/Config.java
 
-parser: decl.sablecc $(sable_out_dir) # Generate decl compiler tables and classes.
+parser: decl.sablecc $(sable_out_dir) # Generate dabl compiler tables and classes.
 	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_out_dir) --no-inline decl.sablecc
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(build_dir) -d $(build_dir) \
 		$(sable_out_dir)/$(package)/node/*.java \
