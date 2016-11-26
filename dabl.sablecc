@@ -80,6 +80,7 @@ Tokens
 	filename = 'filename';
 	prefer = 'prefer';
 	latest = 'latest';
+	assume = 'assume';
 	compatible = 'compatible';
 	tested = 'tested';
 
@@ -127,22 +128,62 @@ Productions
 	  | ;
 	
 	artifact_stmt =
-		....
+		assume_stmt
+	  | tested_stmt
+	  ;
+	
+	assume_stmt =
+		assume compatible with version_spec;
+	
+	tested_stmt =
+		tested with version_spec;
 	
 	scope_decl =
 		public
 	  | ;
 	
 	task_decl =
-		scope_decl task id task_stmts;
+		scope_decl task id when_clause inputs_clause outputs_clause task_stmts;
 	
+	when_clause =
+		....
+	  | 
+	  ;
+	  
+	inputs_clause =
+		....
+	  | 
+	  ;
+	  
+	outputs_clause =
+		....
+	  | 
+	  ;
+	  
 	task_stmts =
 		task_stmt task_stmts
 	  | task_stmt
 	  | ;
 	  
 	task_stmt =
-		....
+	  | post_stmt
+	  | report_stmt
+	  | bash_stmt
+	  | powershell_stmt
+	  | deploy_stmt
+	  | ssh_stmt
+	  | destroy_stmt
+	  | on_stmt
+		;
+	
+	post_stmt = ....
+	report_stmt = ....
+	bash_stmt = ....
+	powershell_stmt = ....
+	deploy_stmt = ....
+	ssh_stmt = ....
+	destroy_stmt = ....
+	on_stmt = ....
 	
 	repo_decl =
 		repo id type repo_type repo_stmts;
