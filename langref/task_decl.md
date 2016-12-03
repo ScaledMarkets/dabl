@@ -18,9 +18,9 @@ A task declaration has the following syntax:
 
 A task_stmt can be one of,
 
-* [A when statement](when_stmt.md)
-* [An inputs statement](inputs_stmt.md)
-* [An outputs statement](outputs_stmt.md)
+* [A when clause](when_clause.md)
+* [An inputs clause](inputs_clause.md)
+* [An outputs clause](outputs_clause.md)
 * [A procedural statement](procedural_stmt.md)
 
 
