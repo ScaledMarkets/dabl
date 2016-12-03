@@ -14,15 +14,11 @@ when inputs are newer than outputs
 
 A task declaration has the following syntax:
 
-[`public`] `task` *name*
-
-[when_clause]
-
-[inputs_clause]
-
-[outputs_clause]
-
-task_stmts...
+  [`public`] `task` *name*
+  [when_clause]
+  [inputs_clause]
+  [outputs_clause]
+  task_stmts...
 
 A task declaration may contain these elements, in this order:
 
