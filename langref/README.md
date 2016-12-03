@@ -37,7 +37,10 @@ external method in a function declaration.
 This reference uses the following notation:
 
 [something] - indicates that "something" is optional.
+
 something... - indicates that "something" is a sequence of one or more things.
+
 [something...] - indicates that "something" is a sequence of zero or more things.
+
 *something* - indicates that "something" is a value such as an identifier,
   string,, or numeric value.
