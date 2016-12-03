@@ -12,9 +12,9 @@ when inputs are newer than outputs
 ```
 ## Structure Of a Task Declaration
 
-A task declaration may contain these elements, in this order
-1. When clause
-2. Input clause
-3. Output clause
-4. Procedural statements
+A task declaration may contain these elements, in this order:
+1) When clause
+2) Input clause
+3) Output clause
+4) Procedural statements
 
