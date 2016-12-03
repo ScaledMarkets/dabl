@@ -12,4 +12,22 @@ The elements of a DABL file are as follows:
 * [Task Declarations](task_decl.md)
 * [Translation Declarations](translation_decl.md)
 
-The ordering of these things is immaterial. However, there can be only one namespace declaration.
+The ordering of these constructs is immaterial. However, there can be only one
+namespace declaration.
+
+## Indentation
+
+All DABL constructs can span multiple lines. If a DABL construct continues onto a
+new line, the new line must be indented by one tab more than the line on which
+the construct began,
+or the equivalent number of spaces specified by the most recent tab declaration.
+A multi-line construct ends at the line that returns to a lower level of indentation.
+
+## Allowed characters
+
+DABL files may contain any Unicode character. However, DABL keywords are limited
+to the set of [a-z] characters, and are case-sensitive; and DABL identifiers
+are limited to the Unicode equivalents of the ASCII characters `a-z, A-Z, 0-9, _`,
+and must begin with a letter or underscore. In practice, the only place where
+characters outside this range can occur is in a file path or the name of an
+external method in a function declaration.

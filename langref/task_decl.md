@@ -18,12 +18,5 @@ A task declaration has the following syntax:
   [when_clause]
   [inputs_clause]
   [outputs_clause]
-  task_stmts...
-
-A task declaration may contain these elements, in this order:
-
-1. When clause
-2. Inputs clause
-3. Outputs clause
-4. Procedural statements
+  [task_stmts...]
 

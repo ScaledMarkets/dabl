@@ -53,7 +53,7 @@ Tokens
 	right_brack = ']';
 	number = digit+;
 	whitespace = (blank)+;
-	id = letter ( letter | digit | dollar | escape )*;
+	id = letter ( letter | digit )*;
 	string = quote [ any_character - quote]* quote;
 	slashcomment = slashslash [ any_character - nl ]* nl;
 	
