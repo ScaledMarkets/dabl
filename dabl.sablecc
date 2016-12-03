@@ -157,7 +157,7 @@ Productions
 	  | ;
 	
 	task_decl =
-		scope_decl task id when_clause inputs_clause outputs_clause task_stmts;
+		scope_decl task id task_stmts;
 	
 	when_clause =
 		....
@@ -180,7 +180,14 @@ Productions
 	  | ;
 	  
 	task_stmt =
-	  | post_stmt
+	  | inputs_clause
+	  | outputs_clause
+	  | when_clause
+	  | procedural_stmt
+	  ;
+	
+	procedural_stmt =
+	 	post_stmt
 	  | func_call_stmt
 	  | report_stmt
 	  | bash_stmt
@@ -189,7 +196,7 @@ Productions
 	  | ssh_stmt
 	  | destroy_stmt
 	  | on_stmt
-		;
+	  ;
 	
 	post_stmt = ....
 	func_call_stmt = ....

@@ -14,9 +14,36 @@ when inputs are newer than outputs
 
 A task declaration has the following syntax:
 
-  [`public`] `task` *name*
-  [when_clause]
-  [inputs_clause]
-  [outputs_clause]
-  [task_stmts...]
+  [`public`] `task` *name* [task_stmts...]
 
+A task_stmt can be one of,
+
+* [A when statement](when_stmt.md)
+* [An inputs statement](inputs_stmt.md)
+* [An outputs statement](outputs_stmt.md)
+* [A procedural statement](procedural_stmt.md)
+
+
+## Example
+
+```
+task compileit
+    when inputs A newer than outputs
+    inputs A $thisdir/**.java from "my_repo" in my_git
+    inputs XYZ
+    outputs ./**.class, ./**.txt
+    bash "
+        javac $thisdir/*.java
+```
+
+In this example,
+
+* A task named "compileit" is defined.
+* An input set called "A" is defined.
+* Another input set called "XYZ" is defined.
+* An output set (with no name) is defined.
+* The task will be invoked whenever at least one file of input set A has a more recent
+timestamp than all of the files that are specified by the output set.
+* When the task is invoked, the bash command will be performed, after the value
+of $thisdir has been substituted. ($thisdir evaluates to the directory in which
+the script exists.)
