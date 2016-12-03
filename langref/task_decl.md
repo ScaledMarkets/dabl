@@ -12,6 +12,16 @@ when inputs are newer than outputs
 ```
 ## Structure Of a Task Declaration
 
+A task declaration has the following syntax:
+
+```
+[public] task *name*
+[when_clause]
+[inputs_clause]
+[outputs_clause]
+task_stmt...
+```
+
 A task declaration may contain these elements, in this order:
 
 1. When clause
