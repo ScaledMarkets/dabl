@@ -117,6 +117,8 @@ Productions
 	  | task_decl
 	  | repo_decl
 	  | files_decl
+	  | function_decl
+	  | translation_decl
 	  ;
 	
 	typographic_decl =
