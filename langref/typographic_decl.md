@@ -1,6 +1,6 @@
 # Typographic Declarations
 
-At present, the only DABL typographic declaration is the tab declaration. For example,
+At present, the only DABL typographic declaration is the `tab` declaration. For example,
 ```
 tab equivalent to 4 spaces
 ```
