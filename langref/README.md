@@ -3,7 +3,7 @@
 The elements of a DABL file are as follows:
 
 * [Namespace Declaration](namespace_decl.md)
-* Import Declarations
+* [Import Declarations](import_decl.md)
 * Typographic Declarations
 * Artifact Declarations
 * Repo Declarations
