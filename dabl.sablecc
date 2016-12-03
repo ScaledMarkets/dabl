@@ -1,4 +1,5 @@
 // SableCC grammar for Dependent Artifact Build Language (DABL).
+// For SableCC info, see http://www.sablecc.org/
 // For a good SableCC reference, see http://www.natpryce.com/articles/000531.html
 
 
@@ -83,6 +84,10 @@ Tokens
 	assume = 'assume';
 	compatible = 'compatible';
 	tested = 'tested';
+	function = 'function';
+	binds = 'binds';
+	method = 'method';
+	returns = 'returns';
 
 
 Ignored Tokens
@@ -97,8 +102,13 @@ Productions
   // Statement syntax.
   
 	specification =
-		spec_elt ;
+		spec_elt_seq ;
 	
+	spec_elt_seq =
+		spec_elt spec_elt_seq
+	  | spec_elt
+	  ;
+
 	spec_elt =
 		namespace_decl
 	  | import_decl
@@ -107,7 +117,6 @@ Productions
 	  | task_decl
 	  | repo_decl
 	  | files_decl
-	  | shell_decl
 	  ;
 	
 	namespace_decl =
@@ -167,6 +176,7 @@ Productions
 	  
 	task_stmt =
 	  | post_stmt
+	  | func_call_stmt
 	  | report_stmt
 	  | bash_stmt
 	  | powershell_stmt
@@ -177,6 +187,7 @@ Productions
 		;
 	
 	post_stmt = ....
+	func_call_stmt = ....
 	report_stmt = ....
 	bash_stmt = ....
 	powershell_stmt = ....
@@ -256,6 +267,18 @@ Productions
 	
 	shell_variable_ref =
 		dollar id;
+	
+	function_decl =
+		function id left_paren type_spec_seq right_paren binds to id method
+		path returns type_spec;
+	
+	type_spec_seq =
+		type_spec type_spec_seq
+	  | type_spec
+	  ;
+	
+	type_spec = 
+		....
 	
 	path {-> id*} =
 		{path} id per path                          {-> [id, path.id]}

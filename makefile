@@ -1,6 +1,8 @@
 # Makefile for DABL compiler.
 # Written by Cliff Berg, Scaled Markets.
 
+# This makefile contains no information about file structure or tool locations.
+# All such configurations should be made in makefile.inc
 
 include makefile.inc
 
@@ -47,9 +49,6 @@ $(test_build_dir):
 $(jar_dir):
 	mkdir $(jar_dir)
 
-$(ProviderJarDir):
-	mkdir $(ProviderJarDir)
-
 $(classfiles): $(build_dir) $(sourcefiles) Config parser
 	$(JAVAC) -cp $(buildcp) -d $(build_dir) \
 		$(src_dir)/$(package)/*.java \
@@ -62,11 +61,6 @@ $(classfiles): $(build_dir) $(sourcefiles) Config parser
 $(testclassfiles): $(test_build_dir) $(testsourcefiles)
 	$(JAVAC) -cp $(test_compile_cp) -d $(test_build_dir) $(test_src_dir)/$(test_package)/gen/*.java
 	$(JAVAC) -cp $(test_compile_cp) -d $(test_build_dir) $(test_src_dir)/$(test_package)/*.java
-
-providers: $(classfiles) $(ProviderJarDir)
-	rm -f $(build_dir)/scaledmarkets/aws/decl/.DS_Store
-	$(JAR) cvf $(ProviderJarDir)/AWS.jar -C $(build_dir) scaledmarkets/aws/decl
-	$(JAR) cvf $(ProviderJarDir)/docker.jar -C $(build_dir) scaledmarkets/docker/decl
 
 dist: $(jar_dir)/$(JAR_NAME).jar
 
@@ -97,7 +91,7 @@ test: $(classfiles) $(testclassfiles) providers
 		# The above sends stdout and stderr both to the console and the log file.
 
 check: test.log dist
-	$(JAVA) -jar $(jar_dir)/$(JAR_NAME).jar --provider $(ProviderJarDir)/AWS.jar example.decl
+	$(JAVA) -jar $(jar_dir)/$(JAR_NAME).jar example.decl
 
 install: dist
 	$(PRE_INSTALL)     # Pre-install commands follow.
