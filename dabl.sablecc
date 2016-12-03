@@ -57,6 +57,7 @@ Tokens
 	string = quote [ any_character - quote]* quote;
 	slashcomment = slashslash [ any_character - nl ]* nl;
 	
+	// Keywords:
 	from = 'from';
 	to = 'to';
 	in = 'in';

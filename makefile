@@ -15,20 +15,20 @@ all: dist
 Manifest:
 	echo "Main-Class: $(main_class)" > Manifest
 	echo "Specification-Title: $(PRODUCT_NAME)" >> Manifest
-	echo "Specification-Version: $(DECL_VERSION)" >> Manifest
+	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
 	echo "Specification-Vendor: $(ORG)" >> Manifest
 	echo "Implementation-Title: $(main_class)" >> Manifest
 	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
 	echo "Implementation-Vendor: $(ORG)" >> Manifest
 
 Config:
-	echo "package scaledmarkets.decl;" > $(src_dir)/$(package)/Config.java
+	echo "package scaledmarkets.dabl;" > $(src_dir)/$(package)/Config.java
 	echo "public class Config {" >> $(src_dir)/$(package)/Config.java
-	echo "public static final String DeclVersion = \"$(DECL_VERSION)\";" >> $(src_dir)/$(package)/Config.java
+	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(src_dir)/$(package)/Config.java
 	echo "}" >> $(src_dir)/$(package)/Config.java
 
-parser: decl.sablecc $(sable_out_dir) # Generate dabl compiler tables and classes.
-	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_out_dir) --no-inline decl.sablecc
+parser: dabl.sablecc $(sable_out_dir) # Generate dabl compiler tables and classes.
+	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_out_dir) --no-inline dabl.sablecc
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(build_dir) -d $(build_dir) \
 		$(sable_out_dir)/$(package)/node/*.java \
 		$(sable_out_dir)/$(package)/lexer/*.java \
@@ -54,9 +54,7 @@ $(classfiles): $(build_dir) $(sourcefiles) Config parser
 		$(src_dir)/$(package)/*.java \
 		$(src_dir)/$(package)/main/*.java \
 		$(src_dir)/$(package)/gen/*.java \
-		$(src_dir)/$(package)/provider/*.java \
-		$(src_dir)/scaledmarkets/aws/decl/AWS.java \
-		$(src_dir)/scaledmarkets/docker/decl/Docker.java
+		$(src_dir)/$(package)/provider/*.java
 
 $(testclassfiles): $(test_build_dir) $(testsourcefiles)
 	$(JAVAC) -cp $(test_compile_cp) -d $(test_build_dir) $(test_src_dir)/$(test_package)/gen/*.java
@@ -87,11 +85,11 @@ info:
 
 test: $(classfiles) $(testclassfiles) providers
 	($(JAVA) -cp $(test_cp) org.junit.runner.JUnitCore \
-		scaledmarkets.decl.test.GenTestSuite 2>&1) | tee test.log
+		scaledmarkets.dabl.test.GenTestSuite 2>&1) | tee test.log
 		# The above sends stdout and stderr both to the console and the log file.
 
 check: test.log dist
-	$(JAVA) -jar $(jar_dir)/$(JAR_NAME).jar example.decl
+	$(JAVA) -jar $(jar_dir)/$(JAR_NAME).jar example.dabl
 
 install: dist
 	$(PRE_INSTALL)     # Pre-install commands follow.
