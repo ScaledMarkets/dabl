@@ -31,3 +31,13 @@ are limited to the Unicode equivalents of the ASCII characters `a-z, A-Z, 0-9, _
 and must begin with a letter or underscore. In practice, the only place where
 characters outside this range can occur is in a file path or the name of an
 external method in a function declaration.
+
+## Syntax Notation
+
+This reference uses the following notation:
+
+[something] - indicates that "something" is optional.
+something... - indicates that "something" is a sequence of one or more things.
+[something...] - indicates that "something" is a sequence of zero or more things.
+*something* - indicates that "something" is a value such as an identifier,
+  string,, or numeric value.
