@@ -62,6 +62,7 @@ Tokens
 	in = 'in';
 	for = 'for';
 	with = 'with';
+	when = 'when';
 	namespace = 'namespace';
 	import = 'import';
 	tab_keyword = 'tab'
@@ -88,6 +89,11 @@ Tokens
 	binds = 'binds';
 	method = 'method';
 	returns = 'returns';
+	succeeded = 'succeeded';
+	failed = 'failed';
+	newer = 'newer';
+	older = 'older';
+	than = 'than';
 
 
 Ignored Tokens
@@ -160,18 +166,33 @@ Productions
 		scope_decl task id task_stmts;
 	
 	when_clause =
-		....
-	  | 
+		when logical_expr;
+	
+	success_expr =
+		id succeeded
+	  | id failed
+	  ;
+	
+	age_expr =
+		id newer than id
+	  | id older than id
+	  ;
+	
+	not_expr =
+		not logical_expr;
+	
+	logical_expr =
+		not_expr
+	  | success_expr
+	  | age_expr
 	  ;
 	  
 	inputs_clause =
 		....
-	  | 
 	  ;
 	  
 	outputs_clause =
 		....
-	  | 
 	  ;
 	  
 	task_stmts =
