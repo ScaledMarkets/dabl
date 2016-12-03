@@ -112,12 +112,15 @@ Productions
 	spec_elt =
 		namespace_decl
 	  | import_decl
-	  | tab_decl
+	  | typographic_decl
 	  | artifact_decl
 	  | task_decl
 	  | repo_decl
 	  | files_decl
 	  ;
+	
+	typographic_decl =
+		tabl_decl;
 	
 	namespace_decl =
 		namespace path;
