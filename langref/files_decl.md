@@ -25,7 +25,7 @@ repository.
 where *preference* is one of,
 
 <dl>
-<dd>`latest` *version-criteria*</dd>
+<dd><code>latest</code> *version-criteria*</dd>
 <dd>*version-spec*</dd>
 </dl>
 
