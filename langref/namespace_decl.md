@@ -8,6 +8,9 @@ A namespace declaration has the following syntax:
 
 `namespace` *path*
 
+where *path* is a period-separated sequence of identifiers. The path is the name
+that is assigned to the namespace.
+
 There must be one and only one namespace declaration in a DABL file.
 
 Multiple DABL files can
