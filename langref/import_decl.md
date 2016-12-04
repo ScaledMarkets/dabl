@@ -9,6 +9,6 @@ Java import.
 ## Syntax
 
 <dl>
-<dd><code>import</code> <i><a href="namespace-path.md">namespace-path</a></i></dd>
+<dd><code>import</code> <i><a href="namespace_path.md">namespace-path</a></i></dd>
 </dl>
 
