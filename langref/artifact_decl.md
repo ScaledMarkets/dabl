@@ -7,5 +7,9 @@ tool could attempt to verify the assertions.
 
 An artifact declaration has the following syntax:
 
-`artifact` *id* : *expression*.*expression* *artifact_stmts*
+`artifact` *Id* : *expression*.*expression* *artifact-statements*
+
+The Id is the name that will be assigned to the artifact. The two expressions
+are the major and minor version numbers, respectively. The artifact-statements
+consist of `assume` statements and `tested with` statements.
 
