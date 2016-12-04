@@ -4,3 +4,8 @@ file. An artifact declaration can specify compatibility with versions of other
 artifacts, and can assert which versions it has actually been tested with.
 Such assertions are not verified: they are design-time assertions. However, a
 tool could attempt to verify the assertions.
+
+An artifact declaration has the following syntax:
+
+`artifact` *id* : *expression*.*expression* *artifact_stmts*
+
