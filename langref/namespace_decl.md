@@ -17,7 +17,12 @@ namespace mycompany.myproject
 ```
 
 The identifiers that make up a namespace
-must consist of Unicode characters within the range a-z, A-Z, 0-9, _, -
+must consist of Unicode characters within the range
+
+```
+a-z, A-Z, 0-9, _, -
+```
+
 of the Latin-1 character set, and must
 not begin with a number.
 
