@@ -17,7 +17,8 @@ namespace mycompany.myproject
 ```
 
 The identifiers that make up a namespace
-must consist of characters within the range a-z, A-Z, 0-9, _, -, and must
+must consist of Unicode characters within the range a-z, A-Z, 0-9, _, -
+of the Latin-1 character set, and must
 not begin with a number.
 
 There must be one and only one namespace declaration in a DABL file.
@@ -25,4 +26,3 @@ There must be one and only one namespace declaration in a DABL file.
 Multiple DABL files can
 specify the same namespace: in that case, the files are logically combined. It is
 an error if there are any conflicts when combining.
-
