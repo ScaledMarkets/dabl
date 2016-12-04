@@ -31,8 +31,11 @@ where *preference* is one of,
 
 and version-criteria is one of,
 
-`compatible with`
-`tested with`
+<dl>
+<dd><code>compatible with</code></dd>
+<dd><code>tested with</code></dd>
+</dl>
+
 
 
 
