@@ -10,9 +10,9 @@ It is a period-separated sequence of version ranges.
 A version-spec consists of one or more range-specs, where a range spec consists of,
 
 <dl>
-<dd>numeric_value dash numeric_value</dd>
-<dd>numeric_value</dd>
-<dd>asterisk</dd>
+<dd><i>numeric-value</i>-<i>numeric-value</i></dd>
+<dd><i>numeric-value</i></dd>
+<dd>*</dd>
 </dl>
 
 
