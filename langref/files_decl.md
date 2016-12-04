@@ -32,8 +32,8 @@ or
 
 and version-criteria is one of,
 
-> compatible with
-> tested with
+	compatible with
+	tested with
 
 
 
