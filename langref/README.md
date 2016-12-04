@@ -23,7 +23,7 @@ the construct began,
 or the equivalent number of spaces specified by the most recent tab declaration.
 A multi-line construct ends at the line that returns to a lower level of indentation.
 
-## Allowed characters
+## Allowed Characters
 
 DABL files may contain any Unicode character. However, DABL keywords are limited
 to the set of [a-z] characters, and are case-sensitive; and DABL identifiers
@@ -31,6 +31,17 @@ are limited to the Unicode equivalents of the ASCII characters `a-z, A-Z, 0-9, _
 and must begin with a letter or underscore. In practice, the only place where
 characters outside this range can occur is in a file path or the name of an
 external method in a function declaration.
+
+## Environment Variables
+
+A DABL tool may make operating system environment variables visible to the context
+of the DABL file. In a DABL file, environment variables are referenced by prefixing the
+name of the environment variable with a dollar sign. For example, the following
+refers to an environment variable named "PATH":
+
+<dl>
+<dd><code>$PATH</code></dd>
+</dl>
 
 ## Syntax Notation
 
