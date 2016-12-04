@@ -1,6 +1,6 @@
 # Artifact Declaration
 
-## Semantics
+## Purpose
 
 An artifact declaration defines a versioned artifact that is produced by the DABL
 file. An artifact declaration can specify compatibility with versions of other
@@ -14,7 +14,7 @@ tool could attempt to verify the assertions.
 
 The Id is the name that will be assigned to the artifact. The two expressions
 are the major and minor version numbers, respectively. The artifact-statements
-consist of `assume` statements and `tested with` statements.
+consist of zero or more `assume` statements and `tested with` statements.
 
 An `assume` statement declares that the artifact that is created by the DABL file
 is expected to be compatible with the specified versions of another artifact.

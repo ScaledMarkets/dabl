@@ -1,5 +1,9 @@
 # Typographic Declarations
 
+## Purpose
+
+## Syntax
+
 At present, the only DABL typographic declaration is the `tab` declaration. For example,
 ```
 tab equivalent to 4 spaces

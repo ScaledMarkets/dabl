@@ -1,4 +1,7 @@
 # Task Declaration
+
+## Purpose
+
 A task declaration is a named process to be performed when specified conditions
 are met. The process is performed in complete isolation from other processes
 that are defined in the DABL file, and no environment inheritance exists from
@@ -10,7 +13,7 @@ If there is no when clause, then the following when clause is assumed:
 ```
 when inputs are newer than outputs
 ```
-## Structure Of a Task Declaration
+## Syntax
 
 A task declaration has the following syntax:
 

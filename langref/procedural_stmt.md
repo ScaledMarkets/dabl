@@ -1,5 +1,9 @@
 # Procedural Statements
 
+## Purpose
+
+## Syntax
+
 A task procedural statement may be one of,
 
 * On Statement
