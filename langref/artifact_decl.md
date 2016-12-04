@@ -27,9 +27,9 @@ a design-time assertion, although tools might attempt to verify it.
 
 An assume statement has the form,
 
-`assume compatible with` *artifact-Id* *version-spec*
+`assume compatible with` *artifact-Id* [*version-spec*](version_spec.md)
 
-where *version-spec* is a period-separated sequence of version ranges. For example,
+For example,
 
 ```
 assume compatible with ABC:3.3-3.4
