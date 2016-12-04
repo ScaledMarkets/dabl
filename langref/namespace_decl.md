@@ -4,6 +4,10 @@ A namespace declaration defines the a container for the contents of the file.
 Thus, other DABL files (or tools that process DABL) can refer to elements of the
 file via the namespace. Think of a namespace the way that you think of a Java package.
 
+A namespace declaration has the following syntax:
+
+`namespace` *path*
+
 There must be one and only one namespace declaration in a DABL file.
 
 Multiple DABL files can
