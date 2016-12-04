@@ -15,4 +15,10 @@ A version-spec consists of one or more range-specs, where a range spec consists 
 <dd>*</dd>
 </dl>
 
+## Examples
 
+3.3-3.4
+
+3.*
+
+*.4
