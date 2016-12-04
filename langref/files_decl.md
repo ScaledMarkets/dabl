@@ -24,13 +24,13 @@ repository.
 
 where *preference* is one of,
 
-	latest version_criteria
-	version_spec
+	`latest` *version-criteria*
+	*version-spec*
 
 and version-criteria is one of,
 
-	compatible with
-	tested with
+	`compatible with`
+	`tested with`
 
 
 
