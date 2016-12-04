@@ -39,6 +39,6 @@ of artifact `ABC`. One can also use a wildcard, such as,
 assume compatible with ABC:3.*
 ```
 
-The *tested with* statement has the form,
+The `tested with` statement has the form,
 
 `tested with` *artifact-Id* *version-spec*
