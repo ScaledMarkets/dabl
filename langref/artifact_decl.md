@@ -13,32 +13,32 @@ The Id is the name that will be assigned to the artifact. The two expressions
 are the major and minor version numbers, respectively. The artifact-statements
 consist of `assume` statements and `tested with` statements.
 
-An assume statement has the form,
-
-`assume compatible with` *version-spec*
-
-where *version-spec* is a period-separated sequence of version ranges. For example,
-
-```
-3.3-3.4
-```
-
-is a version spec that says specifies major version number 3 with minor version
-numbers in the range of 3 through 4. One can also use a wildcard, such as,
-
-```
-3.*
-```
-
 An `assume` statement declares that the artifact that is created by the DABL file
 is expected to be compatible with the specified versions of another artifact.
 This is a design-time assertion, and there of course can be no absolute proof of
 compatibility.
 
-The *tested with* statement has the form,
-
-`tested with` *version-spec*
-
 A `tested with` statement declares that the artifact has actually been tested
 for compatibility with the specified versions of another artifact. This is also
 a design-time assertion, although tools might attempt to verify it.
+
+An assume statement has the form,
+
+`assume compatible with` *artifact-Id* *version-spec*
+
+where *version-spec* is a period-separated sequence of version ranges. For example,
+
+```
+assume compatible with ABC:3.3-3.4
+```
+
+says that the artifact is compatible with major version number 3.3 through 3.4
+of artifact `ABC`. One can also use a wildcard, such as,
+
+```
+assume compatible with ABC:3.*
+```
+
+The *tested with* statement has the form,
+
+`tested with` *artifact-Id* *version-spec*

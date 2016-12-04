@@ -154,10 +154,10 @@ Productions
 	  ;
 	
 	assume_stmt =
-		assume compatible with version_spec;
+		assume compatible with id colon version_spec;
 	
 	tested_stmt =
-		tested with version_spec;
+		tested with id colon version_spec;
 	
 	scope_decl =
 		public
