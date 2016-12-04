@@ -9,7 +9,12 @@ A namespace declaration has the following syntax:
 `namespace` *path*
 
 where *path* is a period-separated sequence of identifiers. The path is the name
-that is assigned to the namespace.
+that is assigned to the namespace. For example, the following declared a
+namespace called `mycompany.myproject`:
+
+```
+namespace mycompany.myproject
+```
 
 There must be one and only one namespace declaration in a DABL file.
 
