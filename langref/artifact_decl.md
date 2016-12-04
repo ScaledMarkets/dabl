@@ -19,7 +19,9 @@ An assume statement has the form,
 
 where *version-spec* is a period-separated sequence of version ranges. For example,
 
-```3.3-3.4```
+```
+3.3-3.4
+```
 
 is a version spec that says specifies major version number 3 with minor version
 numbers in the range of 3 through 4. One can also use a wildcard, such as,
