@@ -31,7 +31,7 @@ where *preference* is one of,
 
 <dl>
 <dd><code>latest</code> <i>version-criteria</i></dd>
-<dd><i><a href="version-spec.md">version_spec</a></i></dd>
+<dd><i><a href="version_spec.md">version-spec</a></i></dd>
 </dl>
 
 and version-criteria is one of,
