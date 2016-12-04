@@ -11,10 +11,10 @@ file via the namespace. Think of a namespace the way that you think of a Java pa
 A namespace declaration has the following syntax:
 
 <dl>
-<dd><code>namespace</code> <i>path</i>
+<dd><code>namespace</code> <i><a href="namespace_path.md">namespace-path</a></i>
 </dl>
 
-where *path* is a period-separated sequence of identifiers. The path is the name
+The namespace-path is the name
 that is assigned to the namespace. For example, the following declares a
 namespace called `mycompany.myproject`:
 
