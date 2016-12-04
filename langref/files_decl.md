@@ -10,7 +10,10 @@ recent versions should be used.
 
 A files declaration has the following syntax:
 
-`files` *Id* `from` *repo-Id* `in` *project-Id* *files_stmts*
+<dl>
+<dd><code>files</code> <i>Id</i> <code>from</code> <i>repo-Id</i> <code>in</code>
+<i>project-Id files-stmts</i>
+</dl>
 
 The *Id* is used to refer to the collection of files elsewhere in the DABL file.
 The *repo-Id* is the Id of a repository that is defined by a repo declaration.
@@ -20,7 +23,9 @@ repository.
 *files-stmts* consists of zero or more `prefer` statements. The syntax of a
 `prefer` statement is as follows:
 
-`prefer` *preference*
+<dl>
+<dd><code>prefer</code> <i>preference</i>
+</dl>
 
 where *preference* is one of,
 
