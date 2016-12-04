@@ -24,11 +24,8 @@ repository.
 
 where *preference* is one of,
 
-latest version_criteria
-
-or
-
-> version_spec
+	latest version_criteria
+	version_spec
 
 and version-criteria is one of,
 
