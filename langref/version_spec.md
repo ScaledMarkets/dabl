@@ -22,3 +22,7 @@ A version-spec consists of one or more range-specs, where a range spec consists 
 3.*
 
 *.4
+
+*.*
+
+*
