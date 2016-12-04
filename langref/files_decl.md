@@ -28,12 +28,12 @@ latest version_criteria
 
 or
 
-version_spec
+> version_spec
 
 and version-criteria is one of,
 
-compatible with
-tested with
+> compatible with
+> tested with
 
 
 
