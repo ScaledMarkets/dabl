@@ -26,7 +26,11 @@ The identifiers that make up a namespace
 must consist of Unicode characters within the range
 
 ```
-a-z, A-Z, 0-9, _, -
+a-z
+A-Z
+0-9
+_ (underscore)
+- (hyphen)
 ```
 
 of the Latin-1 character set, and must
