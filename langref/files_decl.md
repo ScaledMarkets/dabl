@@ -24,8 +24,10 @@ repository.
 
 where *preference* is one of,
 
-`latest` *version-criteria*
-*version-spec*
+<dl>
+<dd>`latest` *version-criteria*</dd>
+<dd>*version-spec*</dd>
+</dl>
 
 and version-criteria is one of,
 
