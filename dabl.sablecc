@@ -28,6 +28,7 @@ Helpers
 
 Tokens
 
+	// Punctuation:
 	plus = '+';
 	dash = '-';
 	asterisk = '*';
@@ -51,6 +52,8 @@ Tokens
 	right_cur = '}';
 	left_brack = '[';
 	right_brack = ']';
+	
+	// Non-keyword Sequences:
 	number = digit+;
 	whitespace = (blank)+;
 	id = letter ( letter | digit )*;
@@ -58,7 +61,7 @@ Tokens
 	string = quote [ any_character - quote ]* quote;
 	slashcomment = slashslash [ any_character - nl ]* nl;
 	
-	// Keywords:
+	// Propositional Keywords:
 	from = 'from';
 	to = 'to';
 	in = 'in';
@@ -67,6 +70,8 @@ Tokens
 	when = 'when';
 	on = 'on';
 	of = 'of';
+	
+	// Keywords:
 	namespace = 'namespace';
 	import = 'import';
 	tab_keyword = 'tab'
@@ -251,6 +256,7 @@ Productions
 	args_opt =
 		arg args
 	  | arg
+	  | preposition
 	  |
 	  ;
 	
@@ -353,12 +359,25 @@ Productions
 	  ;
 	
 	function_decl =
-		function id left_paren type_spec_seq right_paren binds to id method
+		function id type_spec_seq binds to id method
 		path returns type_spec;
 	
 	type_spec_seq =
 		type_spec type_spec_seq
 	  | type_spec
+	  | id  // for defining a preposition that goes before or after a function arg
+	  | preposition  // for defining a keyword that goes before or after a function arg
+	  ;
+	
+	preposition =
+		from
+	  | to
+	  | in
+	  | for
+	  | with
+	  | when
+	  | on
+	  | of
 	  ;
 	
 	type_spec = 
@@ -376,5 +395,5 @@ Productions
 Abstract Syntax Tree
 
 	spec =
-		  
+		
 

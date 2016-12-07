@@ -53,8 +53,9 @@ A DABL file is processed in the following phases:
 <li>Elaboration - Expressions are evaluated where
 	they appear; if an unquoted string expression evaluates to a variable reference, then
 	the variable's value is used instead of the string. Note also that variables
-	are only defined in the return value of a function call.
-<li>The actions implied by the file are performed. The actions depend on the tool
+	are only defined in the return value of a function call. Prepositions that
+	are defined in function declarations are also recognized during this phase.
+<li>Execution - The actions implied by the file are performed. The actions depend on the tool
 	that is processing the DABL file. Actions might include adding listeners
 	for events, etc.
 </ol>
