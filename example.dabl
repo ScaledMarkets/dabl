@@ -1,76 +1,156 @@
-/*
-	Dabl file for building ABC.
-	DABL = Dependent Artifact Build Language.
-*/
-
-//*
-	Define a product of this script, how to make it, and its component
-	compatibilities.
-	
-	To build this, one would use the command 'dabl build ABC' in this directory.
-	To deploy this, one would use the command 'dabl deploy ABC' in this directory.
-	Or, could could call the tasks directly, with 'dabl makethejar' and 'dabl uploadabc',
-	respectively.
-*//
-artifact ABC version 2.1 {
-	// Specify how to perform lifecycle functions that are applicable:
-	to create { makethejar }  // 'create' is a dabl verb.
-	to deploy { uploadabc }	// 'upload' is also a dabl verb.
-	
-	// Specify compatibilities:
-	tested with XYZ 3.3-3.4  // (see tasks test_3_3 and test_3_4)
-	assume compatible with XYZ 3.x
-}
+// DABL = Dependent Artifact Build Language.
+    This is a sample DABL file.
+    DABL enables one to define dependencies among artifacts, and the tasks
+    that update out-of-date artifacts.
+    For clarity, keywords in this sample file are in bold, although an
+    actual DABL file is only a text file.
+    A comments continues to the next line if the line is indented by a tab,
+    or by the equivalent number of spaces.
 
 
+// All variables (names preceded by a dollar sign ($) are evaluated at
+    the time that a DABL files is parsed.
 
-task compileit {
-	when inputs A newer than outputs  // this rule is implied if absent
-	inputs A ./**.java from git repo {
-		url "..."
-		as user 'johnsmith' with key ...
-	}
-	inputs XYZ;
-	outputs ./**.class, ./**.txt
-	bash "
-		javac ...
-	"
-}
 
-task makethejar {
-	inputs ./**.class
-	outputs abc.jar
-	bash """
-		echo "...${ABC.version}..." > manifest.txt  # Create the manifest file.
-		jar ...
-	"""
-}
+// Define a namespace for the contents of this file. By supporting namespaces,
+    DABL enables one to "scale" one's build scripts, just as namespaces
+    enable one to "scale" software code.
+namespace my_company.my_project
 
-files XYZ from maven repo {
-	prefer latest compatible  // it will print which version it actually pulls.
-			// It will decide based on compatibility across all inputs.
-	...specify the binaries or sources that are needed
-}
 
-task test_3_3 {
-	inputs XYZ 3.3, abc.jar
-	outputs ./tests/results/3.3/**
-	...
-}
+//* Import another namespace - only the public elements are imported.
+import dabl.testing
 
-task test_3_4 {
-	inputs XYZ 3.4, abc.jar
-	outputs ./tests/results/3.4/**
-	...
-}
 
-task uploadabc {
-	when inputs A newer than outputs and test_3_4 succeeded and test_3_4 succeeded
-	inputs ./tests/results/3.3/* ./tests/results/3.4/**
-	ssh as user 'johnsmith' with key "~/mykey.pem" "
-		....
-	"
-	report "Success"
-}
+// You can declare what you want the equivalent to be, via the
+    "tab equivalent to" declaration:
+tab equivalent to 4 spaces
+
+
+//* This type of comment links the comment to the construct that follows it -
+    in this case, an artifact declaration.
+    An artifact defines a published product of this script, and its
+    compatibilities. Tasks in other namespaces can specify
+    a published artifact as an input. This enables one to couple
+    scripts together, but in a safe manner (without importing an entire
+    scripts and all of its definitions).
+artifact ABC:2.$MinorVersionNumber  // Defines artifact "ABC", version 2.<mvn>
+    // Tab indentation continues the scope of the preceding construct.
+        Each line contains one and only one construct.
+    // In the artifact declaration, $MinorVersionNumber refers to an
+        environment variable that has been declared outside the scope
+        of this DABL file.
+
+
+    // Specify intentional compatibilities: these are the versions of
+        third party components that we want to support. Note the
+        wildcard.
+    assume compatible with XYZ:3.*
+
+
+    // Specify verified compatibilities: these are the versions of
+        Third party components that we actually test with.
+    tested with XYZ:3.3-3.4  // (see tasks test_XYZ_3_3 and test_XYZ_3_4)
+
+
+    // One could define tasks inside the artifact, but then they would not
+        be referenceable outside the artifact spec unless one prefixed
+        their name with the name with the name of the artifact.
+
+
+//* Define a parameterized template that can be instantiated in this or
+    any other namespace.
+public task template create_template (artif_version, dir, output)
+    inputs $dir/**.class
+    outputs $output
+    bash """
+        echo "...$artif_version..." > manifest.txt
+        jar ... $output
+
+
+//* Instantiate a template, supplying the required parameter values.
+    Parameters can be specified positionally or as name:value pairs.
+public task create from create_template(${ABC.version}, $thisdir, abc.jar)
+
+
+//* Define a public task. Public tasks can be invoked explicitly from
+    a command line, e.g., "dabl publish <dabl-file>".
+public task publish
+    //* Specify when this task should be invoked implicitly.
+    when test_XYZ_3_4 succeeded and test_XYZ_3_4 succeeded
+    inputs thisdir/tests/results/3.3/* thisdir/tests/results/3.4/**
+    //* Push artifact to an artifact repository.
+    post abc.jar to my_maven/myproject/abc.jar
+    report "Success"  // This is performed when the task completes without
+        error.
+
+
+task compileit
+    when A newer than outputs
+    inputs A $thisdir/**.java from "my_repo" in my_git
+    inputs XYZ
+    outputs ./**.class, ./**.txt
+    bash "
+        javac ...
+
+
+//* Declare a git repo.
+repo my_git type git
+    path github.com/myteam
+    scheme https
+    userid $GitUserId password $GitPassword
+
+
+//* Declare a maven repo.
+repo my_maven type maven
+    path mymaven.abc.com
+    userid $MavenUserId key file "~/mykey.pem"
+
+
+//* Declare a set of files that exist somewhere (in this case, in a maven repo).
+files XYZ from "my_other_repo" in my_maven
+    prefer latest
+    ...
+
+
+// Bind a groovy static method (defined externally) to a function
+    Named ‘sign’, so that we can call it in this file.
+function sign string string binds to groovy method
+    com.scaledmarkets.utils.Signature.sign returns array of byte
+
+
+task test_XYZ_3_3
+    // If there is no "when" clause, then an implicit "when" clause is
+        assumed, of the form, "when inputs A newer than outputs".
+    inputs files XYZ:3.3, abc.jar
+    outputs thisdir/tests/results/3.3/**
+    //* Perform a deployment using an orchestration tool. A Deployment
+        object is returned, which contains the IP addresses of the
+        containers that were created, indexed by container name.
+    deployment = deploy ...an orchestration template (yaml or json file).
+    ssh deployment.dev_box "   // ssh into the named container.
+            The Deployment object that is returned is a dynamic type
+            that gets populated with fields corresponding to the
+            container names.
+        ...
+    // Call the groovy ‘sign’ function (declared earlier).
+    signature = sign thisdir/tests/results/3.3/test_summary.html,
+        deployment.dev_box.imageId()
+    post signature, test_summary.html to my_maven/3.3/test_results
+
+
+task test_XYZ_3_4
+    inputs files XYZ:3.4, abc.jar
+    outputs thisdir/tests/results/3.4/**
+    powershell "
+        ...
+
+
+//* Define how shell commands should be translated for the specified OS.
+    When you execute a DABL script, the OS in which it is running can
+    be accessed via the variable $OS.
+shell translation for "Windows"  // if $OS is "Windows"
+    translate filename "/*" to "$DRIVE_LETTER:\\*"
+    translate filename "/" to "\\"
 
 
