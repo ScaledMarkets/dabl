@@ -95,6 +95,8 @@ Tokens
 	newer = 'newer';
 	older = 'older';
 	than = 'than';
+	inputs = 'inputs';
+	outputs = 'outputs';
 
 
 Ignored Tokens
@@ -187,11 +189,31 @@ Productions
 	  | success_expr
 	  | age_expr
 	  ;
-	  
+	
+	id_opt =
+		id
+	  | ;
+	
 	inputs_clause =
-		....
+		inputs id_opt artifact_sets;
+	
+	artifact_sets =
+		artifact_set artifact_sets
+	  | artifact_set
 	  ;
-	  
+	
+	// Examples:
+	// files XYZ:3.3
+	// abc.jar
+	// $thisdir/**.java from "my_repo" in my_git
+	artifact_set =
+		fileset_spec from string_value in repository_id;
+	
+	string_value =
+		string
+	  | env_variable_ref
+	  ;
+	
 	outputs_clause =
 		....
 	  ;
