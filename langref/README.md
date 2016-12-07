@@ -47,9 +47,9 @@ refers to an environment variable named "PATH":
 
 A DABL file is processed in the following phases:
 <ol>
-<li>Parse - The file is parsed and an object model is created.
-<li>Elaboration - All environment variables in the object model are converted to
+<li>Template - All environment variables in the file are converted to
 	their runtime values.
+<li>Parse - The output of the prior phase is parsed and an object model is created.
 <li>The actions implied by the file are performed. The actions depend on the tool
 	that is processing the DABL file. Actions might include adding listeners
 	for events, etc.
