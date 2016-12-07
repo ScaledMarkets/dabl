@@ -52,7 +52,10 @@ A DABL file is processed in the following phases:
 <li>Parse - The output of the prior phase is parsed and an object model is created.
 <li>The actions implied by the file are performed. The actions depend on the tool
 	that is processing the DABL file. Actions might include adding listeners
-	for events, etc.
+	for events, etc. Note that during execution, expressions are evaluated where
+	they appear; if a string expression evaluates to a variable reference, then
+	the variable's value is used instead of the string. Note also that variables
+	are only defined in the return value of a function call.
 </ol>
 
 ## Syntax Notation
