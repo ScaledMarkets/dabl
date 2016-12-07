@@ -79,15 +79,15 @@ public class Dabl
 			CompilerState state = new CompilerState();
 			
 			// Perform identifier matching and ink things up.
-			ast.apply(new LanguageAnalyzer(state, providerPaths));
+			ast.apply(new Parser(state));
 			
 			// Perform logical integrity and secuirty analysis.
-			ast.apply(new IntegrityAnalyzer(state));
+			ast.apply(new Elaborator(state));
 			
 			if (analyzeOnly) return;
 			
 			// Perform actions defined by the dabl file.
-			ast.apply(new Generator(state));
+			ast.apply(new Executor(state));
 		}
 		catch (Exception ex)
 		{
@@ -98,7 +98,7 @@ public class Dabl
 	
 	static void displayInstructions()
 	{
-		System.out.println("Decl version " + Config.DeclVersion + ". Usage:\n" +
+		System.out.println("Dabl version " + Config.DeclVersion + ". Usage:\n" +
 			"\tjava -jar dabl.jar [options] <filename>,\n" +
 			"\t\twhere options can be\n" +
 			"\t\t\t-p or --print (print the AST)\n" +
