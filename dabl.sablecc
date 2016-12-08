@@ -13,7 +13,8 @@ Helpers
 	cr    = 13;
 	nl    = 10;
 	dollar = '$';
-	blank = ' ' | nl | cr nl | tab;
+	comma = ',';
+	blank = ' ';
 	lcletter = ['a' .. 'z'];
 	ucletter = ['A' .. 'Z'];
 	underscore = '_';
@@ -23,12 +24,17 @@ Helpers
 	quote = '"';
 	slashslash = '//';
 	slashstar = '/*';
-	slashslashstar = '//*'
+	starslash = '*/';
+	slashslashstar = '//*';
+	starslashslash = '*//';
+	linetermination = (cr nl | nl);
 
 
 Tokens
 
 	// Punctuation:
+	tab_char = tab;
+	nl_char = nl;
 	plus = '+';
 	dash = '-';
 	asterisk = '*';
@@ -43,7 +49,6 @@ Tokens
 	semicolon = ';';
 	per = '.';
 	dotdot = '..';
-	comma = ',';
 	qmark = '?';
 	def = 'def';
 	left_paren = '(';
@@ -57,9 +62,11 @@ Tokens
 	number = digit+;
 	whitespace = (blank)+;
 	id = letter ( letter | digit )*;
-	non_ws_char_seq = [ any_character - quote - comma]*;
+	non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
 	string = quote [ any_character - quote ]* quote;
 	slashcomment = slashslash [ any_character - nl ]* nl;
+	slashstarcomment = slashstar any_character* starslash;
+	slashslashstarcomment = slashslashstar any_character* starslashslash;
 	
 	// Propositional Keywords:
 	from = 'from';
@@ -70,11 +77,12 @@ Tokens
 	when = 'when';
 	on = 'on';
 	of = 'of';
+	than = 'than';
 	
 	// Keywords:
 	namespace = 'namespace';
 	import = 'import';
-	tab_keyword = 'tab'
+	tab_keyword = 'tab';
 	equivalent = 'equivalent';
 	spaces_keyword = 'spaces';
 	artifact = 'artifact';
@@ -84,6 +92,7 @@ Tokens
 	type = 'type';
 	git = 'git';
 	maven = 'maven';
+	svn = 'svn';
 	files = 'files';
 	shell = 'shell';
 	translation = 'translation';
@@ -102,22 +111,23 @@ Tokens
 	failed = 'failed';
 	newer = 'newer';
 	older = 'older';
-	than = 'than';
 	inputs = 'inputs';
 	outputs = 'outputs';
-	path = 'path';
+	path_keyword = 'path';
 	scheme = 'scheme';
 	error = 'error';
-	string = 'string';
-	int = 'int';
-	float = 'float';
-	array = 'array';
-	
+	string_keyword = 'string';
+	int_keyword = 'int_keyword';
+	float_keyword = 'float_keyword';
+	array_keyword = 'array_keyword';
+	not_keyword = 'not';
 
 
 Ignored Tokens
 
 	slashcomment,
+	slashstarcomment,
+	slashslashstarcomment,
 	whitespace;
 
 
@@ -126,28 +136,31 @@ Productions
 
   // Statement syntax.
   
-	specification =
-		spec_elt_seq ;
+	specification { -> o_namespace } =
+		spec_elt_seq;
 	
 	spec_elt_seq =
-		spec_elt spec_elt_seq
-	  | spec_elt
+		{multiple} delimited_spec_elt spec_elt_seq
+	  | {one} delimited_spec_elt
 	  ;
+	 
+	delimited_spec_elt =
+		tab_char spec_elt nl_char;
 
 	spec_elt =
-		namespace_decl
-	  | import_decl
-	  | typographic_decl
-	  | artifact_decl
-	  | task_decl
-	  | repo_decl
-	  | files_decl
-	  | function_decl
-	  | translation_decl
+		{namespace_decl} namespace_decl
+	  | {import_decl} import_decl
+	  | {typographic_decl} typographic_decl
+	  | {artifact_decl} artifact_decl
+	  | {task_decl} task_decl
+	  | {repo_decl} repo_decl
+	  | {files_decl} files_decl
+	  | {function_decl} function_decl
+	  | {translation_decl} translation_decl
 	  ;
 	
 	typographic_decl =
-		tabl_decl;
+		tab_decl;
 	
 	namespace_decl =
 		namespace path;
@@ -159,16 +172,19 @@ Productions
 		tab_keyword equivalent to number spaces_keyword;
 		
 	artifact_decl =
-		artifact id colon expression per expression artifact_stmts;
+		artifact id colon [expr1]:whole_number_expr per [expr2]:whole_number_expr artifact_stmts;
+	
+	whole_number_expr =
+		number;
 	
 	artifact_stmts =
-		artifact_stmt artifact_stmts
-	  | artifact_stmt
-	  | ;
+		{multiple} artifact_stmt artifact_stmts
+	  | {one} artifact_stmt
+	  | {none} ;
 	
 	artifact_stmt =
-		assume_stmt
-	  | tested_stmt
+		{assume_stmt} assume_stmt
+	  | {tested_stmt} tested_stmt
 	  ;
 	
 	assume_stmt =
@@ -178,8 +194,9 @@ Productions
 		tested with id colon version_spec;
 	
 	scope_decl =
-		public
-	  | ;
+		{public} public
+	  | {unspecified}
+	  ;
 	
 	task_decl =
 		scope_decl task id task_stmts;
@@ -188,27 +205,27 @@ Productions
 		when logical_expr;
 	
 	success_expr =
-		id succeeded
-	  | id failed
+		{succeeded} id succeeded
+	  | {failed} id failed
 	  ;
 	
 	age_expr =
-		id newer than id
-	  | id older than id
+		{newer_than} [newer_id]:id newer than [older_id]:id
+	  | {older_than} [older_id]:id older than [newer_id]:id
 	  ;
 	
 	not_expr =
-		not logical_expr;
+		not_keyword logical_expr;
 	
 	logical_expr =
-		not_expr
-	  | success_expr
-	  | age_expr
+		{not} not_expr
+	  | {success} success_expr
+	  | {age} age_expr
 	  ;
 	
 	id_opt =
-		id
-	  | ;
+		{id} id
+	  | {nothing} ;
 	
 	inputs_clause =
 		inputs id_opt artifact_sets;
@@ -217,8 +234,8 @@ Productions
 		outputs id_opt artifact_sets;
 	  
 	artifact_sets =
-		artifact_set artifact_sets
-	  | artifact_set
+		{multiple} artifact_set artifact_sets
+	  | {one} artifact_set
 	  ;
 	
 	// Examples:
@@ -226,38 +243,42 @@ Productions
 	// abc.jar
 	// $thisdir/**.java from "my_repo" in my_git
 	artifact_set =
-		fileset_spec from string in repository_id;
+		fileset_spec from string in [repository_id]:id;
+	
+	fileset_spec =
+		string_value;
 	
 	task_stmts =
-		task_stmt task_stmts
-	  | task_stmt
-	  | ;
+		{multiple} task_stmt task_stmts
+	  | {one} task_stmt
+	  | {none}
+	  ;
 	  
 	task_stmt =
-	  | inputs_clause
-	  | outputs_clause
-	  | when_clause
-	  | procedural_stmt
+	  | {inputs} inputs_clause
+	  | {outputs} outputs_clause
+	  | {when} when_clause
+	  | {procedural} procedural_stmt
 	  ;
 	
 	procedural_stmt =
-	  | func_call_stmt
-	  | on_error_stmt
+	  | {func_call} func_call_stmt
+	  | {on_error} on_error_stmt
 	  ;
 	
 	assignment_opt =
-		id eq
-	  |
+		{id} id eq
+	  | {nothing} 
 	  ;
 	
 	func_call_stmt =
 		assignment_opt args_opt;
 	
 	args_opt =
-		arg args
-	  | arg
-	  | preposition
-	  |
+		{multiple_args} arg args_opt
+	  | {one_arg} arg
+	  | {preoposition} preposition
+	  | {nothing} 
 	  ;
 	
 	arg =
@@ -267,33 +288,34 @@ Productions
 		on error procedural_stmts_opt;
 	
 	procedural_stmts_opt =
-		procedural_stmt procedural_stmts_opt
-	  | procedural_stmt
-	  | 
+		{multiple} procedural_stmt procedural_stmts_opt
+	  | {one} procedural_stmt
+	  | {none} 
 	  ;
 	
 	repo_decl =
 		repo id type repo_type repo_stmts;
 	
 	repo_stmts =
-		repo_stmt repo_stmts
-	  | repo_stmt
-	  | ;
+		{multiple} repo_stmt repo_stmts
+	  | {one} repo_stmt
+	  | {none}
+	  ;
 	
 	repo_type =
-		git
-	  | maven
-	  | svn
+		{git} git
+	  | {maven} maven
+	  | {svn} svn
 	  ;
 	
 	repo_stmt =
-		repo_path_spec
-	  | tcp_scheme_spec
-	  | userid_spec password_spec
+		{repo_path} repo_path_spec
+	  | {tcp_scheme} tcp_scheme_spec
+	  | {userid} userid_spec password_spec
 	  ;
 	
 	repo_path_spec =
-		path string;
+		path_keyword string;
 	
 	tcp_scheme_spec =
 		scheme string;
@@ -305,17 +327,18 @@ Productions
 		string;
 	
 	files_decl =
-		files id from string in id files_stmts;
+		files [name]:id from string in [source]:id files_stmts;
 	
 	string_value =
-		non_ws_char_seq  // this can be a path that references a variable
-	  | string
+		{non_ws} non_ws_char_seq  // this can be a path that references a variable
+	  | {str} string
 	  ;
 	
 	files_stmts =
-		files_stmt files_stmts
-	  | files_stmt
-	  | ;
+		{multiple} files_stmt files_stmts
+	  | {one} files_stmt
+	  | {none}
+	  ;
 	
 	files_stmt =
 		prefer_stmt;
@@ -324,76 +347,80 @@ Productions
 		prefer preference;
 	
 	preference =
-		latest version_criteria
-	  | version_spec;
+		{latest} latest version_criteria
+	  | {version} version_spec
+	  ;
 	
 	version_criteria =
-		compatible with
-	  | tested with
+		{compatible} compatible with
+	  | {tested} tested with
 	  ;
 	
 	version_spec =
-		range_spec per version_spec
-	  | range_spec
+		{multiple} range_spec per version_spec
+	  | {one} range_spec
 	  ;
 	
 	range_spec =
-		numeric_value dash numeric_value
-	  | numeric_value
-	  | asterisk
+		{multiple} [from]:numeric_value dash [to]:numeric_value
+	  | {one} numeric_value
+	  | {all} asterisk
 	  ;
 	
 	translation_decl =
 		shell translation for string translation_stmts;
 	
 	translation_stmts =
-		translation_stmt translation_stmts
-	  | translation_stmt
-	  | ;
+		{multiple} translation_stmt translation_stmts
+	  | {one} translation_stmt
+	  | {none}
+	  ;
 	
 	translation_stmt =
-		translate filename string to string;
+		translate filename [from_string]:string to [to_string]:string;
 	
 	numeric_value =
 		number
 	  ;
 	
 	function_decl =
-		function id type_spec_seq binds to id method
-		path returns type_spec;
+		function [dable_name]:id type_spec_seq binds to [target_name]:id method
+			path returns type_spec;
 	
 	type_spec_seq =
-		type_spec type_spec_seq
-	  | type_spec
-	  | id  // for defining a preposition that goes before or after a function arg
-	  | preposition  // for defining a keyword that goes before or after a function arg
+		{multiple} type_spec type_spec_seq
+	  | {one} type_spec
+	  | {id} id  // for defining a preposition that goes before or after a function arg
+	  | {preposition} preposition  // for defining a keyword that goes before or after a function arg
 	  ;
 	
 	preposition =
-		from
-	  | to
-	  | in
-	  | for
-	  | with
-	  | when
-	  | on
-	  | of
+		{from} from
+	  | {to} to
+	  | {in} in
+	  | {for} for
+	  | {with} with
+	  | {when} when
+	  | {on} on
+	  | {of} of
+	  | {than} than
 	  ;
 	
 	type_spec = 
-		string
-	  | int
-	  | float
-	  | array of type_spec
+		{string} string_keyword
+	  | {int} int_keyword
+	  | {float} float_keyword
+	  | {array} array_keyword of type_spec
 	  ;
 	
-	path {-> id*} =
-		{path} id per path                          {-> [id, path.id]}
-	  | {id} id                                     {-> [id]};
-
+	path =
+		{multiple} id per path
+	  | {one} id;
 
 Abstract Syntax Tree
 
-	spec =
-		
-
+	o_namespace =
+		{namespace_elements} namespace_elt*;
+	
+	namespace_elt =
+		{none} ;

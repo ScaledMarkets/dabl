@@ -85,6 +85,11 @@ compile: $(classfiles)
 # Define 'dist' target so we can reference it in 'all' target.
 dist: $(jar_dir)/$(JAR_NAME).jar
 
+# Run parser to scan a sample input file. This is for checking that the parser
+# can recognize the language.
+check:
+	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.main.Dabl --analyzeonly example.dabl
+
 # Perform code quality scans.
 runsonar:
 	$(SONAR_RUNNER)
