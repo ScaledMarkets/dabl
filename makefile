@@ -10,9 +10,10 @@ include makefile.inc
 ################################################################################
 # Tasks
 
-all: dist
+all: test dist
 
-Manifest:
+# Create the manifest file for the JAR.
+manifest:
 	echo "Main-Class: $(main_class)" > Manifest
 	echo "Specification-Title: $(PRODUCT_NAME)" >> Manifest
 	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
@@ -21,12 +22,14 @@ Manifest:
 	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
 	echo "Implementation-Vendor: $(ORG)" >> Manifest
 
-Config:
+# Create a Config.java file that contains the current application version.
+config:
 	echo "package scaledmarkets.dabl;" > $(src_dir)/$(package)/Config.java
 	echo "public class Config {" >> $(src_dir)/$(package)/Config.java
 	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(src_dir)/$(package)/Config.java
 	echo "}" >> $(src_dir)/$(package)/Config.java
 
+# Generate the DABL parser.
 parser: dabl.sablecc $(sable_out_dir) # Generate dabl compiler tables and classes.
 	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_out_dir) --no-inline dabl.sablecc
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(build_dir) -d $(build_dir) \
@@ -37,32 +40,37 @@ parser: dabl.sablecc $(sable_out_dir) # Generate dabl compiler tables and classe
 	cp $(sable_out_dir)/$(package)/lexer/lexer.dat $(build_dir)/$(package)/lexer
 	cp $(sable_out_dir)/$(package)/parser/parser.dat $(build_dir)/$(package)/parser
 
+# Create the directory into which the generated parser source files will be placed.
 $(sable_out_dir):
 	mkdir $(sable_out_dir)
 
+# Create the directory that will contain the compiled class files.
 $(build_dir):
 	mkdir $(build_dir)
 
+# Create the directory that will contain the compiled test class files.
 $(test_build_dir):
 	mkdir $(test_build_dir)
 
+# Create the directory that will contain the packaged application (JAR file).
 $(jar_dir):
 	mkdir $(jar_dir)
 
-$(classfiles): $(build_dir) $(sourcefiles) Config parser
+# Compile the generated parser source files.
+$(classfiles): $(build_dir) $(sourcefiles) config parser
 	$(JAVAC) -cp $(buildcp) -d $(build_dir) \
 		$(src_dir)/$(package)/*.java \
 		$(src_dir)/$(package)/main/*.java \
 		$(src_dir)/$(package)/gen/*.java \
 		$(src_dir)/$(package)/provider/*.java
 
+# Compile the test source files.
 $(testclassfiles): $(test_build_dir) $(testsourcefiles)
 	$(JAVAC) -cp $(test_compile_cp) -d $(test_build_dir) $(test_src_dir)/$(test_package)/gen/*.java
 	$(JAVAC) -cp $(test_compile_cp) -d $(test_build_dir) $(test_src_dir)/$(test_package)/*.java
 
-dist: $(jar_dir)/$(JAR_NAME).jar
-
-$(jar_dir)/$(JAR_NAME).jar: $(classfiles) Manifest $(jar_dir)
+# Package application into a JAR file.
+$(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
 	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest -C $(third_party_unzip_dir) awssdk_config_default.json
 	$(JAR) uvf $(jar_dir)/$(JAR_NAME).jar -C $(third_party_unzip_dir) com
 	$(JAR) uvf $(jar_dir)/$(JAR_NAME).jar -C $(third_party_unzip_dir) models
@@ -70,7 +78,11 @@ $(jar_dir)/$(JAR_NAME).jar: $(classfiles) Manifest $(jar_dir)
 	$(JAR) uvf $(jar_dir)/$(JAR_NAME).jar -C $(third_party_unzip_dir) mime.types
 	$(JAR) uvf $(jar_dir)/$(JAR_NAME).jar -C $(build_dir) scaledmarkets
 	rm Manifest
-	
+
+# Define 'dist' target so we can reference it in 'all' target.
+dist: $(jar_dir)/$(JAR_NAME).jar
+
+# Perform code quality scans.
 runsonar:
 	$(SONAR_RUNNER)
 
@@ -82,23 +94,3 @@ clean:
 
 info:
 	@echo "Makefile for $(PRODUCT_NAME)"
-
-test: $(classfiles) $(testclassfiles) providers
-	($(JAVA) -cp $(test_cp) org.junit.runner.JUnitCore \
-		scaledmarkets.dabl.test.GenTestSuite 2>&1) | tee test.log
-		# The above sends stdout and stderr both to the console and the log file.
-
-check: test.log dist
-	$(JAVA) -jar $(jar_dir)/$(JAR_NAME).jar example.dabl
-
-install: dist
-	$(PRE_INSTALL)     # Pre-install commands follow.
-	$(POST_INSTALL)    # Post-install commands follow.
-	$(NORMAL_INSTALL)  # Normal commands follow.
-
-uninstall:
-	$(PRE_UNINSTALL)     # Pre-uninstall commands follow.
-	$(POST_UNINSTALL)    # Post-uninstall commands follow.
-	$(NORMAL_UNINSTALL)  # Normal commands follow.
-
-installcheck:

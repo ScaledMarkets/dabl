@@ -2,9 +2,7 @@
     This is a sample DABL file.
     DABL enables one to define dependencies among artifacts, and the tasks
     that update out-of-date artifacts.
-    For clarity, keywords in this sample file are in bold, although an
-    actual DABL file is only a text file.
-    A comments continues to the next line if the line is indented by a tab,
+    A comment continues to the next line if the line is indented by a tab,
     or by the equivalent number of spaces.
 
 
