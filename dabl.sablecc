@@ -136,7 +136,7 @@ Productions
 
   // Statement syntax.
   
-	specification { -> o_namespace } =
+	specification { -> onamespace } =
 		spec_elt_seq;
 	
 	spec_elt_seq =
@@ -419,8 +419,49 @@ Productions
 
 Abstract Syntax Tree
 
-	o_namespace =
+	onamespace =
 		{namespace_elements} namespace_elt*;
 	
 	namespace_elt =
-		{none} ;
+		{import} onamespace_path
+	  | {typographic} otypographic_declaration
+	  | {artifact} oartifact_declaration
+	  | {repo} orepo_declaration
+	  | {file} ofile_declaration
+	  | {function} ofunction_declaration
+	  | {task} otask_declaration
+	  | {translation} otranslation_declaration
+	  ;
+
+	otypographic_declaration =
+		{tab_decl} number;
+
+	oartifact_declaration =
+		{assume} id range_spec*
+	  | {tested} id range_spec*
+		;
+	
+	orange_spec =
+		{range} [from]:number [to]:number
+	  | {one} number
+	  | {all}
+		;
+
+	orepo_declaration =
+		
+
+	ofile_declaration =
+		
+
+	ofunction_declaration =
+		
+
+	otask_declaration =
+		
+
+	otranslation_declaration =
+		
+	onamespace_path =
+		{import} id*;
+	
+	
