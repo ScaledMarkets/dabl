@@ -79,6 +79,9 @@ $(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
 	$(JAR) uvf $(jar_dir)/$(JAR_NAME).jar -C $(build_dir) scaledmarkets
 	rm Manifest
 
+# Define the 'compile' target so that we can reference it in .DEFAULT_GOAL.
+compile: $(classfiles)
+
 # Define 'dist' target so we can reference it in 'all' target.
 dist: $(jar_dir)/$(JAR_NAME).jar
 
