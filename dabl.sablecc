@@ -427,9 +427,9 @@ Productions
 Abstract Syntax Tree
 
 	onamespace =
-		{namespace_elements} namespace_elt*;
+		{namespace_elements} onamespace_elt*;
 	
-	namespace_elt =
+	onamespace_elt =
 		{import} onamespace_path
 	  | {typographic} otypographic_declaration
 	  | {artifact} oartifact_declaration

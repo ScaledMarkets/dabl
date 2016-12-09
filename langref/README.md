@@ -15,6 +15,19 @@ The elements of a DABL file are as follows:
 The ordering of these constructs is immaterial. However, there can be only one
 namespace declaration.
 
+## Comments
+
+DABL has three types of comments:
+<ol>
+<li>Single line comments: all text after // through the end of the line is treated as a comment.
+<li>Multi-line comments: all text between /* and */, possibly spanning multiple lines, is
+	treated as a comment.
+<li>Syntactic comments: Same as a multi-line comment, but the delimiters are
+	//* and *// to begin and end the comment, respectively. In addition, the
+	comment is synactically associated with the DABL construct that immediately
+	follows the comment. This is useful for documentation generation tools.
+</ol>
+
 ## Line Continuation
 
 All DABL constructs can span multiple lines. Only multi-line comments must be
