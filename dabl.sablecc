@@ -23,6 +23,7 @@ Helpers
 	escape = '%' digit digit;
 	quote = '"';
 	slashslash = '//';
+	slashslashslash = '///';
 	slashstar = '/*';
 	starslash = '*/';
 	slashslashstar = '//*';
@@ -65,7 +66,8 @@ Tokens
 	id = letter ( letter | digit )*;
 	non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
 	string = quote [ any_character - quote ]* quote;
-	slashcomment = slashslash [ any_character - nl ]* nl;
+	slashslashcomment = slashslash [ any_character - nl ]* nl;
+	slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
 	slashstarcomment = slashstar any_character* starslash;
 	slashslashstarcomment = slashslashstar any_character* starslashslash;
 	
@@ -128,7 +130,8 @@ Tokens
 
 Ignored Tokens
 
-	slashcomment,
+	slashslashcomment,
+	slashslashslashcomment,
 	slashstarcomment,
 	slashslashstarcomment,
 	whitespace;
