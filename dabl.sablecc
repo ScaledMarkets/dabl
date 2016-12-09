@@ -492,22 +492,14 @@ Abstract Syntax Tree
 	  ;
 	
 	otask_declaration =
-		oscope [name]:id owhen* oinput* ooutput* oproc_stmt*;
+		oscope [name]:id [when]:ological_expr* [input]oartifact_set*
+			[output]oartifact_set* oproc_stmt*;
 	
 	oscope =
 		{public}
 	  | {private}
 	  ;
 	
-	owhen =
-		ological_expr;
-	
-	oinput =
-		oartifact_set*;
-	
-	ooutput =
-		oartifact_set*;
-
 	oartifact_set =
 		[fileset_spec]:string [project]:string [repository_id]:id;
 	

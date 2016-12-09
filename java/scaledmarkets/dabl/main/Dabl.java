@@ -17,17 +17,22 @@ import java.util.List;
 import java.util.LinkedList;
 
 /**
+ * Main entry point for DABL processor.
  * Args: (see displayInstructions() below).
  */
 public class Dabl
 {
-	public static void main(String[] args) throws Exception
-	{
-		boolean print = false;
-		boolean analyzeOnly = false;
-		boolean printTrace = false;
-		List<String> providerPaths = new LinkedList<String>();
-		String filename = null;
+	boolean print = false;
+	boolean analyzeOnly = false;
+	boolean printTrace = false;
+	String filename = null;
+	
+	/**
+	 Command line program.
+	 */
+	public static void main(String[] args) throws Exception {
+		
+		Dabl dabl = new Dabl();
 		
 		int argno = 0;
 		for (;;)
@@ -39,9 +44,9 @@ public class Dabl
 				displayInstructions();
 				return;
 			}
-			else if (arg.equals("-p") || arg.equals("--print")) print = true;
-			else if (arg.equals("-a") || arg.equals("--analyzeonly")) analyzeOnly = true;
-			else if (arg.equals("-t") || arg.equals("--trace")) printTrace = true;
+			else if (arg.equals("-p") || arg.equals("--print")) dabl.print = true;
+			else if (arg.equals("-a") || arg.equals("--analyzeonly")) dabl.analyzeOnly = true;
+			else if (arg.equals("-t") || arg.equals("--trace")) dabl.printTrace = true;
 			else if (arg.startsWith("-"))
 			{
 				System.out.println("Unrecognized option: " + arg);
@@ -54,10 +59,25 @@ public class Dabl
 					System.out.println("Filename specified a second time: " + arg);
 					return;
 				}
-				filename = arg;
+				dabl.filename = arg;
 			}
 			argno++;
 		}
+		
+		try { dabl.process(); }
+		catch (Exception ex)
+		{
+			if (printTrace) ex.printStackTrace();
+			else System.out.println(ex.getMessage());
+		}
+	}
+	
+	/**
+	 * This is the actual DABL processor.
+	 * The processing phases are described here:
+	 	https://github.com/Scaled-Markets/dabl/tree/master/langref#processing-phases
+	 */
+	public void process() throws Exception {
 		
 		if (filename == null)
 		{
@@ -65,35 +85,33 @@ public class Dabl
 			return;
 		}
 		
+		....Need to insert template processor here
+		
 		Lexer lexer = new Lexer(new PushbackReader(new FileReader(filename)));
 
-		try
-		{
-			// Parse expression string.
-			Parser parser = new Parser(lexer);
-			Start ast = parser.parse();
-			System.out.println("Syntax is correct");
-			
-			if (print) PrettyPrint.pp(ast);
-			
-			CompilerState state = new CompilerState();
-			
-			// Perform identifier matching and ink things up.
-			ast.apply(new Parser(state));
-			
-			// Perform logical integrity and secuirty analysis.
-			ast.apply(new Elaborator(state));
-			
-			if (analyzeOnly) return;
-			
-			// Perform actions defined by the dabl file.
-			ast.apply(new Executor(state));
-		}
-		catch (Exception ex)
-		{
-			if (printTrace) ex.printStackTrace();
-			else System.out.println(ex.getMessage());
-		}
+		// Parse the DABL file.
+		Parser parser = new Parser(lexer);
+		Start ast = parser.parse();
+		System.out.println("Syntax is correct");
+		
+		if (print) PrettyPrint.pp(ast);
+		
+		CompilerState state = new CompilerState();
+		
+		// Perform identifier matching and link things up.
+		ast.apply(new Parser(state));
+		
+		// Expressions are evaluated where they appear; if an unquoted string
+		// expression evaluates to a variable reference, then the variable's value
+		// is used instead of the string. Note also that variables are only defined
+		// in the return value of a function call. Prepositions that are defined in
+		// function declarations are also recognized during this phase.
+		ast.apply(new Elaborator(state));
+		
+		if (analyzeOnly) return;
+		
+		// Perform actions defined by the dabl file.
+		ast.apply(new Executor(state));
 	}
 	
 	static void displayInstructions()
