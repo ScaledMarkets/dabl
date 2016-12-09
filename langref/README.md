@@ -20,17 +20,17 @@ namespace declaration.
 DABL has four types of comment:
 <ol>
 <li>Single line comment: all text after <code>//</code> through the end of the line is
-	treated as a comment.
+	treated as a comment.</li>
 <li>Single line syntactic comment: Same as single line comment, except that the
 	comment begins with <code>///</code>. In addition, the comment is syntactically associated
 	with the DABL construct immediately prior to the comment. This is useful for
-	documentation generation tools.
+	documentation generation tools.</li>
 <li>Multi-line comments: all text between <code>/*</code> and <code>*/</code>, possibly spanning
-	multiple lines, is treated as a comment.
+	multiple lines, is treated as a comment.</li>
 <li>Multi-line syntactic comment: Same as a multi-line comment, but the delimiters are
 	<code>//*</code> and <code>*//</code> to begin and end the comment, respectively.
 	In addition, the comment is synactically associated with the DABL construct
-	that immediately follows the comment. This is useful for documentation generation tools.
+	that immediately follows the comment. This is useful for documentation generation tools.</li>
 </ol>
 
 ## Line Continuation
@@ -64,16 +64,16 @@ refers to an environment variable named "PATH":
 A DABL file is processed in the following phases:
 <ol>
 <li>Template - All environment variables in the file are converted to
-	their runtime values.
-<li>Parse - The output of the prior phase is parsed and an object model is created.
+	their runtime values.</li>
+<li>Parse - The output of the prior phase is parsed and an object model is created.</li>
 <li>Elaboration - Expressions are evaluated where
 	they appear; if an unquoted string expression evaluates to a variable reference, then
 	the variable's value is used instead of the string. Note also that variables
 	are only defined in the return value of a function call. Prepositions that
-	are defined in function declarations are also recognized during this phase.
+	are defined in function declarations are also recognized during this phase.</li>
 <li>Execution - The actions implied by the file are performed. The actions depend on the tool
 	that is processing the DABL file. Actions might include adding listeners
-	for events, etc.
+	for events, etc.</li>
 </ol>
 
 ## Syntax Notation
