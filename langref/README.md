@@ -15,13 +15,10 @@ The elements of a DABL file are as follows:
 The ordering of these constructs is immaterial. However, there can be only one
 namespace declaration.
 
-## Indentation
+## Line Continuation
 
-All DABL constructs can span multiple lines. If a DABL construct continues onto a
-new line, the new line must be indented by one tab more than the line on which
-the construct began,
-or the equivalent number of spaces specified by the most recent tab declaration.
-A multi-line construct ends at the line that returns to a lower level of indentation.
+All DABL constructs can span multiple lines. Only multi-line comments must be
+terminated with either a */ or *//, depending on the type of comment.
 
 ## Allowed Characters
 

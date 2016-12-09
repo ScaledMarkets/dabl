@@ -136,8 +136,6 @@ Ignored Tokens
 
 Productions
 
-  // Statement syntax.
-  
 	specification { -> onamespace } =
 		spec_elt_seq;
 	

@@ -1,9 +1,7 @@
 /* DABL = Dependent Artifact Build Language.
     This is a sample DABL file.
     DABL enables one to define dependencies among artifacts, and the tasks
-    that update out-of-date artifacts.
-    A comment continues to the next line if the line is indented by a tab,
-    or by the equivalent number of spaces. */
+    that update out-of-date artifacts. */
 
 
 /* All variables (names preceded by a dollar sign ($) are evaluated at
@@ -13,7 +11,7 @@
 /* Define a namespace for the contents of this file. By supporting namespaces,
     DABL enables one to "scale" one's build scripts, just as namespaces
     enable one to "scale" software code. */
-namespace my_company.my_project
+namespace my_company.my_project 'abc'
 
 
 //* Import another namespace - only the public elements are imported. *//
@@ -33,8 +31,6 @@ tab equivalent to 4 spaces
     scripts together, but in a safe manner (without importing an entire
     scripts and all of its definitions). *//
 artifact ABC:2.$MinorVersionNumber  // Defines artifact "ABC", version 2.<mvn>
-    /* Tab indentation continues the scope of the preceding construct.
-        Each line contains one and only one construct. */
     /* In the artifact declaration, $MinorVersionNumber refers to an
         environment variable that has been declared outside the scope
         of this DABL file. */
@@ -109,11 +105,13 @@ repo my_maven type maven
     repo). *//
 files XYZ from "my_other_repo" in my_maven
     prefer latest
-    ...
+    include /src/xyz/*.java
+    exclude /src/xyz/*_test.java
+    include /src/xyz/tests/**/*.java
 
 
 //* Bind a groovy static method (defined externally) to a function
-    Named ‘sign’, so that we can call it in this file. *//
+    Named 'sign', so that we can call it in this file. *//
 function sign string string binds to groovy method
     com.scaledmarkets.utils.Signature.sign returns array of byte
 
@@ -132,7 +130,7 @@ task test_XYZ_3_3
             that gets populated with fields corresponding to the
             container names.
         ...
-    // Call the groovy ‘sign’ function (declared earlier).
+    // Call the groovy 'sign' function (declared earlier).
     signature = sign thisdir/tests/results/3.3/test_summary.html,
         deployment.dev_box.imageId()
     post signature, test_summary.html to my_maven/3.3/test_results
