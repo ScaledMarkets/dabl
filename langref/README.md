@@ -36,7 +36,7 @@ DABL has four types of comment:
 ## Line Continuation
 
 All DABL constructs can span multiple lines. Only multi-line comments must be
-terminated with either a <code>*/</code> or <code>*//</code>, depending on the
+terminated with either a <code> */</code> or <code> *//</code>, depending on the
 type of comment.
 
 ## Allowed Characters
