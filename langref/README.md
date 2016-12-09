@@ -17,12 +17,16 @@ namespace declaration.
 
 ## Comments
 
-DABL has three types of comments:
+DABL has four types of comment:
 <ol>
-<li>Single line comments: all text after // through the end of the line is treated as a comment.
+<li>Single line comment: all text after // through the end of the line is treated as a comment.
+<li>Single line syntactic comment: Same as single line comment, except that the
+	comment begins with ///. In addition, the comment is syntactically associated
+	with the DABL construct immediately prior to the comment. This is useful for
+	documentation generation tools.
 <li>Multi-line comments: all text between /* and */, possibly spanning multiple lines, is
 	treated as a comment.
-<li>Syntactic comments: Same as a multi-line comment, but the delimiters are
+<li>Multi-line syntactic comment: Same as a multi-line comment, but the delimiters are
 	//* and *// to begin and end the comment, respectively. In addition, the
 	comment is synactically associated with the DABL construct that immediately
 	follows the comment. This is useful for documentation generation tools.
