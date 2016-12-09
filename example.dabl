@@ -76,7 +76,7 @@ public task create from create_template(${ABC.version}, $thisdir, abc.jar)
 public task publish
     //* Specify when this task should be invoked implicitly. *//
     when test_XYZ_3_4 succeeded and test_XYZ_3_4 succeeded
-    inputs thisdir/tests/results/3.3/* thisdir/tests/results/3.4/**
+    inputs thisdir/tests/results/3.3/*, thisdir/tests/results/3.4/**
     //* Push artifact to an artifact repository. *//
     post abc.jar to my_maven/myproject/abc.jar
     report "Success"  // This is performed when the task completes without
@@ -121,7 +121,7 @@ function sign string string binds to groovy method
 task test_XYZ_3_3
     /* If there is no "when" clause, then an implicit "when" clause is
         assumed, of the form, "when inputs A newer than outputs". */
-    inputs files XYZ:3.3, abc.jar
+    inputs XYZ:3.3, abc.jar
     outputs thisdir/tests/results/3.3/**
     //* Perform a deployment using an orchestration tool. A Deployment
         object is returned, which contains the IP addresses of the
