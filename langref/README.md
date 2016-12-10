@@ -43,7 +43,7 @@ type of comment.
 
 A DABL string value literal does not need to be quoted unless it contains embedded whitespace.
 A string literal can continue across multiple lines if it is delimited by three double-quotes
-<code> (""") </code>. For example, the following is a multiline string value that
+<code>(""")</code>. For example, the following is a multiline string value that
 contains one embedded line break:
 
 <pre>
