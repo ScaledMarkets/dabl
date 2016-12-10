@@ -66,6 +66,7 @@ Tokens
 	id = letter ( letter | digit )*;
 	non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
 	string = quote [ any_character - quote ]* quote;
+	string2 = quote quote quote [ any_character - quote ]* quote quote quote;
 	slashslashcomment = slashslash [ any_character - nl ]* nl;
 	slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
 	slashstarcomment = slashstar any_character* starslash;
@@ -230,6 +231,7 @@ Productions
 	string_value =
 		{non_ws} non_ws_char_seq  // this can be a path that references a variable
 	  | {str} string
+	  | {str2} string2
 	  ;
 	
 	inputs_clause =
@@ -248,13 +250,13 @@ Productions
 	// abc.jar
 	// $thisdir/**.java from "my_repo" in my_git
 	artifact_set =
-		fileset_spec from [project]:string in [repository_id]:id;
+		fileset_spec from [project]:string_value in [repository_id]:id;
 	
 	fileset_spec =
 		string_value;
 	
 	files_decl =
-		files [name]:id from string in [source]:id files_stmts;
+		files [name]:id from string_value in [source]:id files_stmts;
 	
 	files_stmts =
 		{multiple} files_stmt files_stmts
@@ -365,19 +367,19 @@ Productions
 	  ;
 	
 	repo_path_spec =
-		path_keyword string;
+		path_keyword string_value;
 	
 	tcp_scheme_spec =
-		scheme string;
+		scheme string_value;
 	
 	userid_spec =
-		string;
+		string_value;
 	
 	password_spec =
-		string;
+		string_value;
 	
 	translation_decl =
-		shell translation for string translation_stmts;
+		shell translation for string_value translation_stmts;
 	
 	translation_stmts =
 		{multiple} translation_stmt translation_stmts
@@ -386,7 +388,7 @@ Productions
 	  ;
 	
 	translation_stmt =
-		translate filename [from_string]:string to [to_string]:string;
+		translate filename [from_string]:string_value to [to_string]:string_value;
 	
 	numeric_value =
 		number
