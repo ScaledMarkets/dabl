@@ -12,7 +12,8 @@ The elements of a DABL file are as follows:
 * [Task Declarations](task_decl.md)
 * [Translation Declarations](translation_decl.md)
 
-The ordering of these constructs is immaterial. However, there can be only one
+The namespace declaration must appear first, but aside from that the ordering of
+these constructs is immaterial. There can be only one
 namespace declaration.
 
 ## Comments

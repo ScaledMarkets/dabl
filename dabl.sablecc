@@ -141,17 +141,21 @@ Ignored Tokens
 
 Productions
 
-	specification { -> onamespace } =
-		spec_elt_seq;
+	specification {-> onamespace} =
+		{namespace_decl} namespace_decl spec_elt_seq	{-> New onamespace.namespace_elts(
+															[namespace_decl.id],
+															[spec_elt_seq.onamespace_elt])};
 	
-	spec_elt_seq =
-		{multiple} spec_elt spec_elt_seq
+	namespace_decl {-> id*} =
+		namespace path									{-> [path.id]};
+	
+	spec_elt_seq {-> onamespace_elt*} =
+		{multiple} spec_elt spec_elt_seq				{-> 
 	  | {one} spec_elt
 	  ;
 	 
 	spec_elt =
-		{namespace_decl} namespace_decl
-	  | {import_decl} import_decl
+		{import_decl} import_decl
 	  | {typographic_decl} typographic_decl
 	  | {artifact_decl} artifact_decl
 	  | {task_decl} task_decl
@@ -163,9 +167,6 @@ Productions
 	
 	typographic_decl =
 		tab_decl;
-	
-	namespace_decl =
-		namespace path;
 	
 	import_decl =
 		import path;
@@ -425,7 +426,7 @@ Productions
 	  | {array} array_keyword of type_spec
 	  ;
 	
-	path =
+	path {-> id*} =
 		{multiple} id per path
 	  | {one} id;
 
@@ -433,7 +434,7 @@ Productions
 Abstract Syntax Tree
 
 	onamespace =
-		{namespace_elements} onamespace_elt*;
+		{namespace_elts} [path]:id* onamespace_elt*;
 	
 	onamespace_elt =
 		{import} onamespace_path
@@ -516,9 +517,6 @@ Abstract Syntax Tree
 	
 	otranslation_stmt =
 		{filename} [from_string]:string [to_string]:string;
-	
-	onamespace_path =
-		{import} id*;
 	
 	osuccess_expr =
 		{succeeded} id
