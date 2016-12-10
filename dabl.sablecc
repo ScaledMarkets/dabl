@@ -22,6 +22,7 @@ Helpers
 	digit = ['0' .. '9'];
 	escape = '%' digit digit;
 	quote = '"';
+	triplequote = '"""';
 	slashslash = '//';
 	slashslashslash = '///';
 	slashstar = '/*';
@@ -34,7 +35,6 @@ Helpers
 Tokens
 
 	// Punctuation:
-	triplequote = '"""';
 	tab_char = tab;
 	nl_char = nl;
 	comma_char = comma;
@@ -495,8 +495,8 @@ Abstract Syntax Tree
 	  ;
 	
 	otask_declaration =
-		oscope [name]:id [when]:ological_expr* [input]oartifact_set*
-			[output]oartifact_set* oproc_stmt*;
+		oscope [name]:id [when]:ological_expr* [input]:oartifact_set*
+			[output]:oartifact_set* oproc_stmt*;
 	
 	oscope =
 		{public}
