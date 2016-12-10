@@ -34,6 +34,7 @@ Helpers
 Tokens
 
 	// Punctuation:
+	triplequote = '"""';
 	tab_char = tab;
 	nl_char = nl;
 	comma_char = comma;
@@ -66,7 +67,7 @@ Tokens
 	id = letter ( letter | digit )*;
 	non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
 	string = quote [ any_character - quote ]* quote;
-	string2 = quote quote quote [ any_character - quote ]* quote quote quote;
+	string2 = triplequote [ any_character - triplequote ]* triplequote;
 	slashslashcomment = slashslash [ any_character - nl ]* nl;
 	slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
 	slashstarcomment = slashstar any_character* starslash;

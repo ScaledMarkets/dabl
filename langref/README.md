@@ -50,6 +50,15 @@ the following is a two-line string value that contains one embedded line break:
 two lines, and one line break."
 </pre>
 
+A string can also be delimited by triple quotes, as follows:
+
+<pre>
+"""This string value contains
+two lines, and "one" line break."""
+</pre>
+
+This allows one to embed quotes within the string value.
+
 DABL does not modify line breaks within a string, so line breaks are whatever is present
 in the string value in the file - i.e., either a NL or CR/NL pair.
 
