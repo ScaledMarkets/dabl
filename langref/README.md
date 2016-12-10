@@ -88,7 +88,8 @@ refers to an environment variable named "PATH":
 A DABL file is processed in the following phases:
 <ol>
 <li>Template - All environment variables in the file are converted to
-	their runtime values.</li>
+	their runtime values. Thus, environment variable values are bound
+	at the time that a DABL file is parsed.</li>
 <li>Parse - The output of the prior phase is parsed and an object model is created.</li>
 <li>Elaboration - Expressions are evaluated where
 	they appear; if an unquoted string expression evaluates to a variable reference, then
@@ -97,7 +98,8 @@ A DABL file is processed in the following phases:
 	are defined in function declarations are also recognized during this phase.</li>
 <li>Execution - The actions implied by the file are performed. The actions depend on the tool
 	that is processing the DABL file. Actions might include adding listeners
-	for events, etc.</li>
+	for events, etc. Execution can happen right after a DABL file is parsed,
+	or it can happen at any time later.</li>
 </ol>
 
 ## Syntax Notation
