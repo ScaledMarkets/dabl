@@ -60,7 +60,7 @@ Tokens
 	left_brack = '[';
 	right_brack = ']';
 	
-	// Non-keyword Sequences:
+	// Variable Length Sequences:
 	number = digit+;
 	whitespace = (blank)+;
 	id = letter ( letter | digit )*;
@@ -82,7 +82,7 @@ Tokens
 	of = 'of';
 	than = 'than';
 	
-	// Keywords:
+	// Non-Propositional Keywords:
 	namespace = 'namespace';
 	import = 'import';
 	tab_keyword = 'tab';

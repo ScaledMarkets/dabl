@@ -39,6 +39,19 @@ All DABL constructs can span multiple lines. Only multi-line comments must be
 terminated with either a <code> */</code> or <code> *//</code>, depending on the
 type of comment.
 
+## Strings
+
+A DABL string value does not need to be quoted unless it contains embedded whitespace.
+A string can continue across multiple lines if it is delimited by three double-quotes (""").
+For example, the following is a multiline string value:
+
+<pre>
+"""
+This string value contains
+two lines.
+"""
+</pre>
+
 ## Allowed Characters
 
 DABL files may contain any Unicode character. However, DABL keywords are limited
