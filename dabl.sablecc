@@ -153,32 +153,36 @@ Productions
 		namespace path									{-> [path.id]};
 	
 	spec_elt_seq {-> onamespace_elt*} =
-		{multiple} spec_elt spec_elt_seq				{-> 
-	  | {one} spec_elt
+		{multiple} spec_elt spec_elt_seq				{-> [spec_elt.onamespace_elt, spec_elt_seq.onamespace_elt]}
+	  | {one} spec_elt									{-> [spec_elt.onamespace_elt]}
 	  ;
 	 
-	spec_elt =
-		{import_decl} import_decl
-	  | {typographic_decl} typographic_decl
-	  | {artifact_decl} artifact_decl
-	  | {task_decl} task_decl
-	  | {repo_decl} repo_decl
-	  | {files_decl} files_decl
-	  | {function_decl} function_decl
-	  | {translation_decl} translation_decl
+	spec_elt {-> onamespace_elt} =
+		{import_decl} import_decl						{-> }
+	  | {typographic_decl} typographic_decl				{-> New onamespace_elt.typographic(typographic_decl.otypographic_declaration)}
+	  | {artifact_decl} artifact_decl					{-> }
+	  | {task_decl} task_decl							{-> }
+	  | {repo_decl} repo_decl							{-> }
+	  | {files_decl} files_decl							{-> }
+	  | {function_decl} function_decl					{-> }
+	  | {translation_decl} translation_decl				{-> }
 	  ;
 	
-	typographic_decl =
-		tab_decl;
+	typographic_decl {-> otypographic_declaration} =
+		tab_decl					{-> tab_decl.otypographic_declaration}
+		;
 	
-	import_decl =
-		import path;
+	import_decl {-> onamespace_elt} =
+		import path					{-> New onamespace_elt.import([path.id])}
+		;
 	
-	tab_decl =
-		tab_keyword equivalent to number spaces_keyword;
+	tab_decl {-> otypographic_declaration} =
+		tab_keyword equivalent to number spaces_keyword	{-> New otypographic_declaration.tab_decl(number)}
+		;
 		
 	artifact_decl =
-		artifact id colon [expr1]:whole_number_expr per [expr2]:whole_number_expr artifact_stmts;
+		artifact id colon [expr1]:whole_number_expr per [expr2]:whole_number_expr artifact_stmts
+		;
 	
 	whole_number_expr =
 		number;
@@ -443,7 +447,7 @@ Abstract Syntax Tree
 		{namespace_elts} [path]:id* onamespace_elt*;
 	
 	onamespace_elt =
-		{import} onamespace_path
+		{import} id*
 	  | {typographic} otypographic_declaration
 	  | {artifact} oartifact_declaration
 	  | {repo} orepo_declaration
