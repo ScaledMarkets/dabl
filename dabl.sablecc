@@ -158,7 +158,7 @@ Productions
 	  ;
 	 
 	spec_elt {-> onamespace_elt} =
-		{import_decl} import_decl						{-> }
+		{import_decl} import_decl						{-> import_decl.onamespace_elt}
 	  | {typographic_decl} typographic_decl				{-> New onamespace_elt.typographic(typographic_decl.otypographic_declaration)}
 	  | {artifact_decl} artifact_decl					{-> }
 	  | {task_decl} task_decl							{-> }
@@ -180,28 +180,36 @@ Productions
 		tab_keyword equivalent to number spaces_keyword	{-> New otypographic_declaration.tab_decl(number)}
 		;
 		
-	artifact_decl =
-		artifact id colon [expr1]:whole_number_expr per [expr2]:whole_number_expr artifact_stmts
+	artifact_decl {-> oartifact_declaration} =
+		artifact id colon [expr1]:whole_number_expr
+			per [expr2]:whole_number_expr
+			artifact_stmts			{-> New oartifact_declaration(id, expr1.number,
+										expr2.number, [artifact_stmts.ocompatibility_spec]}
 		;
 	
-	whole_number_expr =
-		number;
+	whole_number_expr {-> number} =
+		number						{-> number}
+		;
 	
-	artifact_stmts =
-		{multiple} artifact_stmt artifact_stmts
-	  | {one} artifact_stmt
-	  | {none} ;
+	artifact_stmts {-> ocompatibility_spec*} =
+		{multiple} artifact_stmt artifact_stmts	{-> [artifact_stmt.ocompatibility_spec,
+													artifact_stmts.ocompatibility_spec]}
+	  | {one} artifact_stmt			{-> [artifact_stmt.ocompatibility_spec]}
+	  | {none}						{-> []}
+	  ;
 	
-	artifact_stmt =
-		{assume_stmt} assume_stmt
+	artifact_stmt {-> ocompatibility_spec} =
+		{assume_stmt} assume_stmt	{-> 
 	  | {tested_stmt} tested_stmt
 	  ;
 	
-	assume_stmt =
-		assume compatible with id colon version_spec;
+	assume_stmt {-> ocompatibility_spec} =
+		assume compatible with path colon version_spec	{-> New ocompatibility_spec.assume(
+										[path.id], version_spec.orange_spec)}
+		;
 	
-	tested_stmt =
-		tested with id colon version_spec;
+	tested_stmt {-> } =
+		tested with path colon version_spec;
 	
 	scope_decl =
 		{public} public
@@ -292,7 +300,7 @@ Productions
 	  | {tested} tested with
 	  ;
 	
-	version_spec =
+	version_spec {-> orange_spec} =
 		{multiple} range_spec per version_spec
 	  | {one} range_spec
 	  ;
@@ -461,14 +469,18 @@ Abstract Syntax Tree
 		{tab_decl} number;
 
 	oartifact_declaration =
-		{assume} id orange_spec*
-	  | {tested} id orange_spec*
+		id [major]:number [minor]:number ocompatibility_spec*
 		;
 	
 	orange_spec =
 		{range} [from]:number [to]:number
 	  | {one} number
 	  | {all}
+		;
+	
+	ocompatibility_spec =
+		{assume} id* orange_spec
+	  | {tested} id* orange_spec
 		;
 
 	orepo_declaration =
