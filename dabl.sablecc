@@ -208,72 +208,100 @@ Productions
 										[path.id], version_spec.orange_spec)}
 		;
 	
-	tested_stmt {-> } =
-		tested with path colon version_spec;
+	tested_stmt {-> ocompatibility_spec} =
+		tested with path colon version_spec	{-> New ocompatibility_spec.tested(
+										[path.id], version_spec.orange_spec)}
+		;
 	
-	scope_decl =
-		{public} public
-	  | {unspecified}
+	scope_decl {-> oscope} =
+		{public} public				{-> New oscope.public()}
+	  | {unspecified}				{-> New oscope.private()}
 	  ;
 	
-	task_decl =
-		scope_decl task id task_stmts;
+	task_decl {-> otask_declaration} =
+		scope_decl task id when_clause input_sets output_sets
+			procedural_stmts		{-> New otask_declaration(scope_decl.oscope,
+										id, when_clause.ological_expr,
+										[input_sets.onamed_artifact_set],
+										[output_sets.onamed_artifact_set],
+										[procedural_stmts.oproc_stmt])}
+		;
 	
-	when_clause =
-		when logical_expr;
+	when_clause {-> ological_expr*} =
+		when logical_expr			{-> logocal_expr.ological_expr}
+		;
 	
-	success_expr =
-		{succeeded} id succeeded
-	  | {failed} id failed
+	success_expr {-> osuccess_expr} =
+		{succeeded} id succeeded	{-> New osuccess_expr.succeeded(id)}
+	  | {failed} id failed			{-> New osuccess_expr.failed(id)}
 	  ;
 	
-	age_expr =
+	age_expr {-> oage_expr} =
 		{newer_than} [newer_id]:id newer than [older_id]:id
+									{-> New oage_expr.newer_than(newer_id, older_id)}
 	  | {older_than} [older_id]:id older than [newer_id]:id
+	  								{-> New oage_expr.older_than(older_id, newer_id)}
 	  ;
 	
-	not_expr =
-		not_keyword logical_expr;
-	
-	logical_expr =
-		{not} not_expr
-	  | {success} success_expr
-	  | {age} age_expr
-	  ;
-	
-	id_opt =
-		{id} id
-	  | {nothing} ;
-	
-	string_value =
+	string_value {-> ostring_value} =
 		{non_ws} non_ws_char_seq  // this can be a path that references a variable
-	  | {str} string
-	  | {str2} string2
+									{-> New ostring_value.charseq(non_ws_char_seq)}
+	  | {str} string				{-> New ostring_value.string(string)}
+	  | {str2} string2				{-> New ostring_value.string2(string2)}
 	  ;
 	
-	inputs_clause =
-		inputs id_opt artifact_sets;
+	input_sets {-> onamed_artifact_set*} =
+		{multiple} input_set input_sets		{-> [input_set.onamed_artifact_set,
+												input_sets.onamed_artifact_set]}
+	  | {one} input_set				{-> [input_set.onamed_artifact_set]}
+	  | {none}						{-> []}
+	  ;
 	
-	outputs_clause =
-		outputs id_opt artifact_sets;
+	input_set {-> onamed_artifact_set} =
+		{named} inputs id artifact_sets		{-> New onamed_artifact_set.named(id,
+												[artifact_sets.oartifact_set]}
+	  | {anonymous} inputs artifact_sets	{-> New onamed_artifact_set.anonymous(
+												[artifact_sets.oartifact_set]}
+		;
+	
+	output_sets {-> onamed_artifact_set*} =
+		{multiple} output_set output_sets		{-> [output_set.onamed_artifact_set,
+												output_sets.onamed_artifact_set]}
+	  | {one} output_set				{-> [output_set.onamed_artifact_set]}
+	  | {none}							{-> []}
+	  ;
+	
+	output_set {-> onamed_artifact_set} =
+		{named} outputs id artifact_sets	{-> New onamed_artifact_set.named(id,
+												[artifact_sets.oartifact_set]}
+		{anonymous} outputs artifact_sets	{-> New onamed_artifact_set.anonymous(
+												[artifact_sets.oartifact_set]}
+		;
 	  
-	artifact_sets =
+	artifact_sets {-> oartifact_set*} =
 		{multiple} artifact_set comma_char artifact_sets
-	  | {one} artifact_set
+											{-> [artifact_set.oartifact_set, artifact_sets.oartifact_set]}
+	  | {one} artifact_set					{-> [artifact_set.oartifact_set]}
 	  ;
 	
 	// Examples:
 	// files XYZ:3.3
 	// abc.jar
 	// $thisdir/**.java from "my_repo" in my_git
-	artifact_set =
-		fileset_spec from [project]:string_value in [repository_id]:id;
+	artifact_set {-> oartifact_set} =
+		fileset_spec from [project]:string_value
+		in [repository_id]:id				{-> New oartifact_set(fileset_spec.ostring_value,
+												New ostring_value(string_value), id)}
+		;
 	
-	fileset_spec =
-		string_value;
+	fileset_spec {-> ostring_value} =
+		string_value						{-> New ostring_value(string_value)}
+		;
 	
 	files_decl =
-		files [name]:id from string_value in [source]:id files_stmts;
+		files [name]:id from string_value
+			in [source]:id files_stmts		{-> 
+		;
 	
 	files_stmts =
 		{multiple} files_stmt files_stmts
@@ -317,19 +345,12 @@ Productions
 	exclude_stmt =
 		exclude fileset_spec;
 	
-	task_stmts =
-		{multiple} task_stmt task_stmts
-	  | {one} task_stmt
+	procedural_stmts {-> oproc_stmt*} =
+		{multiple} procedural_stmt procedural_stmts
+	  | {one} procedural_stmt
 	  | {none}
 	  ;
 	  
-	task_stmt =
-	  | {inputs} inputs_clause
-	  | {outputs} outputs_clause
-	  | {when} when_clause
-	  | {procedural} procedural_stmt
-	  ;
-	
 	procedural_stmt =
 	  | {func_call} func_call_stmt
 	  | {on_error} on_error_stmt
@@ -445,6 +466,23 @@ Productions
 		{multiple} id per path
 	  | {one} id;
 
+	
+	// Logical expressions.
+	
+	logical_expr {-> ological_expr} =
+		{not} not_expr
+	  | {success} success_expr
+	  | {age} age_expr
+	  | {paren} parenthetic_logical_expr
+	  ;
+	
+	not_expr =
+		not_keyword logical_expr;
+	
+	parenthetic_logical_expr =
+		left_paren logical_expr right_paren
+		;
+	
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
@@ -496,12 +534,12 @@ Abstract Syntax Tree
 	  ;
 	
 	ofileset_operation =
-		{include} string
-	  | {exclude} string
+		{include} ostring_value
+	  | {exclude} ostring_value
 	  ;
 	
 	ofunction_declaration =
-		[name]:id otype_spec* otarget_language [target_name]:string [return_type]:otype_spec;
+		[name]:id otype_spec* otarget_language [target_name]:ostring_value [return_type]:otype_spec;
 
 	otype_spec = 
 		{string}
@@ -518,16 +556,21 @@ Abstract Syntax Tree
 	  ;
 	
 	otask_declaration =
-		oscope [name]:id [when]:ological_expr* [input]:oartifact_set*
-			[output]:oartifact_set* oproc_stmt*;
+		oscope [name]:id [when]:ological_expr* [input]:onamed_artifact_set*
+			[output]:onamed_artifact_set* oproc_stmt*;
 	
 	oscope =
 		{public}
 	  | {private}
 	  ;
 	
+	onamed_artifact_set =
+		{named} id oartifact_set*
+	  | {anonymous} oartifact_set*
+	  ;
+	
 	oartifact_set =
-		[fileset_spec]:string [project]:string [repository_id]:id;
+		[fileset_spec]:ostring_value [project]:ostring_value [repository_id]:id;
 	
 	oproc_stmt =
 		{func_call}
@@ -535,10 +578,10 @@ Abstract Syntax Tree
 	  ;
 	
 	otranslation_declaration =
-		[os]:string otranslation_stmt*;
+		[os]:ostring_value otranslation_stmt*;
 	
 	otranslation_stmt =
-		{filename} [from_string]:string [to_string]:string;
+		{filename} [from_string]:ostring_value [to_string]:ostring_value;
 	
 	osuccess_expr =
 		{succeeded} id
@@ -559,3 +602,7 @@ Abstract Syntax Tree
 	  | {age} oage_expr
 	  ;
 	
+	ostring_value =
+		{charseq} non_ws_char_seq
+		{string} string
+		{string2} string2

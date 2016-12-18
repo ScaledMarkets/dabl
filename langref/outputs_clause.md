@@ -1,4 +1,0 @@
-# Outputs Clause
-
-## Purpose
-

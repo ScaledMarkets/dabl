@@ -17,23 +17,16 @@ when inputs are newer than outputs
 
 A task declaration has the following syntax:
 
-  [`public`] `task` *name* [task_stmts...]
-
-A task_stmt can be one of,
-
-* [A when clause](when_clause.md)
-* [An inputs clause](inputs_clause.md)
-* [An outputs clause](outputs_clause.md)
-* [A procedural statement](procedural_stmt.md)
-
+  [`public`] `task` *name* [when_clause](when_clause.md)
+  	[input_set](inputs_clause.md) [output_set](outputs_clause.md)
+  	[procedural_stmts](procedural_stmt.md)...]
 
 ## Example
 
 ```
 task compileit
     when inputs A newer than outputs
-    inputs A $thisdir/**.java from "my_repo" in my_git
-    inputs XYZ
+    inputs A $thisdir/**.java from "my_repo" in my_git, XYZ
     outputs ./**.class, ./**.txt
     bash "
         javac $thisdir/*.java

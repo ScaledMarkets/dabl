@@ -101,6 +101,9 @@ public class Dabl
 		// Perform identifier matching and link things up.
 		ast.apply(new Parser(state));
 		
+		// Process escape characters in string values.
+		....
+		
 		// Expressions are evaluated where they appear; if an unquoted string
 		// expression evaluates to a variable reference, then the variable's value
 		// is used instead of the string. Note also that variables are only defined
