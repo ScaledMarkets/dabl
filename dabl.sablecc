@@ -199,8 +199,8 @@ Productions
 	  ;
 	
 	artifact_stmt {-> ocompatibility_spec} =
-		{assume_stmt} assume_stmt	{-> 
-	  | {tested_stmt} tested_stmt
+		{assume_stmt} assume_stmt	{-> assume_stmt.ocompatibility_spec}
+	  | {tested_stmt} tested_stmt	{-> assume_stmt.ocompatibility_spec}
 	  ;
 	
 	assume_stmt {-> ocompatibility_spec} =
