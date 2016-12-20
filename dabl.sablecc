@@ -298,52 +298,64 @@ Productions
 		string_value						{-> New ostring_value(string_value)}
 		;
 	
-	files_decl =
+	files_decl {-> ofiles_declaration} =
 		files [name]:id from string_value
-			in [source]:id files_stmts		{-> 
+			in [source]:id prefer_stmt_opt
+			files_stmts						{-> New ofiles_declaration(
+												prefer_stmt_opt.ofile_preference,
+												[files_stmts.ofileset_operation]}
 		;
 	
-	files_stmts =
-		{multiple} files_stmt files_stmts
-	  | {one} files_stmt
-	  | {none}
+	files_stmts {-> ofileset_operation*} =
+		{multiple} files_stmt files_stmts	{-> [files_stmt.ofileset_operation,
+												files_stmts.ofileset_operation]}
+	  | {one} files_stmt					{-> [files_stmt.ofileset_operation]}
+	  | {none}								{-> []}
 	  ;
 	
-	files_stmt =
-		{prefer} prefer_stmt
-	  | {include} include_stmt
-	  | {exclude} exclude_stmt
+	files_stmt {-> ofileset_operation} =
+	  | {include} include_stmt				{-> include_stmt.ofileset_operation}
+	  											
+	  | {exclude} exclude_stmt				{-> exclude_stmt.ofileset_operation}
 	  ;
 	
-	prefer_stmt =
-		prefer preference;
+	prefer_stmt {-> ofile_preference} =
+		prefer preference					{-> preference.ofile_preference}
+		;
 	
-	preference =
-		{latest} latest version_criteria
-	  | {version} version_spec
+	prefer_stmt_opt {-> ofile_preference} =
+		prefer_stmt							{-> prefer_stmt.ofile_preference}
+	  | 									{-> }
 	  ;
 	
-	version_criteria =
-		{compatible} compatible with
-	  | {tested} tested with
+	preference {-> ofile_preference} =
+		{latest} latest version_criteria	{-> version_criteria.ofile_preference}
+	  | {version} version_spec				{-> New ofile_preference.version([version_spec.orange_spec])}
 	  ;
 	
-	version_spec {-> orange_spec} =
-		{multiple} range_spec per version_spec
-	  | {one} range_spec
+	version_criteria {-> ofile_preference} =
+		{compatible} compatible with		{-> New ofile_preference.latest_compatible}
+	  | {tested} tested with				{-> New ofile_preference.latest_tested}
 	  ;
 	
-	range_spec =
+	version_spec {-> orange_spec*} =
+		{multiple} range_spec per version_spec	{-> [range_spec.orange_spec, version_spec.orange_spec]}
+	  | {one} range_spec					{-> [range_spec.orange_spec]}
+	  ;
+	
+	range_spec {-> orange_spec} =
 		{multiple} [from]:numeric_value dash [to]:numeric_value
 	  | {one} numeric_value
 	  | {all} asterisk
 	  ;
 	
-	include_stmt =
-		include fileset_spec;
+	include_stmt {-> ofileset_operation} =
+		include fileset_spec	{-> New ofileset_operation.include(fileset_spec.ostring_value)}
+		;
 	
-	exclude_stmt =
-		exclude fileset_spec;
+	exclude_stmt {-> ofileset_operation} =
+		exclude fileset_spec	{-> New ofileset_operation.exclude(fileset_spec.ostring_value)}
+		;
 	
 	procedural_stmts {-> oproc_stmt*} =
 		{multiple} procedural_stmt procedural_stmts
