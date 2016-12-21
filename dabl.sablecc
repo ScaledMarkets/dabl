@@ -324,8 +324,8 @@ Productions
 		;
 	
 	prefer_stmt_opt {-> ofile_preference} =
-		prefer_stmt							{-> prefer_stmt.ofile_preference}
-	  | 									{-> }
+		{one} prefer_stmt					{-> prefer_stmt.ofile_preference}
+	  | {none}								{-> New ofile_preference.no_preference()}
 	  ;
 	
 	preference {-> ofile_preference} =
@@ -334,8 +334,8 @@ Productions
 	  ;
 	
 	version_criteria {-> ofile_preference} =
-		{compatible} compatible with		{-> New ofile_preference.latest_compatible}
-	  | {tested} tested with				{-> New ofile_preference.latest_tested}
+		{compatible} compatible with		{-> New ofile_preference.latest_compatible()}
+	  | {tested} tested with				{-> New ofile_preference.latest_tested()}
 	  ;
 	
 	version_spec {-> orange_spec*} =
@@ -344,9 +344,10 @@ Productions
 	  ;
 	
 	range_spec {-> orange_spec} =
-		{multiple} [from]:numeric_value dash [to]:numeric_value
-	  | {one} numeric_value
-	  | {all} asterisk
+		{multiple} [from]:number dash [to]:number
+											{-> New orange_spec.range(from, to)}
+	  | {one} number						{-> New orange_spec.one(number)}
+	  | {all} asterisk						{-> New orange_spec.all()}
 	  ;
 	
 	include_stmt {-> ofileset_operation} =
@@ -359,12 +360,14 @@ Productions
 	
 	procedural_stmts {-> oproc_stmt*} =
 		{multiple} procedural_stmt procedural_stmts
-	  | {one} procedural_stmt
-	  | {none}
+											{-> [procedural_stmt.oproc_stmt,
+												procedural_stmts.oproc_stmt]}
+	  | {one} procedural_stmt				{-> [procedural_stmt.oproc_stmt]}
+	  | {none}								{-> []}
 	  ;
 	  
-	procedural_stmt =
-	  | {func_call} func_call_stmt
+	procedural_stmt {-> oproc_stmt} =
+	  | {func_call} func_call_stmt			{-> func_call_stmt.oproc_stmt}
 	  | {on_error} on_error_stmt
 	  ;
 	
@@ -373,8 +376,9 @@ Productions
 	  | {nothing} 
 	  ;
 	
-	func_call_stmt =
-		assignment_opt args_opt;
+	func_call_stmt {-> oproc_stmt} =
+		assignment_opt args_opt				{-> New oproc_stmt.func_call(....)}
+		;
 	
 	args_opt =
 		{multiple_args} arg args_opt
@@ -439,10 +443,6 @@ Productions
 	
 	translation_stmt =
 		translate filename [from_string]:string_value to [to_string]:string_value;
-	
-	numeric_value =
-		number
-	  ;
 	
 	function_decl =
 		function [dable_name]:id type_spec_seq binds to [target_name]:id method
@@ -543,6 +543,7 @@ Abstract Syntax Tree
 		{latest_compatible}
 	  | {latest_tested}
 	  | {version} orange_spec*
+	  | {no_preference}
 	  ;
 	
 	ofileset_operation =
@@ -585,8 +586,8 @@ Abstract Syntax Tree
 		[fileset_spec]:ostring_value [project]:ostring_value [repository_id]:id;
 	
 	oproc_stmt =
-		{func_call}
-	  | {on_error}
+		{func_call} ....
+	  | {on_error} ....
 	  ;
 	
 	otranslation_declaration =
