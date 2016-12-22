@@ -122,12 +122,14 @@ Tokens
 	scheme = 'scheme';
 	error = 'error';
 	string_keyword = 'string';
-	int_keyword = 'int_keyword';
-	float_keyword = 'float_keyword';
-	array_keyword = 'array_keyword';
+	int_keyword = 'int';
+	float_keyword = 'float';
+	boolean_keyword = 'boolean';
 	not_keyword = 'not';
 	include = 'include';
 	exclude = 'exclude';
+	true_keyword = 'true';
+	false_keyword = 'false';
 
 
 Ignored Tokens
@@ -228,7 +230,7 @@ Productions
 		;
 	
 	when_clause {-> ological_expr*} =
-		when logical_expr			{-> logocal_expr.ological_expr}
+		when expr					{-> expr.oexpr}  // must be a logical_expr
 		;
 	
 	success_expr {-> osuccess_expr} =
@@ -377,18 +379,22 @@ Productions
 	  ;
 	
 	func_call_stmt {-> oproc_stmt} =
-		assignment_opt args_opt				{-> New oproc_stmt.func_call(....)}
+		assignment_opt [func_name]:string_value args_opt
+											{-> New oproc_stmt.func_call(
+												func_name.ostring_value,
+												[args_opt.oexpr])}
 		;
 	
-	args_opt =
-		{multiple_args} arg args_opt
-	  | {one_arg} arg
-	  | {preoposition} preposition
-	  | {nothing} 
+	args_opt {-> oexpr*} =
+		{multiple_args} arg args_opt		{-> [arg.oexpr, args_opt.oexpr]}
+	  | {one_arg} arg						{-> [arg.oexpr]}
+	  | {preoposition} preposition			{-> }
+	  | {nothing}							{-> }
 	  ;
 	
-	arg =
-		string_value;
+	arg {-> oexpr} =
+		string_value						{-> New oexpr.
+		;
 	
 	on_error_stmt =
 		on error procedural_stmts_opt;
@@ -471,7 +477,7 @@ Productions
 		{string} string_keyword
 	  | {int} int_keyword
 	  | {float} float_keyword
-	  | {array} array_keyword of type_spec
+	  | {boolean} boolean_keyword
 	  ;
 	
 	path {-> id*} =
@@ -485,15 +491,59 @@ Productions
 		{not} not_expr
 	  | {success} success_expr
 	  | {age} age_expr
-	  | {paren} parenthetic_logical_expr
+	  | {literal} logical_literal
+	  ;
+	
+	logical_literal {-> ological_literal} =
+		true_keyword						{-> New ological_expr.true}
+	  | false_keyword						{-> New ological_expr.false}
 	  ;
 	
 	not_expr =
-		not_keyword logical_expr;
-	
-	parenthetic_logical_expr =
-		left_paren logical_expr right_paren
+		not_keyword expr
 		;
+	
+	// Arithmetic expressions.
+	
+	numeric_expr =
+		{many} numeric_expr add_op product
+	  | {one} product add_op product
+	  ;
+	
+	product =
+		{many} product mult_op numeric_value
+	  | {one} numeric_value mult_op numeric_value
+	  ;
+	
+	numeric_value =
+		{value} number
+	  | {parentheses} left_paren numeric_expr right_paren
+	  ;
+	
+	add_op =
+		{addition} plus
+	  | {subtraction} dash
+	  ;
+	
+	mult_op =
+		{multiplication} asterisk
+	  | {division} div
+	  ;
+	
+	// Other expression types.
+	
+	string_expr =
+		string_value
+		;
+	
+	// General expressions.
+	
+	expr =
+		string_expr
+	  | numeric_expr
+	  | logical_expr
+	  | {variable} id
+	  ;
 	
 
 // -----------------------------------------------------------------------------
@@ -558,7 +608,6 @@ Abstract Syntax Tree
 		{string}
 	  | {int}
 	  | {float}
-	  | {array} otype_spec
 	  ;
 	
 	otarget_language =
@@ -569,8 +618,9 @@ Abstract Syntax Tree
 	  ;
 	
 	otask_declaration =
-		oscope [name]:id [when]:ological_expr* [input]:onamed_artifact_set*
+		oscope [name]:id [when]:oexpr* [input]:onamed_artifact_set*
 			[output]:onamed_artifact_set* oproc_stmt*;
+			// when must be a ological_expr
 	
 	oscope =
 		{public}
@@ -586,7 +636,7 @@ Abstract Syntax Tree
 		[fileset_spec]:ostring_value [project]:ostring_value [repository_id]:id;
 	
 	oproc_stmt =
-		{func_call} ....
+		{func_call} ostring_value expr*
 	  | {on_error} ....
 	  ;
 	
@@ -613,6 +663,33 @@ Abstract Syntax Tree
 		{not} onot_expr
 	  | {success} osuccess_expr
 	  | {age} oage_expr
+	  | {true}
+	  | {false}
+	  ;
+	
+	onumeric_expr =
+		{many} [operand1]:onumeric_expr oadd_op [operand2]:oproduct
+	  | {one} [operand1]:oproduct oadd_op [operand2]:oproduct
+		;
+	
+	oproduct =
+		{many} [operand1]:oproduct omult_op [operand2]:onumeric_expr
+		{one} [operand1]:onumeric_expr omult_op [operand2]:onumeric_expr
+		;
+	
+	onumeric_value =
+		{value} number
+	  | {parenthetic_expr} numeric_expr
+	  ;
+	
+	oadd_op =
+		{plus}
+	  | {minus
+	  ;
+	
+	omult_op =
+		{multiply}
+	  | {divide}
 	  ;
 	
 	ostring_value =
