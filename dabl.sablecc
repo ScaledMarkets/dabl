@@ -126,6 +126,8 @@ Tokens
 	float_keyword = 'float';
 	boolean_keyword = 'boolean';
 	not_keyword = 'not';
+	and_keyword = 'and';
+	or_keyword = 'or';
 	include = 'include';
 	exclude = 'exclude';
 	true_keyword = 'true';
@@ -491,6 +493,7 @@ Productions
 		{not} not_expr
 	  | {success} success_expr
 	  | {age} age_expr
+	  | {op} logical_operation
 	  | {literal} logical_literal
 	  ;
 	
@@ -502,6 +505,15 @@ Productions
 	not_expr =
 		not_keyword expr
 		;
+	
+	logical_operation =
+		logical_expr logical_operator logical_expr
+		;
+	
+	logical_operator =
+		and_keyword
+	  | or_keyword
+	  ;
 	
 	// Arithmetic expressions.
 	
