@@ -33,7 +33,7 @@ two arguments, but can be called this way:
 post abc.jar to my_maven/myproject/abc.jar
 ```
 
-In this example, the word `to` is a preposition that is ignored by the Decl parser.
+In this example, the word `to` is a preposition that is ignored by the DABL parser.
 The set of ignored preopsitions is as follows:
 
 * from

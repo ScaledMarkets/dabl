@@ -132,6 +132,8 @@ Tokens
 	exclude = 'exclude';
 	true_keyword = 'true';
 	false_keyword = 'false';
+	userid = 'userid';
+	password = 'password';
 
 
 Ignored Tokens
@@ -395,50 +397,49 @@ Productions
 	  ;
 	
 	arg {-> oexpr} =
-		string_value						{-> New oexpr.
+		expr								{-> expr.oexpr)
 		;
 	
-	on_error_stmt =
-		on error procedural_stmts_opt;
+	on_error_stmt {-> oproc_stmt} =
+		on error procedural_stmts_opt		{-> New oproc_stmt.on_error(
+												[procedural_stmts_opt.oproc_stmt])}
+		;
 	
-	procedural_stmts_opt =
+	procedural_stmts_opt {-> oproc_stmt*} =
 		{multiple} procedural_stmt procedural_stmts_opt
-	  | {one} procedural_stmt
-	  | {none} 
+											{-> [procedural_stmt.oproc_stmt,
+												procedural_stmts_opt.oproc_stmt]}
+	  | {one} procedural_stmt				{-> [procedural_stmt.oproc_stmt]}
+	  | {none}								{-> []}
 	  ;
 	
-	repo_decl =
-		repo id type repo_type repo_stmts;
-	
-	repo_stmts =
-		{multiple} repo_stmt repo_stmts
-	  | {one} repo_stmt
-	  | {none}
-	  ;
-	
-	repo_type =
-		{git} git
-	  | {maven} maven
-	  | {svn} svn
-	  ;
-	
-	repo_stmt =
-		{repo_path} repo_path_spec
-	  | {tcp_scheme} tcp_scheme_spec
-	  | {userid} userid_spec password_spec
-	  ;
+	repo_decl {-> orepo_decl} =
+		repo [name]:id type [repo_type]:string_value tcp_scheme_spec_opt
+			repo_path_spec userid_spec_opt password_spec_opt
+											{-> New orepl_decl(name, repo_type,
+												....
+		;
 	
 	repo_path_spec =
 		path_keyword string_value;
 	
+	tcp_scheme_spec_opt =
+		tcp_scheme_spec
+	  | 
+	  ;
+	
 	tcp_scheme_spec =
 		scheme string_value;
 	
-	userid_spec =
-		string_value;
+	userid_spec_opt =
+		userid string_value
+	  | 
+	  ;
 	
-	password_spec =
-		string_value;
+	password_spec_opt =
+		password string_value
+	  | 
+	  ;
 	
 	translation_decl =
 		shell translation for string_value translation_stmts;
@@ -498,8 +499,8 @@ Productions
 	  ;
 	
 	logical_literal {-> ological_literal} =
-		true_keyword						{-> New ological_expr.true}
-	  | false_keyword						{-> New ological_expr.false}
+		{true} true_keyword						{-> New ological_expr.true}
+	  | {false} false_keyword						{-> New ological_expr.false}
 	  ;
 	
 	not_expr =
@@ -511,8 +512,8 @@ Productions
 		;
 	
 	logical_operator =
-		and_keyword
-	  | or_keyword
+		{and} and_keyword
+	  | {or} or_keyword
 	  ;
 	
 	// Arithmetic expressions.
@@ -550,10 +551,10 @@ Productions
 	
 	// General expressions.
 	
-	expr =
-		string_expr
-	  | numeric_expr
-	  | logical_expr
+	expr {-> oexpr} =
+		{string} string_expr
+	  | {numeric} numeric_expr
+	  | {logical} logical_expr
 	  | {variable} id
 	  ;
 	
@@ -570,7 +571,7 @@ Abstract Syntax Tree
 		{import} id*
 	  | {typographic} otypographic_declaration
 	  | {artifact} oartifact_declaration
-	  | {repo} orepo_declaration
+	  | {repo} orepo_decl
 	  | {file} ofiles_declaration
 	  | {function} ofunction_declaration
 	  | {task} otask_declaration
@@ -595,8 +596,8 @@ Abstract Syntax Tree
 	  | {tested} id* orange_spec
 		;
 
-	orepo_declaration =
-		[name]:id [type]:id [userid]:non_ws_char_seq [password]:non_ws_char_seq;
+	orepo_decl =
+		[name]:id [type]:ostring_value [scheme]:ostring_value [path]:ostring_value [userid]:ostring_value [password]:ostring_value;
 
 	ofiles_declaration =
 		ofile_preference ofileset_operation*;
@@ -649,7 +650,7 @@ Abstract Syntax Tree
 	
 	oproc_stmt =
 		{func_call} ostring_value expr*
-	  | {on_error} ....
+	  | {on_error} oproc_stmt*
 	  ;
 	
 	otranslation_declaration =
@@ -702,6 +703,11 @@ Abstract Syntax Tree
 	omult_op =
 		{multiply}
 	  | {divide}
+	  ;
+	
+	oexpr =
+		{string} ostring_value
+	  | ....
 	  ;
 	
 	ostring_value =
