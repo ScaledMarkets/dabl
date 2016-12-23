@@ -10,9 +10,10 @@ An expression may contain a variable that is defined by a
 contain a function call.
 
 Expressions can evaluate to any of these types:
-*string
-*numeric (integer or float)
-*logical
+
+* string
+* numeric (integer or float)
+* logical
 
 DABL automatically converts between numeric types as needed.
 
