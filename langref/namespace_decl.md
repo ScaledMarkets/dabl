@@ -38,6 +38,9 @@ not begin with a number.
 
 There must be one and only one namespace declaration in a DABL file.
 
+## Namespace Declared In Multiple Files
+
 Multiple DABL files can
-specify the same namespace: in that case, the files are logically combined. It is
-an error if there are any conflicts when combining.
+specify the same namespace: in that case, each file adds to the same namespace,
+but only the public elements of each file are shared among the other files.
+It is an error if there are any conflicts.

@@ -2,7 +2,7 @@
 
 The elements of a DABL file are as follows:
 
-* [Namespace Declarations](namespace_decl.md)
+* [Namespace Declaration](namespace_decl.md)
 * [Import Declarations](import_decl.md)
 * [Typographic Declarations](typographic_decl.md)
 * [Artifact Declarations](artifact_decl.md)
@@ -13,8 +13,8 @@ The elements of a DABL file are as follows:
 * [Translation Declarations](translation_decl.md)
 
 The namespace declaration must appear first, but aside from that the ordering of
-these constructs is immaterial. There can be only one
-namespace declaration.
+these constructs is immaterial. There can be only one namespace declaration
+in a DABL file.
 
 ## Comments
 
@@ -43,7 +43,7 @@ type of comment.
 ## Literal String Values
 
 A DABL string value literal does not need to be quoted unless it contains embedded whitespace.
-A delimited string literal can continue across multiple lines. For example,
+A quoted string literal can continue across multiple lines. For example,
 the following is a two-line string value that contains one embedded line break:
 
 <pre>

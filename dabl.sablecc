@@ -374,19 +374,19 @@ Productions
 	  
 	procedural_stmt {-> oproc_stmt} =
 	  | {func_call} func_call_stmt			{-> func_call_stmt.oproc_stmt}
-	  | {on_error} on_error_stmt
+	  | {on_error} on_error_stmt			{-> on_error_stmt.oproc_stmt}
 	  ;
 	
-	assignment_opt =
-		{id} id eq
-	  | {nothing} 
+	assignment_opt {-> otarget_opt} =
+		{id} id eq							{-> New otarget_opt.target(id)}
+	  | {nothing} 							{-> New otarget_opt.no_target()}
 	  ;
 	
 	func_call_stmt {-> oproc_stmt} =
 		assignment_opt [func_name]:string_value args_opt
 											{-> New oproc_stmt.func_call(
 												func_name.ostring_value,
-												[args_opt.oexpr])}
+												[args_opt.oexpr], assignment_opt.otarget_opt)}
 		;
 	
 	args_opt {-> oexpr*} =
@@ -417,54 +417,75 @@ Productions
 		repo [name]:id type [repo_type]:string_value tcp_scheme_spec_opt
 			repo_path_spec userid_spec_opt password_spec_opt
 											{-> New orepl_decl(name, repo_type,
-												....
+												tcp_scheme_spec_opt.ostring_value_opt,
+												repo_path_spec.ostring_value,
+												userid_spec_opt.ostring_value_opt,
+												password_spec_opt.ostring_value_opt)}
 		;
 	
-	repo_path_spec =
-		path_keyword string_value;
+	repo_path_spec {-> ostring_value} =
+		path_keyword string_value			{-> New ostring_value(string_value)}
+		;
 	
-	tcp_scheme_spec_opt =
-		tcp_scheme_spec
-	  | 
+	tcp_scheme_spec_opt {-> ostring_value_opt} =
+		{specified} tcp_scheme_spec			{-> New ostring_value_opt.specified(tcp_scheme_spec.ostring_value)}
+	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
 	  ;
 	
-	tcp_scheme_spec =
-		scheme string_value;
+	tcp_scheme_spec {-> ostring_value} =
+		scheme string_value					{-> string_value.ostring_value}
+		;
 	
-	userid_spec_opt =
-		userid string_value
-	  | 
+	userid_spec_opt {-> ostring_value_opt} =
+		{specified} userid string_value		{-> New ostring_value_opt.specified(string_value.ostring_value)}
+	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
 	  ;
 	
-	password_spec_opt =
-		password string_value
-	  | 
+	password_spec_opt {-> ostring_value_opt} =
+		{specified} password string_value	{-> New ostring_value_opt.specified(string_value.ostring_value)}
+	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
 	  ;
 	
-	translation_decl =
-		shell translation for string_value translation_stmts;
+	translation_decl {-> otranslation_declaration} =
+		shell translation for string_value
+			translation_stmts				{-> New otranslation_declaration(
+												string_value.ostring_value,
+												[translation_stmts.otranslation_stmt])}
+		;
 	
-	translation_stmts =
+	translation_stmts {-> otranslation_stmt*} =
 		{multiple} translation_stmt translation_stmts
-	  | {one} translation_stmt
-	  | {none}
+											{-> [translation_stmt.otranslation_stmt,
+													translation_stmts.otranslation_stmt]}
+	  | {one} translation_stmt				{-> [translation_stmt.otranslation_stmt]}
+	  | {none}								{-> []}
 	  ;
 	
-	translation_stmt =
-		translate filename [from_string]:string_value to [to_string]:string_value;
+	translation_stmt {-> otranslation_stmt} =
+		translate filename [from_string]:string_value
+			to [to_string]:string_value		{-> New otranslation_stmt.filename(
+													from_string.ostring_value,
+													to_string.ostring_value)}
+		;
 	
-	function_decl =
-		function [dable_name]:id type_spec_seq binds to [target_name]:id method
-			path returns type_spec;
+	function_decl {-> ofunction_declaration} =
+		function [dabl_name]:id type_spec_seq binds to [target_language]:string_value
+			method [native_name]:string_value returns type_spec
+											{-> New ofunction_declaration(
+													dabl_name, [type_spec_seq.otype_spec],
+													target_language.ostring_value,
+													native_name.ostring_value,
+													type_spec.otype_spec)}
+		;
 	
-	type_spec_seq =
-		{multiple} type_spec type_spec_seq
-	  | {one} type_spec
+	type_spec_seq {-> otype_spec*} =
+		{multiple} type_spec type_spec_seq	{-> [type_spec.otype_spec, type_spec_seq.otype_spec]}
+	  | {one} type_spec						{-> [type_spec.otype_spec]}
 	  | {id} id  // for defining a preposition that goes before or after a function arg
 	  | {preposition} preposition  // for defining a keyword that goes before or after a function arg
 	  ;
 	
-	preposition =
+	preposition {-> } =
 		{from} from
 	  | {to} to
 	  | {in} in
@@ -476,44 +497,48 @@ Productions
 	  | {than} than
 	  ;
 	
-	type_spec = 
-		{string} string_keyword
-	  | {int} int_keyword
-	  | {float} float_keyword
-	  | {boolean} boolean_keyword
+	type_spec {otype_spec} = 
+		{string} string_keyword				{-> New otype_spec.string()}
+	  | {int} int_keyword					{-> New otype_spec.int()}
+	  | {float} float_keyword				{-> New otype_spec.float()}
+	  | {boolean} boolean_keyword			{-> New otype_spec.logical()}
 	  ;
 	
 	path {-> id*} =
-		{multiple} id per path
-	  | {one} id;
+		{multiple} id per path				{-> [id, path.id]}
+	  | {one} id							{-> [id]}
+	  ;
 
 	
 	// Logical expressions.
 	
 	logical_expr {-> ological_expr} =
-		{not} not_expr
-	  | {success} success_expr
-	  | {age} age_expr
-	  | {op} logical_operation
-	  | {literal} logical_literal
+		{not} not_expr						{-> New ological_expr.not(not_expr.onot_expr)}
+	  | {success} success_expr				{-> New ological_expr.success(success_expr.osuccess_expr)}
+	  | {age} age_expr						{-> New ological_expr.age(age_expr.oage_expr)}
+	  | {op} logical_op_expr				{-> New ological_expr.op(logical_op_expr.ologic_op_expr)}
+	  | {literal} logical_literal			{-> New ological_expr.literal(logical_literal.ologic_literal)}
 	  ;
 	
-	logical_literal {-> ological_literal} =
-		{true} true_keyword						{-> New ological_expr.true}
-	  | {false} false_keyword						{-> New ological_expr.false}
+	logical_literal {-> ologic_literal} =
+		{true} true_keyword					{-> New ologic_literal.true()}
+	  | {false} false_keyword				{-> New ologic_literal.false()}
 	  ;
 	
-	not_expr =
-		not_keyword expr
+	not_expr {-> onot_expr} =
+		not_keyword expr					{-> New onot_expr(expr.oexpr)}
 		;
 	
-	logical_operation =
-		logical_expr logical_operator logical_expr
+	logical_op_expr {-> ologic_op_expr} =
+		[left]:logical_expr logical_operator [right]:logical_expr
+											{-> New ologic_op_expr(left.ological_expr,
+													logical_operator.ologic_op,
+													right.ological_expr)}
 		;
 	
-	logical_operator =
-		{and} and_keyword
-	  | {or} or_keyword
+	logical_operator {-> ologic_op} =
+		{and} and_keyword					{-> New ologic_op.and()}
+	  | {or} or_keyword						{-> New ologic_op.or()}
 	  ;
 	
 	// Arithmetic expressions.
@@ -597,8 +622,14 @@ Abstract Syntax Tree
 		;
 
 	orepo_decl =
-		[name]:id [type]:ostring_value [scheme]:ostring_value [path]:ostring_value [userid]:ostring_value [password]:ostring_value;
+		[name]:id [type]:ostring_value [scheme]:ostring_value_opt [path]:ostring_value
+			[userid]:ostring_value_opt [password]:ostring_value_opt;
 
+	ostring_value_opt =
+		{specified} ostring_value
+	  | {unspecified}
+	  ;
+	
 	ofiles_declaration =
 		ofile_preference ofileset_operation*;
 
@@ -615,19 +646,14 @@ Abstract Syntax Tree
 	  ;
 	
 	ofunction_declaration =
-		[name]:id otype_spec* otarget_language [target_name]:ostring_value [return_type]:otype_spec;
+		[name]:id otype_spec* [target_language]:ostring_value [target_name]:ostring_value
+			[return_type]:otype_spec;
 
 	otype_spec = 
 		{string}
 	  | {int}
 	  | {float}
-	  ;
-	
-	otarget_language =
-		{groovy}
-	  | {java}
-	  | {scala}
-	  | {clojure}
+	  | {logical}
 	  ;
 	
 	otask_declaration =
@@ -649,8 +675,13 @@ Abstract Syntax Tree
 		[fileset_spec]:ostring_value [project]:ostring_value [repository_id]:id;
 	
 	oproc_stmt =
-		{func_call} ostring_value expr*
+		{func_call} ostring_value expr* otarget_opt
 	  | {on_error} oproc_stmt*
+	  ;
+	
+	otarget_opt =
+		{target} id
+	  | {no_target}
 	  ;
 	
 	otranslation_declaration =
@@ -670,13 +701,27 @@ Abstract Syntax Tree
 	  ;
 	
 	onot_expr =
-		ological_expr;
+		oexpr;
 	
 	ological_expr =
 		{not} onot_expr
 	  | {success} osuccess_expr
 	  | {age} oage_expr
-	  | {true}
+	  | {op} ologic_op_expr
+	  | {literal} ologic_literal
+	  ;
+	
+	ologic_op_expr =
+		[left]:oexpr logic_op [right]:oexpr
+		;
+	
+	ologic_op =
+		{and}
+	  | {or}
+	  ;
+	
+	ologic_literal =
+		{true}
 	  | {false}
 	  ;
 	
@@ -693,6 +738,7 @@ Abstract Syntax Tree
 	onumeric_value =
 		{value} number
 	  | {parenthetic_expr} numeric_expr
+	  | {variable} id
 	  ;
 	
 	oadd_op =
