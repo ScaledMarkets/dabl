@@ -153,35 +153,36 @@ Ignored Tokens
 Productions
 
 	specification {-> onamespace} =
-		{namespace_decl} namespace_decl spec_elt_seq	{-> New onamespace.namespace_elts(
-															[namespace_decl.id],
-															[spec_elt_seq.onamespace_elt])};
+		{namespace_decl} namespace_decl spec_elt_seq
+											{-> New onamespace.namespace_elts(
+													[namespace_decl.id],
+													[spec_elt_seq.onamespace_elt])};
 	
 	namespace_decl {-> id*} =
-		namespace path									{-> [path.id]};
+		namespace path						{-> [path.id]};
 	
 	spec_elt_seq {-> onamespace_elt*} =
-		{multiple} spec_elt spec_elt_seq				{-> [spec_elt.onamespace_elt, spec_elt_seq.onamespace_elt]}
-	  | {one} spec_elt									{-> [spec_elt.onamespace_elt]}
+		{multiple} spec_elt spec_elt_seq	{-> [spec_elt.onamespace_elt, spec_elt_seq.onamespace_elt]}
+	  | {one} spec_elt						{-> [spec_elt.onamespace_elt]}
 	  ;
 	 
 	spec_elt {-> onamespace_elt} =
-		{import_decl} import_decl						{-> import_decl.onamespace_elt}
-	  | {typographic_decl} typographic_decl				{-> New onamespace_elt.typographic(typographic_decl.otypographic_declaration)}
-	  | {artifact_decl} artifact_decl					{-> New onamespace_elt.artifact(artifact_decl.oartifact_declaration)}
-	  | {task_decl} task_decl							{-> New onamespace_elt.task(task_decl.otask_declaration)}
-	  | {repo_decl} repo_decl							{-> New onamespace_elt.repo(repo_decl.orepl_decl)}
-	  | {files_decl} files_decl							{-> New onamespace_elt.files(file_decl.ofile_declaration)}
-	  | {function_decl} function_decl					{-> New onamespace_elt.function(function_decl.ofunction_declaration)}
-	  | {translation_decl} translation_decl				{-> New onamespace_elt.translation(translation_decl.otranslation_declaration)}
+		{import_decl} import_decl			{-> import_decl.onamespace_elt}
+	  | {typographic_decl} typographic_decl	{-> New onamespace_elt.typographic(typographic_decl.otypographic_declaration)}
+	  | {artifact_decl} artifact_decl		{-> New onamespace_elt.artifact(artifact_decl.oartifact_declaration)}
+	  | {task_decl} task_decl				{-> New onamespace_elt.task(task_decl.otask_declaration)}
+	  | {repo_decl} repo_decl				{-> New onamespace_elt.repo(repo_decl.orepo_decl)}
+	  | {files_decl} files_decl				{-> New onamespace_elt.files(files_decl.ofiles_declaration)}
+	  | {function_decl} function_decl		{-> New onamespace_elt.function(function_decl.ofunction_declaration)}
+	  | {translation_decl} translation_decl	{-> New onamespace_elt.translation(translation_decl.otranslation_declaration)}
 	  ;
 	
 	typographic_decl {-> otypographic_declaration} =
-		tab_decl					{-> tab_decl.otypographic_declaration}
+		tab_decl							{-> tab_decl.otypographic_declaration}
 		;
 	
 	import_decl {-> onamespace_elt} =
-		import path					{-> New onamespace_elt.import([path.id])}
+		import path							{-> New onamespace_elt.import([path.id])}
 		;
 	
 	tab_decl {-> otypographic_declaration} =
@@ -191,71 +192,72 @@ Productions
 	artifact_decl {-> oartifact_declaration} =
 		artifact id colon [expr1]:whole_number_expr
 			per_char [expr2]:whole_number_expr
-			artifact_stmts			{-> New oartifact_declaration(id, expr1.number,
-										expr2.number, [artifact_stmts.ocompatibility_spec])}
+			artifact_stmts					{-> New oartifact_declaration(id, expr1.number,
+												expr2.number, [artifact_stmts.ocompatibility_spec])}
 		;
 	
 	whole_number_expr {-> number} =
-		number						{-> number}
+		number								{-> number}
 		;
 	
 	artifact_stmts {-> ocompatibility_spec*} =
-		{multiple} artifact_stmt artifact_stmts	{-> [artifact_stmt.ocompatibility_spec,
+		{multiple} artifact_stmt artifact_stmts
+											{-> [artifact_stmt.ocompatibility_spec,
 													artifact_stmts.ocompatibility_spec]}
-	  | {one} artifact_stmt			{-> [artifact_stmt.ocompatibility_spec]}
-	  | {none}						{-> []}
+	  | {one} artifact_stmt					{-> [artifact_stmt.ocompatibility_spec]}
+	  | {none}								{-> []}
 	  ;
 	
 	artifact_stmt {-> ocompatibility_spec} =
-		{assume_stmt} assume_stmt	{-> assume_stmt.ocompatibility_spec}
-	  | {tested_stmt} tested_stmt	{-> assume_stmt.ocompatibility_spec}
+		{assume_stmt} assume_stmt			{-> assume_stmt.ocompatibility_spec}
+	  | {tested_stmt} tested_stmt			{-> tested_stmt.ocompatibility_spec}
 	  ;
 	
 	assume_stmt {-> ocompatibility_spec} =
 		assume compatible with path colon version_spec	{-> New ocompatibility_spec.assume(
-										[path.id], version_spec.orange_spec)}
+										[path.id], [version_spec.orange_spec])}
 		;
 	
 	tested_stmt {-> ocompatibility_spec} =
-		tested with path colon version_spec	{-> New ocompatibility_spec.tested(
-										[path.id], version_spec.orange_spec)}
+		tested with path colon version_spec		{-> New ocompatibility_spec.tested(
+										[path.id], [version_spec.orange_spec])}
 		;
 	
 	scope_decl {-> oscope} =
-		{public} public				{-> New oscope.public()}
-	  | {unspecified}				{-> New oscope.private()}
+		{public} public						{-> New oscope.public()}
+	  | {unspecified}						{-> New oscope.private()}
 	  ;
 	
 	task_decl {-> otask_declaration} =
 		scope_decl task id when_clause input_sets output_sets
-			procedural_stmts		{-> New otask_declaration(scope_decl.oscope,
-										id, when_clause.oexpr,
-										[input_sets.onamed_artifact_set],
-										[output_sets.onamed_artifact_set],
-										[procedural_stmts.oproc_stmt])}
+			procedural_stmts				{-> New otask_declaration(scope_decl.oscope,
+												id, [when_clause.oexpr],
+												[input_sets.onamed_artifact_set],
+												[output_sets.onamed_artifact_set],
+												[procedural_stmts.oproc_stmt])}
 		;
 	
 	when_clause {-> oexpr*} =
-		when expr					{-> expr.oexpr}  // must be a logical_expr
+		when expr							{-> expr.oexpr}  // must be a logical_expr
 		;
 	
 	success_expr {-> osuccess_expr} =
-		{succeeded} id succeeded	{-> New osuccess_expr.succeeded(id)}
-	  | {failed} id failed			{-> New osuccess_expr.failed(id)}
+		{succeeded} id succeeded			{-> New osuccess_expr.succeeded(id)}
+	  | {failed} id failed					{-> New osuccess_expr.failed(id)}
 	  ;
 	
 	age_expr {-> oage_expr} =
 		{newer_than} [newer_id]:id newer than [older_id]:id
-									{-> New oage_expr.newer_than(newer_id, older_id)}
+											{-> New oage_expr.newer_than(newer_id, older_id)}
 	  | {older_than} [older_id]:id older than [newer_id]:id
-	  								{-> New oage_expr.older_than(older_id, newer_id)}
+	  										{-> New oage_expr.older_than(older_id, newer_id)}
 	  ;
 	
 	input_sets {-> onamed_artifact_set*} =
 		{multiple} input_set input_sets		{-> [input_set.onamed_artifact_set,
 												input_sets.onamed_artifact_set]}
-	  | {one} input_set				{-> [input_set.onamed_artifact_set]}
-	  | {none}						{-> []}
+	  | {one} input_set						{-> [input_set.onamed_artifact_set]}
+	  | {none}								{-> []}
 	  ;
 	
 	input_set {-> onamed_artifact_set} =
@@ -266,10 +268,10 @@ Productions
 		;
 	
 	output_sets {-> onamed_artifact_set*} =
-		{multiple} output_set output_sets		{-> [output_set.onamed_artifact_set,
+		{multiple} output_set output_sets	{-> [output_set.onamed_artifact_set,
 												output_sets.onamed_artifact_set]}
-	  | {one} output_set				{-> [output_set.onamed_artifact_set]}
-	  | {none}							{-> []}
+	  | {one} output_set					{-> [output_set.onamed_artifact_set]}
+	  | {none}								{-> []}
 	  ;
 	
 	output_set {-> onamed_artifact_set} =
@@ -292,11 +294,11 @@ Productions
 	artifact_set {-> oartifact_set} =
 		fileset_spec from [project]:string_literal
 		in [repository_id]:id				{-> New oartifact_set(fileset_spec.ostring_literal,
-												New ostring_literal(string_literal), id)}
+												project.ostring_literal, repository_id)}
 		;
 	
 	fileset_spec {-> ostring_literal} =
-		string_literal						{-> New ostring_literal(string_literal)}
+		string_literal						{-> string_literal.ostring_literal}
 		;
 	
 	files_decl {-> ofiles_declaration} =
@@ -315,8 +317,7 @@ Productions
 	  ;
 	
 	files_stmt {-> ofileset_operation} =
-	  | {include} include_stmt				{-> include_stmt.ofileset_operation}
-	  											
+		{include} include_stmt				{-> include_stmt.ofileset_operation}
 	  | {exclude} exclude_stmt				{-> exclude_stmt.ofileset_operation}
 	  ;
 	
@@ -368,7 +369,7 @@ Productions
 	  ;
 	  
 	procedural_stmt {-> oproc_stmt} =
-	  | {func_call} func_call_stmt			{-> func_call_stmt.oproc_stmt}
+		{func_call} func_call_stmt			{-> func_call_stmt.oproc_stmt}
 	  | {on_error} on_error_stmt			{-> on_error_stmt.oproc_stmt}
 	  ;
 	
@@ -387,8 +388,8 @@ Productions
 	args_opt {-> oexpr*} =
 		{multiple_args} arg args_opt		{-> [arg.oexpr, args_opt.oexpr]}
 	  | {one_arg} arg						{-> [arg.oexpr]}
-	  | {preoposition} preposition			{-> }
-	  | {nothing}							{-> }
+	  | {preoposition} preposition			{-> []}
+	  | {nothing}							{-> []}
 	  ;
 	
 	arg {-> oexpr} =
@@ -428,7 +429,7 @@ Productions
 	  ;
 	
 	tcp_scheme_spec {-> ostring_literal} =
-		scheme string_literal					{-> string_literal.ostring_literal}
+		scheme string_literal				{-> string_literal.ostring_literal}
 		;
 	
 	userid_spec_opt {-> ostring_value_opt} =
@@ -458,7 +459,7 @@ Productions
 	
 	translation_stmt {-> otranslation_stmt} =
 		translate filename [from_string]:string_literal
-			to [to_string]:string_literal		{-> New otranslation_stmt.filename(
+			to [to_string]:string_literal	{-> New otranslation_stmt.filename(
 													from_string.ostring_literal,
 													to_string.ostring_literal)}
 		;
@@ -477,7 +478,9 @@ Productions
 		{multiple} type_spec type_spec_seq	{-> [type_spec.otype_spec, type_spec_seq.otype_spec]}
 	  | {one} type_spec						{-> [type_spec.otype_spec]}
 	  | {id} id  // for defining a preposition that goes before or after a function arg
+	  										{-> ....}
 	  | {preposition} preposition  // for defining a keyword that goes before or after a function arg
+	  										{-> ....}
 	  ;
 	
 	preposition {-> } =
@@ -500,7 +503,7 @@ Productions
 	  ;
 	
 	path {-> id*} =
-		{multiple} id per_char path				{-> [id, path.id]}
+		{multiple} id per_char path			{-> [id, path.id]}
 	  | {one} id							{-> [id]}
 	  ;
 
@@ -640,8 +643,8 @@ Abstract Syntax Tree
 		;
 	
 	ocompatibility_spec =
-		{assume} id* orange_spec
-	  | {tested} id* orange_spec
+		{assume} id* orange_spec*
+	  | {tested} id* orange_spec*
 		;
 
 	orepo_decl =
