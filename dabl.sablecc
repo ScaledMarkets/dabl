@@ -250,13 +250,6 @@ Productions
 	  								{-> New oage_expr.older_than(older_id, newer_id)}
 	  ;
 	
-	string_value {-> ostring_literal} =
-		{non_ws} non_ws_char_seq  // this can be a path that references a variable
-									{-> New ostring_literal.charseq(non_ws_char_seq)}
-	  | {str} string				{-> New ostring_literal.string(string)}
-	  | {str2} string2				{-> New ostring_literal.string2(string2)}
-	  ;
-	
 	input_sets {-> onamed_artifact_set*} =
 		{multiple} input_set input_sets		{-> [input_set.onamed_artifact_set,
 												input_sets.onamed_artifact_set]}
@@ -296,17 +289,17 @@ Productions
 	// abc.jar
 	// $thisdir/**.java from "my_repo" in my_git
 	artifact_set {-> oartifact_set} =
-		fileset_spec from [project]:string_value
+		fileset_spec from [project]:string_literal
 		in [repository_id]:id				{-> New oartifact_set(fileset_spec.ostring_literal,
-												New ostring_literal(string_value), id)}
+												New ostring_literal(string_literal), id)}
 		;
 	
 	fileset_spec {-> ostring_literal} =
-		string_value						{-> New ostring_literal(string_value)}
+		string_literal						{-> New ostring_literal(string_literal)}
 		;
 	
 	files_decl {-> ofiles_declaration} =
-		files [name]:id from string_value
+		files [name]:id from string_literal
 			in [source]:id prefer_stmt_opt
 			files_stmts						{-> New ofiles_declaration(
 												prefer_stmt_opt.ofile_preference,
@@ -384,7 +377,7 @@ Productions
 	  ;
 	
 	func_call_stmt {-> oproc_stmt} =
-		assignment_opt [func_name]:string_value args_opt
+		assignment_opt [func_name]:string_literal args_opt
 											{-> New oproc_stmt.func_call(
 												func_name.ostring_literal,
 												[args_opt.oexpr], assignment_opt.otarget_opt)}
@@ -415,7 +408,7 @@ Productions
 	  ;
 	
 	repo_decl {-> orepo_decl} =
-		repo [name]:id type [repo_type]:string_value tcp_scheme_spec_opt
+		repo [name]:id type [repo_type]:string_literal tcp_scheme_spec_opt
 			repo_path_spec userid_spec_opt password_spec_opt
 											{-> New orepl_decl(name, repo_type,
 												tcp_scheme_spec_opt.ostring_value_opt,
@@ -425,7 +418,7 @@ Productions
 		;
 	
 	repo_path_spec {-> ostring_literal} =
-		path_keyword string_value			{-> New ostring_literal(string_value)}
+		path_keyword string_literal			{-> New ostring_literal(string_literal)}
 		;
 	
 	tcp_scheme_spec_opt {-> ostring_value_opt} =
@@ -434,23 +427,23 @@ Productions
 	  ;
 	
 	tcp_scheme_spec {-> ostring_literal} =
-		scheme string_value					{-> string_value.ostring_literal}
+		scheme string_literal					{-> string_literal.ostring_literal}
 		;
 	
 	userid_spec_opt {-> ostring_value_opt} =
-		{specified} userid string_value		{-> New ostring_value_opt.specified(string_value.ostring_literal)}
+		{specified} userid string_literal		{-> New ostring_value_opt.specified(string_literal.ostring_literal)}
 	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
 	  ;
 	
 	password_spec_opt {-> ostring_value_opt} =
-		{specified} password string_value	{-> New ostring_value_opt.specified(string_value.ostring_literal)}
+		{specified} password string_literal	{-> New ostring_value_opt.specified(string_literal.ostring_literal)}
 	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
 	  ;
 	
 	translation_decl {-> otranslation_declaration} =
-		shell translation for string_value
+		shell translation for string_literal
 			translation_stmts				{-> New otranslation_declaration(
-												string_value.ostring_literal,
+												string_literal.ostring_literal,
 												[translation_stmts.otranslation_stmt])}
 		;
 	
@@ -463,15 +456,15 @@ Productions
 	  ;
 	
 	translation_stmt {-> otranslation_stmt} =
-		translate filename [from_string]:string_value
-			to [to_string]:string_value		{-> New otranslation_stmt.filename(
+		translate filename [from_string]:string_literal
+			to [to_string]:string_literal		{-> New otranslation_stmt.filename(
 													from_string.ostring_literal,
 													to_string.ostring_literal)}
 		;
 	
 	function_decl {-> ofunction_declaration} =
-		function [dabl_name]:id type_spec_seq binds to [target_language]:string_value
-			method [native_name]:string_value returns type_spec
+		function [dabl_name]:id type_spec_seq binds to [target_language]:string_literal
+			method [native_name]:string_literal returns type_spec
 											{-> New ofunction_declaration(
 													dabl_name, [type_spec_seq.otype_spec],
 													target_language.ostring_literal,
@@ -535,54 +528,78 @@ Productions
 	
 	logical_op_expr {-> oexpr} =
 		[left]:logical_expr logical_operator [right]:logical_expr
-											{-> 
+											{-> New oexpr.binary(
+												left.oexpr, logical_operator.obinary_op,
+												right.oexpr)}
 		;
 	
 	logical_operator {-> obinary_op} =
-		{and} and_keyword					{-> 
-	  | {or} or_keyword						{-> 
+		{and} and_keyword					{-> New obinary_op.and()}
+	  | {or} or_keyword						{-> New obinary_op.or()}
 	  ;
 	
 	// Arithmetic expressions.
 	
-	numeric_expr =
-		{many} numeric_expr add_op product
-	  | {one} product add_op product
+	numeric_expr {-> oexpr} =
+		{many} numeric_expr add_op product	{-> New oexpr.binary(
+												numeric_expr.oexpr,
+												add_op.obinary_op, product.oexpr)}
+	  | {one} product add_op product		{-> New oexpr.binary(
+	  											product.oexpr, add_op.obinary_op,
+	  											product.oexpr)}
 	  ;
 	
-	product =
-		{many} product mult_op numeric_value
-	  | {one} numeric_value mult_op numeric_value
+	numeric_literal {-> onumeric_literal} =
+		number								{-> New oliteral.numeric(
+													New onumeric_literal.int(number))}
+	  | float_number						{-> New oliteral.numeric(
+	  												New onumeric_literal.float(float_number))}
 	  ;
 	
-	numeric_value =
-		{value} number
-	  | {parentheses} left_paren numeric_expr right_paren
+	product {-> oexpr} =
+		{many} product mult_op value		{-> New oexpr.binary(
+												product.oexpr, mult_op.obinary_op,
+												value.oexpr)}
+	  | {one} value mult_op value			{-> New oexpr.binary(
+	  											value.oexpr, mult_op.obinary_op,
+	  											value.oexpr)}
 	  ;
 	
-	add_op =
-		{addition} plus
-	  | {subtraction} dash
+	value {-> oexpr} =
+		{value} literal						{-> New oexpr.literal(literal.oliteral)}
+	  | {variable} id						{-> New oexpr.variable(New ovariable(id))}
+	  | {parentheses} left_paren expr right_paren
+	  										{-> New expr.oexpr}
 	  ;
 	
-	mult_op =
-		{multiplication} asterisk
-	  | {division} div
+	add_op {-> obinary_op} =
+		{addition} plus						{-> New obinary_op.plus()}
+	  | {subtraction} dash					{-> New obinary_op.minus()}
+	  ;
+	
+	mult_op {-> obinary_op} =
+		{multiplication} asterisk			{-> New obinary_op.multiple()}
+	  | {division} div						{-> New obinary_op.divide()}
+	  ;
+	
+	literal {-> oliteral} =
+		{logic} logical_literal				{-> New oliteral.logic(logical_literal.ologic_literal)}
+	  | {string} string_literal				{-> New oliteral.string(string_literal.ostring_literal)}
+	  | {numeric} numeric_literal			{-> New oliteral.numeric(numeric_literal.onumeric_literal)}
 	  ;
 	
 	// Other expression types.
 	
-	string_expr =
-		string_value
+	string_expr {-> oexpr} =
+		string_literal						{-> New oexpr.literal(New oliteral.string(
+													string_literal.ostring_literal))}
 		;
 	
-	// General expressions.
-	
-	expr {-> oexpr} =
-		{string} string_expr
-	  | {numeric} numeric_expr
-	  | {logical} logical_expr
-	  | {variable} id
+	string_literal {-> ostring_literal} =
+		{non_ws} non_ws_char_seq  // this can be a path that references a variable
+											{-> New ostring_literal.charseq(non_ws_char_seq)}
+	  | {str} string						{-> New ostring_literal.string(string)}
+	  | {str2} string2						{-> New ostring_literal.string2(string2)}
 	  ;
 	
 
@@ -709,9 +726,9 @@ Abstract Syntax Tree
 		;
 	
 	obinary_op =
-		{plug}
+		{plus}
 	  | {minus}
-	  | {multiple}
+	  | {multiply}
 	  | {divide}
 	  | {and}
 	  | {or}
@@ -727,9 +744,9 @@ Abstract Syntax Tree
 	  ;
 	
 	oliteral =
-		ologic_literal
-	  | ostring_literal
-	  | onumeric_literal
+		{logic} ologic_literal
+	  | {string} ostring_literal
+	  | {numeric} onumeric_literal
 	  ;
 	
 	ovariable =
