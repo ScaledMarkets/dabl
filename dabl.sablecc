@@ -30,6 +30,7 @@ Helpers
 	slashslashstar = '//*';
 	starslashslash = '*//';
 	linetermination = (cr nl | nl);
+	per = '.';
 
 
 Tokens
@@ -50,7 +51,6 @@ Tokens
 	ne = '!=';
 	colon = ':';
 	semicolon = ';';
-	per = '.';
 	dotdot = '..';
 	qmark = '?';
 	def = 'def';
@@ -63,6 +63,7 @@ Tokens
 	
 	// Variable Length Sequences:
 	number = digit+;
+	float_number = digit* per digit+;
 	whitespace = (blank)+;
 	id = letter ( letter | digit )*;
 	non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
@@ -249,11 +250,11 @@ Productions
 	  								{-> New oage_expr.older_than(older_id, newer_id)}
 	  ;
 	
-	string_value {-> ostring_value} =
+	string_value {-> ostring_literal} =
 		{non_ws} non_ws_char_seq  // this can be a path that references a variable
-									{-> New ostring_value.charseq(non_ws_char_seq)}
-	  | {str} string				{-> New ostring_value.string(string)}
-	  | {str2} string2				{-> New ostring_value.string2(string2)}
+									{-> New ostring_literal.charseq(non_ws_char_seq)}
+	  | {str} string				{-> New ostring_literal.string(string)}
+	  | {str2} string2				{-> New ostring_literal.string2(string2)}
 	  ;
 	
 	input_sets {-> onamed_artifact_set*} =
@@ -296,12 +297,12 @@ Productions
 	// $thisdir/**.java from "my_repo" in my_git
 	artifact_set {-> oartifact_set} =
 		fileset_spec from [project]:string_value
-		in [repository_id]:id				{-> New oartifact_set(fileset_spec.ostring_value,
-												New ostring_value(string_value), id)}
+		in [repository_id]:id				{-> New oartifact_set(fileset_spec.ostring_literal,
+												New ostring_literal(string_value), id)}
 		;
 	
-	fileset_spec {-> ostring_value} =
-		string_value						{-> New ostring_value(string_value)}
+	fileset_spec {-> ostring_literal} =
+		string_value						{-> New ostring_literal(string_value)}
 		;
 	
 	files_decl {-> ofiles_declaration} =
@@ -357,11 +358,11 @@ Productions
 	  ;
 	
 	include_stmt {-> ofileset_operation} =
-		include fileset_spec	{-> New ofileset_operation.include(fileset_spec.ostring_value)}
+		include fileset_spec	{-> New ofileset_operation.include(fileset_spec.ostring_literal)}
 		;
 	
 	exclude_stmt {-> ofileset_operation} =
-		exclude fileset_spec	{-> New ofileset_operation.exclude(fileset_spec.ostring_value)}
+		exclude fileset_spec	{-> New ofileset_operation.exclude(fileset_spec.ostring_literal)}
 		;
 	
 	procedural_stmts {-> oproc_stmt*} =
@@ -385,7 +386,7 @@ Productions
 	func_call_stmt {-> oproc_stmt} =
 		assignment_opt [func_name]:string_value args_opt
 											{-> New oproc_stmt.func_call(
-												func_name.ostring_value,
+												func_name.ostring_literal,
 												[args_opt.oexpr], assignment_opt.otarget_opt)}
 		;
 	
@@ -418,38 +419,38 @@ Productions
 			repo_path_spec userid_spec_opt password_spec_opt
 											{-> New orepl_decl(name, repo_type,
 												tcp_scheme_spec_opt.ostring_value_opt,
-												repo_path_spec.ostring_value,
+												repo_path_spec.ostring_literal,
 												userid_spec_opt.ostring_value_opt,
 												password_spec_opt.ostring_value_opt)}
 		;
 	
-	repo_path_spec {-> ostring_value} =
-		path_keyword string_value			{-> New ostring_value(string_value)}
+	repo_path_spec {-> ostring_literal} =
+		path_keyword string_value			{-> New ostring_literal(string_value)}
 		;
 	
 	tcp_scheme_spec_opt {-> ostring_value_opt} =
-		{specified} tcp_scheme_spec			{-> New ostring_value_opt.specified(tcp_scheme_spec.ostring_value)}
+		{specified} tcp_scheme_spec			{-> New ostring_value_opt.specified(tcp_scheme_spec.ostring_literal)}
 	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
 	  ;
 	
-	tcp_scheme_spec {-> ostring_value} =
-		scheme string_value					{-> string_value.ostring_value}
+	tcp_scheme_spec {-> ostring_literal} =
+		scheme string_value					{-> string_value.ostring_literal}
 		;
 	
 	userid_spec_opt {-> ostring_value_opt} =
-		{specified} userid string_value		{-> New ostring_value_opt.specified(string_value.ostring_value)}
+		{specified} userid string_value		{-> New ostring_value_opt.specified(string_value.ostring_literal)}
 	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
 	  ;
 	
 	password_spec_opt {-> ostring_value_opt} =
-		{specified} password string_value	{-> New ostring_value_opt.specified(string_value.ostring_value)}
+		{specified} password string_value	{-> New ostring_value_opt.specified(string_value.ostring_literal)}
 	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
 	  ;
 	
 	translation_decl {-> otranslation_declaration} =
 		shell translation for string_value
 			translation_stmts				{-> New otranslation_declaration(
-												string_value.ostring_value,
+												string_value.ostring_literal,
 												[translation_stmts.otranslation_stmt])}
 		;
 	
@@ -464,8 +465,8 @@ Productions
 	translation_stmt {-> otranslation_stmt} =
 		translate filename [from_string]:string_value
 			to [to_string]:string_value		{-> New otranslation_stmt.filename(
-													from_string.ostring_value,
-													to_string.ostring_value)}
+													from_string.ostring_literal,
+													to_string.ostring_literal)}
 		;
 	
 	function_decl {-> ofunction_declaration} =
@@ -473,8 +474,8 @@ Productions
 			method [native_name]:string_value returns type_spec
 											{-> New ofunction_declaration(
 													dabl_name, [type_spec_seq.otype_spec],
-													target_language.ostring_value,
-													native_name.ostring_value,
+													target_language.ostring_literal,
+													native_name.ostring_literal,
 													type_spec.otype_spec)}
 		;
 	
@@ -512,12 +513,14 @@ Productions
 	
 	// Logical expressions.
 	
-	logical_expr {-> ological_expr} =
-		{not} not_expr						{-> New ological_expr.not(not_expr.onot_expr)}
-	  | {success} success_expr				{-> New ological_expr.success(success_expr.osuccess_expr)}
-	  | {age} age_expr						{-> New ological_expr.age(age_expr.oage_expr)}
-	  | {op} logical_op_expr				{-> New ological_expr.op(logical_op_expr.ologic_op_expr)}
-	  | {literal} logical_literal			{-> New ological_expr.literal(logical_literal.ologic_literal)}
+	logical_expr {-> oexpr} =
+		{not} not_expr						{-> not_expr.oexpr}
+	  | {success} success_expr				{-> New oexpr.success(success_expr.osuccess_expr)}
+	  | {age} age_expr						{-> New oexpr.age(age_expr.oage_expr)}
+	  | {op} logical_op_expr				{-> logical_op_expr.oexpr}
+	  | {literal} logical_literal			{-> New oexpr.literal(
+	  											New oliteral.ologic_literal(
+	  											logical_literal.ologic_literal))}
 	  ;
 	
 	logical_literal {-> ologic_literal} =
@@ -525,20 +528,19 @@ Productions
 	  | {false} false_keyword				{-> New ologic_literal.false()}
 	  ;
 	
-	not_expr {-> onot_expr} =
-		not_keyword expr					{-> New onot_expr(expr.oexpr)}
+	not_expr {-> oexpr} =
+		not_keyword expr					{-> New oexpr.unary(New ounary_op.negation(),
+												expr.oexpr)}
 		;
 	
-	logical_op_expr {-> ologic_op_expr} =
+	logical_op_expr {-> oexpr} =
 		[left]:logical_expr logical_operator [right]:logical_expr
-											{-> New ologic_op_expr(left.ological_expr,
-													logical_operator.ologic_op,
-													right.ological_expr)}
+											{-> 
 		;
 	
-	logical_operator {-> ologic_op} =
-		{and} and_keyword					{-> New ologic_op.and()}
-	  | {or} or_keyword						{-> New ologic_op.or()}
+	logical_operator {-> obinary_op} =
+		{and} and_keyword					{-> 
+	  | {or} or_keyword						{-> 
 	  ;
 	
 	// Arithmetic expressions.
@@ -622,11 +624,11 @@ Abstract Syntax Tree
 		;
 
 	orepo_decl =
-		[name]:id [type]:ostring_value [scheme]:ostring_value_opt [path]:ostring_value
+		[name]:id [type]:ostring_literal [scheme]:ostring_value_opt [path]:ostring_literal
 			[userid]:ostring_value_opt [password]:ostring_value_opt;
 
 	ostring_value_opt =
-		{specified} ostring_value
+		{specified} ostring_literal
 	  | {unspecified}
 	  ;
 	
@@ -641,12 +643,12 @@ Abstract Syntax Tree
 	  ;
 	
 	ofileset_operation =
-		{include} ostring_value
-	  | {exclude} ostring_value
+		{include} ostring_literal
+	  | {exclude} ostring_literal
 	  ;
 	
 	ofunction_declaration =
-		[name]:id otype_spec* [target_language]:ostring_value [target_name]:ostring_value
+		[name]:id otype_spec* [target_language]:ostring_literal [target_name]:ostring_literal
 			[return_type]:otype_spec;
 
 	otype_spec = 
@@ -657,9 +659,9 @@ Abstract Syntax Tree
 	  ;
 	
 	otask_declaration =
-		oscope [name]:id [when]:oexpr* [input]:onamed_artifact_set*
+		oscope [name]:id [when]:oexpr*  // each expr must be a logical valued expr
+			[input]:onamed_artifact_set*
 			[output]:onamed_artifact_set* oproc_stmt*;
-			// when must be a ological_expr
 	
 	oscope =
 		{public}
@@ -672,10 +674,10 @@ Abstract Syntax Tree
 	  ;
 	
 	oartifact_set =
-		[fileset_spec]:ostring_value [project]:ostring_value [repository_id]:id;
+		[fileset_spec]:ostring_literal [project]:ostring_literal [repository_id]:id;
 	
 	oproc_stmt =
-		{func_call} ostring_value expr* otarget_opt
+		{func_call} ostring_literal expr* otarget_opt
 	  | {on_error} oproc_stmt*
 	  ;
 	
@@ -685,10 +687,10 @@ Abstract Syntax Tree
 	  ;
 	
 	otranslation_declaration =
-		[os]:ostring_value otranslation_stmt*;
+		[os]:ostring_literal otranslation_stmt*;
 	
 	otranslation_stmt =
-		{filename} [from_string]:ostring_value [to_string]:ostring_value;
+		{filename} [from_string]:ostring_literal [to_string]:ostring_literal;
 	
 	osuccess_expr =
 		{succeeded} id
@@ -700,63 +702,52 @@ Abstract Syntax Tree
 	  | {older_than} [older_id]:id [newer_id]:id
 	  ;
 	
-	onot_expr =
-		oexpr;
+	// Expressions.
 	
-	ological_expr =
-		{not} onot_expr
-	  | {success} osuccess_expr
-	  | {age} oage_expr
-	  | {op} ologic_op_expr
-	  | {literal} ologic_literal
-	  ;
-	
-	ologic_op_expr =
-		[left]:oexpr logic_op [right]:oexpr
+	ounary_op =
+		{negation}
 		;
 	
-	ologic_op =
-		{and}
+	obinary_op =
+		{plug}
+	  | {minus}
+	  | {multiple}
+	  | {divide}
+	  | {and}
 	  | {or}
 	  ;
+	
+	oexpr =
+		{literal} oliteral
+	  | {variable} ovariable
+	  | {unary} ounary_op oexpr
+	  | {binary} [operand1]:oexpr obinary_op [operand2]:oexpr
+	  | {success} osuccess_expr
+	  | {age} oage_expr
+	  ;
+	
+	oliteral =
+		ologic_literal
+	  | ostring_literal
+	  | onumeric_literal
+	  ;
+	
+	ovariable =
+		id
+		;
 	
 	ologic_literal =
 		{true}
 	  | {false}
 	  ;
 	
-	onumeric_expr =
-		{many} [operand1]:onumeric_expr oadd_op [operand2]:oproduct
-	  | {one} [operand1]:oproduct oadd_op [operand2]:oproduct
-		;
-	
-	oproduct =
-		{many} [operand1]:oproduct omult_op [operand2]:onumeric_expr
-		{one} [operand1]:onumeric_expr omult_op [operand2]:onumeric_expr
-		;
-	
-	onumeric_value =
-		{value} number
-	  | {parenthetic_expr} numeric_expr
-	  | {variable} id
-	  ;
-	
-	oadd_op =
-		{plus}
-	  | {minus
-	  ;
-	
-	omult_op =
-		{multiply}
-	  | {divide}
-	  ;
-	
-	oexpr =
-		{string} ostring_value
-	  | ....
-	  ;
-	
-	ostring_value =
+	ostring_literal =
 		{charseq} non_ws_char_seq
-		{string} string
-		{string2} string2
+	  | {string} string
+	  | {string2} string2
+	  ;
+	
+	onumeric_literal =
+		{int} number
+	  | {float} float_number
+		;
