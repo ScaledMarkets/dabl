@@ -191,7 +191,7 @@ Productions
 		artifact id colon [expr1]:whole_number_expr
 			per [expr2]:whole_number_expr
 			artifact_stmts			{-> New oartifact_declaration(id, expr1.number,
-										expr2.number, [artifact_stmts.ocompatibility_spec]}
+										expr2.number, [artifact_stmts.ocompatibility_spec])}
 		;
 	
 	whole_number_expr {-> number} =
@@ -228,13 +228,13 @@ Productions
 	task_decl {-> otask_declaration} =
 		scope_decl task id when_clause input_sets output_sets
 			procedural_stmts		{-> New otask_declaration(scope_decl.oscope,
-										id, when_clause.ological_expr,
+										id, when_clause.oexpr,
 										[input_sets.onamed_artifact_set],
 										[output_sets.onamed_artifact_set],
 										[procedural_stmts.oproc_stmt])}
 		;
 	
-	when_clause {-> ological_expr*} =
+	when_clause {-> oexpr*} =
 		when expr					{-> expr.oexpr}  // must be a logical_expr
 		;
 	
@@ -259,9 +259,9 @@ Productions
 	
 	input_set {-> onamed_artifact_set} =
 		{named} inputs id artifact_sets		{-> New onamed_artifact_set.named(id,
-												[artifact_sets.oartifact_set]}
+												[artifact_sets.oartifact_set])}
 	  | {anonymous} inputs artifact_sets	{-> New onamed_artifact_set.anonymous(
-												[artifact_sets.oartifact_set]}
+												[artifact_sets.oartifact_set])}
 		;
 	
 	output_sets {-> onamed_artifact_set*} =
@@ -273,9 +273,9 @@ Productions
 	
 	output_set {-> onamed_artifact_set} =
 		{named} outputs id artifact_sets	{-> New onamed_artifact_set.named(id,
-												[artifact_sets.oartifact_set]}
-		{anonymous} outputs artifact_sets	{-> New onamed_artifact_set.anonymous(
-												[artifact_sets.oartifact_set]}
+												[artifact_sets.oartifact_set])}
+	  | {anonymous} outputs artifact_sets	{-> New onamed_artifact_set.anonymous(
+												[artifact_sets.oartifact_set])}
 		;
 	  
 	artifact_sets {-> oartifact_set*} =
@@ -303,7 +303,7 @@ Productions
 			in [source]:id prefer_stmt_opt
 			files_stmts						{-> New ofiles_declaration(
 												prefer_stmt_opt.ofile_preference,
-												[files_stmts.ofileset_operation]}
+												[files_stmts.ofileset_operation])}
 		;
 	
 	files_stmts {-> ofileset_operation*} =
@@ -391,7 +391,7 @@ Productions
 	  ;
 	
 	arg {-> oexpr} =
-		expr								{-> expr.oexpr)
+		expr								{-> expr.oexpr}
 		;
 	
 	on_error_stmt {-> oproc_stmt} =
@@ -491,7 +491,7 @@ Productions
 	  | {than} than
 	  ;
 	
-	type_spec {otype_spec} = 
+	type_spec {-> otype_spec} = 
 		{string} string_keyword				{-> New otype_spec.string()}
 	  | {int} int_keyword					{-> New otype_spec.int()}
 	  | {float} float_keyword				{-> New otype_spec.float()}
@@ -504,6 +504,22 @@ Productions
 	  ;
 
 	
+	// Expressions.
+	
+	expr {-> oexpr} =
+		{logical} logical_expr				{-> logical_expr.oexpr}
+	  | {numeric} numeric_expr				{-> numeric_expr.oexpr}
+	  | {value} value						{-> value.oexpr}
+	  ;
+	
+	value {-> oexpr} =
+		{value} literal						{-> New oexpr.literal(literal.oliteral)}
+	  | {variable} id						{-> New oexpr.variable(New ovariable(id))}
+	  | {parentheses} left_paren expr right_paren
+	  										{-> expr.oexpr}
+	  ;
+	
+	
 	// Logical expressions.
 	
 	logical_expr {-> oexpr} =
@@ -511,14 +527,6 @@ Productions
 	  | {success} success_expr				{-> New oexpr.success(success_expr.osuccess_expr)}
 	  | {age} age_expr						{-> New oexpr.age(age_expr.oage_expr)}
 	  | {op} logical_op_expr				{-> logical_op_expr.oexpr}
-	  | {literal} logical_literal			{-> New oexpr.literal(
-	  											New oliteral.ologic_literal(
-	  											logical_literal.ologic_literal))}
-	  ;
-	
-	logical_literal {-> ologic_literal} =
-		{true} true_keyword					{-> New ologic_literal.true()}
-	  | {false} false_keyword				{-> New ologic_literal.false()}
 	  ;
 	
 	not_expr {-> oexpr} =
@@ -527,7 +535,7 @@ Productions
 		;
 	
 	logical_op_expr {-> oexpr} =
-		[left]:logical_expr logical_operator [right]:logical_expr
+		[left]:expr logical_operator [right]:expr
 											{-> New oexpr.binary(
 												left.oexpr, logical_operator.obinary_op,
 												right.oexpr)}
@@ -544,32 +552,20 @@ Productions
 		{many} numeric_expr add_op product	{-> New oexpr.binary(
 												numeric_expr.oexpr,
 												add_op.obinary_op, product.oexpr)}
-	  | {one} product add_op product		{-> New oexpr.binary(
-	  											product.oexpr, add_op.obinary_op,
-	  											product.oexpr)}
-	  ;
-	
-	numeric_literal {-> onumeric_literal} =
-		number								{-> New oliteral.numeric(
-													New onumeric_literal.int(number))}
-	  | float_number						{-> New oliteral.numeric(
-	  												New onumeric_literal.float(float_number))}
+	  | {one} [first]:product add_op [second]:product
+	  										{-> New oexpr.binary(
+	  											first.oexpr, add_op.obinary_op,
+	  											second.oexpr)}
 	  ;
 	
 	product {-> oexpr} =
 		{many} product mult_op value		{-> New oexpr.binary(
 												product.oexpr, mult_op.obinary_op,
 												value.oexpr)}
-	  | {one} value mult_op value			{-> New oexpr.binary(
+	  | {one} [first]:value mult_op [second]:value
+	  										{-> New oexpr.binary(
 	  											value.oexpr, mult_op.obinary_op,
 	  											value.oexpr)}
-	  ;
-	
-	value {-> oexpr} =
-		{value} literal						{-> New oexpr.literal(literal.oliteral)}
-	  | {variable} id						{-> New oexpr.variable(New ovariable(id))}
-	  | {parentheses} left_paren expr right_paren
-	  										{-> New expr.oexpr}
 	  ;
 	
 	add_op {-> obinary_op} =
@@ -582,18 +578,25 @@ Productions
 	  | {division} div						{-> New obinary_op.divide()}
 	  ;
 	
+	// Literals.
+	
 	literal {-> oliteral} =
 		{logic} logical_literal				{-> New oliteral.logic(logical_literal.ologic_literal)}
 	  | {string} string_literal				{-> New oliteral.string(string_literal.ostring_literal)}
 	  | {numeric} numeric_literal			{-> New oliteral.numeric(numeric_literal.onumeric_literal)}
 	  ;
 	
-	// Other expression types.
+	logical_literal {-> ologic_literal} =
+		{true} true_keyword					{-> New ologic_literal.true()}
+	  | {false} false_keyword				{-> New ologic_literal.false()}
+	  ;
 	
-	string_expr {-> oexpr} =
-		string_literal						{-> New oexpr.literal(New oliteral.string(
-													string_literal.ostring_literal))}
-		;
+	numeric_literal {-> onumeric_literal} =
+		{int} number						{-> New oliteral.numeric(
+													New onumeric_literal.int(number))}
+	  | {float} float_number				{-> New oliteral.numeric(
+	  												New onumeric_literal.float(float_number))}
+	  ;
 	
 	string_literal {-> ostring_literal} =
 		{non_ws} non_ws_char_seq  // this can be a path that references a variable
