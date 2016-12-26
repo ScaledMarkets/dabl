@@ -60,6 +60,7 @@ Tokens
 	right_cur = '}';
 	left_brack = '[';
 	right_brack = ']';
+	per_char = per;
 	
 	// Variable Length Sequences:
 	number = digit+;
@@ -167,12 +168,12 @@ Productions
 	spec_elt {-> onamespace_elt} =
 		{import_decl} import_decl						{-> import_decl.onamespace_elt}
 	  | {typographic_decl} typographic_decl				{-> New onamespace_elt.typographic(typographic_decl.otypographic_declaration)}
-	  | {artifact_decl} artifact_decl					{-> }
-	  | {task_decl} task_decl							{-> }
-	  | {repo_decl} repo_decl							{-> }
-	  | {files_decl} files_decl							{-> }
-	  | {function_decl} function_decl					{-> }
-	  | {translation_decl} translation_decl				{-> }
+	  | {artifact_decl} artifact_decl					{-> New onamespace_elt.artifact(artifact_decl.oartifact_declaration)}
+	  | {task_decl} task_decl							{-> New onamespace_elt.task(task_decl.otask_declaration)}
+	  | {repo_decl} repo_decl							{-> New onamespace_elt.repo(repo_decl.orepl_decl)}
+	  | {files_decl} files_decl							{-> New onamespace_elt.files(file_decl.ofile_declaration)}
+	  | {function_decl} function_decl					{-> New onamespace_elt.function(function_decl.ofunction_declaration)}
+	  | {translation_decl} translation_decl				{-> New onamespace_elt.translation(translation_decl.otranslation_declaration)}
 	  ;
 	
 	typographic_decl {-> otypographic_declaration} =
@@ -189,7 +190,7 @@ Productions
 		
 	artifact_decl {-> oartifact_declaration} =
 		artifact id colon [expr1]:whole_number_expr
-			per [expr2]:whole_number_expr
+			per_char [expr2]:whole_number_expr
 			artifact_stmts			{-> New oartifact_declaration(id, expr1.number,
 										expr2.number, [artifact_stmts.ocompatibility_spec])}
 		;
@@ -339,7 +340,7 @@ Productions
 	  ;
 	
 	version_spec {-> orange_spec*} =
-		{multiple} range_spec per version_spec	{-> [range_spec.orange_spec, version_spec.orange_spec]}
+		{multiple} range_spec per_char version_spec	{-> [range_spec.orange_spec, version_spec.orange_spec]}
 	  | {one} range_spec					{-> [range_spec.orange_spec]}
 	  ;
 	
@@ -499,7 +500,7 @@ Productions
 	  ;
 	
 	path {-> id*} =
-		{multiple} id per path				{-> [id, path.id]}
+		{multiple} id per_char path				{-> [id, path.id]}
 	  | {one} id							{-> [id]}
 	  ;
 
@@ -619,7 +620,7 @@ Abstract Syntax Tree
 	  | {typographic} otypographic_declaration
 	  | {artifact} oartifact_declaration
 	  | {repo} orepo_decl
-	  | {file} ofiles_declaration
+	  | {files} ofiles_declaration
 	  | {function} ofunction_declaration
 	  | {task} otask_declaration
 	  | {translation} otranslation_declaration
@@ -697,7 +698,7 @@ Abstract Syntax Tree
 		[fileset_spec]:ostring_literal [project]:ostring_literal [repository_id]:id;
 	
 	oproc_stmt =
-		{func_call} ostring_literal expr* otarget_opt
+		{func_call} ostring_literal oexpr* otarget_opt
 	  | {on_error} oproc_stmt*
 	  ;
 	
