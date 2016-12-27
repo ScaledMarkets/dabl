@@ -475,24 +475,32 @@ Productions
 		;
 	
 	type_spec_seq {-> otype_spec*} =
-		{multiple} type_spec type_spec_seq	{-> [type_spec.otype_spec, type_spec_seq.otype_spec]}
+		{multiple} type_spec type_spec_separator type_spec_seq
+											{-> [type_spec.otype_spec,
+												type_spec_separator.otype_spec_separator,
+												type_spec_seq.otype_spec]}
 	  | {one} type_spec						{-> [type_spec.otype_spec]}
-	  | {id} id  // for defining a preposition that goes before or after a function arg
-	  										{-> ....}
-	  | {preposition} preposition  // for defining a keyword that goes before or after a function arg
-	  										{-> ....}
 	  ;
 	
-	preposition {-> } =
-		{from} from
-	  | {to} to
-	  | {in} in
-	  | {for} for
-	  | {with} with
-	  | {when} when
-	  | {on} on
-	  | {of} of
-	  | {than} than
+	type_spec_separator {-> otype_spec_separator} =
+		{comma} comma						{-> New otype_spec_separator.comma()}
+	  | {id} id  // for defining a preposition that goes before or after a function arg
+	  										{-> New otype_spec_separator.id(id)}
+	  | {preposition} preposition  // for defining a keyword that goes before or after a function arg
+	  										{-> New otype_spec_separator.preposition(
+	  											preposition.opreposition)}
+	  ;
+	
+	preposition {-> opreposotion} =
+		{from} from							{-> New opreposition.from()}
+	  | {to} to								{-> New opreposition.to()}
+	  | {in} in								{-> New opreposition.in()}
+	  | {for} for							{-> New opreposition.for()}
+	  | {with} with							{-> New opreposition.with()}
+	  | {when} when							{-> New opreposition.when()}
+	  | {on} on								{-> New opreposition.on()}
+	  | {of} of								{-> New opreposition.of()}
+	  | {than} than							{-> New opreposition.than()}
 	  ;
 	
 	type_spec {-> otype_spec} = 
@@ -631,7 +639,25 @@ Abstract Syntax Tree
 
 	otypographic_declaration =
 		{tab_decl} number;
+	
+	otype_spec_separator =
+		{comma}
+	  | {id} id
+	  | {preposition} opreposition
+	  ;
 
+	opreposition =
+		{from}
+	  | {to}
+	  | {in}
+	  | {for}
+	  | {with}
+	  | {when}
+	  | {on}
+	  | {of}
+	  | {than}
+	  ;
+	
 	oartifact_declaration =
 		id [major]:number [minor]:number ocompatibility_spec*
 		;
