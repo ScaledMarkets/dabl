@@ -45,6 +45,9 @@ model can be accessed at runtime; thus, one can build a tool that compiles DABL
 files and then operates on the resulting object model. For an example
 of accessing the object model, see [TBD]().
 
+See also the companion project [piper](https://github.com/Scaled-Markets/piper),
+which is a build system based on DABL.
+
 # Binary Download
 
 Binaries of the compiler JAR file can be found [TBD]().
