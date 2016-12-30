@@ -33,6 +33,8 @@ Java project. For an example of embedding the compiler in another project,
 see [TBD]().
 
 The output of the compiler is a Java object model. The object model is defined
-by the Abstract Syntax Tree at the end of the dabl.sablecc grammar file. For am example
-of calling the object model, see [TBD]().
+by the Abstract Syntax Tree at the end of the dabl.sablecc grammar file. The object
+model can be accessed at runtime; thus, one can build a tool that compiles DABL
+files and then operates on the resulting object model. For an example
+of accessing the object model, see [TBD]().
 
