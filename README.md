@@ -27,7 +27,7 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 
 * The language definition (formal grammar file [dabl.sablecc](dabl.sablecc), and
 [Language Reference](langref/README.md)).
-* DABL compiler, written in Java using version 3.2 of the
+* A DABL compiler, written in Java using version 3.2 of the
 	[SableCC compiler generation tool](http://www.sablecc.org/).
 	The compiler is a Java package, which has a main method, but it can also
 	be called via its API, so that the compiler can be embedded in other
@@ -44,4 +44,8 @@ grammar file. The object
 model can be accessed at runtime; thus, one can build a tool that compiles DABL
 files and then operates on the resulting object model. For an example
 of accessing the object model, see [TBD]().
+
+# Binary Download
+
+Binaries of the compiler JAR file can be found [TBD]().
 
