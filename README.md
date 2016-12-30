@@ -15,6 +15,9 @@ A better model than current practice is needed, whereby,
 
 * The build language is strongly typed, in order to promote maintainability and reliability.
 * The build language uses information hiding, encapsulation, and true modularity in order to promote reuse and extensibility.
+* The build language is defined as a true language, with a language definition and
+	well specified syntax and semantics, and with a high regard for backward
+	compatibility.
 
 See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDhrVaTjo
 
