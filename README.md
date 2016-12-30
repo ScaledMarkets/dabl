@@ -32,6 +32,7 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 	The compiler is a Java package, which has a main method, but it can also
 	be called via its API, so that the compiler can be embedded in other
 	Java applications.
+* A sample DABL file, [example.dabl](example.dabl).
 
 To create the compiler, run the makefile in the root directory. The output of the
 build is a JAR file, dabl.jar, which can be included in any
