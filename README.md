@@ -22,7 +22,7 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 
 * The language definition (formal grammar file [dabl.sablecc](dabl.sablecc), and
 [Language Reference](langref/README.md)).
-* DABL compiler, written in Java using the
+* DABL compiler, written in Java using version 3.2 of the
 	[SableCC compiler generation tool](http://www.sablecc.org/).
 	The compiler is a Java package, which has a main method, but it can also
 	be called via its API, so that the compiler can be embedded in other
