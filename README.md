@@ -27,13 +27,12 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 	be called via its API, so that the compiler can be embedded in other
 	Java applications.
 
-To create the compiler, run the makefile in the root directory.
-
-The output of the build is a JAR file, dabl.jar, which can be included in any
+To create the compiler, run the makefile in the root directory. The output of the
+build is a JAR file, dabl.jar, which can be included in any
 Java project. For an example of embedding the compiler in another project,
-see [here]().
+see [TBD]().
 
 The output of the compiler is a Java object model. The object model is defined
 by the Abstract Syntax Tree at the end of the dabl.sablecc grammar file. For am example
-of calling the object model, see [here]().
+of calling the object model, see [TBD]().
 
