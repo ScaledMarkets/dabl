@@ -1,3 +1,8 @@
+# What Is DABL?
+
+DABL stands for "Dependent Artifact Build Language". It is a language for defining
+software dependencies.
+
 # Motivation
 
 Existing “build” languages (e.g., make, ant, maven, gradle, Jenkins “pipeline”) leave much to be desired. They tend to be non-composable, weakly typed, and have poor extensibility features. As such, they make build processes brittle and unreliable and also limit reusability.
