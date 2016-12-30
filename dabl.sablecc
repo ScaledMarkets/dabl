@@ -186,7 +186,8 @@ Productions
 		;
 	
 	tab_decl {-> otypographic_declaration} =
-		tab_keyword equivalent to number spaces_keyword	{-> New otypographic_declaration.tab_decl(number)}
+		tab_keyword equivalent to number spaces_keyword
+											{-> New otypographic_declaration.tab_decl(number)}
 		;
 		
 	artifact_decl {-> oartifact_declaration} =
@@ -214,13 +215,14 @@ Productions
 	  ;
 	
 	assume_stmt {-> ocompatibility_spec} =
-		assume compatible with path colon version_spec	{-> New ocompatibility_spec.assume(
-										[path.id], [version_spec.orange_spec])}
+		assume compatible with path colon version_spec
+											{-> New ocompatibility_spec.assume(
+												[path.id], [version_spec.orange_spec])}
 		;
 	
 	tested_stmt {-> ocompatibility_spec} =
-		tested with path colon version_spec		{-> New ocompatibility_spec.tested(
-										[path.id], [version_spec.orange_spec])}
+		tested with path colon version_spec	{-> New ocompatibility_spec.tested(
+												[path.id], [version_spec.orange_spec])}
 		;
 	
 	scope_decl {-> oscope} =
@@ -341,7 +343,8 @@ Productions
 	  ;
 	
 	version_spec {-> orange_spec*} =
-		{multiple} range_spec per_char version_spec	{-> [range_spec.orange_spec, version_spec.orange_spec]}
+		{multiple} range_spec per_char version_spec
+											{-> [range_spec.orange_spec, version_spec.orange_spec]}
 	  | {one} range_spec					{-> [range_spec.orange_spec]}
 	  ;
 	
@@ -353,11 +356,13 @@ Productions
 	  ;
 	
 	include_stmt {-> ofileset_operation} =
-		include fileset_spec	{-> New ofileset_operation.include(fileset_spec.ostring_literal)}
+		include fileset_spec				{-> New ofileset_operation.include(
+												fileset_spec.ostring_literal)}
 		;
 	
 	exclude_stmt {-> ofileset_operation} =
-		exclude fileset_spec	{-> New ofileset_operation.exclude(fileset_spec.ostring_literal)}
+		exclude fileset_spec				{-> New ofileset_operation.exclude(
+												fileset_spec.ostring_literal)}
 		;
 	
 	procedural_stmts {-> oproc_stmt*} =
