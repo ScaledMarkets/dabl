@@ -16,13 +16,12 @@ A better model than current practice is needed, whereby,
 * The build language is strongly typed, in order to promote maintainability and reliability.
 * The build language uses information hiding, encapsulation, and true modularity in order to promote reuse and extensibility.
 
-[Language Reference](langref/README.md)
-
 See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDhrVaTjo
 
 # What's In This Project
 
-* The language definition (formal grammar file, and language reference).
+* The language definition (formal grammar file [dabl.sablecc](dabl.sablecc), and
+[Language Reference](langref/README.md)).
 * DABL compiler, written in Java using the SableCC compiler generation tool.
 	The compiler is a Java package, which has a main method, but it can also
 	be called via its API, so that the compiler can be embedded in other
@@ -35,6 +34,6 @@ Java project. For an example of embedding the compiler in another project,
 see [here]().
 
 The output of the compiler is a Java object model. The object model is defined
-by the Abstract Syntax Tree in the dabl.sablecc grammar file. For am example
+by the Abstract Syntax Tree at the end of the dabl.sablecc grammar file. For am example
 of calling the object model, see [here]().
 
