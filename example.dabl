@@ -11,7 +11,7 @@
 /* Define a namespace for the contents of this file. By supporting namespaces,
     DABL enables one to "scale" one's build scripts, just as namespaces
     enable one to "scale" software code. */
-namespace my_company.my_project 'abc'
+namespace my_company.my_project.abc
 
 
 //* Import another namespace - only the public elements are imported. *//
