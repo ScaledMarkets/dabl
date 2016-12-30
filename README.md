@@ -6,7 +6,7 @@ There is no reason why it needs to be this way: The current state of affairs ste
 
 Treating pipeline definition as a first-class design activity, supported by a true language, is consistent with the DevOps philosophy of treating the build and deployment pipeline as a system to be designed, coded, and maintained.
 
-A better model is needed, whereby,
+A better model than current practice is needed, whereby,
 
 * The build language is strongly typed, in order to promote maintainability and reliability.
 * The build language uses information hiding, encapsulation, and true modularity in order to promote reuse and extensibility.
