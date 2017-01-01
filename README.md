@@ -24,7 +24,8 @@ A better model than current practice is needed, whereby,
 	compatibility, so that language changes do not contribute to the instability
 	of build systems. We (Scaled Markets) plan to use a deprecation approach when
 	breaking changes are necessary, which we hope will be extremely infrequent; in
-	addition, we plan to submit the DABL language to a standards body.
+	addition, we plan to submit both the DABL language and the runtime object model
+	(Abstract Syntax Tree) to a standards body.
 
 See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDhrVaTjo
 
