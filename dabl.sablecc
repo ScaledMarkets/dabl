@@ -124,6 +124,7 @@ Tokens
 	path_keyword = 'path';
 	scheme = 'scheme';
 	if = 'if';
+	end = 'end';
 	error = 'error';
 	string_keyword = 'string';
 	int_keyword = 'int';
@@ -394,7 +395,6 @@ Productions
 	
 	arg_separator {-> otype_spec_separator} =
 		{comma} comma_char					{-> New otype_spec_separator.comma()}
-	  | {id} id								{-> New otype_spec_separator.id(id)}
 	  | {prep} preposition					{-> New otype_spec_separator.preposition(
 	  											preposition.opreposition)}
 	  ;
@@ -404,7 +404,8 @@ Productions
 		;
 	
 	if_error_stmt {-> oproc_stmt} =
-		if error procedural_stmts		{-> New oproc_stmt.if_error(
+		[a]:if error procedural_stmts end [b]:if
+											{-> New oproc_stmt.if_error(
 												[procedural_stmts.oproc_stmt])}
 		;
 	
@@ -482,8 +483,6 @@ Productions
 	
 	type_spec_separator {-> otype_spec_separator} =
 		{comma} comma_char					{-> New otype_spec_separator.comma()}
-	  | {id} id  // for defining a preposition that goes before or after a function arg
-	  										{-> New otype_spec_separator.id(id)}
 	  | {preposition} preposition  // for defining a keyword that goes before or after a function arg
 	  										{-> New otype_spec_separator.preposition(
 	  											preposition.opreposition)}
@@ -684,7 +683,6 @@ Abstract Syntax Tree
 	
 	otype_spec_separator =
 		{comma}
-	  | {id} id
 	  | {preposition} opreposition
 	  ;
 
