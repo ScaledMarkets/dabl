@@ -22,7 +22,9 @@ A better model than current practice is needed, whereby,
 * The build language lends itself well to static analysis, for—say—security analysis.
 * The maintainers of the build language have a high regard for backward
 	compatibility, so that language changes do not contribute to the instability
-	of build systems.
+	of build systems. We (Scaled Markets) plan to use a deprecation approach when
+	breaking changes are necessary, which we hope will be extremely infrequent; in
+	addition, we plan to submit the DABL language to a standards body.
 
 See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDhrVaTjo
 
