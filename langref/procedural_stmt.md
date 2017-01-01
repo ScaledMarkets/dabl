@@ -6,7 +6,7 @@
 
 A task procedural statement may be one of,
 
-* [On Statement](on_stmt.md)
+* [If Error Statement](if_error_stmt.md)
 * [Function call Statement](func_call_stmt.md)
 
 ## Pre-Defined Functions

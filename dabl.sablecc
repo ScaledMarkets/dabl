@@ -123,6 +123,7 @@ Tokens
 	outputs = 'outputs';
 	path_keyword = 'path';
 	scheme = 'scheme';
+	if = 'if';
 	error = 'error';
 	string_keyword = 'string';
 	int_keyword = 'int';
@@ -369,45 +370,42 @@ Productions
 	  | {one} procedural_stmt				{-> [procedural_stmt.oproc_stmt]}
 	  ;
 	  
-	procedural_stmts_opt {-> oproc_stmt*} =
-		{multiple} procedural_stmts			{-> [procedural_stmts.oproc_stmt]}
-	  | {none}								{-> []}
-	  ;
-	
 	procedural_stmt {-> oproc_stmt} =
 		{func_call} func_call_stmt			{-> func_call_stmt.oproc_stmt}
-	  | {on_error} on_error_stmt			{-> on_error_stmt.oproc_stmt}
+	  | {if_error} if_error_stmt			{-> if_error_stmt.oproc_stmt}
 	  ;
 	
 	func_call_stmt {-> oproc_stmt} =
-		{no_target} id eq [func_name]:string_literal args_opt
+		{no_target} id eq [func_name]:string_literal args
 											{-> New oproc_stmt.func_call(
 												func_name.ostring_literal,
-												[args_opt.oexpr], New otarget_opt.target(id))}
-	  | {target} [func_name]:string_literal args_opt
+												[args.oexpr], New otarget_opt.target(id))}
+	  | {target} [func_name]:string_literal args
 											{-> New oproc_stmt.func_call(
 												func_name.ostring_literal,
-												[args_opt.oexpr], New otarget_opt.no_target())}
+												[args.oexpr], New otarget_opt.no_target())}
 		;
 	
 	args {-> oexpr*} =
-		{multiple_args} arg args_opt		{-> [arg.oexpr, args_opt.oexpr]}
+		{multiple_args} arg arg_separator args
+											{-> [arg.oexpr, args.oexpr]}
 	  | {one_arg} arg						{-> [arg.oexpr]}
-	  | {preoposition} preposition			{-> []}
+	  ;
+	
+	arg_separator {-> otype_spec_separator} =
+		{comma} comma_char					{-> New otype_spec_separator.comma()}
+	  | {id} id								{-> New otype_spec_separator.id(id)}
+	  | {prep} preposition					{-> New otype_spec_separator.preposition(
+	  											preposition.opreposition)}
 	  ;
 	
 	arg {-> oexpr} =
 		expr								{-> expr.oexpr}
 		;
 	
-	args_opt {-> oexpr*} =
-		{many} args							{-> [args.oexpr]}
-	  | {none}								{-> []}
-	  ;
-	
-	on_error_stmt {-> oproc_stmt} =
-		on error procedural_stmts_opt		{-> New oproc_stmt.on_error(
-												[procedural_stmts_opt.oproc_stmt])}
+	if_error_stmt {-> oproc_stmt} =
+		if error procedural_stmts		{-> New oproc_stmt.if_error(
+												[procedural_stmts.oproc_stmt])}
 		;
 	
 	repo_decl {-> orepo_decl} =
@@ -722,7 +720,7 @@ Abstract Syntax Tree
 	
 	oproc_stmt =
 		{func_call} ostring_literal oexpr* otarget_opt
-	  | {on_error} oproc_stmt*
+	  | {if_error} oproc_stmt*
 	  ;
 	
 	otarget_opt =

@@ -17,3 +17,5 @@ Functions that are defined in this way can be used as
 inside [task declarations](task_decl.md). In a function call, parameters are
 positional and comma-separated, and
 parentheses are not used to delineate them.
+
+A function must have at least one argument.
