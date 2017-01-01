@@ -52,9 +52,7 @@ grammar file. The object
 model can be accessed at runtime; thus, one can build a tool that compiles DABL
 files and then operates on the resulting object model. For an example
 of accessing the object model, see the [piper project](https://github.com/Scaled-Markets/piper).
-
-See also the companion project [piper](https://github.com/Scaled-Markets/piper),
-which is a build system based on DABL.
+Piper is a build system based on DABL.
 
 # Binary Download
 
