@@ -56,11 +56,11 @@ test_compile_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
 test_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
 
 # Intermediate artifacts:
-sourcefiles := $(src_dir)/$(package)/*.java \
-	$(src_dir)/$(package)/main/*.java \
-	$(src_dir)/$(package)/provider/*.java \
-	$(src_dir)/$(package)/gen/*.java \
-	$(src_dir)/$(package)/test/gen/*.java
+sourcefiles := \
+	$(src_dir)/$(package)/analysis/*.java \
+	$(src_dir)/$(package)/lexer/*.java \
+	$(src_dir)/$(package)/node/*.java \
+	$(src_dir)/$(package)/parser/*.java
 classfiles := \
 	$(build_dir)/$(package)/analysis/*.class \
 	$(build_dir)/$(package)/lexer/*.class \
