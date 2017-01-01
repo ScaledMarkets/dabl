@@ -69,7 +69,8 @@ Tokens
 	id = letter ( letter | digit )*;
 	non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
 	string = quote [ any_character - quote ]* quote;
-	string2 = triplequote [ any_character - triplequote ]* triplequote;
+	string2 = triplequote any_character* triplequote;
+	//string2 = triplequote [ any_character - triplequote ]* triplequote;
 	slashslashcomment = slashslash [ any_character - nl ]* nl;
 	slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
 	slashstarcomment = slashstar any_character* starslash;
@@ -206,7 +207,6 @@ Productions
 											{-> [artifact_stmt.ocompatibility_spec,
 													artifact_stmts.ocompatibility_spec]}
 	  | {one} artifact_stmt					{-> [artifact_stmt.ocompatibility_spec]}
-	  | {none}								{-> []}
 	  ;
 	
 	artifact_stmt {-> ocompatibility_spec} =
@@ -239,8 +239,8 @@ Productions
 												[procedural_stmts.oproc_stmt])}
 		;
 	
-	when_clause {-> oexpr*} =
-		when expr							{-> expr.oexpr}  // must be a logical_expr
+	when_clause {-> oexpr} =
+		when expr							{-> expr.oexpr}  // must be a logical expr
 		;
 	
 	success_expr {-> osuccess_expr} =
@@ -259,7 +259,6 @@ Productions
 		{multiple} input_set input_sets		{-> [input_set.onamed_artifact_set,
 												input_sets.onamed_artifact_set]}
 	  | {one} input_set						{-> [input_set.onamed_artifact_set]}
-	  | {none}								{-> []}
 	  ;
 	
 	input_set {-> onamed_artifact_set} =
@@ -273,7 +272,6 @@ Productions
 		{multiple} output_set output_sets	{-> [output_set.onamed_artifact_set,
 												output_sets.onamed_artifact_set]}
 	  | {one} output_set					{-> [output_set.onamed_artifact_set]}
-	  | {none}								{-> []}
 	  ;
 	
 	output_set {-> onamed_artifact_set} =
@@ -315,7 +313,6 @@ Productions
 		{multiple} files_stmt files_stmts	{-> [files_stmt.ofileset_operation,
 												files_stmts.ofileset_operation]}
 	  | {one} files_stmt					{-> [files_stmt.ofileset_operation]}
-	  | {none}								{-> []}
 	  ;
 	
 	files_stmt {-> ofileset_operation} =
@@ -366,58 +363,57 @@ Productions
 		;
 	
 	procedural_stmts {-> oproc_stmt*} =
-		{multiple} procedural_stmt procedural_stmts
-											{-> [procedural_stmt.oproc_stmt,
-												procedural_stmts.oproc_stmt]}
+		{multiple} procedural_stmts procedural_stmt
+											{-> [procedural_stmts.oproc_stmt,
+												procedural_stmt.oproc_stmt]}
 	  | {one} procedural_stmt				{-> [procedural_stmt.oproc_stmt]}
-	  | {none}								{-> []}
 	  ;
 	  
+	procedural_stmts_opt {-> oproc_stmt*} =
+		{multiple} procedural_stmts			{-> [procedural_stmts.oproc_stmt]}
+	  | {none}								{-> []}
+	  ;
+	
 	procedural_stmt {-> oproc_stmt} =
 		{func_call} func_call_stmt			{-> func_call_stmt.oproc_stmt}
 	  | {on_error} on_error_stmt			{-> on_error_stmt.oproc_stmt}
 	  ;
 	
-	assignment_opt {-> otarget_opt} =
-		{id} id eq							{-> New otarget_opt.target(id)}
-	  | {nothing} 							{-> New otarget_opt.no_target()}
-	  ;
-	
 	func_call_stmt {-> oproc_stmt} =
-		assignment_opt [func_name]:string_literal args_opt
+		{no_target} id eq [func_name]:string_literal args_opt
 											{-> New oproc_stmt.func_call(
 												func_name.ostring_literal,
-												[args_opt.oexpr], assignment_opt.otarget_opt)}
+												[args_opt.oexpr], New otarget_opt.target(id))}
+	  | {target} [func_name]:string_literal args_opt
+											{-> New oproc_stmt.func_call(
+												func_name.ostring_literal,
+												[args_opt.oexpr], New otarget_opt.no_target())}
 		;
 	
-	args_opt {-> oexpr*} =
+	args {-> oexpr*} =
 		{multiple_args} arg args_opt		{-> [arg.oexpr, args_opt.oexpr]}
 	  | {one_arg} arg						{-> [arg.oexpr]}
 	  | {preoposition} preposition			{-> []}
-	  | {nothing}							{-> []}
 	  ;
 	
 	arg {-> oexpr} =
 		expr								{-> expr.oexpr}
 		;
 	
+	args_opt {-> oexpr*} =
+		{many} args							{-> [args.oexpr]}
+	  | {none}								{-> []}
+	  ;
+	
 	on_error_stmt {-> oproc_stmt} =
 		on error procedural_stmts_opt		{-> New oproc_stmt.on_error(
 												[procedural_stmts_opt.oproc_stmt])}
 		;
 	
-	procedural_stmts_opt {-> oproc_stmt*} =
-		{multiple} procedural_stmt procedural_stmts_opt
-											{-> [procedural_stmt.oproc_stmt,
-												procedural_stmts_opt.oproc_stmt]}
-	  | {one} procedural_stmt				{-> [procedural_stmt.oproc_stmt]}
-	  | {none}								{-> []}
-	  ;
-	
 	repo_decl {-> orepo_decl} =
 		repo [name]:id type [repo_type]:string_literal tcp_scheme_spec_opt
 			repo_path_spec userid_spec_opt password_spec_opt
-											{-> New orepl_decl(name, repo_type,
+											{-> New orepo_decl(name, repo_type.ostring_literal,
 												tcp_scheme_spec_opt.ostring_value_opt,
 												repo_path_spec.ostring_literal,
 												userid_spec_opt.ostring_value_opt,
@@ -425,7 +421,7 @@ Productions
 		;
 	
 	repo_path_spec {-> ostring_literal} =
-		path_keyword string_literal			{-> New ostring_literal(string_literal)}
+		path_keyword string_literal			{-> string_literal.ostring_literal}
 		;
 	
 	tcp_scheme_spec_opt {-> ostring_value_opt} =
@@ -459,7 +455,6 @@ Productions
 											{-> [translation_stmt.otranslation_stmt,
 													translation_stmts.otranslation_stmt]}
 	  | {one} translation_stmt				{-> [translation_stmt.otranslation_stmt]}
-	  | {none}								{-> []}
 	  ;
 	
 	translation_stmt {-> otranslation_stmt} =
@@ -482,13 +477,13 @@ Productions
 	type_spec_seq {-> otype_spec*} =
 		{multiple} type_spec type_spec_separator type_spec_seq
 											{-> [type_spec.otype_spec,
-												type_spec_separator.otype_spec_separator,
+												New otype_spec.separator(type_spec_separator.otype_spec_separator),
 												type_spec_seq.otype_spec]}
 	  | {one} type_spec						{-> [type_spec.otype_spec]}
 	  ;
 	
 	type_spec_separator {-> otype_spec_separator} =
-		{comma} comma						{-> New otype_spec_separator.comma()}
+		{comma} comma_char					{-> New otype_spec_separator.comma()}
 	  | {id} id  // for defining a preposition that goes before or after a function arg
 	  										{-> New otype_spec_separator.id(id)}
 	  | {preposition} preposition  // for defining a keyword that goes before or after a function arg
@@ -496,7 +491,7 @@ Productions
 	  											preposition.opreposition)}
 	  ;
 	
-	preposition {-> opreposotion} =
+	preposition {-> opreposition} =
 		{from} from							{-> New opreposition.from()}
 	  | {to} to								{-> New opreposition.to()}
 	  | {in} in								{-> New opreposition.in()}
@@ -540,22 +535,11 @@ Productions
 	// Logical expressions.
 	
 	logical_expr {-> oexpr} =
-		{not} not_expr						{-> not_expr.oexpr}
-	  | {success} success_expr				{-> New oexpr.success(success_expr.osuccess_expr)}
-	  | {age} age_expr						{-> New oexpr.age(age_expr.oage_expr)}
-	  | {op} logical_op_expr				{-> logical_op_expr.oexpr}
-	  ;
-	
-	not_expr {-> oexpr} =
-		not_keyword expr					{-> New oexpr.unary(New ounary_op.negation(),
-												expr.oexpr)}
-		;
-	
-	logical_op_expr {-> oexpr} =
-		[left]:expr logical_operator [right]:expr
+		{many} [left]:logical_expr logical_operator [right]:value
 											{-> New oexpr.binary(
 												left.oexpr, logical_operator.obinary_op,
 												right.oexpr)}
+	  //| {one} value							{-> value.oexpr}
 		;
 	
 	logical_operator {-> obinary_op} =
@@ -563,26 +547,32 @@ Productions
 	  | {or} or_keyword						{-> New obinary_op.or()}
 	  ;
 	
+	logical_value {-> oexpr} =
+		{not} not_expr						{-> not_expr.oexpr}
+	  | {success} success_expr				{-> New oexpr.success(success_expr.osuccess_expr)}
+	  | {age} age_expr						{-> New oexpr.age(age_expr.oage_expr)}
+	  | {op} logical_expr					{-> logical_expr.oexpr}
+	  ;
+	
+	not_expr {-> oexpr} =
+		not_keyword value					{-> New oexpr.unary(New ounary_op.negation(),
+												value.oexpr)}
+		;
+	
 	// Arithmetic expressions.
 	
 	numeric_expr {-> oexpr} =
 		{many} numeric_expr add_op product	{-> New oexpr.binary(
 												numeric_expr.oexpr,
 												add_op.obinary_op, product.oexpr)}
-	  | {one} [first]:product add_op [second]:product
-	  										{-> New oexpr.binary(
-	  											first.oexpr, add_op.obinary_op,
-	  											second.oexpr)}
+	  | {one} product						{-> product.oexpr}
 	  ;
 	
 	product {-> oexpr} =
 		{many} product mult_op value		{-> New oexpr.binary(
 												product.oexpr, mult_op.obinary_op,
 												value.oexpr)}
-	  | {one} [first]:value mult_op [second]:value
-	  										{-> New oexpr.binary(
-	  											value.oexpr, mult_op.obinary_op,
-	  											value.oexpr)}
+	  //| {one} value							{-> value.oexpr}
 	  ;
 	
 	add_op {-> obinary_op} =
@@ -591,7 +581,7 @@ Productions
 	  ;
 	
 	mult_op {-> obinary_op} =
-		{multiplication} asterisk			{-> New obinary_op.multiple()}
+		{multiplication} asterisk			{-> New obinary_op.multiply()}
 	  | {division} div						{-> New obinary_op.divide()}
 	  ;
 	
@@ -609,10 +599,8 @@ Productions
 	  ;
 	
 	numeric_literal {-> onumeric_literal} =
-		{int} number						{-> New oliteral.numeric(
-													New onumeric_literal.int(number))}
-	  | {float} float_number				{-> New oliteral.numeric(
-	  												New onumeric_literal.float(float_number))}
+		{int} number						{-> New onumeric_literal.int(number)}
+	  | {float} float_number				{-> New onumeric_literal.float(float_number)}
 	  ;
 	
 	string_literal {-> ostring_literal} =
@@ -644,24 +632,6 @@ Abstract Syntax Tree
 
 	otypographic_declaration =
 		{tab_decl} number;
-	
-	otype_spec_separator =
-		{comma}
-	  | {id} id
-	  | {preposition} opreposition
-	  ;
-
-	opreposition =
-		{from}
-	  | {to}
-	  | {in}
-	  | {for}
-	  | {with}
-	  | {when}
-	  | {on}
-	  | {of}
-	  | {than}
-	  ;
 	
 	oartifact_declaration =
 		id [major]:number [minor]:number ocompatibility_spec*
@@ -711,6 +681,25 @@ Abstract Syntax Tree
 	  | {int}
 	  | {float}
 	  | {logical}
+	  | {separator} otype_spec_separator
+	  ;
+	
+	otype_spec_separator =
+		{comma}
+	  | {id} id
+	  | {preposition} opreposition
+	  ;
+
+	opreposition =
+		{from}
+	  | {to}
+	  | {in}
+	  | {for}
+	  | {with}
+	  | {when}
+	  | {on}
+	  | {of}
+	  | {than}
 	  ;
 	
 	otask_declaration =
