@@ -1,4 +1,4 @@
-DABL_VERSION=1.0
+DABL_VERSION=0.1
 BUILD_TAG=0
 ORG = Scaled Markets
 PRODUCT_NAME = Dabl
@@ -56,11 +56,11 @@ test_compile_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
 test_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
 
 # Intermediate artifacts:
-sourcefiles := \
-	$(src_dir)/$(package)/analysis/*.java \
-	$(src_dir)/$(package)/lexer/*.java \
-	$(src_dir)/$(package)/node/*.java \
-	$(src_dir)/$(package)/parser/*.java
+sourcefiles := $(src_dir)/scaledmarkets/dabl/main/*.java \
+	./SableCCOutput/analysis/*.java \
+	./SableCCOutput/lexer/*.java \
+	./SableCCOutput/node/*.java \
+	./SableCCOutput/parser/*.java
 classfiles := \
 	$(build_dir)/$(package)/analysis/*.class \
 	$(build_dir)/$(package)/lexer/*.class \

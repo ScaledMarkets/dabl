@@ -42,8 +42,7 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 
 To create the compiler, run the makefile in the root directory. The output of the
 build is a JAR file, `dabl.jar`, which can be included in any
-Java project. (See "Binary Download" below.) For an example of embedding the
-compiler in another project, see [TBD]().
+Java project. (See "Binary Download" below.)
 
 When the compiler processes a DABL source file, the output of the compiler is a
 Java object model. The object model is defined
@@ -56,5 +55,5 @@ Piper is a build system based on DABL.
 
 # Binary Download
 
-Binaries of the compiler JAR file can be found [TBD]().
+Binaries of the compiler JAR file can be found [here](https://github.com/Scaled-Markets/dabl/releases).
 
