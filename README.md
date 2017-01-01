@@ -41,16 +41,17 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 * A sample DABL file, [example.dabl](example.dabl).
 
 To create the compiler, run the makefile in the root directory. The output of the
-build is a JAR file, dabl.jar, which can be included in any
-Java project. For an example of embedding the compiler in another project,
-see [TBD]().
+build is a JAR file, `dabl.jar`, which can be included in any
+Java project. (See "Binary Download" below.) For an example of embedding the
+compiler in another project, see [TBD]().
 
-The output of the compiler is a Java object model. The object model is defined
+When the compiler processes a DABL source file, the output of the compiler is a
+Java object model. The object model is defined
 by the Abstract Syntax Tree at the end of the [dabl.sablecc](dabl.sablecc)
 grammar file. The object
 model can be accessed at runtime; thus, one can build a tool that compiles DABL
 files and then operates on the resulting object model. For an example
-of accessing the object model, see [TBD]().
+of accessing the object model, see the [piper project](https://github.com/Scaled-Markets/piper).
 
 See also the companion project [piper](https://github.com/Scaled-Markets/piper),
 which is a build system based on DABL.
