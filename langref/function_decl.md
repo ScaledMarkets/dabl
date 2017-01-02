@@ -32,3 +32,9 @@ A function declaration has the following syntax:
 </dd>
 </dl>
 
+## Example
+
+```
+function sign string string binds to groovy method
+    com.scaledmarkets.utils.Signature.sign returns array of byte
+```
