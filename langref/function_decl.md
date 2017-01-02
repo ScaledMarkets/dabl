@@ -35,6 +35,6 @@ A function declaration has the following syntax:
 ## Example
 
 ```
-function sign string string binds to groovy method
+function sign string, string binds to groovy method
     com.scaledmarkets.utils.Signature.sign returns array of byte
 ```
