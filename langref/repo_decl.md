@@ -18,6 +18,7 @@ A repo declaration has the form,
 
 <dl>
 <dd><code>repo</code> <i>name</i> <code>type</code> <i>repo_type</i>
-	[<i>tcp_scheme</i>] <i>repo-path</i> [<i>userid password</i>]
+	[<code>scheme</code> <i>tcp_scheme</i>] <code>path</code> <i>repo-path</i>
+	[<code>userid</code> <i>userid</i>] [<code>password</code> <i>password</i>]
 </dd>
 </dl>
