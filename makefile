@@ -9,6 +9,7 @@ include makefile.inc
 
 ################################################################################
 # Tasks
+.PHONY: all manifest config parser jar compile dist check runsonar clean info
 
 all: test dist
 

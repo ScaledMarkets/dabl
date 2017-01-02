@@ -23,9 +23,16 @@ import java.util.LinkedList;
 public class Dabl
 {
 	boolean print = false;
-	boolean analyzeOnly = false;
 	boolean printTrace = false;
-	String filename = null;
+	Reader reader = null;
+	
+	public Dabl(boolean print, boolean printTrace, Reader reader) {
+		
+	}
+	
+	protected Dabl() {
+		
+	}
 	
 	/**
 	 Command line program.
@@ -33,7 +40,7 @@ public class Dabl
 	public static void main(String[] args) throws Exception {
 		
 		Dabl dabl = new Dabl();
-		
+
 		int argno = 0;
 		for (;;)
 		{
@@ -45,7 +52,6 @@ public class Dabl
 				return;
 			}
 			else if (arg.equals("-p") || arg.equals("--print")) dabl.print = true;
-			else if (arg.equals("-a") || arg.equals("--analyzeonly")) dabl.analyzeOnly = true;
 			else if (arg.equals("-t") || arg.equals("--trace")) dabl.printTrace = true;
 			else if (arg.startsWith("-"))
 			{
@@ -59,11 +65,11 @@ public class Dabl
 					System.out.println("Filename specified a second time: " + arg);
 					return;
 				}
-				dabl.filename = arg;
+				dabl.reader = new FileReader(arg);
 			}
 			argno++;
 		}
-		
+				
 		try { dabl.process(); }
 		catch (Exception ex)
 		{
@@ -79,7 +85,7 @@ public class Dabl
 	 */
 	public void process() throws Exception {
 		
-		if (filename == null)
+		if (reader == null)
 		{
 			displayInstructions();
 			return;
@@ -87,7 +93,7 @@ public class Dabl
 		
 		....Need to insert template processor here
 		
-		Lexer lexer = new Lexer(new PushbackReader(new FileReader(filename)));
+		Lexer lexer = new Lexer(new PushbackReader(this.reader));
 
 		// Parse the DABL file.
 		Parser parser = new Parser(lexer);
@@ -110,20 +116,14 @@ public class Dabl
 		// in the return value of a function call. Prepositions that are defined in
 		// function declarations are also recognized during this phase.
 		ast.apply(new Elaborator(state));
-		
-		if (analyzeOnly) return;
-		
-		// Perform actions defined by the dabl file.
-		ast.apply(new Executor(state));
 	}
 	
 	static void displayInstructions()
 	{
-		System.out.println("Dabl version " + Config.DeclVersion + ". Usage:\n" +
+		System.out.println("Dabl version " + Config.DablVersion + ". Usage:\n" +
 			"\tjava -jar dabl.jar [options] <filename>,\n" +
 			"\t\twhere options can be\n" +
 			"\t\t\t-p or --print (print the AST)\n" +
-			"\t\t\t-a or --analyzeonly\n" +
 			"\t\t\t-t or --trace (print stack trace instead of just error msg)\n" +
 			"\t\t\t-h or --help"
 			);

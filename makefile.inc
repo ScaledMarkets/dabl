@@ -1,3 +1,5 @@
+# Environment configurations for makefile.
+
 DABL_VERSION=0.1
 BUILD_TAG=0
 ORG = Scaled Markets
