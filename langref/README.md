@@ -83,6 +83,22 @@ refers to an environment variable named "PATH":
 <dd><code>$PATH</code></dd>
 </dl>
 
+## Identifiers
+
+A DABL identifier is a name that is declared within a DABL file. Identifiers may
+consist of Unicode characters within the range
+
+```
+a-z
+A-Z
+0-9
+_ (underscore)
+- (hyphen)
+```
+
+of the Latin-1 character set, and must
+not begin with a number.
+
 ## Processing Phases
 
 A DABL file is processed in the following phases:
