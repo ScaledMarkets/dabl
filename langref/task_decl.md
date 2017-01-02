@@ -17,8 +17,8 @@ when inputs are newer than outputs
 
 A task declaration has the following syntax:
 
-  [`public`] `task` *name* [when_clause](when_clause.md)
-  	[input_set](input_set.md) [output_set](output_set.md)
+  [`public`] `task` *name* [ [when_clause](when_clause.md) ]
+  	[ [input_set](input_set.md) ] [ [output_set](output_set.md) ]
   	[procedural_stmts](procedural_stmt.md)...]
 
 ## Example
