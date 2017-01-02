@@ -19,7 +19,7 @@ A task declaration has the following syntax:
 
   [`public`] `task` *name* [ [when_clause](when_clause.md) ]
   	[ [input_set](input_set.md) ] [ [output_set](output_set.md) ]
-  	[procedural_stmts](procedural_stmt.md)...]
+  	[ [procedural_stmts](procedural_stmt.md)...]
 
 ## Example
 
@@ -30,6 +30,7 @@ task compileit
     outputs ./**.class, ./**.txt
     bash "
         javac $thisdir/*.java
+        "
 ```
 
 In this example,
@@ -42,4 +43,4 @@ In this example,
 timestamp than all of the files that are specified by the output set.
 * When the task is invoked, the bash command will be performed, after the value
 of $thisdir has been substituted. ($thisdir evaluates to the directory in which
-the script exists.)
+the DABL script exists.)
