@@ -11,3 +11,13 @@ connect to the repository, including specifying a protocol (e.g., HTTPS or SSH)
 and credentials (if any). Normally, credentials
 would be specified in a DABL file using environment variables, so that they are
 not hard-coded into the file.
+
+## Syntax
+
+A repo declaration has the form,
+
+<dl>
+<dd><code>repo</code> <i>name</i> <code>type</code> <i>repo_type</i>
+	[<i>tcp_scheme</i>] <i>repo-path</i> [<i>userid password</i>]
+</dd>
+</dl>
