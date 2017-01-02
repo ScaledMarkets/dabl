@@ -10,7 +10,7 @@ tool could attempt to verify the assertions.
 
 ## Syntax
 
-`artifact` *Id* : *expression*.*expression* *artifact-statements*
+`artifact` *Id* : *number*.*number* *artifact-statements*
 
 The Id is the name that will be assigned to the artifact. The two expressions
 are the major and minor version numbers, respectively. The artifact-statements
