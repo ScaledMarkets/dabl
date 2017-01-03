@@ -94,11 +94,9 @@ a-z
 A-Z
 0-9
 _ (underscore)
-- (hyphen)
 ```
 
-of the Latin-1 character set, and must
-not begin with a number.
+of the Latin-1 character set, and must not begin with a number.
 
 ## Processing Phases
 

@@ -66,7 +66,7 @@ Tokens
 	number = digit+;
 	float_number = digit* per digit+;
 	whitespace = (blank)+;
-	id = letter ( letter | digit )*;
+	id = ( letter | underscore ) ( letter | digit | underscore )*;
 	non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
 	string = quote [ any_character - quote ]* quote;
 	string2 = triplequote any_character* triplequote;
