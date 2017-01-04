@@ -19,7 +19,8 @@ where
 <dd><i>variable</i> is an optional variable that is defined by the statement,</dd>
 <dd><i>function-name</i> is the name of the function, as declared in a
 [function declaration](function_decl.md), and</dd>
-<dd><i>args</i> is a sequence of zero or more argument values.</dd>
+<dd><i>args</i> is a sequence of zero or more argument values.
+Arguments are <i>not</i> separated by commas.</dd>
 </dl>
 
 Argument values can be any [expression](expression.md), but may not contain a function call. A
