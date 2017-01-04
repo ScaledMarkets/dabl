@@ -26,24 +26,13 @@ Arguments are <i>not</i> separated by commas.</dd>
 Argument values can be any [expression](expression.md), but may not contain a function call. A
 function call can only appear in a function call statement.
 
-Prepositional words can be inserted into the sequence of arguments, to provide
-clarity in the purpose of the arguments. For example, the <code>post</code> function takes
-two arguments, but can be called this way:
+A [function declaration](function_decl.md) can specify that certain prepositional
+words appear in an argument list. In that case, a function call must specify
+those same prepositions, in the same positions. For example,
+the <code>post</code> function takes two arguments, but must be called this way:
 
 ```
 post abc.jar to my_maven/myproject/abc.jar
 ```
 
 In this example, the word `to` is a preposition that is ignored by the DABL parser.
-The set of ignored preopsitions is as follows:
-
-* from
-* to
-* in
-* for
-* with
-* when
-* on
-* of
-* than
-
