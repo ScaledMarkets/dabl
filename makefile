@@ -82,7 +82,7 @@ check:
 # Compile the test source files.
 test_compile:
 	javac -cp $(CUCUMBER_CLASSPATH) -d $(test_build_dir) \
-		$(test_src_dir)/steps/$(package)/*.java
+		$(test_src_dir)/steps/$(test_package)/*.java
 
 # Run Cucumber tests.
 test:

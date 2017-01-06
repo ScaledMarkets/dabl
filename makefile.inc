@@ -7,7 +7,9 @@ PRODUCT_NAME = Dabl
 JAR_NAME = dabl
 
 package=scaledmarkets/dabl
+test_package=scaledmarkets/dabl/test
 package_name = scaledmarkets.dabl
+test_package_name = scaledmarkets.dabl.test
 main_class := $(package_name).main.Dabl
 
 # Configurations particular to why this build is being run:

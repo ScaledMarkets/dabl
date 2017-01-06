@@ -1,13 +1,9 @@
-package test;
+package scaledmarkets.dabl.test;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.util.stream.Stream;
-
-import org.json.*;
-// https://github.com/stleary/JSON-java
-// http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.json%22
 
 public class Utils {
 	
