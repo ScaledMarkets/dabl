@@ -9,7 +9,6 @@ JAR_NAME = dabl
 package=scaledmarkets/dabl
 package_name = scaledmarkets.dabl
 main_class := $(package_name).main.Dabl
-test_package_name = scaledmarkets.dabl.test
 
 # Configurations particular to why this build is being run:
 maxerrs=5
@@ -37,10 +36,9 @@ testsourcefiles := $(test_src_dir)/$(test_package)/*.java
 testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/gen/*.class
 
 # Locations of tools:
-SONAR_RUNNER=/Users/cliffordberg/Library/sonar-runner-2.4/bin/sonar-runner
+SONAR_RUNNER=$(Userdir)/Library/sonar-runner-2.4/bin/sonar-runner
 JAVA_HOME:=$(shell /usr/libexec/java_home)
 #JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home
-EC2_HOME:=$(Userdir)/Library/ec2-api-tools-1.7.4.0
 Library:=$(Userdir)/Library
 sable:=$(Library)/sablecc-3.2
 sable_out_dir:=$(CurDir)/SableCCOutput
@@ -50,6 +48,10 @@ log4japi:=$(Userdir)/Library/apache-log4j-2.0.2-bin/log4j-1.2-api-2.0.2.jar
 commonslogging12:=$(Userdir)/Library/commons-logging-1.2/commons-logging-1.2.jar
 #jacksondir:=$(Userdir)/Library/jackson-2.5.4
 #PATH:=$(PATH):$(ectools)
+CUCUMBER_CLASSPATH:=$(Userdir)/Library/Cucumber/cucumber-core-1.1.8.jar
+CUCUMBER_CLASSPATH:=$(CUCUMBER_CLASSPATH):$(Userdir)/Library/Cucumber/cucumber-java-1.1.8.jar
+CUCUMBER_CLASSPATH:=$(CUCUMBER_CLASSPATH):$(Userdir)/Library/Cucumber/cucumber-jvm-deps-1.0.3.jar
+CUCUMBER_CLASSPATH:=$(CUCUMBER_CLASSPATH):$(Userdir)/Library/Cucumber/gherkin-2.12.2.jar
 
 # Java classpaths:
 buildcp:=$(build_dir)

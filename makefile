@@ -57,11 +57,6 @@ $(test_build_dir):
 $(jar_dir):
 	mkdir $(jar_dir)
 
-# Compile the test source files.
-$(testclassfiles): $(test_build_dir) $(testsourcefiles)
-	$(JAVAC) -cp $(test_compile_cp) -d $(test_build_dir) $(test_src_dir)/$(test_package)/gen/*.java
-	$(JAVAC) -cp $(test_compile_cp) -d $(test_build_dir) $(test_src_dir)/$(test_package)/*.java
-
 # Package application into a JAR file.
 jar: $(jar_dir)/$(JAR_NAME).jar
 
@@ -83,6 +78,18 @@ dist: $(jar_dir)/$(JAR_NAME).jar
 # can recognize the language.
 check:
 	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.main.Dabl --analyzeonly example.dabl
+
+# Compile the test source files.
+test_compile:
+	javac -cp $(CUCUMBER_CLASSPATH) -d $(test_build_dir) \
+		$(test_src_dir)/steps/$(package)/*.java
+
+# Run Cucumber tests.
+test:
+	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
+		cucumber.api.cli.Main \
+		--glue test $(test_src_dir)/features \
+		--tags @done
 
 # Perform code quality scans.
 runsonar:
