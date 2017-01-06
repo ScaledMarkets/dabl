@@ -14,6 +14,7 @@ public class CompilerState
 	List<NameScope> scopeStack = new LinkedList<NameScope>();
 	NameScope globalScope;
 	URLClassLoader providerClassLoader;
+	Start ast;
 
 	public CompilerState()
 	{

@@ -83,39 +83,36 @@ public class Dabl
 	 * The processing phases are described here:
 	 	https://github.com/Scaled-Markets/dabl/tree/master/langref#processing-phases
 	 */
-	public void process() throws Exception {
+	public CompilerState process() throws Exception {
 		
-		if (reader == null)
+		if (this.reader == null)
 		{
 			displayInstructions();
 			return;
 		}
 		
-		....Need to insert template processor here
+		// ....Need to insert template processor here
 		
 		Lexer lexer = new Lexer(new PushbackReader(this.reader));
-
-		// Parse the DABL file.
+		CompilerState state = new CompilerState();
 		Parser parser = new Parser(lexer);
-		Start ast = parser.parse();
+		state.ast = parser.parse();
 		System.out.println("Syntax is correct");
 		
 		if (print) PrettyPrint.pp(ast);
 		
-		CompilerState state = new CompilerState();
 		
-		// Perform identifier matching and link things up.
-		ast.apply(new Parser(state));
-		
-		// Process escape characters in string values.
-		....
+		// Perform identifier matching and ink things up.
+		state.ast.apply(new LanguageAnalyzer(state, providerPaths));
 		
 		// Expressions are evaluated where they appear; if an unquoted string
 		// expression evaluates to a variable reference, then the variable's value
 		// is used instead of the string. Note also that variables are only defined
 		// in the return value of a function call. Prepositions that are defined in
 		// function declarations are also recognized during this phase.
-		ast.apply(new Elaborator(state));
+		state.ast.apply(new Elaborator(state));
+		
+		return state;
 	}
 	
 	static void displayInstructions()
