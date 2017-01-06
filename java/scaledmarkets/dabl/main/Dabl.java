@@ -5,11 +5,11 @@ import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
 
-import scaledmarkets.dabl.gen.*;
 import scaledmarkets.dabl.Config;
 
 import sablecc.PrettyPrint;
 
+import java.io.Reader;
 import java.io.PushbackReader;
 import java.io.FileReader;
 import java.util.Hashtable;
@@ -27,7 +27,9 @@ public class Dabl
 	Reader reader = null;
 	
 	public Dabl(boolean print, boolean printTrace, Reader reader) {
-		
+		this.print = print;
+		this.printTrace = printTrace;
+		this.reader = reader;
 	}
 	
 	protected Dabl() {
@@ -40,6 +42,7 @@ public class Dabl
 	public static void main(String[] args) throws Exception {
 		
 		Dabl dabl = new Dabl();
+		String filename = null;
 
 		int argno = 0;
 		for (;;)
@@ -66,6 +69,7 @@ public class Dabl
 					return;
 				}
 				dabl.reader = new FileReader(arg);
+				filename = arg;
 			}
 			argno++;
 		}
@@ -73,7 +77,7 @@ public class Dabl
 		try { dabl.process(); }
 		catch (Exception ex)
 		{
-			if (printTrace) ex.printStackTrace();
+			if (dabl.printTrace) ex.printStackTrace();
 			else System.out.println(ex.getMessage());
 		}
 	}
@@ -88,29 +92,29 @@ public class Dabl
 		if (this.reader == null)
 		{
 			displayInstructions();
-			return;
+			return null;
 		}
 		
 		// ....Need to insert template processor here
 		
+		// Parse the input and generate an AST.
 		Lexer lexer = new Lexer(new PushbackReader(this.reader));
 		CompilerState state = new CompilerState();
 		Parser parser = new Parser(lexer);
 		state.ast = parser.parse();
 		System.out.println("Syntax is correct");
 		
-		if (print) PrettyPrint.pp(ast);
-		
+		if (print) PrettyPrint.pp(state.ast);
 		
 		// Perform identifier matching and ink things up.
-		state.ast.apply(new LanguageAnalyzer(state, providerPaths));
+		state.ast.apply(new LanguageAnalyzer(state));
 		
 		// Expressions are evaluated where they appear; if an unquoted string
 		// expression evaluates to a variable reference, then the variable's value
 		// is used instead of the string. Note also that variables are only defined
 		// in the return value of a function call. Prepositions that are defined in
 		// function declarations are also recognized during this phase.
-		state.ast.apply(new Elaborator(state));
+		//state.ast.apply(new Elaborator(state));
 		
 		return state;
 	}

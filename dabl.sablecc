@@ -157,7 +157,7 @@ Productions
 
 	specification {-> onamespace} =
 		{namespace_decl} namespace_decl spec_elt_seq
-											{-> New onamespace.namespace_elts(
+											{-> New onamespace(
 													[namespace_decl.id],
 													[spec_elt_seq.onamespace_elt])};
 	
@@ -614,7 +614,7 @@ Productions
 Abstract Syntax Tree
 
 	onamespace =
-		{namespace_elts} [path]:id* onamespace_elt*;
+		[path]:id* onamespace_elt*;
 	
 	onamespace_elt =
 		{import} id*

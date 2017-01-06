@@ -32,7 +32,7 @@ build_dir=/Transient/dabl
 jar_dir = /Transient/dabl/jars
 test_src_dir := $(CurDir)/test
 test_build_dir := $(CurDir)/buildtest
-test_package = scaledmarkets/dabl/test
+test_package = $(package)/test
 testsourcefiles := $(test_src_dir)/$(test_package)/*.java
 testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/gen/*.class
 
@@ -58,12 +58,13 @@ test_compile_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
 test_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
 
 # Intermediate artifacts:
-sourcefiles := $(src_dir)/scaledmarkets/dabl/main/*.java \
+sourcefiles := $(src_dir)/$(package)/main/*.java \
 	./SableCCOutput/analysis/*.java \
 	./SableCCOutput/lexer/*.java \
 	./SableCCOutput/node/*.java \
 	./SableCCOutput/parser/*.java
 classfiles := \
+	$(build_dir)/$(package)/main/*.class \
 	$(build_dir)/$(package)/analysis/*.class \
 	$(build_dir)/$(package)/lexer/*.class \
 	$(build_dir)/$(package)/node/*.class \

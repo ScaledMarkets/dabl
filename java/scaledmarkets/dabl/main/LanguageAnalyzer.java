@@ -25,15 +25,52 @@ import java.lang.reflect.Parameter;
 /** Perform symbol resolution and annotation. */
 public class LanguageAnalyzer extends DablBaseAdapter
 {
-	public LanguageAnalyzer(CompilerState state, List<String> providerPaths)
-	{
+	public LanguageAnalyzer(CompilerState state) {
 		super(state);
 		
-		
-		//getGlobalScope().getSymbolTable().print();
+		state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
 	}
 	
+	/*
+		Only onamespace and otask_declaration define name scopes.
+	 */
 	
-	/* Perform final cleanup. */
+	public void inAOnamespace(AOnamespace node) {
+		LinkedList<TId> path = node.getPath();
+		String name = createNameFromPath(path);
+		pushNameScope(new NameScope(name, node, null));
+	}
 	
+	public void outAOnamespace(AOnamespace node) {
+		popNameScope();
+	}
+	
+	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
+		
+		LinkedList<TId> importedNamespacePath = node.getId();
+		
+		//....
+		
+		
+		//state.globalScope.getSymbolTable().appendTable(....);
+	}
+	
+	public void inAOtaskDeclaration(AOtaskDeclaration node) {
+		//pushNameScope(new NameScope(....name, node, ));
+	}
+	
+	public void outAOtaskDeclaration(AOtaskDeclaration node) {
+		popNameScope();
+	}
+	
+	String createNameFromPath(LinkedList<TId> path) {
+		String name = "";
+		boolean firstTime = true;
+		for (TId id : path) {
+			if (firstTime) firstTime = false;
+			else name = name + ".";
+			name = name + id.getText();
+		}
+		return name;
+	}
 }

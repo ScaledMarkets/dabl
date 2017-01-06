@@ -91,7 +91,7 @@ public abstract class IdentHandler
 	{
 		TId id = path.get(0);
 		throw new RuntimeException(
-			"Unrecognized identifier: " + DeclBaseAdapter.pathToString(path) + 
+			"Unrecognized identifier: " + DablBaseAdapter.pathToString(path) + 
 			", at line " + id.getLine() + ", col " + id.getPos());
 	}
 }

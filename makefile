@@ -70,7 +70,11 @@ $(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
 	rm Manifest
 
 # Define the 'compile' target so that we can reference it in .DEFAULT_GOAL.
-compile: $(classfiles)
+compile:
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
+		$(src_dir)/sablecc/*.java \
+		$(src_dir)/$(package)/*.java \
+		$(src_dir)/$(package)/main/*.java
 
 # Define 'dist' target so we can reference it in 'all' target.
 dist: $(jar_dir)/$(JAR_NAME).jar

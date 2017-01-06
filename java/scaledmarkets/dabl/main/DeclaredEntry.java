@@ -1,6 +1,6 @@
 package scaledmarkets.dabl.main;
 
-import scaledmarkets.decl.node.*;
+import scaledmarkets.dabl.node.*;
 
 public class DeclaredEntry extends SymbolEntry
 {
