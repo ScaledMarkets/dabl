@@ -39,7 +39,7 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 	be called via its API, so that the compiler can be embedded in other
 	Java applications. If called from the command line, the compiler merely
 	parses the input file. However, if a Java program instantiates a
-	scaledmarkets.dabl.main.Dabl object and calls the process method, an object
+	`scaledmarkets.dabl.main.Dabl` object and calls the `process` method, an object
 	model is returned that can be used by a tool to act on the compiled input.
 * A sample DABL file, [example.dabl](example.dabl).
 
