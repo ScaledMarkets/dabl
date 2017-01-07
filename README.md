@@ -59,5 +59,5 @@ Piper is a build system based on DABL.
 
 # Binary Download
 
-Binaries of the compiler JAR file can be found [here](https://github.com/Scaled-Markets/dabl/releases).
+Binaries of the compiler JAR file and Javadocs can be found [here](https://github.com/Scaled-Markets/dabl/releases).
 
