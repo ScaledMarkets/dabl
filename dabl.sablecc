@@ -62,20 +62,6 @@ Tokens
 	right_brack = ']';
 	per_char = per;
 	
-	// Variable Length Sequences:
-	number = digit+;
-	float_number = digit* per digit+;
-	whitespace = (blank)+;
-	id = ( letter | underscore ) ( letter | digit | underscore )*;
-	non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
-	string = quote [ any_character - quote ]* quote;
-	string2 = triplequote any_character* triplequote;
-	//string2 = triplequote [ any_character - triplequote ]* triplequote;
-	slashslashcomment = slashslash [ any_character - nl ]* nl;
-	slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
-	slashstarcomment = slashstar any_character* starslash;
-	slashslashstarcomment = slashslashstar any_character* starslashslash;
-	
 	// Propositional Keywords:
 	from = 'from';
 	to = 'to';
@@ -140,6 +126,20 @@ Tokens
 	userid = 'userid';
 	password = 'password';
 
+	// Variable Length Sequences:
+	number = digit+;
+	float_number = digit* per digit+;
+	whitespace = (blank | cr | nl | tab )+;
+	id = ( letter | underscore ) ( letter | digit | underscore )*;
+	//non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
+	string = quote [ any_character - quote ]* quote;
+	string2 = triplequote any_character* triplequote;
+	//string2 = triplequote [ any_character - triplequote ]* triplequote;
+	slashslashcomment = slashslash [ any_character - nl ]* nl;
+	slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
+	slashstarcomment = slashstar any_character* starslash;
+	slashslashstarcomment = slashslashstar any_character* starslashslash;
+	
 
 Ignored Tokens
 
@@ -601,10 +601,10 @@ Productions
 	  ;
 	
 	string_literal {-> ostring_literal} =
-		{non_ws} non_ws_char_seq  // this can be a path that references a variable
-											{-> New ostring_literal.charseq(non_ws_char_seq)}
-	  | {str} string						{-> New ostring_literal.string(string)}
+		{str} string						{-> New ostring_literal.string(string)}
 	  | {str2} string2						{-> New ostring_literal.string2(string2)}
+//	  | {non_ws} non_ws_char_seq  // this can be a path that references a variable
+//											{-> New ostring_literal.charseq(non_ws_char_seq)}
 	  ;
 	
 
@@ -782,9 +782,9 @@ Abstract Syntax Tree
 	  ;
 	
 	ostring_literal =
-		{charseq} non_ws_char_seq
-	  | {string} string
+		{string} string
 	  | {string2} string2
+//	  | {charseq} non_ws_char_seq
 	  ;
 	
 	onumeric_literal =

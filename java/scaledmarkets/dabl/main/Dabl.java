@@ -68,8 +68,9 @@ public class Dabl
 					System.out.println("Filename specified a second time: " + arg);
 					return;
 				}
-				dabl.reader = new FileReader(arg);
 				filename = arg;
+				dabl.reader = new FileReader(arg);
+				System.out.println("Processing file " + filename);
 			}
 			argno++;
 		}
@@ -106,15 +107,11 @@ public class Dabl
 		
 		if (print) PrettyPrint.pp(state.ast);
 		
-		// Perform identifier matching and ink things up.
+		// Analysis - Identifiers are resolved, matching them up with their
+		// declarations. Expressions may be partially evaluated, where possible.
+		// Values that depend on the DABL file context (e.g., its location on a
+		// file system) are elaborated.
 		state.ast.apply(new LanguageAnalyzer(state));
-		
-		// Expressions are evaluated where they appear; if an unquoted string
-		// expression evaluates to a variable reference, then the variable's value
-		// is used instead of the string. Note also that variables are only defined
-		// in the return value of a function call. Prepositions that are defined in
-		// function declarations are also recognized during this phase.
-		//state.ast.apply(new Elaborator(state));
 		
 		return state;
 	}

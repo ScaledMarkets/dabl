@@ -31,8 +31,19 @@ config:
 	echo "}" >> $(src_dir)/$(package)/Config.java
 
 # Generate the DABL parser.
-parser: dabl.sablecc $(sable_out_dir) # Generate dabl compiler tables and classes.
+# Generates dabl compiler tables and classes.
+parser: dabl.sablecc $(sable_out_dir) $(build_dir)
 	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_out_dir) --no-inline dabl.sablecc
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
+		$(sable_out_dir)/$(package)/node/*.java \
+		$(sable_out_dir)/$(package)/lexer/*.java \
+		$(sable_out_dir)/$(package)/analysis/*.java \
+		$(sable_out_dir)/$(package)/parser/*.java
+	cp $(sable_out_dir)/$(package)/lexer/lexer.dat $(build_dir)/$(package)/lexer
+	cp $(sable_out_dir)/$(package)/parser/parser.dat $(build_dir)/$(package)/parser
+
+# Compile the generated code.
+compile_parser:
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
 		$(sable_out_dir)/$(package)/node/*.java \
 		$(sable_out_dir)/$(package)/lexer/*.java \
@@ -77,7 +88,8 @@ dist: $(jar_dir)/$(JAR_NAME).jar
 # Run parser to scan a sample input file. This is for checking that the parser
 # can recognize the language.
 check:
-	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.main.Dabl --analyzeonly example.dabl
+	echo "\n         namespace simple import abc      \n" > simple.dabl
+	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.main.Dabl -t simple.dabl
 
 # Compile the test source files.
 test_compile:

@@ -84,6 +84,13 @@ refers to an environment variable named "PATH":
 <dd><code>$PATH</code></dd>
 </dl>
 
+One can also reference an environment variable by enclosing it in curly braces,
+prefixed by a dollar sign:
+
+<dl>
+<dd><code>${PATH}</code></dd>
+</dl>
+
 ## Identifiers
 
 A DABL identifier is a name that is declared within a DABL file. Identifiers may
@@ -104,7 +111,9 @@ A DABL file is processed in the following phases:
 <ol>
 <li>Template - All environment variables in the file are converted to
 	their runtime values. Thus, environment variable values are bound
-	at the time that a DABL file is parsed.</li>
+	at the time that a DABL file is parsed. This is a simple token replacement
+	and is not related to the syntax of the DABL language, much like the
+	pre-processing phase in C.</li>
 <li>Parse - The output of the prior phase is parsed and an object model is created.</li>
 <li>Analysis - Identifiers are resolved, matching them up with their declarations.
 	Expressions <i>may</i> be partially evaluated, where possible. Values
