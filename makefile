@@ -118,12 +118,14 @@ javadoc: $(javadoc_dir)
 		-sourcepath $(src_dir):$(sable_out_dir) \
 		-subpackages $(package_name) \
 		-exclude $(test_package_name)
+	$(JAR) cMvf $(build_dir)/$(DOCS_ZIP_NAME).zip javadoc
 
 clean:
 	rm -r -f $(build_dir)
 	rm -r -f $(jar_dir)
 	rm -r -f $(sable_out_dir)/*
 	rm -f Manifest
+	rm -r -f $(javadoc_dir)
 
 info:
 	@echo "Makefile for $(PRODUCT_NAME)"

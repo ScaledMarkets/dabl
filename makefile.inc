@@ -5,6 +5,7 @@ BUILD_TAG=0
 ORG = Scaled Markets
 PRODUCT_NAME = Dabl
 JAR_NAME = dabl
+DOCS_ZIP_NAME = dabl-docs
 
 package=scaledmarkets/dabl
 test_package=scaledmarkets/dabl/test
