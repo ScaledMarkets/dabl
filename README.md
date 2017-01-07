@@ -16,8 +16,8 @@ A better model than current practice is needed, whereby,
 * The build language is strongly typed, in order to promote maintainability and reliability.
 * The build language uses information hiding, encapsulation, and true modularity in order to promote reuse and extensibility.
 * The build language is defined as a true language, with a normative language definition and
-	well specified syntax and semantics.
-* The build language concise but not cryptic, and encourages the definition of
+	well specified syntax and semantics (see [langref](langref)).
+* The build language is concise but not cryptic, and encourages the definition of
 	builds that are easy to read and understand.
 * The build language lends itself well to static analysis, for—say—security analysis.
 * The maintainers of the build language have a high regard for backward

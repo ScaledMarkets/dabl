@@ -43,9 +43,9 @@ or newline.
 
 ## Literal String Values
 
-A DABL string value literal does not need to be quoted unless it contains embedded whitespace.
-A quoted string literal can continue across multiple lines. For example,
-the following is a two-line string value that contains one embedded line break:
+A string literal must be delimited by double quotes, and can continue across
+multiple lines. For example, the following is a two-line string value that contains
+one embedded line break:
 
 <pre>
 "This string value contains
