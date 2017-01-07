@@ -71,7 +71,7 @@ $(jar_dir):
 # Package application into a JAR file.
 jar: $(jar_dir)/$(JAR_NAME).jar
 
-$(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
+$(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir) $(jar_dir)
 	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest -C $(build_dir) scaledmarkets
 	rm Manifest
 
@@ -92,7 +92,7 @@ check:
 	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.main.Dabl -t simple.dabl
 
 # Compile the test source files.
-test_compile:
+test_compile: $(test_build_dir)
 	javac -cp $(CUCUMBER_CLASSPATH) -d $(test_build_dir) \
 		$(test_src_dir)/steps/$(test_package)/*.java
 
@@ -106,6 +106,18 @@ test:
 # Perform code quality scans.
 runsonar:
 	$(SONAR_RUNNER)
+
+# Create the directory that will contain the javadocs.
+$(javadoc_dir):
+	mkdir $(javadoc_dir)
+
+# Generate API docs (javadocs).
+javadoc: $(javadoc_dir)
+	$(JAVADOC) -public -d $(javadoc_dir) \
+		-classpath $(build_dir) \
+		-sourcepath $(src_dir):$(sable_out_dir) \
+		-subpackages $(package_name) \
+		-exclude $(test_package_name)
 
 clean:
 	rm -r -f $(build_dir)

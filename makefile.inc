@@ -24,6 +24,7 @@ SHELL = /bin/sh
 JAVAC = javac
 JAVA = java
 JAR = jar
+JAVADOC = javadoc
 
 # Project file locations:
 CurDir := $(shell pwd)
@@ -36,6 +37,8 @@ test_build_dir := $(CurDir)/buildtest
 test_package = $(package)/test
 testsourcefiles := $(test_src_dir)/$(test_package)/*.java
 testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/gen/*.class
+sable_out_dir := $(CurDir)/SableCCOutput
+javadoc_dir := $(CurDir)/javadoc
 
 # Locations of tools:
 SONAR_RUNNER=$(Userdir)/Library/sonar-runner-2.4/bin/sonar-runner
@@ -43,7 +46,6 @@ JAVA_HOME:=$(shell /usr/libexec/java_home)
 #JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home
 Library:=$(Userdir)/Library
 sable:=$(Library)/sablecc-3.2
-sable_out_dir:=$(CurDir)/SableCCOutput
 junit_dir=Userdir/Library/JUnit
 log4jcore=:$(Userdir)/Library/apache-log4j-2.0.2-bin/log4j-core-2.0.2.jar
 log4japi:=$(Userdir)/Library/apache-log4j-2.0.2-bin/log4j-1.2-api-2.0.2.jar
