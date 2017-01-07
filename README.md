@@ -37,7 +37,10 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 	[SableCC compiler generation tool](http://www.sablecc.org/).
 	The compiler is a Java package, which has a main method, but it can also
 	be called via its API, so that the compiler can be embedded in other
-	Java applications.
+	Java applications. If called from the command line, the compiler merely
+	parses the input file. However, if a Java program instantiates a
+	scaledmarkets.dabl.main.Dabl object and calls the process method, an object
+	model is returned that can be used by a tool to act on the compiled input.
 * A sample DABL file, [example.dabl](example.dabl).
 
 To create the compiler, run the makefile in the root directory. The output of the
