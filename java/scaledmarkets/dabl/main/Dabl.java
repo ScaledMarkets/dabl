@@ -26,6 +26,10 @@ public class Dabl
 	boolean printTrace = false;
 	Reader reader = null;
 	
+	/**
+	 * Applications that embed a DABL compiler should instantiate a Dabl instance
+	 * using this constructor.
+	 */
 	public Dabl(boolean print, boolean printTrace, Reader reader) {
 		this.print = print;
 		this.printTrace = printTrace;
@@ -33,7 +37,6 @@ public class Dabl
 	}
 	
 	protected Dabl() {
-		
 	}
 	
 	/**
