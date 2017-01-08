@@ -9,11 +9,12 @@ It uses the following:
 <dl>
 <dd>Compiler state - </dd>
 
+<dd>
 <dl>
 <dd>scopeStack - </dd>
 <dd>in - </dd>
 <dd>out - </dd>
 </dl>
-
+</dd>
 
 </dl>
