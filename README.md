@@ -57,6 +57,10 @@ files and then operates on the resulting object model. For an example
 of accessing the object model, see the [piper project](https://github.com/Scaled-Markets/piper).
 Piper is a build system based on DABL.
 
+# Compiler Design
+
+See dabl/main.
+
 # Binary Download
 
 Binaries of the compiler JAR file and Javadocs can be found [here](https://github.com/Scaled-Markets/dabl/releases).
