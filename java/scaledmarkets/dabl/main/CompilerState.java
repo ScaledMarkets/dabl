@@ -9,12 +9,11 @@ import java.net.URLClassLoader;
 
 public class CompilerState
 {
+	Start ast;
+	NameScope globalScope;
+	List<NameScope> scopeStack = new LinkedList<NameScope>();
 	Hashtable<Node,Object> in = new Hashtable<Node,Object>();
 	Hashtable<Node,Object> out = new Hashtable<Node,Object>();
-	List<NameScope> scopeStack = new LinkedList<NameScope>();
-	NameScope globalScope;
-	URLClassLoader providerClassLoader;
-	Start ast;
 
 	public CompilerState()
 	{
