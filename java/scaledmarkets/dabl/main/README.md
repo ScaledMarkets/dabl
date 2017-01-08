@@ -7,13 +7,13 @@ The LanguageAnalyzer class performs the Analysis processing phase
 It uses the following:
 
 <dl>
-	<dd>`Compiler state` - </dd>
+	<dd><code>Compiler state</code> - </dd>
 	<dd><dl>
-		<dd>`ast` - </dd>
-		<dd>globalScope - </dd>
-		<dd>scopeStack - </dd>
-		<dd>in - </dd>
-		<dd>out - </dd>
+		<dd><code>ast</code> - </dd>
+		<dd><code>globalScope</code> - </dd>
+		<dd><code>scopeStack</code> - </dd>
+		<dd><code>in</code> - </dd>
+		<dd><code>out</code> - </dd>
 	</dl></dd>
 	
 	<dd>NameScope</dd>
@@ -21,38 +21,38 @@ It uses the following:
 	<dd>DablBaseAdapter (extends DepthFirstAdapter) - Base class for LanguageAnalyzer.
 		Key methods include:
 		<dl>
-		<dd>addSymbolEntry(SymbolEntry entry, TId id, NameScope enclosingScope) -
+		<dd><code>addSymbolEntry(SymbolEntry entry, TId id, NameScope enclosingScope)</code> -
 			Adds the specified symbol table entry for the specified Id to
 			the specified name scope.</dd>
-		<dd>createNameScope(Node node) - Create a new NameScope within the current
+		<dd><code>createNameScope(Node node)</code> - Create a new NameScope within the current
 			NameScope, push the new NameScope on the scope stack, and annotate
 			the specified Node with the new NameScope.</dd>
-		<dd>setExprAnnotation(POexpr node, Object value) - Annotate the specified
+		<dd><code>setExprAnnotation(POexpr node, Object value)</code> - Annotate the specified
 			POExpr node with a new ExprAnnotation.</dd>
-		<dd>setExprRefAnnotation(POexpr node, Object value, SymbolEntry entry) - 
+		<dd><code>setExprRefAnnotation(POexpr node, Object value, SymbolEntry entry)</code> - 
 			Annotate the specified POexpr node with a new ExprRefAnnotation.</dd>
 		</dl>
 		
-	<dd>SymbolTable (a HashMap<String, SymbolEntry>) - Self explanatory.</dd>
+	<dd><code>SymbolTable</code> (a <code>HashMap<String, SymbolEntry>)</code> - Self explanatory.</dd>
 	
-	<dd>SymbolEntry (abstract) - All symbol table entries are of a derived type.</dd>
+	<dd><code>SymbolEntry</code> (abstract) - All symbol table entries are of a derived type.</dd>
 	
-	<dd>DeclaredEntry (extends SymbolEntry) - A symbol that is defined in a declaration.</dd>
+	<dd><code>DeclaredEntry</code> (extends <code>SymbolEntry</code>) - A symbol that is defined in a declaration.</dd>
 	
-	<dd>NameScopeEntry (extends DeclaredEntry) - A DeclaredEntry that defines
+	<dd><code>NameScopeEntry</code> (extends <code>DeclaredEntry</code>) - A <code>DeclaredEntry</code> that defines
 		a lexical name scope.</dd>
 	
-	<dd>Annotation (abstract) - Base type for all AST node annotations.</dd>
+	<dd><code>Annotation</code> (abstract) - Base type for all AST node annotations.</dd>
 	
-	<dd>NameScope (extends Annotation) - All Axxx classes that define a lexical scope
-		should be annotated with this. A NameScope contains a SymbolTable.</dd>
+	<dd><code>NameScope</code> (extends <code>Annotation</code>) - All Axxx classes that define a lexical scope
+		should be annotated with this. A <code>NameScope</code> contains a <code>SymbolTable</code>.</dd>
 	
-	<dd>ExprAnnotation (extends Annotation) - An annotation for a expression node.</dd>
+	<dd><code>ExprAnnotation</code> (extends <code>Annotation</code>) - An annotation for a expression node.</dd>
 	
-	<dd>ExprRefAnnotation (extends ExprAnnotation) - For expressions whose value
+	<dd><code>ExprRefAnnotation</code> (extends <code>ExprAnnotation</code>) - For expressions whose value
 		is defined in the declaration of a symbol.</dd>
 	
-	<dd>IdentHandler - An IdentHandler is attached to enclosing scopes when a symbol
+	<dd>I<code>dentHandler</code> - An <code>IdentHandler</code> is attached to enclosing scopes when a symbol
 		is not recognized but might be defined later in an enclosing scope. Later,
 		when the symbol is defined, attached Handlers are checked to see if any
 		refer to the symbol. If so, the Handler's resolveRetroactively method
