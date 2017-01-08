@@ -7,9 +7,9 @@ The LanguageAnalyzer class performs the Analysis processing phase
 It uses the following:
 
 <dl>
-	<dd>Compiler state - </dd>
+	<dd>`Compiler state` - </dd>
 	<dd><dl>
-		<dd>ast - </dd>
+		<dd>`ast` - </dd>
 		<dd>globalScope - </dd>
 		<dd>scopeStack - </dd>
 		<dd>in - </dd>
