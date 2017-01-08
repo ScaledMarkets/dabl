@@ -59,7 +59,7 @@ Piper is a build system based on DABL.
 
 # Compiler Design
 
-See dabl/main.
+See [dabl/main](dabl/main).
 
 # Binary Download
 
