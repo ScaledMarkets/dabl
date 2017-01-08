@@ -7,6 +7,7 @@ The LanguageAnalyzer class performs the Analysis processing phase
 It uses the following:
 
 * Compiler state -
+
 ** scopeStack - 
 ** in -
 ** out - 
