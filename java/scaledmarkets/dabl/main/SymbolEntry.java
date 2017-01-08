@@ -14,7 +14,7 @@ import java.util.LinkedList;
  * A symbol table entry. Each entry defines a symbol (identifer) that was declared
  * in the decl file.
  */
-public class SymbolEntry
+public abstract class SymbolEntry
 {
 	private TId id;
 	private NameScope enclosingScope;

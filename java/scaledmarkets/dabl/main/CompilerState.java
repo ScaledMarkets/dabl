@@ -12,7 +12,17 @@ public class CompilerState
 	Start ast;
 	NameScope globalScope;
 	List<NameScope> scopeStack = new LinkedList<NameScope>();
+	
+	/**
+	 * AST Node attributes that are set on entry to the Node type's analysis
+	 * method.
+	 */
 	Hashtable<Node,Object> in = new Hashtable<Node,Object>();
+	
+	/**
+	 * AST Node attributes that are set on exit from the Node type's analysis
+	 * method.
+	 */
 	Hashtable<Node,Object> out = new Hashtable<Node,Object>();
 
 	public CompilerState()
@@ -20,6 +30,4 @@ public class CompilerState
 	}
 	
 	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
-	
-	void setProviderClassLoader(URLClassLoader loader) { this.providerClassLoader = loader; }
 }

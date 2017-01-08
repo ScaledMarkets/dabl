@@ -18,14 +18,12 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	public CompilerState getState() { return state; }
 	
-	public List<IdentHandler> getIdentHandlers() { return identHandlers; }
-	
 	public void addIdentHandler(IdentHandler handler) { identHandlers.add(handler); }
 	
 	public void removeIdentHandler(IdentHandler handler) { identHandlers.remove(handler); }
 
-    public Object getIn(Node node) { return state.in.get(node); }
-
+	public List<IdentHandler> getIdentHandlers() { return identHandlers; }
+	
     public void setIn(Node node, Object o)
     {
     	if (getIn(node) != null) throw new RuntimeException(
@@ -34,7 +32,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
         else state.in.put(node, o);
     }
 
-    public Object getOut(Node node) { return state.out.get(node); }
+    public Object getIn(Node node) { return state.in.get(node); }
 
     public void setOut(Node node, Object o)
     {
@@ -45,6 +43,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
         else state.out.put(node, o);
     }
 	
+    public Object getOut(Node node) { return state.out.get(node); }
+
 	public void assertThat(boolean expr)
 	{
 		if (! expr) throw new RuntimeException("Assertion failure");
@@ -213,6 +213,9 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		return annotation;
 	}
 	
+	/**
+	 * An expression whose value is defined in the declaration of a symbol.
+	 */
 	protected ExprRefAnnotation setExprRefAnnotation(POexpr node, Object value,
 		SymbolEntry entry)
 	{

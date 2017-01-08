@@ -18,31 +18,45 @@ It uses the following:
 	
 	<dd>NameScope</dd>
 	
-	DablBaseAdapter (extends DepthFirstAdapter) - 
+	<dd>DablBaseAdapter (extends DepthFirstAdapter) - Base class for LanguageAnalyzer.
+		Key methods include:
+		<dl>
+		<dd>addSymbolEntry(SymbolEntry entry, TId id, NameScope enclosingScope) -
+			Adds the specified symbol table entry for the specified Id to
+			the specified name scope.</dd>
+		<dd>createNameScope(Node node) - Create a new NameScope within the current
+			NameScope, push the new NameScope on the scope stack, and annotate
+			the specified Node with the new NameScope.</dd>
+		<dd>setExprAnnotation(POexpr node, Object value) - Annotate the specified
+			POExpr node with a new ExprAnnotation.</dd>
+		<dd>setExprRefAnnotation(POexpr node, Object value, SymbolEntry entry) - 
+			Annotate the specified POexpr node with a new ExprRefAnnotation.</dd>
+		</dl>
+		
+	<dd>SymbolTable (a HashMap<String, SymbolEntry>) - Self explanatory.</dd>
 	
-	SymbolTable (a HashMap<String, SymbolEntry>) - 
+	<dd>SymbolEntry (abstract) - All symbol table entries are of a derived type.</dd>
 	
-	SymbolEntry
-	DeclaredEntry (extends SymbolEntry) - 
-	NameScopeEntry (extends DeclaredEntry) - 
+	<dd>DeclaredEntry (extends SymbolEntry) - A symbol that is defined in a declaration.</dd>
 	
+	<dd>NameScopeEntry (extends DeclaredEntry) - A DeclaredEntry that defines
+		a lexical name scope.</dd>
 	
-	Annotation
+	<dd>Annotation (abstract) - Base type for all AST node annotations.</dd>
 	
-	NameScope (extends Annotation) - All Axxx classes that define a lexical scope
-		should be annotated with this. A NameScope contains a SymbolTable.
+	<dd>NameScope (extends Annotation) - All Axxx classes that define a lexical scope
+		should be annotated with this. A NameScope contains a SymbolTable.</dd>
 	
-	ExprAnnotation (extends Annotation) - 
+	<dd>ExprAnnotation (extends Annotation) - An annotation for a expression node.</dd>
 	
-	ExprRefAnnotation (extends ExprAnnotation) - 
+	<dd>ExprRefAnnotation (extends ExprAnnotation) - For expressions whose value
+		is defined in the declaration of a symbol.</dd>
 	
-	IdentHandler - An IdentHandler is attached to enclosing scopes when a symbol
-		is not recognized
-		but might be defined later in an enclosing scope. Later, when the symbol is
-		defined, attached Handlers are checked to see if any refer to the symbol. If so,
-		the Handler's resolveRetroactively method is called, to resolve the original
-		symbol reference.
-
+	<dd>IdentHandler - An IdentHandler is attached to enclosing scopes when a symbol
+		is not recognized but might be defined later in an enclosing scope. Later,
+		when the symbol is defined, attached Handlers are checked to see if any
+		refer to the symbol. If so, the Handler's resolveRetroactively method
+		is called, to resolve the original symbol reference.</dd>
 
 </dl>
 
