@@ -16,10 +16,10 @@ It uses the following:
 		<dd><code>out</code> - </dd>
 	</dl></dd>
 	
-	<dd>NameScope</dd>
+	<dd><code>NameScope</code></dd>
 	
-	<dd>DablBaseAdapter (extends DepthFirstAdapter) - Base class for LanguageAnalyzer.
-		Key methods include:
+	<dd><code>DablBaseAdapter</code> (extends <code>DepthFirstAdapter</code>) - 
+		Base class for <code>LanguageAnalyzer</code>. Key methods include:
 		<dl>
 		<dd><code>addSymbolEntry(SymbolEntry entry, TId id, NameScope enclosingScope)</code> -
 			Adds the specified symbol table entry for the specified Id to
@@ -33,26 +33,32 @@ It uses the following:
 			Annotate the specified POexpr node with a new ExprRefAnnotation.</dd>
 		</dl>
 		
-	<dd><code>SymbolTable</code> (a <code>HashMap<String, SymbolEntry>)</code> - Self explanatory.</dd>
+	<dd><code>SymbolTable</code> (a <code>HashMap<String, SymbolEntry>)</code> -
+		Self explanatory.</dd>
 	
-	<dd><code>SymbolEntry</code> (abstract) - All symbol table entries are of a derived type.</dd>
+	<dd><code>SymbolEntry</code> (abstract) - All symbol table entries are of a
+		derived type.</dd>
 	
-	<dd><code>DeclaredEntry</code> (extends <code>SymbolEntry</code>) - A symbol that is defined in a declaration.</dd>
+	<dd><code>DeclaredEntry</code> (extends <code>SymbolEntry</code>) - A symbol
+		that is defined in a declaration.</dd>
 	
-	<dd><code>NameScopeEntry</code> (extends <code>DeclaredEntry</code>) - A <code>DeclaredEntry</code> that defines
-		a lexical name scope.</dd>
+	<dd><code>NameScopeEntry</code> (extends <code>DeclaredEntry</code>) - A
+		<code>DeclaredEntry</code> that defines a lexical name scope.</dd>
 	
 	<dd><code>Annotation</code> (abstract) - Base type for all AST node annotations.</dd>
 	
-	<dd><code>NameScope</code> (extends <code>Annotation</code>) - All Axxx classes that define a lexical scope
-		should be annotated with this. A <code>NameScope</code> contains a <code>SymbolTable</code>.</dd>
+	<dd><code>NameScope</code> (extends <code>Annotation</code>) - All Axxx classes
+		that define a lexical scope should be annotated with this. A
+		<code>NameScope</code> contains a <code>SymbolTable</code>.</dd>
 	
-	<dd><code>ExprAnnotation</code> (extends <code>Annotation</code>) - An annotation for a expression node.</dd>
+	<dd><code>ExprAnnotation</code> (extends <code>Annotation</code>) - An annotation
+		for a expression node.</dd>
 	
-	<dd><code>ExprRefAnnotation</code> (extends <code>ExprAnnotation</code>) - For expressions whose value
-		is defined in the declaration of a symbol.</dd>
+	<dd><code>ExprRefAnnotation</code> (extends <code>ExprAnnotation</code>) -
+		For expressions whose value is defined in the declaration of a symbol.</dd>
 	
-	<dd>I<code>dentHandler</code> - An <code>IdentHandler</code> is attached to enclosing scopes when a symbol
+	<dd><code>IdentHandler</code> - An <code>IdentHandler</code> is attached to
+		enclosing scopes when a symbol
 		is not recognized but might be defined later in an enclosing scope. Later,
 		when the symbol is defined, attached Handlers are checked to see if any
 		refer to the symbol. If so, the Handler's resolveRetroactively method
