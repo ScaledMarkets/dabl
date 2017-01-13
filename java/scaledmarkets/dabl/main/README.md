@@ -79,3 +79,10 @@ It uses the following:
 
 </dl>
 
+## Compiler Output
+
+The compiler builds an abstract syntax tree (AST), which can is defined by the
+Abstract Syntax Tree section of the
+[dabl.sablecc](https://github.com/Scaled-Markets/dabl/blob/master/dabl.sablecc)
+file,
+and which can be accessed via the methods in the generated scaledmarkets.dabl.node package.
