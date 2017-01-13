@@ -56,9 +56,6 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	}
 
 	
-	private ClassLoader getProviderClassLoader() { return state.providerClassLoader; }
-	
-	
 	/* Scope management */
 	
 	protected NameScope getGlobalScope() { return state.globalScope; }

@@ -19,6 +19,13 @@ runcp := $(build_dir):$(aws_jar)
 test_compile_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
 test_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
 
+# Output artifact names:
+package=scaledmarkets/dabl
+test_package=scaledmarkets/dabl/test
+package_name = scaledmarkets.dabl
+test_package_name = scaledmarkets.dabl.test
+main_class := $(package_name).main.Dabl
+
 # Intermediate artifacts:
 sourcefiles := $(src_dir)/$(package)/main/*.java \
 	./SableCCOutput/analysis/*.java \
@@ -46,13 +53,6 @@ JAVA = java
 JAR = jar
 JAVADOC = javadoc
 
-# Output artifact names:
-package=scaledmarkets/dabl
-test_package=scaledmarkets/dabl/test
-package_name = scaledmarkets.dabl
-test_package_name = scaledmarkets.dabl.test
-main_class := $(package_name).main.Dabl
-
 # Relative locations:
 CurDir := $(shell pwd)
 src_dir := $(CurDir)/java
@@ -67,7 +67,7 @@ javadoc_dir := $(CurDir)/javadoc
 
 ################################################################################
 # Tasks
-.PHONY: all manifest config parser jar compile dist check runsonar clean info
+.PHONY: all manifest config parser jar compile dist check test_compile test runsonar clean info
 
 all: clean parser compile check jar test_compile test javadoc
 
@@ -151,14 +151,14 @@ check:
 
 # Compile the test source files.
 test_compile: $(test_build_dir)
-	javac -cp $(CUCUMBER_CLASSPATH) -d $(test_build_dir) \
+	javac -cp $(CUCUMBER_CLASSPATH):$(buildcp) -d $(test_build_dir) \
 		$(test_src_dir)/steps/$(test_package)/*.java
 
 # Run Cucumber tests.
 test:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
 		cucumber.api.cli.Main \
-		--glue test $(test_src_dir)/features \
+		--glue scaledmarkets.dabl.test $(test_src_dir)/features \
 		--tags @done
 
 # Perform code quality scans.
