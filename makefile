@@ -7,11 +7,69 @@
 include makefile.inc
 
 
+# Artifact names:
+ORG = Scaled Markets
+PRODUCT_NAME = Dabl
+JAR_NAME = dabl
+DOCS_ZIP_NAME = dabl-docs
+
+# Java classpaths:
+buildcp := $(build_dir)
+runcp := $(build_dir):$(aws_jar)
+test_compile_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
+test_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
+
+# Intermediate artifacts:
+sourcefiles := $(src_dir)/$(package)/main/*.java \
+	./SableCCOutput/analysis/*.java \
+	./SableCCOutput/lexer/*.java \
+	./SableCCOutput/node/*.java \
+	./SableCCOutput/parser/*.java
+classfiles := \
+	$(build_dir)/$(package)/main/*.class \
+	$(build_dir)/$(package)/analysis/*.class \
+	$(build_dir)/$(package)/lexer/*.class \
+	$(build_dir)/$(package)/node/*.class \
+	$(build_dir)/$(package)/parser/*.class
+
+# Configurations particular to why this build is being run:
+maxerrs=5
+.DELETE_ON_ERROR:
+.ONESHELL:
+.SUFFIXES:
+.DEFAULT_GOAL: compile
+
+# Command aliases:
+SHELL = /bin/sh
+JAVAC = javac
+JAVA = java
+JAR = jar
+JAVADOC = javadoc
+
+# Output artifact names:
+package=scaledmarkets/dabl
+test_package=scaledmarkets/dabl/test
+package_name = scaledmarkets.dabl
+test_package_name = scaledmarkets.dabl.test
+main_class := $(package_name).main.Dabl
+
+# Relative locations:
+CurDir := $(shell pwd)
+src_dir := $(CurDir)/java
+test_src_dir := $(CurDir)/test
+test_build_dir := $(CurDir)/buildtest
+test_package = $(package)/test
+testsourcefiles := $(test_src_dir)/$(test_package)/*.java
+testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/gen/*.class
+sable_out_dir := $(CurDir)/SableCCOutput
+javadoc_dir := $(CurDir)/javadoc
+
+
 ################################################################################
 # Tasks
 .PHONY: all manifest config parser jar compile dist check runsonar clean info
 
-all: test dist
+all: clean parser compile check jar test_compile test javadoc
 
 # Create the manifest file for the JAR.
 manifest:
@@ -83,7 +141,7 @@ compile:
 		$(src_dir)/$(package)/main/*.java
 
 # Define 'dist' target so we can reference it in 'all' target.
-dist: $(jar_dir)/$(JAR_NAME).jar
+dist: jar
 
 # Run parser to scan a sample input file. This is for checking that the parser
 # can recognize the language.

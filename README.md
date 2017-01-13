@@ -61,6 +61,11 @@ Piper is a build system based on DABL.
 
 See [java/scaledmarkets/dabl/main](java/scaledmarkets/dabl/main).
 
+# Building the Project
+
+To build the project, set the environment-specific tool locations in makefile.inc.
+Then run `make all`.
+
 # Binary Download
 
 Binaries of the compiler JAR file and Javadocs can be found [here](https://github.com/Scaled-Markets/dabl/releases).

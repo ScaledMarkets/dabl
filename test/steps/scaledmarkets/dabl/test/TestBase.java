@@ -8,29 +8,17 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.Before;
 import cucumber.api.java.After;
 
-import org.json.*;
-
 public class TestBase {
 
 	public Process process;
 
 	private Scenario scenario;
-	private String safeHarborHost;
-	private int safeHarborPort;
 	
 	public TestBase() {
-		try {
-			safeHarborHost = Utils.getSafeHarborHost();
-			safeHarborPort = Utils.getSafeHarborPort();
-		} catch (Throwable t) {
-			t.printStackTrace();
-			throw t;
-		}
 	}
 	
 	@Before
 	public void beforeEachScenario() throws Exception {
-		//makeRequest("ClearAll");
 	}
 	
 	@After
@@ -41,7 +29,12 @@ public class TestBase {
 	
 	public Scenario getScenario() { return scenario; }
 	
-	public String getSafeHarborHost() { return safeHarborHost; }
+	public void assertThat(boolean expr) throws Exception {
+		assertThat(expr, null);
+	}
 	
-	public int getSafeHarborPort() { return safeHarborPort; }
+	public void assertThat(boolean expr, String msg) throws Exception {
+		if (msg != null) msg = "; " + msg;
+		if (! expr) throw new Exception("Assertion violation" + msg);
+	}
 }
