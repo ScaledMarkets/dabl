@@ -30,4 +30,6 @@ public class CompilerState
 	}
 	
 	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
+	
+	public Start getAST() { return ast; }
 }
