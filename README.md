@@ -63,7 +63,8 @@ See [java/scaledmarkets/dabl/main](java/scaledmarkets/dabl/main).
 
 # Building the Project
 
-To build the project, set the environment-specific tool locations in makefile.inc.
+To build the project, set the environment-specific tool locations in
+[makefile.inc](https://github.com/Scaled-Markets/dabl/blob/master/makefile.inc).
 Then run `make all`.
 
 # Binary Download
