@@ -81,11 +81,12 @@ public class SymbolTable extends HashMap<String, SymbolEntry>
 		return nextTable.getEntry(name);
 	}
 	
-	public void addEntry(TId id, SymbolEntry entry)
+	public void addEntry(String name, SymbolEntry entry)
 	throws SymbolEntryPresent // if there is already an entry with name 'name'.
 	{
-		if (get(id.getText()) != null) throw new SymbolEntryPresent(id.getText());
-		put(id.getText(), entry);
+		System.out.println("Adding '" + name + "' to symbol table '" + getName() + "'");  // debug
+		if (get(name) != null) throw new SymbolEntryPresent(name);
+		put(name, entry);
 	}
 	
 	public NameScope getEnclosingScope(String name) throws SymbolNotPresent

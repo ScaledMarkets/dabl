@@ -6,9 +6,9 @@ public class DeclaredEntry extends SymbolEntry
 {
 	private Node definingNode;
 	
-	public DeclaredEntry(TId id, NameScope enclosingScope, Node definingNode)
+	public DeclaredEntry(String name, NameScope enclosingScope, Node definingNode)
 	{
-		super(id, enclosingScope);
+		super(name, enclosingScope);
 		this.definingNode = definingNode;
 		if (definingNode == null) throw new RuntimeException();
 	}

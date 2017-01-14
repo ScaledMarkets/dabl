@@ -29,6 +29,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		super(state);
 		
 		state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
+		assertThat(state.scopeStack.size() == 1);   // debug
 	}
 	
 	/*
@@ -38,7 +39,14 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void inAOnamespace(AOnamespace node) {
 		LinkedList<TId> path = node.getPath();
 		String name = createNameFromPath(path);
-		pushNameScope(new NameScope(name, node, null));
+		
+		NameScope enclosingScope = getCurrentNameScope();
+		NameScope newScope = new NameScope(name, node, enclosingScope);
+		SymbolEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
+		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+		pushNameScope(newScope);
 	}
 	
 	public void outAOnamespace(AOnamespace node) {
@@ -56,7 +64,15 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	}
 	
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
-		//pushNameScope(new NameScope(....name, node, ));
+		
+		String name = node.getName().getText();
+		NameScope enclosingScope = getCurrentNameScope();
+		NameScope newScope = new NameScope(name, node, enclosingScope);
+		SymbolEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
+		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+		pushNameScope(newScope);
 	}
 	
 	public void outAOtaskDeclaration(AOtaskDeclaration node) {

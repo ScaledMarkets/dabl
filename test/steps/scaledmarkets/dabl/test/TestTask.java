@@ -32,31 +32,24 @@ public class TestTask extends TestBase {
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		this.state = dabl.process();
+		assertThat(state.globalScope != null);
+		System.out.println("scopeStack size: " + state.scopeStack.size());
+		assertThat(state.scopeStack.size() == 1);
 	}
 	
 	@Then("^I can retrieve the the task by its name$")
-	public void i_can_retrieve_the_name_of_the_task() throws Exception {
+	public void i_can_retrieve_the_the_task_by_its_name() throws Exception {
 		
 		List<NameScope> scopeStack = this.state.scopeStack;
-		SymbolEntry entry = this.state.scopeStack.get(0).getSymbolTable().getEntry("t123");
+		SymbolEntry entry = this.state.scopeStack.get(0).getEntry("simple");
 		assertThat(entry != null);
+		assertThat(entry instanceof NameScopeEntry);
 		
+		// Get the namespace's symbol table.
+		NameScopeEntry nse = (NameScopeEntry)entry;
 		
-		/*
-		AOnamespace namespace = (AOnamespace)(this.state.ast.getPOnamespace());
-		LinkedList<POnamespaceElt> elts = namespace.getOnamespaceElt();
-		for (POnamespaceElt elt : elts) {
-			if (elt instanceof ATaskOnamespaceElt) {
-				ATaskOnamespaceElt taskElt = (ATaskOnamespaceElt)elt;
-				AOtaskDeclaration taskDecl = (AOtaskDeclaration)taskElt.getOtaskDeclaration();
-				TId id = taskDecl.getName();
-				String taskName = id.getText();
-				if (taskName.equals("t123")) {
-					return;
-				}
-			}
-		}
-		throw new Exception("Did not find task t123");
-		*/
+		NameScope namespaceScope = nse.getOwnedScope();
+		SymbolEntry taskEntry = namespaceScope.getEntry("t123");
+		assertThat(taskEntry != null);
 	}
 }

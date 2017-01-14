@@ -18,8 +18,11 @@ public class NameScope extends Annotation
 	private NameScope parentScope;
 	private SymbolTable symbolTable;
 	
-	/** Note: The scopes that do not have a self entry are top-level scopes and
-		anonymous scopes. */
+	/**
+	 * the symbol table entry for this scope's name.
+	 * Note: The scopes that do not have a self entry are top-level scopes and
+	 * anonymous scopes.
+	 */
 	private NameScopeEntry selfEntry = null;
 	
 	private Map<TId, IdentHandler> identHandlers = new HashMap<TId, IdentHandler>();
@@ -47,10 +50,19 @@ public class NameScope extends Annotation
 	
 	public SymbolTable getSymbolTable() { return symbolTable; }
 	
+	public SymbolEntry getEntry(String name) { return symbolTable.getEntry(name); }
+	
+	public void addEntry(String name, SymbolEntry entry)
+	throws SymbolEntryPresent
+	{
+		symbolTable.addEntry(name, entry);
+	}
+	
 	public String getName() { return symbolTable.getName(); }  // may be null
 	
 	/**
-	 * Set the symbol table entry for this NameScope in its parent's NameScope.
+	 * Save reference to the entry that parent scope's symbol table has for this
+	 * name scope. Thus, this is the symbol table entry for this scope's name.
 	 */
 	public NameScopeEntry setSelfEntry(NameScopeEntry entry)
 	{

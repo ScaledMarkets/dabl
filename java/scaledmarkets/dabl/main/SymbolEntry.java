@@ -12,28 +12,26 @@ import java.util.LinkedList;
 
 /**
  * A symbol table entry. Each entry defines a symbol (identifer) that was declared
- * in the decl file.
+ * in the dabl file.
  */
 public abstract class SymbolEntry
 {
-	private TId id;
+	private String name;
 	private NameScope enclosingScope;
 	
-	public SymbolEntry(TId id, NameScope enclosingScope)
+	public SymbolEntry(String name, NameScope enclosingScope)
 	{
-		this.id = id;
-		if (id == null) throw new RuntimeException();
+		this.name = name;
+		if (name.equals("")) throw new RuntimeException("Empty name");
 		this.enclosingScope = enclosingScope;  // the scope in which the id is defined.
 	}
 	
-	public TId getId() { return id; }
-	
-	public String getName() { return id.getText(); }
+	public String getName() { return name; }
 	
 	public NameScope getEnclosingScope() { return enclosingScope; }
 	
 	public String toString()
 	{
-		return this.getClass().getName() + ": name=" + id.getText() + ", enclosingScope=" + enclosingScope.toString();
+		return this.getClass().getName() + ": name=" + name + ", enclosingScope=" + enclosingScope.toString();
 	}
 }

@@ -62,16 +62,22 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	protected NameScope pushNameScope(NameScope scope)
 	{
+		System.out.println("Pushing scope '" + scope.getName() + "'");  // debug
 		state.scopeStack.add(0, scope);
 		return scope;
 	}
 	
 	protected NameScope popNameScope()
 	{
+		//(new RuntimeException("Popping scope '" + state.scopeStack.get(0).getName() + "'")).printStackTrace(System.out);  // debug
 		return state.scopeStack.remove(0);
 	}
 	
-	protected NameScope getCurrentNameScope() { return state.scopeStack.get(0); }
+	protected NameScope getCurrentNameScope()
+	{
+		if (state.scopeStack.size() == 0) return null;
+		return state.scopeStack.get(0);
+	}
 	
 	/**
 	 * Find the entry in the symbol table that defines the specified id. The id
@@ -173,7 +179,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	protected SymbolEntry addSymbolEntry(SymbolEntry entry, TId id, NameScope enclosingScope)
 	throws SymbolEntryPresent
 	{
-		enclosingScope.getSymbolTable().addEntry(id, entry);
+		enclosingScope.getSymbolTable().addEntry(id.getText(), entry);
 		this.setOut(id, entry);
 		return entry;
 	}
