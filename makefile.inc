@@ -9,18 +9,17 @@ build_dir = /Transient/dabl
 jar_dir = /Transient/dabl/jars
 
 # Locations of tools:
-Userdir = /Users/cliffordberg
-SONAR_RUNNER := $(Userdir)/Library/sonar-runner-2.4/bin/sonar-runner
-Library := $(Userdir)/Library
+Library := /Users/cliffordberg/Library
+SONAR_RUNNER := $(Library)/sonar-runner-2.4/bin/sonar-runner
 sable := $(Library)/sablecc-3.2
-junit_dir := $(Userdir)/Library/JUnit
-log4jcore := $(Userdir)/Library/apache-log4j-2.0.2-bin/log4j-core-2.0.2.jar
-log4japi := $(Userdir)/Library/apache-log4j-2.0.2-bin/log4j-1.2-api-2.0.2.jar
-commonslogging12 := $(Userdir)/Library/commons-logging-1.2/commons-logging-1.2.jar
-CUCUMBER_CLASSPATH := $(Userdir)/Library/Cucumber/cucumber-core-1.1.8.jar
-CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Userdir)/Library/Cucumber/cucumber-java-1.1.8.jar
-CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Userdir)/Library/Cucumber/cucumber-jvm-deps-1.0.3.jar
-CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Userdir)/Library/Cucumber/gherkin-2.12.2.jar
+junit_dir := $(Library)/JUnit
+log4jcore := $(Library)/apache-log4j-2.0.2-bin/log4j-core-2.0.2.jar
+log4japi := $(Library)/apache-log4j-2.0.2-bin/log4j-1.2-api-2.0.2.jar
+commonslogging12 := $(Library)/commons-logging-1.2/commons-logging-1.2.jar
+CUCUMBER_CLASSPATH := $(Library)/Cucumber/cucumber-core-1.1.8.jar
+CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-java-1.1.8.jar
+CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-jvm-deps-1.0.3.jar
+CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/gherkin-2.12.2.jar
 
 # For Mac:
 JAVA_HOME := $(shell /usr/libexec/java_home)

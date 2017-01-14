@@ -40,7 +40,7 @@ classfiles := \
 	$(build_dir)/$(package)/parser/*.class
 
 # Configurations particular to why this build is being run:
-maxerrs=5
+maxerrs = 5
 .DELETE_ON_ERROR:
 .ONESHELL:
 .SUFFIXES:
@@ -67,7 +67,8 @@ javadoc_dir := $(CurDir)/javadoc
 
 ################################################################################
 # Tasks
-.PHONY: all manifest config parser jar compile dist check test_compile test runsonar clean info
+.PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
+	check test_compile test runsonar javadoc clean info
 
 all: clean parser compile check jar test_compile test javadoc
 
@@ -90,8 +91,11 @@ config:
 
 # Generate the DABL parser.
 # Generates dabl compiler tables and classes.
-parser: dabl.sablecc $(sable_out_dir) $(build_dir)
+gen_parser: dabl.sablecc $(sable_out_dir) $(build_dir)
 	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_out_dir) --no-inline dabl.sablecc
+
+# Compile the generated code.
+compile_parser: gen_parser
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
 		$(sable_out_dir)/$(package)/node/*.java \
 		$(sable_out_dir)/$(package)/lexer/*.java \
@@ -100,15 +104,8 @@ parser: dabl.sablecc $(sable_out_dir) $(build_dir)
 	cp $(sable_out_dir)/$(package)/lexer/lexer.dat $(build_dir)/$(package)/lexer
 	cp $(sable_out_dir)/$(package)/parser/parser.dat $(build_dir)/$(package)/parser
 
-# Compile the generated code.
-compile_parser:
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
-		$(sable_out_dir)/$(package)/node/*.java \
-		$(sable_out_dir)/$(package)/lexer/*.java \
-		$(sable_out_dir)/$(package)/analysis/*.java \
-		$(sable_out_dir)/$(package)/parser/*.java
-	cp $(sable_out_dir)/$(package)/lexer/lexer.dat $(build_dir)/$(package)/lexer
-	cp $(sable_out_dir)/$(package)/parser/parser.dat $(build_dir)/$(package)/parser
+# Generate and compile the parser classs.
+parser: compile_parser
 
 # Create the directory into which the generated parser source files will be placed.
 $(sable_out_dir):
