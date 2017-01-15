@@ -65,7 +65,8 @@ DABL does not modify line breaks within a string, so line breaks are whatever is
 in the string value in the file - i.e., either a NL or CR/NL pair.
 
 DABL supports static string concatenation expressions: these are string values
-that are joined together during the Analysis phase (see #processing-phases below).
+that are joined together during the Analysis phase
+(see [Processing Phases](#processing-phases) below).
 The concatenation operator
 is the caret symbol: `^`. For example, the following concatenation is performed
 during source analysis to produce the value `abcde`:
