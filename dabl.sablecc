@@ -602,18 +602,23 @@ Productions
 	  ;
 	
 	string_literal {-> ostring_literal} =
-		{str} string						{-> New ostring_literal.string(string)}
-	  | {str2} string2						{-> New ostring_literal.string2(string2)}
+		{str} string_value					{-> string_value.ostring_literal}
 	  | {strex} static_str_expr				{-> static_str_expr.ostring_literal}
 //	  | {non_ws} non_ws_char_seq  // this can be a path that references a variable
 //											{-> New ostring_literal.charseq(non_ws_char_seq)}
 	  ;
 	
 	static_str_expr {-> ostring_literal} =
-		{expr} [left]:string_literal caret [right]:string_literal
+		{expr} [left]:string_literal caret [right]:string_value
 											{-> New ostring_literal.static_string_expr(
 	  											left.ostring_literal, right.ostring_literal)}
 		;
+	
+	string_value {-> ostring_literal} =
+		{string} string						{-> New ostring_literal.string(string)}
+	  | {string2} string2					{-> New ostring_literal.string2(string2)}
+	  ;
+
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
