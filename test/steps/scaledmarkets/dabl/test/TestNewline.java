@@ -24,10 +24,8 @@ public class TestNewline extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple\n" + // no space between 'simple' and the newlilne
 "task t123\n" +
-"  when true\n" +
-"  inputs \"x\" from \"repo1\" in my_git\n" +
-"  outputs \"y\" from \"repo2\" in my_git\n" +
-"  abc = \"def\" true"
+"  when true \n" +
+"  abc = \"def\" true "
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

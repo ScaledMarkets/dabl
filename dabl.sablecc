@@ -234,11 +234,11 @@ Productions
 	  ;
 	
 	task_decl {-> otask_declaration} =
-		scope_decl task id when_clause input_sets output_sets
+		scope_decl task id when_clause input_sets_opt output_sets_opt
 			procedural_stmts				{-> New otask_declaration(scope_decl.oscope,
 												id, [when_clause.oexpr],
-												[input_sets.onamed_artifact_set],
-												[output_sets.onamed_artifact_set],
+												[input_sets_opt.onamed_artifact_set],
+												[output_sets_opt.onamed_artifact_set],
 												[procedural_stmts.oproc_stmt])}
 		;
 	
@@ -258,6 +258,11 @@ Productions
 	  										{-> New oage_expr.older_than(older_id, newer_id)}
 	  ;
 	
+	input_sets_opt {-> onamed_artifact_set*} =
+		{multiple} input_sets				{-> [input_sets.onamed_artifact_set]}
+	  | {none}								{-> []}
+	  ;
+	
 	input_sets {-> onamed_artifact_set*} =
 		{multiple} input_set input_sets		{-> [input_set.onamed_artifact_set,
 												input_sets.onamed_artifact_set]}
@@ -270,6 +275,11 @@ Productions
 	  | {anonymous} inputs artifact_sets	{-> New onamed_artifact_set.anonymous(
 												[artifact_sets.oartifact_set])}
 		;
+	
+	output_sets_opt {-> onamed_artifact_set*} =
+		{multiple} output_sets				{-> [output_sets.onamed_artifact_set]}
+	  | {none}								{-> []}
+	  ;
 	
 	output_sets {-> onamed_artifact_set*} =
 		{multiple} output_set output_sets	{-> [output_set.onamed_artifact_set,
