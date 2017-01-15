@@ -64,6 +64,14 @@ This allows one to embed quotes within the string value.
 DABL does not modify line breaks within a string, so line breaks are whatever is present
 in the string value in the file - i.e., either a NL or CR/NL pair.
 
+DABL supports static string concatenation expressions: these are string values
+that are joined together during the Analysis phase. The concatenation operator
+is the caret symbol: `^`. For example, the following concatenation is performed
+during source analysis to produce the value `abcde`:
+```
+ab ^ cde
+```
+
 ## Allowed Characters
 
 DABL files may contain any Unicode character. However, DABL keywords are limited
@@ -72,6 +80,8 @@ are limited to the Unicode equivalents of the ASCII characters `a-z, A-Z, 0-9, _
 and must begin with a letter or underscore. In practice, the only place where
 characters outside this range can occur is in a file path or the name of an
 external method in a function declaration.
+
+DABL is case-sensitive.
 
 ## Environment Variables
 
@@ -89,6 +99,21 @@ prefixed by a dollar sign:
 
 <dl>
 <dd><code>${PATH}</code></dd>
+</dl>
+
+### Built-In Environment Variables
+
+DABL defines some built-in environment variables that are set by the DABL template
+processor at the start of execution. These are:
+
+<dl>
+<dd><code>thisdir</code> - The directory that the DABL script exists in.
+Note that this can be undefined (an empty string) if the DABL script has been
+transported alone (without the other contents of the directory in which
+it lives) by HTTP.</dd>
+<dd><code>home</code> - The home directory of the user Id that is compiling
+the DABL file.</dd>
+<dd><code>~</code> - Same as <code>home</code>.</dd>
 </dl>
 
 ## Identifiers
@@ -109,8 +134,9 @@ of the Latin-1 character set, and must not begin with a number.
 
 A DABL file is processed in the following phases:
 <ol>
-<li>Template - All environment variables in the file are converted to
-	their runtime values. Thus, environment variable values are bound
+<li>Template - All environment variable references in the file are converted to
+	their runtime values, regardless of the context in which they appear (e.g.,
+	inside of a string). Thus, environment variable values are bound
 	at the time that a DABL file is parsed. This is a simple token replacement
 	and is not related to the syntax of the DABL language, much like the
 	pre-processing phase in C.</li>
