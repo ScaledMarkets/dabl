@@ -29,8 +29,8 @@ respectively, the name is scoped to the enclosing task.
 ```
 task compileit
     when inputs A newer than outputs
-    inputs A $thisdir/**.java from "my_repo" in my_git, XYZ
-    outputs ./**.class, ./**.txt
+    inputs A "$thisdir/**.java" from "my_repo" in my_git, XYZ
+    outputs "./**.class", "./**.txt"
     bash "
         javac $thisdir/*.java
         "
