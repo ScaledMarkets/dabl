@@ -234,13 +234,18 @@ Productions
 	  ;
 	
 	task_decl {-> otask_declaration} =
-		scope_decl task id when_clause input_sets_opt output_sets_opt
+		scope_decl task id when_clause_opt input_sets_opt output_sets_opt
 			procedural_stmts				{-> New otask_declaration(scope_decl.oscope,
-												id, [when_clause.oexpr],
+												id, [when_clause_opt.oexpr],
 												[input_sets_opt.onamed_artifact_set],
 												[output_sets_opt.onamed_artifact_set],
 												[procedural_stmts.oproc_stmt])}
 		;
+	
+	when_clause_opt {-> oexpr*} =
+		{when} when_clause					{-> [when_clause.oexpr]}
+	  | {none}								{-> []}
+	  ;
 	
 	when_clause {-> oexpr} =
 		when expr							{-> expr.oexpr}  // must be a logical expr
