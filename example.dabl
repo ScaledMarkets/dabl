@@ -3,25 +3,20 @@
     DABL enables one to define dependencies among artifacts, and the tasks
     that update out-of-date artifacts. */
 
-
 /* All variables (names preceded by a dollar sign ($) are evaluated at
     the time that a DABL files is parsed. */
-
 
 /* Define a namespace for the contents of this file. By supporting namespaces,
     DABL enables one to "scale" one's build scripts, just as namespaces
     enable one to "scale" software code. */
 namespace my_company.my_project.abc
 
-
 //* Import another namespace - only the public elements are imported. *//
 import dabl.testing
-
 
 /* You can declare what you want the equivalent to be, via the
     "tab equivalent to" declaration: */
 tab equivalent to 4 spaces
-
 
 //* This type of comment links the comment to the construct that follows it -
     in this case, an artifact declaration.
@@ -35,22 +30,19 @@ artifact ABC:2.$MinorVersionNumber  // Defines artifact "ABC", version 2.<mvn>
         environment variable that has been declared outside the scope
         of this DABL file. */
 
-
     /* Specify intentional compatibilities: these are the versions of
         third party components that we want to support. Note the
         Wildcard. */
     assume compatible with XYZ:3.*
 
-
     /* Specify verified compatibilities: these are the versions of
-        Third party components that we actually test with. */
+        Third party components that we actually test with. This
+        does NOT mean that all of the tests pass. */
     tested with XYZ:3.3-3.4  // (see tasks test_XYZ_3_3 and test_XYZ_3_4)
-
 
     /* One could define tasks inside the artifact, but then they would not
         be referenceable outside the artifact spec unless one prefixed
         their name with the name with the name of the artifact. */
-
 
 //* Define a parameterized template that can be instantiated in this or
     any other namespace. *//
@@ -60,12 +52,11 @@ public task template create_template (artif_version, dir, output)
     bash """
         echo "...$artif_version..." > manifest.txt
         jar ... $output
-
+        """
 
 //* Instantiate a template, supplying the required parameter values.
     Parameters can be specified positionally or as name:value pairs. *//
 public task create from create_template(${ABC.version}, $thisdir, abc.jar)
-
 
 //* Define a public task. Public tasks can be invoked explicitly from
     a command line, e.g., "dabl publish <dabl-file>". *//
@@ -75,9 +66,8 @@ public task publish
     inputs thisdir/tests/results/3.3/*, thisdir/tests/results/3.4/**
     //* Push artifact to an artifact repository. *//
     post abc.jar to my_maven/myproject/abc.jar
-    report "Success"  // This is performed when the task completes without
-        error.
-
+    report "Success"  /* This is performed when the task completes without
+        error. */
 
 task compileit
     when A newer than outputs
@@ -86,35 +76,31 @@ task compileit
     outputs ./**.class, ./**.txt
     bash "
         javac ...
-
+        "
 
 //* Declare a git repo. *//
 repo my_git type git
-    path github.com/myteam
     scheme https
+    path github.com/myteam
     userid $GitUserId password $GitPassword
-
 
 //* Declare a maven repo. *//
 repo my_maven type maven
     path mymaven.abc.com
     userid $MavenUserId key file "~/mykey.pem"
 
-
 //* Declare a set of files that exist somewhere (in this case, in a maven
     repo). *//
 files XYZ from "my_other_repo" in my_maven
-    prefer latest
+    prefer latest compatible with
     include /src/xyz/*.java
     exclude /src/xyz/*_test.java
     include /src/xyz/tests/**/*.java
-
 
 //* Bind a groovy static method (defined externally) to a function
     Named 'sign', so that we can call it in this file. *//
 function sign string string binds to groovy method
     com.scaledmarkets.utils.Signature.sign returns array of byte
-
 
 task test_XYZ_3_3
     /* If there is no "when" clause, then an implicit "when" clause is
@@ -130,18 +116,18 @@ task test_XYZ_3_3
             that gets populated with fields corresponding to the
             container names.
         ...
+        "
     // Call the groovy 'sign' function (declared earlier).
     signature = sign thisdir/tests/results/3.3/test_summary.html,
         deployment.dev_box.imageId()
     post signature, test_summary.html to my_maven/3.3/test_results
-
 
 task test_XYZ_3_4
     inputs files XYZ:3.4, abc.jar
     outputs thisdir/tests/results/3.4/**
     powershell "
         ...
-
+        "
 
 //* Define how shell commands should be translated for the specified OS.
     When you execute a DABL script, the OS in which it is running can
@@ -149,5 +135,4 @@ task test_XYZ_3_4
 shell translation for "Windows"  // if $OS is "Windows"
     translate filename "/*" to "$DRIVE_LETTER:\\*"
     translate filename "/" to "\\"
-
 
