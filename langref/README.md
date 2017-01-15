@@ -69,9 +69,9 @@ that are joined together during the Analysis phase
 (see [Processing Phases](#processing-phases) below).
 The concatenation operator
 is the caret symbol: `^`. For example, the following concatenation is performed
-during source analysis to produce the value `abcde`:
+during source analysis to produce the value `"abcde"`:
 ```
-ab ^ cde
+"ab" ^ "cde"
 ```
 
 ## Allowed Characters
