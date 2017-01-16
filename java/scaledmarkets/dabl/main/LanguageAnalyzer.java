@@ -22,7 +22,17 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 
-/** Perform symbol resolution and annotation. */
+/**
+ * Perform symbol resolution and annotation:
+ * 
+ *	Create name scope for namespace and add it to the global scope.
+ *	Concatenate imported namespaces.
+ *	Create name scope for tasks and add it to the namespace.
+ *	Add input and output names to their enclosing task's scope.
+ *	Add function declarations to the namespace.
+ *	Add files declarations to the namespace.
+ *	Evaluate string literals and string expressions.
+ */
 public class LanguageAnalyzer extends DablBaseAdapter
 {
 	public LanguageAnalyzer(CompilerState state) {
@@ -32,9 +42,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		assertThat(state.scopeStack.size() == 1);   // debug
 	}
 	
-	/*
-		Only onamespace and otask_declaration define name scopes.
-	 */
+	
+	/* Only onamespace and otask_declaration define name scopes. */
 	
 	public void inAOnamespace(AOnamespace node) {
 		LinkedList<TId> path = node.getPath();
@@ -78,6 +87,57 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void outAOtaskDeclaration(AOtaskDeclaration node) {
 		popNameScope();
 	}
+	
+	
+	
+	/* Evaluate string literals.
+		ostring_literal =
+			{string} string
+		  | {string2} string2
+		
+		String token definitions:
+		string = quote [ any_character - quote ]* quote;
+		string2 = triplequote any_character* triplequote;
+	 */
+	
+    public void inAStringOstringLiteral(AStringOstringLiteral node)
+    {
+        super.inAStringOstringLiteral(node);
+    }
+
+    public void outAStringOstringLiteral(AStringOstringLiteral node)
+    {
+        ....
+    }
+
+    public void inAString2OstringLiteral(AString2OstringLiteral node)
+    {
+        super.inAString2OstringLiteral(node);
+    }
+
+    public void outAString2OstringLiteral(AString2OstringLiteral node)
+    {
+        ....
+    }
+	
+    /* Evaluate string expressions.
+     * Production:
+     * ostring_literal =
+     *	{static_string_expr} [left]:ostring_literal [right]:ostring_literal
+     */
+     
+    public void inAStaticStringExprOstringLiteral(AStaticStringExprOstringLiteral node)
+    {
+        super.inAStaticStringExprOstringLiteral(node);
+    }
+
+    public void outAStaticStringExprOstringLiteral(AStaticStringExprOstringLiteral node)
+    {
+        ....
+    }
+	
+	
+	/* Utilities */
 	
 	String createNameFromPath(LinkedList<TId> path) {
 		String name = "";

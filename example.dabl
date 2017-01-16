@@ -80,22 +80,22 @@ task compileit
 
 //* Declare a git repo. *//
 repo my_git type git
-    scheme https
-    path github.com/myteam
-    userid $GitUserId password $GitPassword
+    scheme "https"
+    path "github.com/myteam"
+    userid "$GitUserId" password "$GitPassword"
 
 //* Declare a maven repo. *//
 repo my_maven type maven
-    path mymaven.abc.com
-    userid $MavenUserId key file "~/mykey.pem"
+    path "mymaven.abc.com"
+    userid "$MavenUserId" key file "~/mykey.pem"
 
 //* Declare a set of files that exist somewhere (in this case, in a maven
     repo). *//
 files XYZ from "my_other_repo" in my_maven
     prefer latest compatible with
-    include /src/xyz/*.java
-    exclude /src/xyz/*_test.java
-    include /src/xyz/tests/**/*.java
+    include "/src/xyz/*.java"
+    exclude "/src/xyz/*_test.java"
+    include "/src/xyz/tests/**/*.java"
 
 //* Bind a groovy static method (defined externally) to a function
     Named 'sign', so that we can call it in this file. *//

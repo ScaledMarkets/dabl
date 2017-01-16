@@ -144,12 +144,15 @@ A DABL file is processed in the following phases:
 	pre-processing phase in C.</li>
 <li>Parse - The output of the prior phase is parsed and an object model is created.</li>
 <li>Analysis - Identifiers are resolved, matching them up with their declarations.
-	Expressions <i>may</i> be partially evaluated, where possible. Values
+	String concatenations are performed. Logical and arithmetic expressions
+	<i>may</i> be partially evaluated, where possible. Values
 	that depend on the DABL file context (e.g., its location on a file system)
 	are elaborated.</li>
-<li>Execution - The actions implied by the file are performed. The actions depend on the tool
-	that is processing the DABL file. Actions might include adding listeners
-	for events, etc. Execution can happen right after a DABL file is parsed,
+<li>Execution - The actions implied by the file are performed. The actions depend
+	on the tool that is processing the DABL file. Actions might include contextual
+	analysis such as security analysis or other kinds of integrity analysis; it
+	may also include preparation for execution, such as adding listeners for events,
+	etc. Execution can happen right after a DABL file is parsed,
 	or it can happen at any time later.</li>
 </ol>
 
