@@ -89,6 +89,44 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	}
 	
 	
+	/* Add input and output names to their enclosing task's scope. */
+	
+    public void inANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
+    {
+        ....
+    }
+
+    public void outANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
+    {
+        ....
+    }
+	
+	
+	/* Add function declarations to the namespace. */
+	
+    public void inAOfunctionDeclaration(AOfunctionDeclaration node)
+    {
+        ....
+    }
+
+    public void outAOfunctionDeclaration(AOfunctionDeclaration node)
+    {
+        ....
+    }
+	
+	
+	/* Add files declarations to the namespace. */
+	
+    public void inAOfilesDeclaration(AOfilesDeclaration node)
+    {
+        ....
+    }
+
+    public void outAOfilesDeclaration(AOfilesDeclaration node)
+    {
+        ....
+    }
+	
 	
 	/* Evaluate string literals.
 		ostring_literal =
