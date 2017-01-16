@@ -220,7 +220,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	 * for the expression in the Annotation. (This method must be called by
 	 * an out... method, so that the value will be available.)
 	 */
-	protected ExprAnnotation setExprAnnotation(POexpr node, Object value)
+	protected ExprAnnotation setExprAnnotation(Node node, Object value)
 	{
 		ExprAnnotation annotation = new ExprAnnotation(node, value);
 		this.setOut(node, annotation);
@@ -230,7 +230,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	/**
 	 * An expression whose value is defined in the declaration of a symbol.
 	 */
-	protected ExprRefAnnotation setExprRefAnnotation(POexpr node, Object value,
+	protected ExprRefAnnotation setExprRefAnnotation(Node node, Object value,
 		SymbolEntry entry)
 	{
 		ExprRefAnnotation annotation = new ExprRefAnnotation(node, value, entry);
@@ -243,7 +243,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	 * computed statically because at least one method in the expression must
 	 * be computed at runtime.
 	 */
-	protected ExprAnnotation setExprDynamic(POexpr node)
+	protected ExprAnnotation setExprDynamic(Node node)
 	{
 		return setExprAnnotation(node, new ExprAnnotation.DynamicValuePlaceholder());
 	}

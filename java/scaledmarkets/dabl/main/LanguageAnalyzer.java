@@ -30,6 +30,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		assertThat(state.scopeStack.size() == 1);   // debug
 	}
 	
+	protected ImportHandler getImportHandler() { return importHandler; }
+	
 	
 	/* Only onamespace and otask_declaration define name scopes. */
 	
@@ -54,11 +56,10 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		
 		LinkedList<TId> importedNamespacePath = node.getId();
 		
-		//....
+		NameScope importedScope = getImportHandler().importNamespace(
+			createNameFromPath(importedNamespacePath));
 		
-		
-		
-		state.globalScope.getSymbolTable().appendTable(....);
+		state.globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
 	}
 	
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
@@ -101,7 +102,13 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inAOfunctionDeclaration(AOfunctionDeclaration node)
     {
-    	....
+    	TId id = node.getName();
+		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+		try {
+			addSymbolEntry(SymbolEntry entry, id)
+		} catch (SymbolEntryPresent ex) {
+			throw new RuntimeException(ex);
+		}
     }
 
     public void outAOfunctionDeclaration(AOfunctionDeclaration node)
@@ -114,7 +121,13 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inAOfilesDeclaration(AOfilesDeclaration node)
     {
-    	....
+    	TId id = node.getId();
+		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+		try {
+			addSymbolEntry(SymbolEntry entry, id)
+		} catch (SymbolEntryPresent ex) {
+			throw new RuntimeException(ex);
+		}
     }
 
     public void outAOfilesDeclaration(AOfilesDeclaration node)
@@ -135,17 +148,35 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inAStringOstringLiteral(AStringOstringLiteral node)
     {
-    	super.inAStringOstringLiteral(node);
+    	TString s = node.getString();
+    	String value = s.getText();
+    	
+    	// Remove double quotes that surround string.
+    	if (value.length() > 2) {
+    		value = value.substring(1, value.length()-1);
+    	}
+    	
+    	// Set attribute value.
+    	setExprAnnotation(node, value);
     }
 
     public void outAStringOstringLiteral(AStringOstringLiteral node)
     {
-    	....
+    	super.outAStringOstringLiteral(node);
     }
 
     public void inAString2OstringLiteral(AString2OstringLiteral node)
     {
-    	super.inAString2OstringLiteral(node);
+    	TString s = node.getString();
+    	String value = s.getText();
+    	
+    	// Remove double quotes that surround string.
+    	if (value.length() > 6) {
+    		value = value.substring(3, value.length()-5);
+    	}
+    	
+    	// Set attribute value.
+    	setExprAnnotation(node, value);
     }
 
     public void outAString2OstringLiteral(AString2OstringLiteral node)
