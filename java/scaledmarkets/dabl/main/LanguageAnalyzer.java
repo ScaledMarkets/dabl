@@ -35,7 +35,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		String name = createNameFromPath(path);
 		
 		NameScope enclosingScope = getCurrentNameScope();
-		NameScope newScope = new NameScope(name, node, enclosingScope);
+		NameScope newScope = createNameScope(name, node);
 		SymbolEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
 		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
 			throw new RuntimeException(ex);
@@ -54,7 +54,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		//....
 		
 		
-		//state.globalScope.getSymbolTable().appendTable(....);
+		
+		state.globalScope.getSymbolTable().appendTable(....);
 	}
 	
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
@@ -78,12 +79,18 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
     {
-        ....
+		TId id = node.getId();
+		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+		try {
+			addSymbolEntry(SymbolEntry entry, id)
+		} catch (SymbolEntryPresent ex) {
+			throw new RuntimeException(ex);
+		}
     }
 
     public void outANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
     {
-        ....
+    	super.outANamedOnamedArtifactSet(node);
     }
 	
 	
@@ -91,12 +98,12 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inAOfunctionDeclaration(AOfunctionDeclaration node)
     {
-        ....
+    	....
     }
 
     public void outAOfunctionDeclaration(AOfunctionDeclaration node)
     {
-        ....
+    	super.outAOfunctionDeclaration(node);
     }
 	
 	
@@ -104,12 +111,12 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inAOfilesDeclaration(AOfilesDeclaration node)
     {
-        ....
+    	....
     }
 
     public void outAOfilesDeclaration(AOfilesDeclaration node)
     {
-        ....
+    	super.outAOfilesDeclaration(node);
     }
 	
 	
@@ -125,22 +132,22 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inAStringOstringLiteral(AStringOstringLiteral node)
     {
-        super.inAStringOstringLiteral(node);
+    	super.inAStringOstringLiteral(node);
     }
 
     public void outAStringOstringLiteral(AStringOstringLiteral node)
     {
-        ....
+    	....
     }
 
     public void inAString2OstringLiteral(AString2OstringLiteral node)
     {
-        super.inAString2OstringLiteral(node);
+    	super.inAString2OstringLiteral(node);
     }
 
     public void outAString2OstringLiteral(AString2OstringLiteral node)
     {
-        ....
+    	super.outAString2OstringLiteral(node);
     }
 	
     /* Evaluate string expressions.
@@ -151,12 +158,12 @@ public class LanguageAnalyzer extends DablBaseAdapter
      
     public void inAStaticStringExprOstringLiteral(AStaticStringExprOstringLiteral node)
     {
-        super.inAStaticStringExprOstringLiteral(node);
+    	super.inAStaticStringExprOstringLiteral(node);
     }
 
     public void outAStaticStringExprOstringLiteral(AStaticStringExprOstringLiteral node)
     {
-        ....
+    	....
     }
 	
 	
