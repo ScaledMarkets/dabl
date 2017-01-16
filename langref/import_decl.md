@@ -17,13 +17,13 @@ Java import.
 A DABL `import` translates into a call to function that has the following Java
 signature:
 ```
-NameScope importNamespace(String[] path)
+NameScope importNamespace(String path)
 ```
 Implementations in other languages have a signature that is analogous to
 this in the chosen language. For example, a C implementation would use the
 signature,
 ```
-NameScope* importNamespace(char* path[])
+NameScope* importNamespace(char* path)
 ```
 
 When a DABL compiler encounters an import statement, it calls the `importNamespace`
