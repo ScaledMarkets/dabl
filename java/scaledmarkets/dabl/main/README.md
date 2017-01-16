@@ -91,8 +91,13 @@ own `NameScopes`,
 which in turn reference their own `SymbolTables`, creating a hierarchy
 of `NameScopes`.
 
-The compiler builds an abstract syntax tree (AST), which is defined by the
-Abstract Syntax Tree section of the
+The `CompilerState` also references an abstract syntax tree (AST),
+whose structure is defined by the Abstract Syntax Tree section of the
 [dabl.sablecc](https://github.com/Scaled-Markets/dabl/blob/master/dabl.sablecc)
 file,
 and which can be accessed via the methods in the generated `scaledmarkets.dabl.node` package.
+
+The linkage between the AST and the `NameScope` hierarchy is as follows:
+`SymbolEntries` that are [`DeclaredEntries`](DeclaredEntry.java)
+provide a `getDefiningNode()` method, which provides a reference to
+the AST `Node` that declares the symbol that the `SymbolEntry` defines.
