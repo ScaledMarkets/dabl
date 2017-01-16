@@ -83,10 +83,10 @@ It uses the following:
 
 The compiler returns a [`CompilerState`](CompilerState.java) object. In the
 `CompilerState`, the `globalScope` variable references the root level
-`[NameScope](NameScope.java)` object.
-A `NameScope` references a `[SymbolTable](SymbolTable.java)` consisting of
-`[SymbolEntries](SymbolEntry.java)`.
-`SymbolEntries` that are `[NameScopeEntries](NameScopeEntry.java)` own their
+[`NameScope`](NameScope.java) object.
+A `NameScope` references a [`SymbolTable`](SymbolTable.java) consisting of
+[`SymbolEntries`](SymbolEntry.java).
+`SymbolEntries` that are [`NameScopeEntries`](NameScopeEntry.java) own their
 own `NameScopes`,
 which in turn reference their own `SymbolTables`, creating a hierarchy
 of `NameScopes`.
