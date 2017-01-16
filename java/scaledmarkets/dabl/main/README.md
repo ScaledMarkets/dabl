@@ -81,6 +81,16 @@ It uses the following:
 
 ## Compiler Output
 
+The compiler returns a `[CompilerState](CompilerState.java)` object. In the
+`CompilerState`, the `globalScope` variable references the root level
+`[NameScope](NameScope.java)` object.
+A `NameScope` references a `[SymbolTable](SymbolTable.java)` consisting of
+`[SymbolEntries](SymbolEntry.java)`.
+`SymbolEntries` that are `[NameScopeEntries](NameScopeEntry.java)` own their
+own `NameScopes`,
+which in turn reference their own `SymbolTables`, creating a hierarchy
+of `NameScopes`.
+
 The compiler builds an abstract syntax tree (AST), which is defined by the
 Abstract Syntax Tree section of the
 [dabl.sablecc](https://github.com/Scaled-Markets/dabl/blob/master/dabl.sablecc)
