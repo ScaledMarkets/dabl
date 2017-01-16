@@ -20,8 +20,11 @@ import java.util.LinkedList;
  */
 public class LanguageAnalyzer extends DablBaseAdapter
 {
-	public LanguageAnalyzer(CompilerState state) {
+	protected ImportHandler importHandler;
+	
+	public LanguageAnalyzer(CompilerState state, ImportHandler importHandler) {
 		super(state);
+		this.importHandler = importHandler;
 		
 		state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
 		assertThat(state.scopeStack.size() == 1);   // debug

@@ -105,8 +105,8 @@ prefixed by a dollar sign:
 
 ### Built-In Environment Variables
 
-DABL defines some built-in environment variables that are set by the DABL template
-processor at the start of execution. These are:
+DABL defines some built-in environment variables that are set by the DABL
+template processor at the start of execution. These are:
 
 <dl>
 <dd><code>thisdir</code> - The directory that the DABL script exists in.
@@ -116,6 +116,13 @@ it lives) by HTTP.</dd>
 <dd><code>home</code> - The home directory of the user Id that is compiling
 the DABL file.</dd>
 <dd><code>~</code> - Same as <code>home</code>.</dd>
+</dl>
+
+The DABL compiler also reads the following environment variable:
+
+<dl>
+<dd><code>DABL_PATH</code> - A colon-separated list of file directories in which
+to look for DABL files when resolving imported namespaces.
 </dl>
 
 ## Identifiers
