@@ -81,7 +81,7 @@ It uses the following:
 
 ## Compiler Output
 
-The compiler returns a `[CompilerState](CompilerState.java)` object. In the
+The compiler returns a [`CompilerState`](CompilerState.java) object. In the
 `CompilerState`, the `globalScope` variable references the root level
 `[NameScope](NameScope.java)` object.
 A `NameScope` references a `[SymbolTable](SymbolTable.java)` consisting of
