@@ -197,7 +197,27 @@ public class LanguageAnalyzer extends DablBaseAdapter
 
     public void outAStaticStringExprOstringLiteral(AStaticStringExprOstringLiteral node)
     {
-    	....
+    	POstringLiteral left = node.getLeft();
+    	POstringLiteral right = node.getRight();
+    	
+    	ExprAnnotation leftAnnot = getExprAnnotation(left);
+    	ExprAnnotation rightAnnot = getExprAnnotation(right);
+    	
+    	Object leftValue = leftAnnot.getValue();
+    	Object rightValue = rightAnnot.getValue();
+    	
+    	if (leftValue == null) throw new RuntimeException("No left operand in concatenation");
+    	if (rightValue == null) throw new RuntimeException("No right operand in concatenation");
+    	
+    	if (! (leftValue instanceof String)) throw new RuntimeException("Left operand is not a string");
+    	if (! (rightValue instanceof String)) throw new RuntimeException("Right operand is not a string");
+    	
+    	String leftString = (String)leftValue;
+    	String rightString = (String)rightValue;
+    	
+    	String result = leftString + rightString;
+    	
+    	setExprAnnotation(node, result);
     }
 	
 	
