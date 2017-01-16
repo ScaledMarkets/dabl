@@ -14,7 +14,7 @@ Java import.
 
 ## Mechanism By Which Import Occurs
 
-A DABL import translates into a call to function that has the following Java
+A DABL `import` translates into a call to function that has the following Java
 signature:
 ```
 NameScope importNamespace(String[] path)
