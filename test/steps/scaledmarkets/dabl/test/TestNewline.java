@@ -24,8 +24,8 @@ public class TestNewline extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple\n" + // no space between 'simple' and the newlilne
 "task t123\n" +
-"  when true \n" +
-"  abc = \"def\" true "
+"  when true\n" +
+"  abc = \"def\" true"
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
