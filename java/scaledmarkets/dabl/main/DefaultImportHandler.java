@@ -14,7 +14,7 @@ public class DefaultImportHandler implements ImportHandler {
 		// Obtain value of DABL_PATH.
 		String dablPath = System.getenv("DABL_PATH");
 		if (dablPath == null) {
-			....
+			throw new RuntimeException("Env variable DABL_PATH not set");
 		}
 		
 		// Split the DABL path into its parts.
@@ -29,7 +29,7 @@ public class DefaultImportHandler implements ImportHandler {
 		for (String dirStr : pathDirs) {
 			File dir = new File(dirStr);
 			if (! dir.isDirectory()) {
-				....
+				throw new RuntimeException("File " + dir.toString() + " is not a directory");
 			}
 			
 			File f = new File(dir, relativeFilePath);
@@ -39,14 +39,14 @@ public class DefaultImportHandler implements ImportHandler {
 			}
 		}
 		if (namespaceFile == null) {
-			....
+			throw new RuntimeException("Namespace " + path + " not found in the DABL_PATH");
 		}
 		
 		// Recursively call the DABL compiler on the file.
 		Dabl dabl = new Dabl(false, false, new FileReader(namespaceFile));
 		CompilerState state;
 		try { state = dabl.process(); } catch (Exception ex) {
-			....
+			throw new RuntimeException(ex);
 		}
 		
 		return state.globalScope;
