@@ -4,10 +4,10 @@ import scaledmarkets.dabl.node.*;
 
 public class ExprAnnotation extends Annotation
 {
-	private POexpr expr;
+	private Node expr;
 	private Object value;
 	
-	public ExprAnnotation(POexpr expr, Object value)
+	public ExprAnnotation(Node expr, Object value)
 	{
 		this.expr = expr;
 		this.value = value;

@@ -1,6 +1,7 @@
 package scaledmarkets.dabl.main;
 
 import java.io.File;
+import java.io.Reader;
 import java.io.FileReader;
 
 /**
@@ -43,7 +44,13 @@ public class DefaultImportHandler implements ImportHandler {
 		}
 		
 		// Recursively call the DABL compiler on the file.
-		Dabl dabl = new Dabl(false, false, new FileReader(namespaceFile));
+		Reader reader;
+		try {
+			reader = new FileReader(namespaceFile);
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+		Dabl dabl = new Dabl(false, false, reader);
 		CompilerState state;
 		try { state = dabl.process(); } catch (Exception ex) {
 			throw new RuntimeException(ex);

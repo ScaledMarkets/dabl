@@ -59,7 +59,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		NameScope importedScope = getImportHandler().importNamespace(
 			createNameFromPath(importedNamespacePath));
 		
-		state.globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
+		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
 	}
 	
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
@@ -86,7 +86,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		TId id = node.getId();
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {
-			addSymbolEntry(SymbolEntry entry, id)
+			addSymbolEntry(entry, id);
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
@@ -105,7 +105,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
     	TId id = node.getName();
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {
-			addSymbolEntry(SymbolEntry entry, id)
+			addSymbolEntry(entry, id);
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
@@ -124,7 +124,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
     	TId id = node.getId();
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {
-			addSymbolEntry(SymbolEntry entry, id)
+			addSymbolEntry(entry, id);
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
@@ -167,7 +167,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 
     public void inAString2OstringLiteral(AString2OstringLiteral node)
     {
-    	TString s = node.getString();
+    	TString2 s = node.getString2();
     	String value = s.getText();
     	
     	// Remove double quotes that surround string.
@@ -203,8 +203,15 @@ public class LanguageAnalyzer extends DablBaseAdapter
     	ExprAnnotation leftAnnot = getExprAnnotation(left);
     	ExprAnnotation rightAnnot = getExprAnnotation(right);
     	
-    	Object leftValue = leftAnnot.getValue();
-    	Object rightValue = rightAnnot.getValue();
+    	Object leftValue;
+    	Object rightValue;
+    	
+    	try {
+			leftValue = leftAnnot.getValue();
+			rightValue = rightAnnot.getValue();
+		} catch (ExprAnnotation.DynamicEvaluation ex) {
+			throw new RuntimeException(ex);
+		}
     	
     	if (leftValue == null) throw new RuntimeException("No left operand in concatenation");
     	if (rightValue == null) throw new RuntimeException("No right operand in concatenation");

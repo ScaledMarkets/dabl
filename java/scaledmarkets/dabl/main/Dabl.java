@@ -25,6 +25,7 @@ public class Dabl
 	boolean print = false;
 	boolean printTrace = false;
 	Reader reader = null;
+	ImportHandler importHandler = null;
 	
 	/**
 	 * Applications that embed a DABL compiler should instantiate a Dabl instance
@@ -77,6 +78,8 @@ public class Dabl
 			}
 			argno++;
 		}
+		
+		dabl.importHandler = new DefaultImportHandler();
 				
 		try { dabl.process(); }
 		catch (Exception ex)
@@ -114,7 +117,7 @@ public class Dabl
 		// declarations. Expressions may be partially evaluated, where possible.
 		// Values that depend on the DABL file context (e.g., its location on a
 		// file system) are elaborated.
-		state.ast.apply(new LanguageAnalyzer(state));
+		state.ast.apply(new LanguageAnalyzer(state, this.importHandler));
 		
 		return state;
 	}
