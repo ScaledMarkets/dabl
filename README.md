@@ -74,6 +74,6 @@ process, so do not edit it by hand.
 
 # Binary Download
 
-Binaries of the compiler JAR file and Javadocs can be found [here](https://github.com/Scaled-Markets/dabl/releases).
-Javadocs can also be found [here](https://scaled-markets.github.io/dabl/).
+Binaries of the compiler JAR file can be found [here](https://github.com/Scaled-Markets/dabl/releases).
+Javadocs can be found [here](https://scaled-markets.github.io/dabl/).
 

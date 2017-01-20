@@ -11,7 +11,6 @@ include makefile.inc
 ORG = Scaled Markets
 PRODUCT_NAME = Dabl
 JAR_NAME = dabl
-DOCS_ZIP_NAME = dabl-docs
 
 # Output artifact names:
 package=scaledmarkets/dabl
