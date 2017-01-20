@@ -13,12 +13,6 @@ PRODUCT_NAME = Dabl
 JAR_NAME = dabl
 DOCS_ZIP_NAME = dabl-docs
 
-# Java classpaths:
-buildcp := $(build_dir)
-runcp := $(build_dir):$(aws_jar)
-test_compile_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
-test_cp := $(junit_dir)/*:$(test_build_dir):$(build_dir)
-
 # Output artifact names:
 package=scaledmarkets/dabl
 test_package=scaledmarkets/dabl/test
@@ -64,13 +58,18 @@ testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(
 sable_out_dir := $(CurDir)/SableCCOutput
 javadoc_dir := $(CurDir)/docs
 
+# Java classpaths:
+buildcp := $(build_dir)
+compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
+test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
+
 
 ################################################################################
 # Tasks
 .PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
-	check test_compile test runsonar javadoc clean info
+	check compile_tests test runsonar javadoc clean info
 
-all: clean parser compile check jar test_compile test javadoc
+all: clean parser compile check jar compile_tests test javadoc
 
 # Create the manifest file for the JAR.
 manifest:
@@ -147,8 +146,8 @@ check:
 	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.main.Dabl -t simple.dabl
 
 # Compile the test source files.
-test_compile: $(test_build_dir)
-	javac -cp $(CUCUMBER_CLASSPATH):$(buildcp) -d $(test_build_dir) \
+compile_tests: $(test_build_dir)
+	javac -cp $(compile_tests_cp) -d $(test_build_dir) \
 		$(test_src_dir)/steps/$(test_package)/*.java
 
 # Run Cucumber tests.

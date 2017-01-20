@@ -40,12 +40,11 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		String name = createNameFromPath(path);
 		
 		NameScope enclosingScope = getCurrentNameScope();
-		NameScope newScope = createNameScope(name, node);
+		NameScope newScope = createNameScope(name, node);  // pushes name scope
 		SymbolEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
 		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		pushNameScope(newScope);
 	}
 	
 	public void outAOnamespace(AOnamespace node) {

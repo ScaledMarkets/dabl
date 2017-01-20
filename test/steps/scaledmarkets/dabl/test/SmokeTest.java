@@ -25,7 +25,7 @@ public class SmokeTest extends TestBase {
 	public void i_compile_trivial_input() throws Exception {
 		
 		Reader reader = new StringReader(
-			"\n namespace simple \n"
+"\n namespace simple task t123"
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

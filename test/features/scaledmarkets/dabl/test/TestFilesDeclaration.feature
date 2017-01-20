@@ -4,5 +4,5 @@ Feature: TestFilesDeclaration
 	
 	@done
 	Scenario: Simple
-		When 
-		Then 
+		When I declare a file set
+		Then I can reference the file set elsewhere

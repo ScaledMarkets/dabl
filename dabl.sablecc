@@ -165,6 +165,11 @@ Productions
 	namespace_decl {-> id*} =
 		namespace path						{-> [path.id]};
 	
+	spec_elt_seq_opt {-> onamespace_elt*} =
+		{multiple} spec_elt_seq				{-> [spec_elt_seq.onamespace_elt]}
+	  | {none}								{-> []}
+	  ;
+	  
 	spec_elt_seq {-> onamespace_elt*} =
 		{multiple} spec_elt spec_elt_seq	{-> [spec_elt.onamespace_elt, spec_elt_seq.onamespace_elt]}
 	  | {one} spec_elt						{-> [spec_elt.onamespace_elt]}

@@ -4,5 +4,5 @@ Feature: TestImport
 	
 	@done
 	Scenario: Simple
-		When 
-		Then 
+		When I import another namespace
+		Then the elements of the namespace are accessible
