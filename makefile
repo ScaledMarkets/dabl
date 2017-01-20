@@ -167,7 +167,7 @@ $(javadoc_dir):
 # Generate API docs (javadocs).
 javadoc: $(javadoc_dir)
 	rm -rf $(javadoc_dir)/*
-	$(JAVADOC) -public -d $(javadoc_dir) \
+	$(JAVADOC) -protected -d $(javadoc_dir) \
 		-classpath $(build_dir) \
 		-sourcepath $(src_dir):$(sable_out_dir) \
 		-subpackages $(package_name) \
