@@ -62,7 +62,7 @@ test_package = $(package)/test
 testsourcefiles := $(test_src_dir)/$(test_package)/*.java
 testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/gen/*.class
 sable_out_dir := $(CurDir)/SableCCOutput
-javadoc_dir := $(CurDir)/javadoc
+javadoc_dir := $(CurDir)/docs
 
 
 ################################################################################
@@ -168,18 +168,15 @@ $(javadoc_dir):
 
 # Generate API docs (javadocs).
 javadoc: $(javadoc_dir)
-	git checkout gh-pages
 	rm -rf $(javadoc_dir)/*
 	$(JAVADOC) -public -d $(javadoc_dir) \
 		-classpath $(build_dir) \
 		-sourcepath $(src_dir):$(sable_out_dir) \
 		-subpackages $(package_name) \
 		-exclude $(test_package_name)
-	$(JAR) cMvf $(build_dir)/$(DOCS_ZIP_NAME).zip javadoc
-	git add javadoc && git commit -a -m "generated javadoc"
-	git checkout master
-	git push github master
-	git push github gh-pages
+	git add $(javadoc_dir)/
+	git commit -am "Generated api docs"
+	git push
 
 clean:
 	rm -r -f $(build_dir)
