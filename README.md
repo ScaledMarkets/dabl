@@ -44,9 +44,7 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 	(Java API docs are included in the binary download below.)
 * A sample DABL file, [example.dabl](example.dabl).
 
-To create the compiler, run the makefile in the root directory. The output of the
-build is a JAR file, `dabl.jar`, which can be included in any
-Java project. (See "Binary Download" below.)
+# Embedding the Compiler In an Application
 
 When the compiler processes a DABL source file, the output of the compiler is a
 Java object model. The object model is defined
@@ -67,7 +65,9 @@ Javadocs can be found [here](https://scaled-markets.github.io/dabl/).
 
 To build the project, set the environment-specific tool locations in
 [makefile.inc](https://github.com/Scaled-Markets/dabl/blob/master/makefile.inc).
-Then run `make all`.
+Then run `make all`. The output of the
+build is a JAR file, `dabl.jar`, which can be included in any
+Java project. (See "Binary Download" below.)
 
 # Binary Download
 
