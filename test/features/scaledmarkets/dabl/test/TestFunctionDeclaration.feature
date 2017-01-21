@@ -4,5 +4,5 @@ Feature: TestFunctionDeclaration
 	
 	@done
 	Scenario: Simple
-		When I declar a function
+		When I declare a function
 		Then I can call the function and obtain a correct result

@@ -68,7 +68,7 @@ test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
 .PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
 	check compile_tests test runsonar javadoc clean info
 
-all: clean parser compile check jar compile_tests test javadoc
+all: clean parser compile jar compile_tests test javadoc
 
 # Create the manifest file for the JAR.
 manifest:
