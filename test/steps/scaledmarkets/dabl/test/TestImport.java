@@ -22,7 +22,8 @@ public class TestImport extends TestBase {
 	public void i_import_another_namespace() throws Exception {
 		
 		Reader reader = new StringReader(
-""
+"namespace simple" +
+"  import another"
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
@@ -34,5 +35,6 @@ public class TestImport extends TestBase {
 	public void the_elements_of_the_namespace_are_accessible() throws Exception {
 		
 		
+		assertThat(false);
 	}
 }

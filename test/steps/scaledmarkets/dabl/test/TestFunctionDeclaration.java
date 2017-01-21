@@ -22,7 +22,10 @@ public class TestFunctionDeclaration extends TestBase {
 	public void i_declare_a_function() throws Exception {
 		
 		Reader reader = new StringReader(
-""
+"namespace simple" +
+"  function f1 int string \n" +
+"    binds to \"java\" method \"convertToString\"\N" +
+"    returns string" +
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
@@ -34,5 +37,6 @@ public class TestFunctionDeclaration extends TestBase {
 	public void i_can_call_the_function_and_obtain_a_correct_result() throws Exception {
 		
 		
+		assertThat(false);
 	}
 }

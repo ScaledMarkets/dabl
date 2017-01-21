@@ -22,17 +22,19 @@ public class TestFilesDeclaration extends TestBase {
 	public void i_declare_a_file_set() throws Exception {
 		
 		Reader reader = new StringReader(
-""
+"namespace simple" +
+"  files Stuff from \"myrepo\" in Repo1\n" +
+"  include \"*.java\""
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		this.state = dabl.process();
-		
 	}
 	
 	@Then("^I can reference the file set elsewhere$")
 	public void i_can_reference_the_file_set_elsewhere() throws Exception {
 		
 		
+		assertThat(false);
 	}
 }

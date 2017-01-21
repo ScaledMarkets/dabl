@@ -22,8 +22,12 @@ public class TestInputsAndOutputs extends TestBase {
 	public void i_compile_a_task_that_has_inputs_and_outputs() throws Exception {
 		
 		Reader reader = new StringReader(
-""
+"namespace simple" +
+"  task t123\n" +
+"    inputs MyInputs "\"java/*.java\" from \"myrepo\" in MyRepository\n" +
+"    outputs MyOutputs "\"classes\*.class\" from \"myrepo\" in MyRepository\n"
 			);
+		
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		this.state = dabl.process();
@@ -34,5 +38,6 @@ public class TestInputsAndOutputs extends TestBase {
 	public void the_inputs_and_outputs_are_retrievable() throws Exception {
 		
 		
+		assertThat(false);
 	}
 }

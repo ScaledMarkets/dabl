@@ -22,17 +22,21 @@ public class TestStringExpression extends TestBase {
 	public void i_compile_a_static_string_expression() throws Exception {
 		
 		Reader reader = new StringReader(
-""
+"namespace simple" +
+"repo my_git type git\n" +
+"  scheme \"https\"\n" +
+"  path \"github.com/myteam\"\n" +
+"  userid \"johnsmith\" password \"$\" ^ \"MyPassword\""
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		this.state = dabl.process();
-		
 	}
 	
 	@Then("^the expression value can be retrieved and is correct$")
 	public void the_expression_value_can_be_retrieved_and_is_correct() throws Exception {
 		
 		
+		assertThat(false);
 	}
 }
