@@ -47,8 +47,14 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 # Embedding the Compiler In an Application
 
 When the compiler processes a DABL source file, the output of the compiler is a
-Java object model. The object model is defined
-by the Abstract Syntax Tree at the end of the [dabl.sablecc](dabl.sablecc)
+[CompilerState])https://scaled-markets.github.io/dabl/scaledmarkets/dabl/main/CompilerState.html)
+object. A CompilerState contains a a field,
+```
+Start ast
+```
+A [Start](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/node/Start.html)
+is the root of a node tree that implements the Abstract Syntax Tree
+that is defined at the end of the [dabl.sablecc](dabl.sablecc)
 grammar file. The object
 model can be accessed at runtime; thus, one can build a tool that compiles DABL
 files and then operates on the resulting object model. For an example
