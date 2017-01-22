@@ -50,7 +50,7 @@ When the compiler processes a DABL source file, the output of the compiler is a
 [`CompilerState`](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/main/CompilerState.html)
 object. A `CompilerState` contains a a field,
 ```
-Start ast
+public Start ast;
 ```
 A [`Start`](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/node/Start.html)
 is the root of a node tree that implements the Abstract Syntax Tree
