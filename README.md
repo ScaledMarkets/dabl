@@ -47,8 +47,8 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 # Embedding the Compiler In an Application
 
 When the compiler processes a DABL source file, the output of the compiler is a
-[CompilerState](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/main/CompilerState.html)
-object. A CompilerState contains a a field,
+`[CompilerState](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/main/CompilerState.html)`
+object. A `CompilerState` contains a a field,
 ```
 Start ast
 ```
