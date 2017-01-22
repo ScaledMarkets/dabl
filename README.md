@@ -52,7 +52,7 @@ object. A `CompilerState` contains a a field,
 ```
 Start ast
 ```
-A [Start](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/node/Start.html)
+A [`Start`](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/node/Start.html)
 is the root of a node tree that implements the Abstract Syntax Tree
 that is defined at the end of the [dabl.sablecc](dabl.sablecc)
 grammar file. The object
