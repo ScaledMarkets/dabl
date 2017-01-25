@@ -31,13 +31,19 @@ public class Dabl
 	 * Applications that embed a DABL compiler should instantiate a Dabl instance
 	 * using this constructor.
 	 */
-	public Dabl(boolean print, boolean printTrace, Reader reader) {
+	public Dabl(boolean print, boolean printTrace, Reader reader, ImportHandler importHandler) {
 		this.print = print;
 		this.printTrace = printTrace;
 		this.reader = reader;
+		this.importHandler = importHandler;
+	}
+	
+	public Dabl(boolean print, boolean printTrace, Reader reader) {
+		this(print, printTrace, reader, new DefaultImportHandler());
 	}
 	
 	protected Dabl() {
+		this.importHandler = new DefaultImportHandler();
 	}
 	
 	/**
@@ -79,8 +85,6 @@ public class Dabl
 			argno++;
 		}
 		
-		dabl.importHandler = new DefaultImportHandler();
-				
 		try { dabl.process(); }
 		catch (Exception ex)
 		{
@@ -113,7 +117,6 @@ public class Dabl
 		
 		if (print) PrettyPrint.pp(state.ast);
 		
-		// Analysis - Identifiers are resolved, matching them up with their
 		// declarations. Expressions may be partially evaluated, where possible.
 		// Values that depend on the DABL file context (e.g., its location on a
 		// file system) are elaborated.

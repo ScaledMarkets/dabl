@@ -24,8 +24,8 @@ public class TestFunctionDeclaration extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple" +
 "  function f1 int string \n" +
-"    binds to \"java\" method \"convertToString\"\N" +
-"    returns string" +
+"    binds to \"java\" method \"convertToString\"\n" +
+"    returns string"
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

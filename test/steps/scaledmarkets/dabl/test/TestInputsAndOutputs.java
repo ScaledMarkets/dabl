@@ -24,8 +24,8 @@ public class TestInputsAndOutputs extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple" +
 "  task t123\n" +
-"    inputs MyInputs "\"java/*.java\" from \"myrepo\" in MyRepository\n" +
-"    outputs MyOutputs "\"classes\*.class\" from \"myrepo\" in MyRepository\n"
+"    inputs MyInputs \"abc.jar\", \"java/*.java\" from \"myrepo\" in MyRepository\n" +
+"    outputs MyOutputs \"classes/*.class\"\n"
 			);
 		
 		

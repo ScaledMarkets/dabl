@@ -26,7 +26,12 @@ public class TestImport extends TestBase {
 "  import another"
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Map map = new HashMap<String, String>();
+		map.put("another", "namespace another");
+
+		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(map);
+		
+		
 		this.state = dabl.process();
 		
 	}

@@ -68,7 +68,7 @@ test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
 .PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
 	check compile_tests test runsonar javadoc clean info
 
-all: clean parser compile jar compile_tests test javadoc
+all: clean parser compile jar compile_tests test
 
 # Create the manifest file for the JAR.
 manifest:
@@ -129,7 +129,7 @@ $(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir) $(jar_dir)
 	rm Manifest
 
 # Define the 'compile' target so that we can reference it in .DEFAULT_GOAL.
-compile:
+compile: config
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
 		$(src_dir)/sablecc/*.java \
 		$(src_dir)/$(package)/*.java \
@@ -176,12 +176,15 @@ javadoc: $(javadoc_dir)
 	git commit -am "Generated api docs"
 	git push
 
+cukehelp:
+	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help
+
 clean:
-	rm -r -f $(build_dir)
-	rm -r -f $(jar_dir)
+	rm -r -f $(build_dir)/*
+	rm -r -f $(jar_dir)/*
 	rm -r -f $(sable_out_dir)/*
 	rm -f Manifest
-	rm -r -f $(javadoc_dir)
+	rm -r -f $(javadoc_dir)/*
 
 info:
 	@echo "Makefile for $(PRODUCT_NAME)"

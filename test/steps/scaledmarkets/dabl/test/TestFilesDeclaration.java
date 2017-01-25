@@ -23,8 +23,11 @@ public class TestFilesDeclaration extends TestBase {
 		
 		Reader reader = new StringReader(
 "namespace simple" +
-"  files Stuff from \"myrepo\" in Repo1\n" +
-"  include \"*.java\""
+"  repo my_maven type maven\n" +
+"    path \"mymaven.abc.com\"\n" +
+"    userid \"MavenUserId\" key file \"~/mykey.pem\"\n" +
+"  files Stuff from \"myrepo\" in my_maven\n" +
+"    include \"*.java\""
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

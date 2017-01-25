@@ -53,10 +53,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
 		
-		LinkedList<TId> importedNamespacePath = node.getId();
-		
-		NameScope importedScope = getImportHandler().importNamespace(
-			createNameFromPath(importedNamespacePath));
+		String name = createNameFromPath(node.getId());
+		NameScope importedScope = getImportHandler().importNamespace(name);
 		
 		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
 	}
