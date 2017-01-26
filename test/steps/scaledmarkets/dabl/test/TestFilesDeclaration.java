@@ -8,6 +8,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.node.*;
+
 import java.io.Reader;
 import java.io.StringReader;
 import scaledmarkets.dabl.node.*;
@@ -37,7 +39,13 @@ public class TestFilesDeclaration extends TestBase {
 	@Then("^I can reference the file set elsewhere$")
 	public void i_can_reference_the_file_set_elsewhere() throws Exception {
 		
-		
-		assertThat(false);
+		NameScopeEntry entry = getNamespaceSymbolEntry("simple");
+		NameScope scope = entry.getOwnedScope();
+		SymbolEntry e = scope.getEntry("Stuff");
+		assertThat(e != null);
+		assertThat(e instanceof DeclaredEntry);
+		DeclaredEntry filesEntry = (DeclaredEntry)e;
+		Node n = filesEntry.getDefiningNode();
+		assertThat(n instanceof AOfilesDeclaration);
 	}
 }

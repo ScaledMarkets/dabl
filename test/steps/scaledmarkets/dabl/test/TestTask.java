@@ -16,8 +16,6 @@ import java.util.LinkedList;
 
 public class TestTask extends TestBase {
 	
-	CompilerState state;
-	
 	@When("^I compile a simple task$")
 	public void i_compile_a_simple_task() throws Exception {
 		
@@ -40,10 +38,7 @@ public class TestTask extends TestBase {
 	@Then("^I can retrieve the the task by its name$")
 	public void i_can_retrieve_the_the_task_by_its_name() throws Exception {
 		
-		List<NameScope> scopeStack = this.state.scopeStack;
-		SymbolEntry entry = this.state.scopeStack.get(0).getEntry("simple");
-		assertThat(entry != null);
-		assertThat(entry instanceof NameScopeEntry);
+		SymbolEntry entry = getNamespaceSymbolEntry("simple");
 		
 		// Get the namespace's symbol table.
 		NameScopeEntry nse = (NameScopeEntry)entry;
