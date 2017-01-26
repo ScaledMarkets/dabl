@@ -22,10 +22,10 @@ public class TestFilesDeclaration extends TestBase {
 	public void i_declare_a_file_set() throws Exception {
 		
 		Reader reader = new StringReader(
-"namespace simple" +
-"  repo my_maven type maven\n" +
+"namespace simple\n" +
+"  repo my_maven type \"maven\"\n" +
 "    path \"mymaven.abc.com\"\n" +
-"    userid \"MavenUserId\" key file \"~/mykey.pem\"\n" +
+"    userid \"MavenUserId\" password \"MavenPassword\"\n" +
 "  files Stuff from \"myrepo\" in my_maven\n" +
 "    include \"*.java\""
 			);

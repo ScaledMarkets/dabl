@@ -5,6 +5,7 @@ import scaledmarkets.dabl.main.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.io.Reader;
 import java.io.StringReader;
 
 /**
@@ -15,7 +16,7 @@ public class InMemoryImportHandler implements ImportHandler {
 	private Map<String, NameScope> scopeMap = new HashMap<String, NameScope>();
 	
 	
-	public InMemoryImportHandler(String[] namespaces) {
+	public InMemoryImportHandler(String[] namespaces) throws Exception {
 		
 		for (String namespace : namespaces) {
 			

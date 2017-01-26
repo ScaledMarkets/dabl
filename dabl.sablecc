@@ -86,8 +86,8 @@ Tokens
 	repo = 'repo';
 	type = 'type';
 	git = 'git';
-	maven = 'maven';
-	svn = 'svn';
+	//maven = 'maven';
+	//svn = 'svn';
 	files = 'files';
 	shell = 'shell';
 	translation = 'translation';

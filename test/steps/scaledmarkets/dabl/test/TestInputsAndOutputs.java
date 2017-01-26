@@ -22,10 +22,11 @@ public class TestInputsAndOutputs extends TestBase {
 	public void i_compile_a_task_that_has_inputs_and_outputs() throws Exception {
 		
 		Reader reader = new StringReader(
-"namespace simple" +
+"namespace simple\n" +
 "  task t123\n" +
-"    inputs MyInputs \"abc.jar\", \"java/*.java\" from \"myrepo\" in MyRepository\n" +
-"    outputs MyOutputs \"classes/*.class\"\n"
+"    inputs MyInputs \"abc.jar\" from \"myrepo\" in MyRepository, \n" +
+"      \"java/*.java\" from \"myrepo\" in MyRepository\n" +
+"    outputs MyOutputs \"classes/*.class\" from \"myrepo\" in MyRepository"
 			);
 		
 		

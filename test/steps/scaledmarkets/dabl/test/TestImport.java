@@ -22,15 +22,15 @@ public class TestImport extends TestBase {
 	public void i_import_another_namespace() throws Exception {
 		
 		Reader reader = new StringReader(
-"namespace simple" +
+"namespace simple \n" +
 "  import another"
 			);
 		
 		String[] namespaces = new String[] {
-			"namespace another"
+			"namespace another task t123"
 		};
 
-		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(namespaces);
+		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(namespaces));
 		this.state = dabl.process();
 		
 	}

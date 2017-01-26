@@ -22,8 +22,8 @@ public class TestFunctionDeclaration extends TestBase {
 	public void i_declare_a_function() throws Exception {
 		
 		Reader reader = new StringReader(
-"namespace simple" +
-"  function f1 int string \n" +
+"namespace simple\n" +
+"  function f1 int, string \n" +
 "    binds to \"java\" method \"convertToString\"\n" +
 "    returns string"
 			);

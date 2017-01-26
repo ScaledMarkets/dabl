@@ -22,8 +22,8 @@ public class TestStringExpression extends TestBase {
 	public void i_compile_a_static_string_expression() throws Exception {
 		
 		Reader reader = new StringReader(
-"namespace simple" +
-"repo my_git type git\n" +
+"namespace simple \n" +
+"repo my_git type \"git\"\n" +
 "  scheme \"https\"\n" +
 "  path \"github.com/myteam\"\n" +
 "  userid \"johnsmith\" password \"$\" ^ \"MyPassword\""
