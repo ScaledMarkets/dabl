@@ -8,15 +8,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.node.*;
+
 import java.io.Reader;
 import java.io.StringReader;
-import scaledmarkets.dabl.node.*;
 import java.util.List;
 import java.util.LinkedList;
 
 public class TestImport extends TestBase {
-	
-	CompilerState state;
 	
 	@When("^I import another namespace$")
 	public void i_import_another_namespace() throws Exception {
@@ -51,13 +50,13 @@ public class TestImport extends TestBase {
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
 		
 		TId reposName = filesDecl.getRepository();
-		SymbolEntry e = state.getIn(reposName);
-		assertThat(e != null);
-		assertThat(e instanceof DeclaredEntry);
-		SymbolEntry reposEntry = (DeclaredEntry)e;
+		Object obj = state.getIn(reposName);
+		assertThat(obj != null);
+		assertThat(obj instanceof DeclaredEntry);
+		DeclaredEntry reposEntry = (DeclaredEntry)obj;
 		
 		assertThat(reposEntry.getName().equals("my_maven"));
-		Node n = reposEntry.getDefiningNode();
+		n = reposEntry.getDefiningNode();
 		assertThat(n instanceof AOrepoDecl);
 		
 		Node p = n.parent();

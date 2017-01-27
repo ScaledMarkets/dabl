@@ -18,8 +18,6 @@ import java.util.LinkedList;
 
 public class TestFilesDeclaration extends TestBase {
 	
-	CompilerState state;
-	
 	@When("^I declare a file set$")
 	public void i_declare_a_file_set() throws Exception {
 		

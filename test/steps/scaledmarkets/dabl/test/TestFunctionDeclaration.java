@@ -8,15 +8,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.node.*;
+
 import java.io.Reader;
 import java.io.StringReader;
-import scaledmarkets.dabl.node.*;
 import java.util.List;
 import java.util.LinkedList;
 
 public class TestFunctionDeclaration extends TestBase {
-	
-	CompilerState state;
 	
 	@When("^I declare a function$")
 	public void i_declare_a_function() throws Exception {

@@ -8,15 +8,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.node.*;
+
 import java.io.Reader;
 import java.io.StringReader;
-import scaledmarkets.dabl.node.*;
 import java.util.List;
 import java.util.LinkedList;
 
 public class TestStringExpression extends TestBase {
-	
-	CompilerState state;
 	
 	@When("^I compile a static string expression$")
 	public void i_compile_a_static_string_expression() throws Exception {
@@ -36,7 +35,22 @@ public class TestStringExpression extends TestBase {
 	@Then("^the expression value can be retrieved and is correct$")
 	public void the_expression_value_can_be_retrieved_and_is_correct() throws Exception {
 		
+		NameScopeEntry namespaceEntry = getNamespaceSymbolEntry("simple");
+		DeclaredEntry repoEntry = getDeclaredEntry(namespaceEntry, "my_git");
+		Node n = repoEntry.getDefiningNode();
+		assertThat(n instanceof ARepoOnamespaceElt);
+		ARepoOnamespaceElt r = (ARepoOnamespaceElt)n;
 		
-		assertThat(false);
+		POrepoDecl rd = r.getOrepoDecl();
+		assertThat(rd instanceof AOrepoDecl);
+		AOrepoDecl repoDec = (AOrepoDecl)rd;
+		
+		POstringValueOpt p = repoDec.getPassword();
+		assertThat(p != null);
+		assertThat(p instanceof ASpecifiedOstringValueOpt);
+		ASpecifiedOstringValueOpt pswd = (ASpecifiedOstringValueOpt)p;
+		
+		String value = getStringLiteralValue(pswd.getOstringLiteral());
+		assertThat(value.equals("$MyPassword"));
 	}
 }

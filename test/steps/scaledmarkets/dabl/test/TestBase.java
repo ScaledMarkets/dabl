@@ -1,6 +1,8 @@
 package scaledmarkets.dabl.test;
 
 import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.node.*;
+
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public class TestBase {
 	/**
 	 * Return the NameScopeEntry (in the global SymbolTable) for the namespace.
 	 */
-	protected NameScopeEntry getNamespaceSymbolEntry(String namespaceName) {
+	protected NameScopeEntry getNamespaceSymbolEntry(String namespaceName) throws Exception {
 		
 		List<NameScope> scopeStack = this.state.scopeStack;
 		SymbolEntry entry = this.state.scopeStack.get(0).getEntry(namespaceName);
@@ -39,9 +41,9 @@ public class TestBase {
 	 * Return the DeclaredEntry for the specified top level symbol. The caller
 	 * must provide the NameScopeEntry for the namespace.
 	 */
-	protected DeclaredEntry getDeclaredEntry(NameScopeEntry namespaceEntry, String name) {
+	protected DeclaredEntry getDeclaredEntry(NameScopeEntry namespaceEntry, String name) throws Exception {
 		
-		NameScope scope = nameScopeEntry.getOwnedScope();
+		NameScope scope = namespaceEntry.getOwnedScope();
 		SymbolEntry e = scope.getEntry(name);
 		assertThat(e != null);
 		assertThat(e instanceof DeclaredEntry);
@@ -51,7 +53,7 @@ public class TestBase {
 	/**
 	 * Return the value of the specified String literal symbol.
 	 */
-	protected String getStringLiteralValue(POstringLiteral literal) {
+	protected String getStringLiteralValue(POstringLiteral literal) throws Exception {
 		
 		Object obj = state.getOut(literal);
 		assertThat(obj instanceof ExprAnnotation);

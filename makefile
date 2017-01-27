@@ -146,7 +146,7 @@ check:
 
 # Compile the test source files.
 compile_tests: $(test_build_dir)
-	javac -cp $(compile_tests_cp) -d $(test_build_dir) \
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(compile_tests_cp) -d $(test_build_dir) \
 		$(test_src_dir)/steps/$(test_package)/*.java
 
 # Run Cucumber tests.

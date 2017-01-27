@@ -8,15 +8,14 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.node.*;
+
 import java.io.Reader;
 import java.io.StringReader;
-import scaledmarkets.dabl.node.*;
 import java.util.List;
 import java.util.LinkedList;
 
 public class TestNewline extends TestBase {
-	
-	CompilerState state;
 	
 	@When("^a namespace decl ends with a newline$")
 	public void a_namespace_decl_ends_with_a_newline() throws Exception {
