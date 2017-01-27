@@ -33,10 +33,39 @@ public class TestFunctionDeclaration extends TestBase {
 		
 	}
 	
-	@Then("^I can call the function and obtain a correct result$")
-	public void i_can_call_the_function_and_obtain_a_correct_result() throws Exception {
+	@Then("^I can obtain meta information about the function$")
+	public void i_can_obtain_meta_information_about_the_function() throws Exception {
 		
+		// Get the function name and arg types.
+		NameScopeEntry nameScopeEntry = getNamespaceSymbolEntry("simple");
+		DeclaredEntry functionEntry = getDeclaredEntry(nameScopeEntry, "f1");
+		Node n = functionEntry.getDefiningNode();
+		assertThat(n instanceof AOfunctionDeclaration);
+		AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)n;
 		
-		assertThat(false);
+		TId id = funcDecl.getName();
+		LinkedList<POtypeSpec> argTypes = funcDecl.getOtypeSpec();
+		POstringLiteral targetLangNode = funcDecl.getTargetLanguage();
+		POstringLiteral targetNameNode = funcDecl.getTargetName();
+		POtypeSpec returnType = funcDecl.getReturnType();
+		
+		assertThat(id.getText().equals("f1"));
+		assertThat(argTypes.size() == 2);
+		
+		int index = 0;
+		for (POtypeSpec typeSpec : argTypes) {
+			switch (index) {
+				case 0: assertThat(typeSpec instanceof AIntOtypeSpec); break;
+				case 1: assertThat(typeSpec instanceof AStringOtypeSpec); break;
+				default: assertThat(false);
+			}
+		}
+		
+		String targetLang = getStringLiteralValue(targetLangNode);
+		assertThat(targetLang.equals("java"));
+		String targetName = getStringLiteralValue(targetNameNode);
+		assertThat(targetName.equals("convertToString"));
+		
+		assertThat(returnType instanceof AStringOtypeSpec);
 	}
 }

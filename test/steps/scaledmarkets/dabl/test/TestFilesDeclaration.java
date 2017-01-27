@@ -39,12 +39,8 @@ public class TestFilesDeclaration extends TestBase {
 	@Then("^I can reference the file set elsewhere$")
 	public void i_can_reference_the_file_set_elsewhere() throws Exception {
 		
-		NameScopeEntry entry = getNamespaceSymbolEntry("simple");
-		NameScope scope = entry.getOwnedScope();
-		SymbolEntry e = scope.getEntry("Stuff");
-		assertThat(e != null);
-		assertThat(e instanceof DeclaredEntry);
-		DeclaredEntry filesEntry = (DeclaredEntry)e;
+		NameScopeEntry nameScopeEntry = getNamespaceSymbolEntry("simple");
+		DeclaredEntry filesEntry = getDeclaredEntry(nameScopeEntry, "Stuff");
 		Node n = filesEntry.getDefiningNode();
 		assertThat(n instanceof AOfilesDeclaration);
 	}

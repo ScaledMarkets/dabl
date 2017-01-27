@@ -5,6 +5,8 @@
 A function call statement enables a DABL script to invoke an external function
 that is written in a programming language such as Java or Groovy. The function
 must have been declared by a [function declaration](function_decl.md).
+The function is called during the Execution phase (see
+[Processing Phases](https://github.com/Scaled-Markets/dabl/tree/master/langref#processing-phases)).
 
 ## Syntax
 

@@ -28,4 +28,24 @@ public class TestBase {
 		assertThat(entry instanceof NameScopeEntry);
 		return (NameScopeEntry)entry;
 	}
+	
+	protected DeclaredEntry getDeclaredEntry(NameScopeEntry nameScopeEntry, String name) {
+		
+		NameScope scope = nameScopeEntry.getOwnedScope();
+		SymbolEntry e = scope.getEntry(name);
+		assertThat(e != null);
+		assertThat(e instanceof DeclaredEntry);
+		return (DeclaredEntry)e;
+	}
+	
+	protected String getStringLiteralValue(POstringLiteral literal) {
+		
+		Object obj = state.getOut(literal);
+		assertThat(obj instanceof ExprAnnotation);
+		ExprAnnotation annot = (ExprAnnotation)obj;
+		Object value = annot.getValue();
+		assertThat(value instanceof String);
+		String stringValue = (String)value;
+		return stringValue;
+	}
 }

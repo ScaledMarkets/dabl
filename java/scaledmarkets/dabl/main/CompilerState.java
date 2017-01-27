@@ -30,4 +30,6 @@ public class CompilerState
 	}
 	
 	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
+
+    public Object getOut(Node node) { return out.get(node); }
 }
