@@ -42,8 +42,21 @@ public class TestImport extends TestBase {
 	public void the_elements_of_the_namespace_are_accessible() throws Exception {
 		
 		// Starting from the simple namespace, retrieve the DeclaredEntry of my_maven.
-		....
-		
-		assertThat(false);
+		NameScopeEntry namespaceEntry = getNamespaceSymbolEntry("simple");
+		DeclaredEntry stuffEntry = getDeclaredEntry(namespaceEntry, "Stuff");
+		Node n = stuffEntry.getDefiningNode();
+		assertThat(n instanceof AOfilesDeclaration);
+		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
+		TId reposName = filesDecl.getRepository();
+		SymbolEntry e = state.getIn(reposName);
+		assertThat(e != null);
+		assertThat(e instanceof DeclaredEntry);
+		SymbolEntry reposEntry = (DeclaredEntry)e;
+		assertThat(reposEntry.getName().equals("my_maven"));
+		Node n = reposEntry.getDefiningNode();
+		assertThat(n instanceof AOrepoDecl);
+		Node p = n.parent();
+		assertThat(p instanceof POnamespaceElt);
+		assertThat(p.parent() instanceof AOnamespace);
 	}
 }

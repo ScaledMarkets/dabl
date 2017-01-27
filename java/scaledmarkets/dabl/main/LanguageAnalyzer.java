@@ -118,7 +118,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inAOfilesDeclaration(AOfilesDeclaration node)
     {
-    	TId id = node.getId();
+    	TId id = node.getName();
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {
 			addSymbolEntry(entry, id);

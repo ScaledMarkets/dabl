@@ -3,6 +3,9 @@ package scaledmarkets.dabl.test;
 import scaledmarkets.dabl.main.*;
 import java.util.List;
 
+/**
+ * Utilities shared by the DABL Cucumber test suite.
+ */
 public class TestBase {
 
 	protected CompilerState state;
@@ -20,6 +23,9 @@ public class TestBase {
 		if (! expr) throw new Exception("Assertion violation: " + msg);
 	}
 	
+	/**
+	 * Return the NameScopeEntry (in the global SymbolTable) for the namespace.
+	 */
 	protected NameScopeEntry getNamespaceSymbolEntry(String namespaceName) {
 		
 		List<NameScope> scopeStack = this.state.scopeStack;
@@ -29,7 +35,11 @@ public class TestBase {
 		return (NameScopeEntry)entry;
 	}
 	
-	protected DeclaredEntry getDeclaredEntry(NameScopeEntry nameScopeEntry, String name) {
+	/**
+	 * Return the DeclaredEntry for the specified top level symbol. The caller
+	 * must provide the NameScopeEntry for the namespace.
+	 */
+	protected DeclaredEntry getDeclaredEntry(NameScopeEntry namespaceEntry, String name) {
 		
 		NameScope scope = nameScopeEntry.getOwnedScope();
 		SymbolEntry e = scope.getEntry(name);
@@ -38,6 +48,9 @@ public class TestBase {
 		return (DeclaredEntry)e;
 	}
 	
+	/**
+	 * Return the value of the specified String literal symbol.
+	 */
 	protected String getStringLiteralValue(POstringLiteral literal) {
 		
 		Object obj = state.getOut(literal);

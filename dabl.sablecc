@@ -328,7 +328,7 @@ Productions
 		files [name]:id from string_literal
 			in [source]:id prefer_stmt_opt
 			files_stmts						{-> New ofiles_declaration(name,
-												string_literal.ostring_literal, source.id,
+												string_literal.ostring_literal, source,
 												prefer_stmt_opt.ofile_preference,
 												[files_stmts.ofileset_operation])}
 		;
@@ -693,7 +693,7 @@ Abstract Syntax Tree
 	  ;
 	
 	ofiles_declaration =
-		id ostring_literal, id ofile_preference ofileset_operation*;
+		[name]:id ostring_literal [repository]:id ofile_preference ofileset_operation*;
 
 	ofile_preference =
 		{latest_compatible}
