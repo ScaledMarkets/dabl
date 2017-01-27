@@ -22,3 +22,24 @@ A repo declaration has the form,
 	[<code>userid</code> <i>userid</i>] [<code>password</code> <i>password</i>]
 </dd>
 </dl>
+
+where,
+<dl>
+<dd><i>name</i> is the name by which the repo will be known in this DABL file.</dd>
+<dd><i>repo_type</i> is a string that identified a supported type of repository, such 
+as <code>"maven"</code> or <code>"git"</code>.</dd>
+<dd><i>tcp_scheme</i> is the TCP <i>scheme</i> by which the repository should be
+accessed, such as <code>"https"</code> or <code>"ssh"</code>.</dd>
+<dd><i>repo-path</i> is the hostname and resource path, with an optional port,
+at which the repo should be accessed: this is a URL minus the <i>scheme</i>://.</dd>
+<dd><i>userid</i> The user Id string for authenticating to the repository.</dd>
+<dd><i>password</i> The password string for authenticating to the repository.</dd>
+</dl>
+
+## Example
+
+```
+repo my_maven type "maven"
+  path "mymaven.abc.com"
+  userid "MavenUserId" password "MavenPassword"
+```
