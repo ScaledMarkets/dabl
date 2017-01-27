@@ -23,11 +23,14 @@ public class TestImport extends TestBase {
 		
 		Reader reader = new StringReader(
 "namespace simple \n" +
-"  import another"
+"  import another\n" +
+"  files Stuff from \"myrepo\" in my_maven\n" +
+"    include \"*.java\""
 			);
 		
 		String[] namespaces = new String[] {
-			"namespace another task t123"
+"namespace another\n" +
+"  repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
 		};
 
 		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(namespaces));
@@ -38,6 +41,8 @@ public class TestImport extends TestBase {
 	@Then("^the elements of the namespace are accessible$")
 	public void the_elements_of_the_namespace_are_accessible() throws Exception {
 		
+		// Starting from the simple namespace, retrieve the DeclaredEntry of my_maven.
+		....
 		
 		assertThat(false);
 	}
