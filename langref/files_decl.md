@@ -6,7 +6,7 @@ A files declaration identifies a set of files, obtainable from a named repo via 
 A files declaration can specify a particular repo version, or state that the most
 recent versions should be used.
 
-# Syntax
+## Syntax
 
 A files declaration has the following syntax:
 
@@ -41,8 +41,12 @@ and version-criteria is one of,
 <dd><code>tested with</code></dd>
 </dl>
 
+## Example
 
-
-
-
-
+```
+files Stuff from "myrepo" in my_maven
+  include "*.java"
+repo my_maven type "maven"
+  path "mymaven.abc.com"
+  userid "MavenUserId" password "MavenPassword"
+```
