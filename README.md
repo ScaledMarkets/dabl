@@ -47,12 +47,12 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 # Embedding the Compiler In an Application
 
 When the compiler processes a DABL source file, the output of the compiler is a
-[`CompilerState`](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/main/CompilerState.html)
+[`CompilerState`](https://scaledmarkets.github.io/dabl/scaledmarkets/dabl/main/CompilerState.html)
 object. A `CompilerState` contains a a field,
 ```
 public Start ast;
 ```
-A [`Start`](https://scaled-markets.github.io/dabl/scaledmarkets/dabl/node/Start.html)
+A [`Start`](https://scaledmarkets.github.io/dabl/scaledmarkets/dabl/node/Start.html)
 is the root of a node tree that implements the Abstract Syntax Tree (AST)
 that is defined at the end of the [dabl.sablecc](dabl.sablecc)
 grammar file. The AST
@@ -65,7 +65,7 @@ Piper is a build system based on DABL.
 
 See [java/scaledmarkets/dabl/main](java/scaledmarkets/dabl/main).
 
-Javadocs can be found [here](https://scaled-markets.github.io/dabl/).
+Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
 
 # Building the Project
 
@@ -81,5 +81,5 @@ process, so do not edit it by hand.
 # Binary Download
 
 Binaries of the compiler JAR file can be found [here](https://github.com/Scaled-Markets/dabl/releases).
-Javadocs can be found [here](https://scaled-markets.github.io/dabl/).
+Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
 

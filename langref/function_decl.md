@@ -54,12 +54,12 @@ A function declaration has the following syntax:
 ## Example
 
 ```
-function sign string, string binds to groovy method
-    com.scaledmarkets.utils.Signature.sign returns array of byte
+function sign string, string binds to "groovy" method
+    "com.scaledmarkets.utils.Signature.sign" returns array of byte
 ```
 ## Example 2
 
 ```
-function convert string to string binds to groovy method
-    com.abc.Converter.convert returns string
+function convert string to string binds to "groovy" method
+    "com.abc.Converter.convert" returns string
 ```
