@@ -49,7 +49,7 @@ public class TestFunctionDeclaration extends TestBase {
 		POtypeSpec returnType = funcDecl.getReturnType();
 		
 		assertThat(id.getText().equals("f1"));
-		assertThat(argTypes.size() == 2);
+		assertThat(argTypes.size() == 2, "argTypes.size() == " + argTypes.size());
 		
 		int index = 0;
 		for (POtypeSpec typeSpec : argTypes) {

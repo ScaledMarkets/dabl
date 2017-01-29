@@ -43,7 +43,8 @@ public class TestInputsAndOutputs extends TestBase {
 		AOtaskDeclaration taskDecl = (AOtaskDeclaration)n;
 		
 		Object obj = state.getIn(taskDecl);
-		assertThat(obj instanceof NameScope);
+		assertThat(obj != null);
+		assertThat(obj instanceof NameScope, "obj is a " + obj.getClass().getName());
 		NameScope taskNameScope = (NameScope)obj;
 		
 		SymbolEntry entry = taskNameScope.getEntry("MyInputs");

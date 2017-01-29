@@ -46,7 +46,7 @@ public class TestBase {
 		NameScope scope = namespaceEntry.getOwnedScope();
 		SymbolEntry e = scope.getEntry(name);
 		assertThat(e != null);
-		assertThat(e instanceof DeclaredEntry);
+		assertThat(e instanceof DeclaredEntry, "entry is a " + e.getClass().getName());
 		return (DeclaredEntry)e;
 	}
 	
