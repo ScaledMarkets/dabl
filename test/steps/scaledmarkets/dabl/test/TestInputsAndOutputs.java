@@ -37,20 +37,22 @@ public class TestInputsAndOutputs extends TestBase {
 	public void the_inputs_and_outputs_are_retrievable() throws Exception {
 		
 		NameScopeEntry namespaceEntry = getNamespaceSymbolEntry("simple");
-		DeclaredEntry functionEntry = getDeclaredEntry(namespaceEntry, "t123");
-		Node n = functionEntry.getDefiningNode();
+		DeclaredEntry de = getDeclaredEntry(namespaceEntry, "t123");
+		assertThat(de instanceof NameScopeEntry);
+		NameScopeEntry taskEntry = (NameScopeEntry)de;
+		
+		Node n = taskEntry.getDefiningNode();
 		assertThat(n instanceof AOtaskDeclaration);
 		AOtaskDeclaration taskDecl = (AOtaskDeclaration)n;
 		
-		Object obj = state.getIn(taskDecl);
-		assertThat(obj != null);
-		assertThat(obj instanceof NameScope, "obj is a " + obj.getClass().getName());
-		NameScope taskNameScope = (NameScope)obj;
+		NameScope taskScope = taskEntry.getOwnedScope();
+		SymbolTable taskSymbolTable = taskScope.getSymbolTable();
 		
-		SymbolEntry entry = taskNameScope.getEntry("MyInputs");
-		assertThat(entry != null);
+		// Look up inputs and outputs.
+		SymbolEntry inputsSymbolEntry = taskSymbolTable.getEntry("MyInputs");
+		assertThat(inputsSymbolEntry != null);
 		
-		entry = taskNameScope.getEntry("MyOutputs");
-		assertThat(entry != null);
+		SymbolEntry outputsSymbolEntry = taskSymbolTable.getEntry("MyOutputs");
+		assertThat(outputsSymbolEntry != null);
 	}
 }

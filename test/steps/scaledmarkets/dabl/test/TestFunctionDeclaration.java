@@ -49,7 +49,12 @@ public class TestFunctionDeclaration extends TestBase {
 		POtypeSpec returnType = funcDecl.getReturnType();
 		
 		assertThat(id.getText().equals("f1"));
-		assertThat(argTypes.size() == 2, "argTypes.size() == " + argTypes.size());
+		assertThat(argTypes.size() == 3, () -> { // Note: the second arg is a separator
+			System.out.println("argTypes.size() == " + argTypes.size());
+			for (POtypeSpec t : argTypes) {
+				System.out.println("\targ type = " + t.getClass().getName());
+			}
+		});
 		
 		int index = 0;
 		for (POtypeSpec typeSpec : argTypes) {

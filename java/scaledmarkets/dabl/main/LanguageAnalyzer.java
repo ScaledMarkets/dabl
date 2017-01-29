@@ -112,6 +112,25 @@ public class LanguageAnalyzer extends DablBaseAdapter
     {
     	super.outAOfunctionDeclaration(node);
     }
+    
+    
+    /* Add repo declarations to the namespace. */
+    
+    public void inAOrepoDecl(AOrepoDecl node)
+    {
+     	TId id = node.getName();
+		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+		try {
+			addSymbolEntry(entry, id);
+		} catch (SymbolEntryPresent ex) {
+			throw new RuntimeException(ex);
+		}
+    }
+    
+    public void outAOrepoDecl(AOrepoDecl node)
+    {
+    	super.outAOrepoDecl(node);
+    }
 	
 	
 	/* Add files declarations to the namespace. */

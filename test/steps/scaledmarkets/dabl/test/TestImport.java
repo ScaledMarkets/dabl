@@ -50,18 +50,24 @@ public class TestImport extends TestBase {
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
 		
 		TId reposName = filesDecl.getRepository();
-		Object obj = state.getIn(reposName);
-		assertThat(obj != null);
-		assertThat(obj instanceof DeclaredEntry);
-		DeclaredEntry reposEntry = (DeclaredEntry)obj;
+		assertThat(reposName.getText().equals("my_maven"));
 		
-		assertThat(reposEntry.getName().equals("my_maven"));
-		n = reposEntry.getDefiningNode();
+		// Find 'my_maven' by using the normal SymbolTable lookup method, getEntry.
+		
+		NameScope simpleNameScope = namespaceEntry.getOwnedScope();
+		SymbolTable simpleSymbolTable = simpleNameScope.getSymbolTable();
+		SymbolEntry e = simpleSymbolTable.getEntry("my_maven");
+		assertThat(e != null);
+		assertThat(e instanceof DeclaredEntry);
+		DeclaredEntry entry = (DeclaredEntry)e;
+		
+		// Check that the defining node is a repo declaration.
+		Node n = entry.getDefiningNode();
 		assertThat(n instanceof AOrepoDecl);
 		
+		// Check that the repo declaration occurs within a namespace.
 		Node p = n.parent();
 		assertThat(p instanceof POnamespaceElt);
-		
 		assertThat(p.parent() instanceof AOnamespace);
 	}
 }
