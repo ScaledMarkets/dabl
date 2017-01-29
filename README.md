@@ -42,7 +42,7 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 	parses the input file. However, if a Java program instantiates a
 	`scaledmarkets.dabl.main.Dabl` object and calls the `process` method, an object
 	model is returned that can be used by a tool to act on the compiled input.
-	(Java API docs are included in the binary download below.)
+	(Java API docs can be found [here](https://scaledmarkets.github.io/dabl/).)
 * A sample DABL file, [example.dabl](example.dabl).
 
 # Embedding the Compiler In an Application
