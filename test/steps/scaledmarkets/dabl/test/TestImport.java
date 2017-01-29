@@ -62,7 +62,7 @@ public class TestImport extends TestBase {
 		DeclaredEntry entry = (DeclaredEntry)e;
 		
 		// Check that the defining node is a repo declaration.
-		Node n = entry.getDefiningNode();
+		n = entry.getDefiningNode();
 		assertThat(n instanceof AOrepoDecl);
 		
 		// Check that the repo declaration occurs within a namespace.

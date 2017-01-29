@@ -35,7 +35,8 @@ See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDh
 [Language Reference](langref/README.md)).
 * A DABL compiler, written in Java using version 3.2 of the
 	[SableCC compiler generation tool](http://www.sablecc.org/).
-	The compiler is a Java package, which has a main method, but it can also
+	The compiler is a Java package, which has a main method—and so it
+	can be called form a command line—but it can also
 	be called via its API, so that the compiler can be embedded in other
 	Java applications. If called from the command line, the compiler merely
 	parses the input file. However, if a Java program instantiates a
