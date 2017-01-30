@@ -7,6 +7,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import sablecc.*;
 import scaledmarkets.dabl.main.*;
 import scaledmarkets.dabl.node.*;
 
@@ -57,7 +58,9 @@ public class TestImport extends TestBase {
 		NameScope simpleNameScope = namespaceEntry.getOwnedScope();
 		SymbolTable simpleSymbolTable = simpleNameScope.getSymbolTable();
 		SymbolEntry e = simpleSymbolTable.getEntry("my_maven");
-		assertThat(e != null);
+		assertThat(e != null, () -> {
+			sablecc.PrettyPrint.pp(state.ast);
+		});
 		assertThat(e instanceof DeclaredEntry);
 		DeclaredEntry entry = (DeclaredEntry)e;
 		

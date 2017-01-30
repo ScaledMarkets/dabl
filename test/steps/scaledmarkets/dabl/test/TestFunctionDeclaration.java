@@ -59,10 +59,16 @@ public class TestFunctionDeclaration extends TestBase {
 		int index = 0;
 		for (POtypeSpec typeSpec : argTypes) {
 			switch (index) {
-				case 0: assertThat(typeSpec instanceof AIntOtypeSpec); break;
-				case 1: assertThat(typeSpec instanceof AStringOtypeSpec); break;
+				case 0: assertThat(typeSpec instanceof AIntOtypeSpec, () -> {
+					System.out.println("\ttypeSpec0 is a " + argTypes.get(0).getClass().getName());
+					System.out.println("\ttypeSpec1 is a " + argTypes.get(1).getClass().getName());
+					System.out.println("\ttypeSpec2 is a " + argTypes.get(2).getClass().getName());
+				}); break;
+				case 1: assertThat(typeSpec instanceof ASeparatorOtypeSpec); break;
+				case 2: assertThat(typeSpec instanceof AStringOtypeSpec); break;
 				default: assertThat(false);
 			}
+			index++;
 		}
 		
 		String targetLang = getStringLiteralValue(targetLangNode);
