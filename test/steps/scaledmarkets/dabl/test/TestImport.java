@@ -53,13 +53,24 @@ public class TestImport extends TestBase {
 		TId reposName = filesDecl.getRepository();
 		assertThat(reposName.getText().equals("my_maven"));
 		
-		// Find 'my_maven' by using the normal SymbolTable lookup method, getEntry.
+		// Obtain the declaration to which the TId is bound.
+		....
 		
 		NameScope simpleNameScope = namespaceEntry.getOwnedScope();
 		SymbolTable simpleSymbolTable = simpleNameScope.getSymbolTable();
-		SymbolEntry e = simpleSymbolTable.getEntry("my_maven");
+		
+		
+		
 		assertThat(e != null, () -> {
 			sablecc.PrettyPrint.pp(state.ast);
+			
+			NameScope globalScope = state.globalScope;
+			SymbolTable globalSymbolTable = globalScope.getSymbolTable();
+			SymbolTable nextTable = globalSymbolTable.getNextTable();
+			if (nextTable == null) throw new RuntimeException(
+				"nextTable is null");
+			if (! nextTable.getName().equals("another")) throw new RuntimeException(
+				"nextTable name is " + nextTable.getName());
 		});
 		assertThat(e instanceof DeclaredEntry);
 		DeclaredEntry entry = (DeclaredEntry)e;

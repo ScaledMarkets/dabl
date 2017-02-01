@@ -33,6 +33,16 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	protected ImportHandler getImportHandler() { return importHandler; }
 	
 	
+	/* Resolve references to declared names. */
+	
+	....
+	
+	
+	/* Resolve forward references. */
+	
+	....
+	
+	
 	/* Only onamespace and otask_declaration define name scopes. */
 	
 	public void inAOnamespace(AOnamespace node) {
