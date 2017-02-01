@@ -257,15 +257,17 @@ Productions
 		;
 	
 	success_expr {-> osuccess_expr} =
-		{succeeded} id succeeded			{-> New osuccess_expr.succeeded(id)}
-	  | {failed} id failed					{-> New osuccess_expr.failed(id)}
+		{succeeded} id succeeded			{-> New osuccess_expr.succeeded(New id_ref(id))}
+	  | {failed} id failed					{-> New osuccess_expr.failed(New id_ref(id))}
 	  ;
 	
 	age_expr {-> oage_expr} =
 		{newer_than} [newer_id]:id newer than [older_id]:id
-											{-> New oage_expr.newer_than(newer_id, older_id)}
+											{-> New oage_expr.newer_than(
+												New id_ref(newer_id), New id_ref(older_id))}
 	  | {older_than} [older_id]:id older than [newer_id]:id
-	  										{-> New oage_expr.older_than(older_id, newer_id)}
+	  										{-> New oage_expr.older_than(
+	  											New id_ref(older_id), New id_ref(newer_id))}
 	  ;
 	
 	input_sets_opt {-> onamed_artifact_set*} =
@@ -317,7 +319,7 @@ Productions
 	artifact_set {-> oartifact_set} =
 		fileset_spec from [project]:string_literal
 		in [repository_id]:id				{-> New oartifact_set(fileset_spec.ostring_literal,
-												project.ostring_literal, repository_id)}
+												project.ostring_literal, New id_ref(repository_id))}
 		;
 	
 	fileset_spec {-> ostring_literal} =
@@ -328,7 +330,7 @@ Productions
 		files [name]:id from string_literal
 			in [source]:id prefer_stmt_opt
 			files_stmts						{-> New ofiles_declaration(name,
-												string_literal.ostring_literal, source,
+												string_literal.ostring_literal, New id_ref(source),
 												prefer_stmt_opt.ofile_preference,
 												[files_stmts.ofileset_operation])}
 		;
@@ -550,7 +552,7 @@ Productions
 	
 	value {-> oexpr} =
 		{value} literal						{-> New oexpr.literal(literal.oliteral)}
-	  | {variable} id						{-> New oexpr.variable(New ovariable(id))}
+	  | {variable} id						{-> New oexpr.variable(New ovariable(New id_ref(id)))}
 	  | {parentheses} left_paren expr right_paren
 	  										{-> expr.oexpr}
 	  ;
@@ -654,6 +656,10 @@ Abstract Syntax Tree
 	onamespace =
 		[path]:id* onamespace_elt*;
 	
+	id_ref =
+		id
+		;
+	
 	onamespace_elt =
 		{import} id*
 	  | {typographic} otypographic_declaration
@@ -693,7 +699,7 @@ Abstract Syntax Tree
 	  ;
 	
 	ofiles_declaration =
-		[name]:id ostring_literal [repository]:id ofile_preference ofileset_operation*;
+		[name]:id ostring_literal [repository]:id_ref ofile_preference ofileset_operation*;
 
 	ofile_preference =
 		{latest_compatible}
@@ -752,7 +758,7 @@ Abstract Syntax Tree
 	  ;
 	
 	oartifact_set =
-		[fileset_spec]:ostring_literal [project]:ostring_literal [repository_id]:id;
+		[fileset_spec]:ostring_literal [project]:ostring_literal [repository_id]:id_ref;
 	
 	oproc_stmt =
 		{func_call} ostring_literal oexpr* otarget_opt
@@ -771,13 +777,13 @@ Abstract Syntax Tree
 		{filename} [from_string]:ostring_literal [to_string]:ostring_literal;
 	
 	osuccess_expr =
-		{succeeded} id
-	  | {failed} id
+		{succeeded} id_ref
+	  | {failed} id_ref
 	  ;
 	
 	oage_expr =
-		{newer_than} [newer_id]:id [older_id]:id
-	  | {older_than} [older_id]:id [newer_id]:id
+		{newer_than} [newer_id]:id_ref [older_id]:id_ref
+	  | {older_than} [older_id]:id_ref [newer_id]:id_ref
 	  ;
 	
 	// Expressions.
@@ -811,7 +817,7 @@ Abstract Syntax Tree
 	  ;
 	
 	ovariable =
-		id
+		id_ref
 		;
 	
 	ologic_literal =
