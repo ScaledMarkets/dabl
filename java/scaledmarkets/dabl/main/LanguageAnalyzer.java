@@ -37,7 +37,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
     public void inAOidRef(AOidRef node)
     {
-        ....defaultIn(node);
+        defaultIn(node);
     }
 
     public void outAOidRef(AOidRef node)
@@ -45,7 +45,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		// Find the declaration of the id, and see if it is defined to have
 		// a value. If so, attribute this node with the same value.
 		TId id = node.getId();
-		LinkedList<TId> path = ....
+		LinkedList<TId> path = new LinkedList<TId>();
+		path.add(id);
 		SymbolEntry entry = resolveSymbol(path);
 		if (entry == null)
 		{
@@ -91,6 +92,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	/* Resolve forward references. */
 	
 	....
+		resolveForwardReferences(nameScopeEntry);
 	
 	
 	/* Only onamespace and otask_declaration define name scopes. */
@@ -129,6 +131,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			throw new RuntimeException(ex);
 		}
 		pushNameScope(newScope);
+		resolveForwardReferences(entry);
 	}
 	
 	public void outAOtaskDeclaration(AOtaskDeclaration node) {
@@ -147,6 +150,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
+		resolveForwardReferences(entry);
 	}
 
 	public void outANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
@@ -166,6 +170,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
+		resolveForwardReferences(entry);
 	}
 
 	public void outAOfunctionDeclaration(AOfunctionDeclaration node)
@@ -185,6 +190,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
+		resolveForwardReferences(entry);
 	}
 	
 	public void outAOrepoDecl(AOrepoDecl node)
@@ -204,6 +210,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
+		resolveForwardReferences(entry);
 	}
 
 	public void outAOfilesDeclaration(AOfilesDeclaration node)
