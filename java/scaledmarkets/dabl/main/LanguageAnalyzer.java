@@ -35,7 +35,57 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	/* Resolve references to declared names. */
 	
-	....
+    public void inAOidRef(AOidRef node)
+    {
+        ....defaultIn(node);
+    }
+
+    public void outAOidRef(AOidRef node)
+    {
+		// Find the declaration of the id, and see if it is defined to have
+		// a value. If so, attribute this node with the same value.
+		TId id = node.getId();
+		LinkedList<TId> path = ....
+		SymbolEntry entry = resolveSymbol(path);
+		if (entry == null)
+		{
+			// Might be a reference to something that is declared later.
+			// 
+			// Identify all the enclosing scopes, and attach a handler to each one.
+			// The handler should be invoked whenever a new symbol is entered
+			// into a scope. The handler should,
+			// 1. Perform custom logic, defined here (in outAOidRef).
+			// 2. If the logic succeeds, the handler should remove itself from
+			// all of the scopes to which it is attached.
+			new IdentHandler(this, path, getCurrentNameScope()) {
+				final ....AIdentExpr idExpr = node;
+				public void resolveRetroactively(DeclaredEntry entry)
+				{
+					if (entry instanceof ConstantEntry)
+					{
+						// Has an expression that might have a value.
+						ConstantEntry constEntry = (ConstantEntry)entry;
+						....PExpr declExpr = constEntry.getExpression();
+						ExprAnnotation declAnnot = getExprAnnotation(declExpr);
+						Object value = null;
+						try { value = declAnnot.getValue(); }
+						catch (DynamicEvaluation ex) { value = new DynamicValuePlaceholder(); }
+						setExprRefAnnotation(idExpr, value, entry);
+					}
+					else
+						throw new RuntimeException(
+							entry.getName() + " does not have a value, at line " +
+							entry.getId().getLine() + ", pos " + entry.getId().getPos());
+				}
+			};
+			return;
+		}
+		
+		if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
+			"Unexpected: entry is a " + entry.getClass().getName());
+		DeclaredEntry declent = (DeclaredEntry)entry;
+		annotateIdentExpr(declent);
+    }
 	
 	
 	/* Resolve forward references. */
