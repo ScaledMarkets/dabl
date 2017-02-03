@@ -42,54 +42,41 @@ public class LanguageAnalyzer extends DablBaseAdapter
 
     public void outAOidRef(AOidRef node)
     {
-		// Find the declaration of the id, and see if it is defined to have
-		// a value. If so, attribute this node with the same value.
+		// Find the declaration of the id. If it exists, annotate it with
+		// 
 		TId id = node.getId();
 		LinkedList<TId> path = new LinkedList<TId>();
 		path.add(id);
 		SymbolEntry entry = resolveSymbol(path);
-		if (entry == null)
-		{
+		if (entry == null) {
 			// Might be a reference to something that is declared later.
 			// 
 			// Identify all the enclosing scopes, and attach a handler to each one.
 			// The handler should be invoked whenever a new symbol is entered
 			// into a scope. The handler should,
-			// 1. Perform custom logic, defined here (in outAOidRef).
-			// 2. If the logic succeeds, the handler should remove itself from
-			// all of the scopes to which it is attached.
+			// 1. Perform logic that is specific to the kind of declared entry.
+			// 2. If the logic succeeds, the handler should annotate the entry,
+			....// and then remove itself from all of the scopes to which it is attached.
 			new IdentHandler(this, path, getCurrentNameScope()) {
-				final ....AIdentExpr idExpr = node;
 				public void resolveRetroactively(DeclaredEntry entry)
 				{
-					if (entry instanceof ConstantEntry)
-					{
-						// Has an expression that might have a value.
-						ConstantEntry constEntry = (ConstantEntry)entry;
-						....PExpr declExpr = constEntry.getExpression();
-						ExprAnnotation declAnnot = getExprAnnotation(declExpr);
-						Object value = null;
-						try { value = declAnnot.getValue(); }
-						catch (DynamicEvaluation ex) { value = new DynamicValuePlaceholder(); }
-						setExprRefAnnotation(idExpr, value, entry);
-					}
-					else
-						throw new RuntimeException(
-							entry.getName() + " does not have a value, at line " +
-							entry.getId().getLine() + ", pos " + entry.getId().getPos());
+					annotateIdentDeclEntry(entry);
 				}
 			};
-			return;
+			
+		} else {
+			// Attribute the Id reference with the DeclaredEntry that defines the Id.
+			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
+				"Unexpected: entry is a " + entry.getClass().getName());
+			DeclaredEntry declent = (DeclaredEntry)entry;
+			annotateIdentDeclEntry(declent);
 		}
-		
-		// Attribute the Id reference with the DeclaredEntry that defines the Id.
-		if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
-			"Unexpected: entry is a " + entry.getClass().getName());
-		DeclaredEntry declent = (DeclaredEntry)entry;
-		annotateIdentExpr(declent);
     }
 	
-	private void annotateIdentExpr(DeclaredEntry entry)
+    /**
+     * 
+     */
+	private void annotateIdentDeclEntry(DeclaredEntry entry)
 	{
 		if (entry instanceof ConstantEntry)
 		{
@@ -227,6 +214,19 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	}
 	
 	
+	/* Variables that are declared as return value targets in a function call. */
+	
+	public void inAFuncCallOprocStmt(AFuncCallOprocStmt node)
+	{
+		....Add the target to the symbol table
+	}
+	
+	public void outAFuncCallOprocStmt(AFuncCallOprocStmt node)
+	{
+		super.outAFuncCallOprocStmt(node);
+	}
+	
+	
 	/* Evaluate string literals.
 		ostring_literal =
 			{string} string
@@ -236,7 +236,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		string = quote [ any_character - quote ]* quote;
 		string2 = triplequote any_character* triplequote;
 	 */
-	
+
 	public void inAStringOstringLiteral(AStringOstringLiteral node)
 	{
 		TString s = node.getString();

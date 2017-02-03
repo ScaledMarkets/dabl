@@ -79,12 +79,6 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		return state.scopeStack.get(0);
 	}
 	
-	protected SymbolEntry addSymbolEntry(SymbolEntry entry, TId id)
-	throws SymbolEntryPresent
-	{
-		return addSymbolEntry(entry, id, getCurrentNameScope());
-	}
-	
 	/**
 	 * Find the entry in the symbol table that defines the specified id. The id
 	 * is the last id on the specified path. Each id in the path represents the id
@@ -188,6 +182,12 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		enclosingScope.getSymbolTable().addEntry(id.getText(), entry);
 		this.setIn(id, entry);
 		return entry;
+	}
+	
+	protected SymbolEntry addSymbolEntry(SymbolEntry entry, TId id)
+	throws SymbolEntryPresent
+	{
+		return addSymbolEntry(entry, id, getCurrentNameScope());
 	}
 	
 	protected SymbolEntry getIdBinding(TId id)
