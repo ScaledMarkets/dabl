@@ -82,17 +82,32 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			return;
 		}
 		
+		// Attribute the Id reference with the DeclaredEntry that defines the Id.
 		if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
 			"Unexpected: entry is a " + entry.getClass().getName());
 		DeclaredEntry declent = (DeclaredEntry)entry;
 		annotateIdentExpr(declent);
     }
 	
-	
-	/* Resolve forward references. */
-	
-	....
-		resolveForwardReferences(nameScopeEntry);
+	private void annotateIdentExpr(DeclaredEntry entry)
+	{
+		if (entry instanceof ConstantEntry)
+		{
+			// Has an expression that might have a value.
+			ConstantEntry constEntry = (ConstantEntry)entry;
+			PExpr expr = constEntry.getExpression();
+			
+			ExprAnnotation annot = getExprAnnotation(expr);
+			Object value = null;
+			try { value = annot.getValue(); }
+			catch (DynamicEvaluation ex) { value = new DynamicValuePlaceholder(); }
+			setExprRefAnnotation(expr, value, constEntry);
+		}
+		else
+			throw new RuntimeException(
+				entry.getName() + " does not have a value, at line " +
+				entry.getId().getLine() + ", pos " + entry.getId().getPos());
+	}
 	
 	
 	/* Only onamespace and otask_declaration define name scopes. */
@@ -123,15 +138,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
 		
-		String name = node.getName().getText();
-		NameScope enclosingScope = getCurrentNameScope();
-		NameScope newScope = new NameScope(name, node, enclosingScope);
-		SymbolEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
-		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
-		pushNameScope(newScope);
-		resolveForwardReferences(entry);
+		TId id = node.getName();
+		createNameScope(id, node);
 	}
 	
 	public void outAOtaskDeclaration(AOtaskDeclaration node) {
