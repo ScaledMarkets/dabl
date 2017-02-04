@@ -25,7 +25,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	public List<IdentHandler> getIdentHandlers() { return identHandlers; }
 	
 	/**
-	 * Add the specified attribute ("o") to the set of "set-on-entry" attributes
+	 * Add the specified annotation ("o") to the set of "set-on-entry" attributes
 	 * for the specified node.
 	 */
     public void setIn(Node node, Object o)
@@ -39,7 +39,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
     public Object getIn(Node node) { return state.in.get(node); }
 
 	/**
-	 * Add the specified attribute ("o") to the set of "set-on-exit" attributes
+	 * Add the specified annotation ("o") to the set of "set-on-exit" attributes
 	 * for the specified node.
 	 */
     public void setOut(Node node, Object o)
