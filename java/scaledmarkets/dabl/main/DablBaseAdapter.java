@@ -24,6 +24,10 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 
 	public List<IdentHandler> getIdentHandlers() { return identHandlers; }
 	
+	/**
+	 * Add the specified attribute ("o") to the set of "set-on-entry" attributes
+	 * for the specified node.
+	 */
     public void setIn(Node node, Object o)
     {
     	if (getIn(node) != null) throw new RuntimeException(
@@ -34,6 +38,10 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 
     public Object getIn(Node node) { return state.in.get(node); }
 
+	/**
+	 * Add the specified attribute ("o") to the set of "set-on-exit" attributes
+	 * for the specified node.
+	 */
     public void setOut(Node node, Object o)
     {
     	if (getOut(node) != null) throw new RuntimeException(
@@ -234,45 +242,13 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	}
 	
 	/**
-	 * Create an ExprAnnotation for the specified Node, and also set the value
-	 * for the expression in the Annotation. (This method must be called by
-	 * an out... method, so that the value will be available.)
-	 */
-	protected ExprAnnotation setExprAnnotation(Node node, Object value)
-	{
-		ExprAnnotation annotation = new ExprAnnotation(node, value);
-		this.setOut(node, annotation);
-		return annotation;
-	}
-	
-	/**
 	 * An expression whose value is defined in the declaration of a symbol.
 	 */
-	protected ExprRefAnnotation setExprRefAnnotation(Node node, Object value,
-		SymbolEntry entry)
+	protected IdRefAnnotation setIdRefAnnotation(AOidRef idRef, SymbolEntry entry)
 	{
-		ExprRefAnnotation annotation = new ExprRefAnnotation(node, value, entry);
-		this.setOut(node, annotation);
+		ExprRefAnnotation annotation = new IdRefAnnotation(idRef, entry);
+		this.setOut(idRef, annotation);
 		return annotation;
-	}
-	
-	/**
-	 * Use this method instead of setExprAnnotation when the value cannot be
-	 * computed statically because at least one method in the expression must
-	 * be computed at runtime.
-	 */
-	protected ExprAnnotation setExprDynamic(Node node)
-	{
-		return setExprAnnotation(node, new ExprAnnotation.DynamicValuePlaceholder());
-	}
-	
-	protected ExprAnnotation getExprAnnotation(Node node)
-	{
-		Object obj = this.getOut(node);
-		if (obj == null) return null;
-		if (! (obj instanceof ExprAnnotation)) throw new RuntimeException(
-			"Unexpected: Annotation is of wrong type: " + obj.getClass().getName());
-		return (ExprAnnotation)obj;
 	}
 	
 	

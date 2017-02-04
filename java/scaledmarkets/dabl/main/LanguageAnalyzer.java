@@ -53,15 +53,16 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			// 
 			// Identify all the enclosing scopes, and attach a handler to each one.
 			// The handler should be invoked whenever a new symbol is entered
-			// into a scope. The handler should,
-			// 1. Perform logic that is specific to the kind of declared entry.
-			// 2. If the logic succeeds, the handler should annotate the entry,
-			....// and then remove itself from all of the scopes to which it is attached.
+			// into a scope. The handler should annotate the entry,
+			// and then remove itself from all of the scopes to which it is attached.
 			new IdentHandler(this, path, getCurrentNameScope()) {
 				public void resolveRetroactively(DeclaredEntry entry)
 				{
-					annotateIdentDeclEntry(entry);
+					setIdRefAnnotation(node, entry);
 				}
+				// Note: the base class, IdentHandler, contains a method
+				// checkForPathResolution, which calls resolveRetroactively, 
+				// followed by removeFromAllScopes().
 			};
 			
 		} else {
@@ -72,29 +73,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			annotateIdentDeclEntry(declent);
 		}
     }
-	
-    /**
-     * 
-     */
-	private void annotateIdentDeclEntry(DeclaredEntry entry)
-	{
-		if (entry instanceof ConstantEntry)
-		{
-			// Has an expression that might have a value.
-			ConstantEntry constEntry = (ConstantEntry)entry;
-			PExpr expr = constEntry.getExpression();
-			
-			ExprAnnotation annot = getExprAnnotation(expr);
-			Object value = null;
-			try { value = annot.getValue(); }
-			catch (DynamicEvaluation ex) { value = new DynamicValuePlaceholder(); }
-			setExprRefAnnotation(expr, value, constEntry);
-		}
-		else
-			throw new RuntimeException(
-				entry.getName() + " does not have a value, at line " +
-				entry.getId().getLine() + ", pos " + entry.getId().getPos());
-	}
 	
 	
 	/* Only onamespace and otask_declaration define name scopes. */
@@ -218,7 +196,20 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	public void inAFuncCallOprocStmt(AFuncCallOprocStmt node)
 	{
-		....Add the target to the symbol table
+		POtargetOpt p = node.getOtargetOpt();
+		if (p instanceof ATargetOtargetOpt) {
+			ATargetOtargetOpt targetOpt = (ATargetOtargetOpt)p;
+			TId id = targetOpt.getId();
+			
+			// Add the target to the symbol table.
+			DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+			try {
+				addSymbolEntry(entry, id);
+			} catch (SymbolEntryPresent ex) {
+				throw new RuntimeException(ex);
+			}
+			resolveForwardReferences(entry);
+		}
 	}
 	
 	public void outAFuncCallOprocStmt(AFuncCallOprocStmt node)
