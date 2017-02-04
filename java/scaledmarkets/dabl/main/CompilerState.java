@@ -17,13 +17,13 @@ public class CompilerState
 	 * AST Node attributes that are set on entry to the Node type's analysis
 	 * method.
 	 */
-	public Hashtable<Node,Object> in = new Hashtable<Node,Object>();
+	public Hashtable<Node,Object> in = new Hashtable<Node, Object>();
 	
 	/**
 	 * AST Node attributes that are set on exit from the Node type's analysis
 	 * method.
 	 */
-	public Hashtable<Node,Object> out = new Hashtable<Node,Object>();
+	public Hashtable<Node,Object> out = new Hashtable<Node, Object>();
 
 	public CompilerState()
 	{
