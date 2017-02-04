@@ -30,7 +30,7 @@ The Language Analyzer annotates the AST, as shown in the figure.
 
 Symbols are organized into symbol tables, as depicted in the figure.
 
-![Figure 4: Symbol Table Structure](Compiler_Design_Fig3.png "Figure 4: Symbol Table Structure")
+![Figure 4: Symbol Table Structure](Compiler_Design_Fig4.png "Figure 4: Symbol Table Structure")
 
 The Language Analyzer uses the following:
 
