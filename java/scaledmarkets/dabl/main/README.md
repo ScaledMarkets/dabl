@@ -17,20 +17,35 @@ based on the `dabl.sablecc` grammar file.
 
 ![Figure 1: Compiler Top Level Structure](Compiler_Design_Fig1.png "Figure 1: Compiler Top Level Structure")
 
+## Key Dynamic Structures
+
+The Parse phase builds an Abstract Syntax Tree (AST), as defined by the dabl.sablecc file.
+The Analysis phase walks the tree in a depth-first manner, visiting each Node,
+and performing actions such as name resolution. The outcome of the Analysis phase
+is a hashtable of Annotations, indexed by Node: thus, this effectively annotates
+the AST, since for any Node, one can look up its Annotation (if any).
+
+The Analysis phase also produces a symbol table tree, with one table corresponding
+to each nested scope within the source input.
+
+The dynamic structures are shown in Figure 2.
+
+![Figure 2: Dynamic Structures](Compiler_Design_Fig2.png "Figure 2: Dynamic Structures")
+
 ## Language Analyzer
 
 The <code>LanguageAnalyzer</code> class performs the Analysis processing phase
 (see https://github.com/Scaled-Markets/dabl/tree/master/langref#processing-phases).
 
-![Figure 2: Language Analyzer Top Level Structure](Compiler_Design_Fig2.png "Figure 2: Language Analyzer Top Level Structure")
+![Figure 3: Language Analyzer Top Level Structure](Compiler_Design_Fig3.png "Figure 3: Language Analyzer Top Level Structure")
 
 The Language Analyzer annotates the AST, as shown in the figure.
 
-![Figure 3: AST Annotations](Compiler_Design_Fig3.png "Figure 3: AST Annotations")
+![Figure 4: AST Annotations](Compiler_Design_Fig4.png "Figure 4: AST Annotations")
 
 Symbols are organized into symbol tables, as depicted in the figure.
 
-![Figure 4: Symbol Table Structure](Compiler_Design_Fig4.png "Figure 4: Symbol Table Structure")
+![Figure 5: Symbol Table Structure](Compiler_Design_Fig5.png "Figure 5: Symbol Table Structure")
 
 The Language Analyzer uses the following:
 

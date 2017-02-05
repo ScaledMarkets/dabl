@@ -9,8 +9,21 @@ import java.net.URLClassLoader;
 
 public class CompilerState
 {
+	/**
+	 * Root of the AST.
+	 */
 	public Start ast;
+	
+	/**
+	 * Scope in which the namespace is defined.
+	 */
 	public NameScope globalScope;
+	
+	/**
+	 * A stack of NameScopes that is maintained during the Analysis phase.
+	 * If Analysis completes without error, there will only be one NameScope
+	 * in the stack: the global scope.
+	 */
 	public List<NameScope> scopeStack = new LinkedList<NameScope>();
 	
 	/**
