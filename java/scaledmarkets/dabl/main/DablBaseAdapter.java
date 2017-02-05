@@ -215,7 +215,9 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	protected NameScope createNameScope(Node node)
 	{
-		return createNameScope(null, node);
+		NameScope newScope = new NameScope(node, getCurrentNameScope());
+		this.setOut(node, pushNameScope(newScope));
+		return newScope;
 	}
 	
 	/**
@@ -227,7 +229,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		NameScope newNameScope = createNameScope(node);
 		if (id != null) try
 		{
-			NameScopeEntry nameScopeEntry = new NameScopeEntry(newNameScope, id, curScope);
+			NameScopeEntry nameScopeEntry =
+				new NameScopeEntry(newNameScope, id.getText(), curScope);
 			addSymbolEntry(nameScopeEntry, id, curScope);
 			newNameScope.setSelfEntry(nameScopeEntry);
 			resolveForwardReferences(nameScopeEntry);
@@ -246,7 +249,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	 */
 	protected IdRefAnnotation setIdRefAnnotation(AOidRef idRef, SymbolEntry entry)
 	{
-		ExprRefAnnotation annotation = new IdRefAnnotation(idRef, entry);
+		IdRefAnnotation annotation = new IdRefAnnotation(idRef, entry);
 		this.setOut(idRef, annotation);
 		return annotation;
 	}

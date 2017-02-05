@@ -100,6 +100,16 @@ public class Dabl
 	 */
 	public CompilerState process() throws Exception {
 		
+		CompilerState state = new CompilerState();
+		process(state);
+		return state;
+	}
+	
+	/**
+	 * This version of process should only be called by ImportHandlers.
+	 */
+	public NameScope process(CompilerState state) throws Exception {
+		
 		if (this.reader == null)
 		{
 			displayInstructions();
@@ -110,7 +120,6 @@ public class Dabl
 		
 		// Parse the input and generate an AST.
 		Lexer lexer = new Lexer(new PushbackReader(this.reader));
-		CompilerState state = new CompilerState();
 		Parser parser = new Parser(lexer);
 		state.ast = parser.parse();
 		System.out.println("Syntax is correct");
@@ -120,9 +129,10 @@ public class Dabl
 		// declarations. Expressions may be partially evaluated, where possible.
 		// Values that depend on the DABL file context (e.g., its location on a
 		// file system) are elaborated.
-		state.ast.apply(new LanguageAnalyzer(state, this.importHandler));
+		LanguageAnalyzer analyser = new LanguageAnalyzer(state, this.importHandler);
+		state.ast.apply(analyzer);
 		
-		return state;
+		return analyzer.getNamespaceNamescope();
 	}
 	
 	static void displayInstructions()

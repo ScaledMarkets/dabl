@@ -1,5 +1,5 @@
 package scaledmarkets.dabl.main;
 
-public abstract class Annotation
+public interface Annotation
 {
 }

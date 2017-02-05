@@ -21,16 +21,20 @@ import java.util.LinkedList;
 public class LanguageAnalyzer extends DablBaseAdapter
 {
 	protected ImportHandler importHandler;
+	protected NameScope namespaceNamescope;
 	
 	public LanguageAnalyzer(CompilerState state, ImportHandler importHandler) {
 		super(state);
 		this.importHandler = importHandler;
 		
-		state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
-		assertThat(state.scopeStack.size() == 1);   // debug
+		if (state.getGlobalScope() == null) {
+			state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
+		}
 	}
 	
-	protected ImportHandler getImportHandler() { return importHandler; }
+	public ImportHandler getImportHandler() { return importHandler; }
+	
+	public NameScope getNamespaceNamescope() { return namespaceNamescope; }
 	
 	
 	/* Resolve references to declared names. */
@@ -70,7 +74,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
 				"Unexpected: entry is a " + entry.getClass().getName());
 			DeclaredEntry declent = (DeclaredEntry)entry;
-			annotateIdentDeclEntry(declent);
+			setIdRefAnnotation(node, declent);
 		}
     }
 	
@@ -87,6 +91,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
+		this.namespaceNamescope = newScope;
 	}
 	
 	public void outAOnamespace(AOnamespace node) {
@@ -96,8 +101,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
 		
 		String name = createNameFromPath(node.getId());
-		NameScope importedScope = getImportHandler().importNamespace(name);
-		
+		NameScope importedScope = getImportHandler().importNamespace(name, getState());
 		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
 	}
 	
@@ -239,7 +243,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		}
 		
 		// Set attribute value.
-		setExprAnnotation(node, value);
+		//setExprAnnotation(node, value);
 	}
 
 	public void outAStringOstringLiteral(AStringOstringLiteral node)
@@ -258,7 +262,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		}
 		
 		// Set attribute value.
-		setExprAnnotation(node, value);
+		//setExprAnnotation(node, value);
 	}
 
 	public void outAString2OstringLiteral(AString2OstringLiteral node)
@@ -279,6 +283,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 
 	public void outAStaticStringExprOstringLiteral(AStaticStringExprOstringLiteral node)
 	{
+		/*
 		POstringLiteral left = node.getLeft();
 		POstringLiteral right = node.getRight();
 		
@@ -307,6 +312,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		String result = leftString + rightString;
 		
 		setExprAnnotation(node, result);
+		*/
 	}
 	
 	

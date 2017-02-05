@@ -43,45 +43,31 @@ public class TestImport extends TestBase {
 		
 		// Starting from the simple namespace, retrieve the DeclaredEntry of my_maven.
 		
-		NameScopeEntry namespaceEntry = getNamespaceSymbolEntry("simple");
+		NameScopeEntry simpleNamespaceEntry = getNamespaceSymbolEntry("simple");
 		
-		DeclaredEntry stuffEntry = getDeclaredEntry(namespaceEntry, "Stuff");
+		DeclaredEntry stuffEntry = getDeclaredEntry(simpleNamespaceEntry, "Stuff");
 		Node n = stuffEntry.getDefiningNode();
 		assertThat(n instanceof AOfilesDeclaration);
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
 		
-		TId reposName = filesDecl.getRepository();
-		assertThat(reposName.getText().equals("my_maven"));
+		POidRef p = filesDecl.getRepository();
+		assertThat(p instanceof AOidRef);
+		AOidRef reposRef = (AOidRef)p;
+		TId reposId = reposRef.getId();
+		assertThat(reposId.getText().equals("my_maven"));
 		
-		// Obtain the declaration to which the TId is bound.
-		....
+		Object o = state.out.get(reposId);
+		assertThat(o != null);
+		It is null because the Id is in a different CompilerState - the one
+		created by the separate Dabl instance that was created to
+		compile the imported namespace.
 		
-		NameScope simpleNameScope = namespaceEntry.getOwnedScope();
-		SymbolTable simpleSymbolTable = simpleNameScope.getSymbolTable();
 		
 		
 		
-		assertThat(e != null, () -> {
-			sablecc.PrettyPrint.pp(state.ast);
-			
-			NameScope globalScope = state.globalScope;
-			SymbolTable globalSymbolTable = globalScope.getSymbolTable();
-			SymbolTable nextTable = globalSymbolTable.getNextTable();
-			if (nextTable == null) throw new RuntimeException(
-				"nextTable is null");
-			if (! nextTable.getName().equals("another")) throw new RuntimeException(
-				"nextTable name is " + nextTable.getName());
-		});
-		assertThat(e instanceof DeclaredEntry);
-		DeclaredEntry entry = (DeclaredEntry)e;
-		
-		// Check that the defining node is a repo declaration.
-		n = entry.getDefiningNode();
-		assertThat(n instanceof AOrepoDecl);
-		
-		// Check that the repo declaration occurs within a namespace.
-		Node p = n.parent();
-		assertThat(p instanceof POnamespaceElt);
-		assertThat(p.parent() instanceof AOnamespace);
+		assertThat(o instanceof DeclaredEntry, "o is a " + o.getClass().getName());
+		DeclaredEntry reposEntry = (DeclaredEntry)o;
+		assertThat(reposEntry.getName().equals("my_maven"));
+		assertThat(reposEntry.getDefiningNode() instanceof AOrepoDecl);
 	}
 }

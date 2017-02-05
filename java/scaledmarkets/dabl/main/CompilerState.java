@@ -27,16 +27,16 @@ public class CompilerState
 	public List<NameScope> scopeStack = new LinkedList<NameScope>();
 	
 	/**
-	 * AST Node attributes that are set on entry to the Node type's analysis
+	 * AST Node annotations that are set on entry to the Node type's analysis
 	 * method.
 	 */
-	public Hashtable<Node,Object> in = new Hashtable<Node, Object>();
+	public Hashtable<Node, Annotation> in = new Hashtable<Node, Annotation>();
 	
 	/**
-	 * AST Node attributes that are set on exit from the Node type's analysis
+	 * AST Node annotations that are set on exit from the Node type's analysis
 	 * method.
 	 */
-	public Hashtable<Node,Object> out = new Hashtable<Node, Object>();
+	public Hashtable<Node, Annotation> out = new Hashtable<Node, Annotation>();
 
 	public CompilerState()
 	{

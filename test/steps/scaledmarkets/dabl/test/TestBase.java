@@ -38,8 +38,8 @@ public class TestBase {
 	 */
 	protected NameScopeEntry getNamespaceSymbolEntry(String namespaceName) throws Exception {
 		
-		List<NameScope> scopeStack = this.state.scopeStack;
-		SymbolEntry entry = this.state.scopeStack.get(0).getEntry(namespaceName);
+		NameScope globalScope = this.state.globalScope;
+		SymbolEntry entry = globalScope.getEntry(namespaceName);
 		assertThat(entry != null);
 		assertThat(entry instanceof NameScopeEntry);
 		return (NameScopeEntry)entry;
@@ -60,7 +60,7 @@ public class TestBase {
 	
 	/**
 	 * Return the value of the specified String literal symbol.
-	 */
+	 *
 	protected String getStringLiteralValue(POstringLiteral literal) throws Exception {
 		
 		Object obj = state.getOut(literal);
@@ -70,5 +70,5 @@ public class TestBase {
 		assertThat(value instanceof String);
 		String stringValue = (String)value;
 		return stringValue;
-	}
+	}*/
 }

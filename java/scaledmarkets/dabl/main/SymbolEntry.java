@@ -14,7 +14,7 @@ import java.util.LinkedList;
  * A symbol table entry. Each entry defines a symbol (identifer) that was declared
  * in the dabl file.
  */
-public abstract class SymbolEntry
+public abstract class SymbolEntry implements Annotation
 {
 	private String name;
 	private NameScope enclosingScope;

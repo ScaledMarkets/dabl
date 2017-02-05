@@ -10,7 +10,7 @@ import java.io.FileReader;
  */
 public class DefaultImportHandler implements ImportHandler {
 
-	public NameScope importNamespace(String path) {
+	public NameScope importNamespace(String path, CompilerState state) {
 		
 		// Obtain value of DABL_PATH.
 		String dablPath = System.getenv("DABL_PATH");
@@ -50,12 +50,12 @@ public class DefaultImportHandler implements ImportHandler {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		Dabl dabl = new Dabl(false, false, reader);
-		CompilerState state;
-		try { state = dabl.process(); } catch (Exception ex) {
+		Dabl dabl = new Dabl(false, false, reader, importHandler);
+		NameScope importedScope;
+		try { importedScope = dabl.process(state); } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 		
-		return state.globalScope;
+		return importedScope;
 	}
 }

@@ -2,7 +2,7 @@ package scaledmarkets.dabl.main;
 
 import scaledmarkets.dabl.node.*;
 
-public class IdRefAnnotation extends Annotation
+public class IdRefAnnotation implements Annotation
 {
 	private AOidRef idRef;
 	private SymbolEntry entry;
