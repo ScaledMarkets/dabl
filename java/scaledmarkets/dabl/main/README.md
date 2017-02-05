@@ -21,8 +21,8 @@ based on the `dabl.sablecc` grammar file.
 
 The Parse phase builds an Abstract Syntax Tree (AST), as defined by the `dabl.sablecc` file.
 The Analysis phase walks the tree in a depth-first manner, visiting each `Node`,
-calling the `in`<Node-Type>(`Node`) method on entry to each Node, and the
-`out`<Node-Type>(`Node`) method on exit from the `Node`. These methods
+calling the `in`*Node-Type*(`Node`) method on entry to each Node, and the
+`out`*Node-Type*(`Node`) method on exit from the `Node`. These methods
 perform actions such as name resolution and evaluate some static
 expressions. The outcome of the Analysis phase
 is a hashtable of `Annotations`, indexed by `Node`: thus, Analysis effectively annotates
