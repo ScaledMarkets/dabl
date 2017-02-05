@@ -19,16 +19,20 @@ based on the `dabl.sablecc` grammar file.
 
 ## Key Dynamic Structures
 
-The Parse phase builds an Abstract Syntax Tree (AST), as defined by the dabl.sablecc file.
-The Analysis phase walks the tree in a depth-first manner, visiting each Node,
-and performing actions such as name resolution. The outcome of the Analysis phase
-is a hashtable of Annotations, indexed by Node: thus, this effectively annotates
-the AST, since for any Node, one can look up its Annotation (if any).
+The Parse phase builds an Abstract Syntax Tree (AST), as defined by the `dabl.sablecc` file.
+The Analysis phase walks the tree in a depth-first manner, visiting each `Node`,
+calling the `in`<Node-Type>(`Node`) method on entry to each Node, and the
+`out`<Node-Type>(`Node`) method on exit from the `Node`. These methods
+perform actions such as name resolution and evaluate some static
+expressions. The outcome of the Analysis phase
+is a hashtable of `Annotations`, indexed by `Node`: thus, Analysis effectively annotates
+the AST, since for any `Node`, one can look up its `Annotation` (if any).
 
 The Analysis phase also produces a symbol table tree, with one table corresponding
 to each nested scope within the source input.
 
-The dynamic structures are shown in Figure 2.
+The dynamic structures are shown in the following Figure. The `CompilerState`
+object is returned by the compiler.
 
 ![Figure 2: Dynamic Structures](Compiler_Design_Fig2.png "Figure 2: Dynamic Structures")
 
