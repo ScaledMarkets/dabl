@@ -22,7 +22,7 @@ public class InMemoryImportHandler implements ImportHandler {
 	
 	public NameScope importNamespace(String namespacePath, CompilerState state) {
 		NameScope nameScope = scopeMap.get(namespacePath);
-		if (nameScope == null) {
+		if (nameScope == null) try {
 			
 			Reader reader = new StringReader(namespaces.get(namespacePath));
 			Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(new HashMap<String, String>()));
@@ -31,6 +31,8 @@ public class InMemoryImportHandler implements ImportHandler {
 			
 			scopeMap.put(namespacePath, nameScope);
 		}
+		catch (Exception ex) { throw new RuntimeException(ex); }
+		
 		return nameScope;
 	}
 }
