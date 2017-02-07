@@ -121,16 +121,17 @@ public class Dabl
 		// Parse the input and generate an AST.
 		Lexer lexer = new Lexer(new PushbackReader(this.reader));
 		Parser parser = new Parser(lexer);
-		state.ast = parser.parse();
+		Start ast = parser.parse();
 		System.out.println("Syntax is correct");
+		state.asts.add(ast);
 		
-		if (print) PrettyPrint.pp(state.ast);
+		if (print) PrettyPrint.pp(ast);
 		
 		// declarations. Expressions may be partially evaluated, where possible.
 		// Values that depend on the DABL file context (e.g., its location on a
 		// file system) are elaborated.
-		LanguageAnalyzer analyser = new LanguageAnalyzer(state, this.importHandler);
-		state.ast.apply(analyzer);
+		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
+		ast.apply(analyzer);
 		
 		return analyzer.getNamespaceNamescope();
 	}

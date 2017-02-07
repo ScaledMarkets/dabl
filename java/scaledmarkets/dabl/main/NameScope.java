@@ -12,7 +12,7 @@ import java.util.Collection;
  * All Axxx classes that define a lexical scope should be annotated with this.
  * A NameScope contains a SymbolTable.
  */
-public class NameScope extends Annotation
+public class NameScope implements Annotation
 {
 	private Node nodeThatDefinesScope;
 	private NameScope parentScope;

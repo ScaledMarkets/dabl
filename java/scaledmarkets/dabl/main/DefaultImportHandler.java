@@ -50,7 +50,7 @@ public class DefaultImportHandler implements ImportHandler {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		Dabl dabl = new Dabl(false, false, reader, importHandler);
+		Dabl dabl = new Dabl(false, false, reader, this);
 		NameScope importedScope;
 		try { importedScope = dabl.process(state); } catch (Exception ex) {
 			throw new RuntimeException(ex);

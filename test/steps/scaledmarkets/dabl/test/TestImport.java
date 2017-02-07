@@ -13,8 +13,8 @@ import scaledmarkets.dabl.node.*;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.List;
-import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class TestImport extends TestBase {
 	
@@ -28,12 +28,13 @@ public class TestImport extends TestBase {
 "    include \"*.java\""
 			);
 		
-		String[] namespaces = new String[] {
+		Map<String, String> namespaces = new HashMap<String, String>();
+		namespaces.put("another",
 "namespace another\n" +
 "  repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
-		};
+		);
 
-		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(namespaces));
+		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler());
 		this.state = dabl.process();
 		
 	}
@@ -58,13 +59,6 @@ public class TestImport extends TestBase {
 		
 		Object o = state.out.get(reposId);
 		assertThat(o != null);
-		It is null because the Id is in a different CompilerState - the one
-		created by the separate Dabl instance that was created to
-		compile the imported namespace.
-		
-		
-		
-		
 		assertThat(o instanceof DeclaredEntry, "o is a " + o.getClass().getName());
 		DeclaredEntry reposEntry = (DeclaredEntry)o;
 		assertThat(reposEntry.getName().equals("my_maven"));

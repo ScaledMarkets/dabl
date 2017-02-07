@@ -27,7 +27,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		super(state);
 		this.importHandler = importHandler;
 		
-		if (state.getGlobalScope() == null) {
+		if (state.globalScope == null) {
 			state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
 		}
 	}

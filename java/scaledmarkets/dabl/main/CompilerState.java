@@ -10,9 +10,10 @@ import java.net.URLClassLoader;
 public class CompilerState
 {
 	/**
-	 * Root of the AST.
+	 * Root of the ASTs that are created. The first AST is for the main file;
+	 * others are for imported namespaces.
 	 */
-	public Start ast;
+	public List<Start> asts = new LinkedList<Start>();
 	
 	/**
 	 * Scope in which the namespace is defined.

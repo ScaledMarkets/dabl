@@ -13,34 +13,24 @@ import java.io.StringReader;
  */
 public class InMemoryImportHandler implements ImportHandler {
 
+	private Map<String, String> namespaces = new HashMap<String, String>();
 	private Map<String, NameScope> scopeMap = new HashMap<String, NameScope>();
 	
-	
-	public InMemoryImportHandler(String[] namespaces) throws Exception {
-		
-		for (String namespace : namespaces) {
-			
-			Reader reader = new StringReader(namespace);
-			Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(new String[] {}));
-			
-			CompilerState state = dabl.process();
-			
-			NameScope globalScope = state.globalScope;
-			SymbolTable symbolTable = globalScope.getSymbolTable();
-			List<SymbolTable> childTables = symbolTable.getChildren();  // should only be one
-			if (childTables.size() == 0) throw new RuntimeException(
-				"No namespaces found");
-			if (childTables.size() > 1) throw new RuntimeException(
-				"Multiple namespaces defined in one file");
-			for (SymbolTable childTable : childTables) {
-				String name = childTable.getName();
-				NameScope nameScope = childTable.getScope();
-				scopeMap.put(name, nameScope);
-			}
-		}
+	public InMemoryImportHandler(Map<String, String> namespaces) throws Exception {
+		this.namespaces = namespaces;
 	}
 	
-	public NameScope importNamespace(String namespacePath) {
-		return scopeMap.get(namespacePath);
+	public NameScope importNamespace(String namespacePath, CompilerState state) {
+		NameScope nameScope = scopeMap.get(namespacePath);
+		if (nameScope == null) {
+			
+			Reader reader = new StringReader(namespaces.get(namespacePath));
+			Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(new HashMap<String, String>()));
+			
+			nameScope = dabl.process(state);
+			
+			scopeMap.put(namespacePath, nameScope);
+		}
+		return nameScope;
 	}
 }

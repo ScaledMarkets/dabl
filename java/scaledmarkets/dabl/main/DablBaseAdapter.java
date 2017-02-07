@@ -28,30 +28,30 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	 * Add the specified annotation ("o") to the set of "set-on-entry" attributes
 	 * for the specified node.
 	 */
-    public void setIn(Node node, Object o)
+    public void setIn(Node node, Annotation a)
     {
     	if (getIn(node) != null) throw new RuntimeException(
     		"Attempt to replace an Attribute");
-        if(o == null) state.in.remove(node);
-        else state.in.put(node, o);
+        if(a == null) state.in.remove(node);
+        else state.in.put(node, a);
     }
 
-    public Object getIn(Node node) { return state.in.get(node); }
+    public Annotation getIn(Node node) { return state.in.get(node); }
 
 	/**
 	 * Add the specified annotation ("o") to the set of "set-on-exit" attributes
 	 * for the specified node.
 	 */
-    public void setOut(Node node, Object o)
+    public void setOut(Node node, Annotation a)
     {
     	if (getOut(node) != null) throw new RuntimeException(
     		"Attempt to replace an existing Attribute " + getOut(node).getClass().getName() +
-    		" with a " + o.getClass().getName() + ", on a " + node.getClass().getName());
-        if(o == null) state.out.remove(node);
-        else state.out.put(node, o);
+    		" with a " + a.getClass().getName() + ", on a " + node.getClass().getName());
+        if(a == null) state.out.remove(node);
+        else state.out.put(node, a);
     }
 	
-    public Object getOut(Node node) { return state.out.get(node); }
+    public Annotation getOut(Node node) { return state.out.get(node); }
 
 	public void assertThat(boolean expr)
 	{
