@@ -34,8 +34,7 @@ public class TestImport extends TestBase {
 "  repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
 		);
 
-		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(
-			new HashMap<String, String>()));
+		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(namespaces));
 		this.state = dabl.process();
 		
 	}
