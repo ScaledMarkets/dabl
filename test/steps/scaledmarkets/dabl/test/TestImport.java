@@ -57,7 +57,8 @@ public class TestImport extends TestBase {
 		TId reposId = reposRef.getId();
 		assertThat(reposId.getText().equals("my_maven"));
 		
-		Object o = state.out.get(reposId);
+		Object o = state.in.get(reposId);
+		//Object o = state.out.get(reposId);
 		assertThat(o != null);
 		assertThat(o instanceof DeclaredEntry, "o is a " + o.getClass().getName());
 		DeclaredEntry reposEntry = (DeclaredEntry)o;

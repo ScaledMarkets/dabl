@@ -43,7 +43,13 @@ public class CompilerState
 	{
 	}
 	
-	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
+	public void pushScope(NameScope scope) { this.scopeStack.add(0, scope); }
+	
+	public NameScope popScope() {
+		return this.scopeStack.remove(0);
+	}
+	
+	public void setGlobalScope(NameScope scope) { this.globalScope = scope; }
 
     public Object getIn(Node node) { return in.get(node); }
     

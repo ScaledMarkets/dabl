@@ -12,6 +12,8 @@ public class DefaultImportHandler implements ImportHandler {
 
 	public NameScope importNamespace(String path, CompilerState state) {
 		
+		System.out.println("------------Importing namespace " + path); // debug
+		
 		// Obtain value of DABL_PATH.
 		String dablPath = System.getenv("DABL_PATH");
 		if (dablPath == null) {
@@ -51,10 +53,12 @@ public class DefaultImportHandler implements ImportHandler {
 			throw new RuntimeException(ex);
 		}
 		Dabl dabl = new Dabl(false, false, reader, this);
+		System.out.println("Processing " + path + "..."); // debug
 		NameScope importedScope;
 		try { importedScope = dabl.process(state); } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
+		System.out.println("...done processing " + path); // debug
 		
 		return importedScope;
 	}

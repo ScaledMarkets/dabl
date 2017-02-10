@@ -21,13 +21,16 @@ public class InMemoryImportHandler implements ImportHandler {
 	}
 	
 	public NameScope importNamespace(String namespacePath, CompilerState state) {
+		System.out.println("------------Importing namespace " + namespacePath); // debug
 		NameScope nameScope = scopeMap.get(namespacePath);
 		if (nameScope == null) try {
 			
 			Reader reader = new StringReader(namespaces.get(namespacePath));
 			Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(new HashMap<String, String>()));
 			
+			System.out.println("Processing " + namespacePath + "..."); // debug
 			nameScope = dabl.process(state);
+			System.out.println("...done processing " + namespacePath); // debug
 			
 			scopeMap.put(namespacePath, nameScope);
 		}
