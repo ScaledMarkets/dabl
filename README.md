@@ -30,10 +30,12 @@ For robust infrastructure code, a better model than current practice is needed, 
 * The build language is strongly typed, in order to promote maintainability and reliability.
 * The build language uses information hiding, encapsulation, and true modularity in order to promote reuse and extensibility.
 * The build language is defined as a true language, with a normative language definition and
-	well specified syntax and semantics (see [Language Reference](langref)).
+	well specified syntax and semantics (see [Language Reference](langref)),
+	thereby avoiding ambiguity in the language itself.
 	Ambiguity is the enemy of reliability.
 * The build language is concise but not cryptic, and encourages the definition of
 	builds that are easy to read and understand, and that are unambiguous.
+	Again, ambiguity is the enemy of reliability.
 * The build language lends itself well to static analysis, for—say—security analysis.
 	(For that to be possible, it is essential that the language is *not merely an
 	extension of a general purpose language*.)
