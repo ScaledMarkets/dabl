@@ -84,7 +84,6 @@ public class SymbolTable extends HashMap<String, SymbolEntry>
 	public void addEntry(String name, SymbolEntry entry)
 	throws SymbolEntryPresent // if there is already an entry with name 'name'.
 	{
-		System.out.println("Adding '" + name + "' to symbol table '" + getName() + "'");  // debug
 		if (get(name) != null) throw new SymbolEntryPresent(name);
 		put(name, entry);
 	}

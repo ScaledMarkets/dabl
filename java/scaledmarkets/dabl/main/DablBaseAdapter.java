@@ -70,14 +70,12 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	protected NameScope pushNameScope(NameScope scope)
 	{
-		System.out.println("Pushing scope '" + scope.getName() + "'");  // debug
 		state.pushScope(scope);
 		return scope;
 	}
 	
 	protected NameScope popNameScope()
 	{
-		//(new RuntimeException("Popping scope '" + state.scopeStack.get(0).getName() + "'")).printStackTrace(System.out);  // debug
 		return state.popScope();
 	}
 	
