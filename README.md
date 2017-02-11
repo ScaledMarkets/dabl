@@ -7,13 +7,25 @@ software dependencies.
 
 Existing “build” languages (e.g., make, ant, maven, gradle, Jenkins “pipeline”)
 leave much to be desired. They tend to be non-[composable](https://en.wikipedia.org/wiki/Composability),
-weakly typed, and have poor extensibility features. As such, they make build processes brittle and unreliable and also limit reusability.
+weakly typed, and have poor extensibility features. As such, they make build processes
+brittle and unreliable and also limit reusability.
 
-There is no reason why it needs to be this way: The current state of affairs stems from the “guru” culture of system administration, and the still present 1980s era tradition that build languages are quick-to-modify scripts that are maintained by sysadmin “gurus” who are above accountability for the maintainability of their scripts. Yet, infrastructure code definitely warrants high reliability and maintainability, and—increasingly—build pipelines are part of infrastructure. Thus, the time for reliable and composable build languages has come.
+There is no reason why it needs to be this way: The current state of affairs stems from
+the “guru” culture of system administration, and the still present 1980s era tradition
+that build languages are quick-to-modify scripts that are maintained by sysadmin
+“gurus” who are above accountability for the maintainability of their scripts.
+Yet, infrastructure code definitely warrants high reliability and maintainability,
+and—increasingly—build pipelines are part of infrastructure. Thus, the time for
+reliable, composable, and maintainable build languages has come.
 
-Treating pipeline definition as a first-class design activity, supported by a true language, is consistent with the DevOps philosophy of treating the build and deployment pipeline as a system to be designed, coded, and maintained.
+Treating pipeline definition as a first-class design activity, supported by a
+*true language*, is consistent with the DevOps philosophy of treating the build
+and deployment pipeline as a system to be designed, coded, and maintained. We
+will note that a "true language" implies a normative language spec; and a "true
+language" is not merely a set of methods on top of an existing general
+purpose language as many so-called "domain-specific languages" are.
 
-A better model than current practice is needed, whereby,
+For robust infrastructure code, a better model than current practice is needed, whereby,
 
 * The build language is strongly typed, in order to promote maintainability and reliability.
 * The build language uses information hiding, encapsulation, and true modularity in order to promote reuse and extensibility.
@@ -22,6 +34,8 @@ A better model than current practice is needed, whereby,
 * The build language is concise but not cryptic, and encourages the definition of
 	builds that are easy to read and understand, and that are unambiguous.
 * The build language lends itself well to static analysis, for—say—security analysis.
+	(For that to be possible, it is essential that the language is *not merely an
+	extension of a general purpose language*.)
 * The maintainers of the build language have a high regard for backward
 	compatibility, so that language changes do not contribute to the instability
 	of build systems. We (Scaled Markets) plan to use a deprecation approach when
