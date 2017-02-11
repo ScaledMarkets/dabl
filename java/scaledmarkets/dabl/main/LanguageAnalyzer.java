@@ -195,7 +195,18 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	 	TId id = node.getName();
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {
+			
+			
+			System.out.println("--->>>Adding symbol entry for " + id.getText()); // debug
+			
 			addSymbolEntry(entry, id);
+			
+			// debug
+			Annotation a = this.getIn(id);
+			SymbolEntry e = (SymbolEntry)a;
+			System.out.println("--->>>Added annotation for " + e.getName());
+			// end debug
+			
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
