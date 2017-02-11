@@ -61,68 +61,6 @@ Symbols are organized into symbol tables, as depicted in the figure.
 
 ![Figure 5: Symbol Table Structure](Compiler_Design_Fig5.png "Figure 5: Symbol Table Structure")
 
-The Language Analyzer uses the following:
-
-<dl>
-	<dd><code>Compiler state</code> - </dd>
-	<dd><dl>
-		<dd><code>ast</code> - </dd>
-		<dd><code>globalScope</code> - </dd>
-		<dd><code>scopeStack</code> - </dd>
-		<dd><code>in</code> - </dd>
-		<dd><code>out</code> - </dd>
-	</dl></dd>
-	
-	<dd><code>NameScope</code></dd>
-	
-	<dd><code>DablBaseAdapter</code> (extends <code>DepthFirstAdapter</code>) - 
-		Base class for <code>LanguageAnalyzer</code>. Key methods include:
-		<dl>
-		<dd><code>addSymbolEntry(SymbolEntry entry, TId id, NameScope enclosingScope)</code> -
-			Adds the specified symbol table entry for the specified Id to
-			the specified name scope.</dd>
-		<dd><code>createNameScope(Node node)</code> - Create a new NameScope within the current
-			NameScope, push the new NameScope on the scope stack, and annotate
-			the specified Node with the new NameScope.</dd>
-		<dd><code>setExprAnnotation(POexpr node, Object value)</code> - Annotate the specified
-			POExpr node with a new ExprAnnotation.</dd>
-		<dd><code>setExprRefAnnotation(POexpr node, Object value, SymbolEntry entry)</code> - 
-			Annotate the specified POexpr node with a new ExprRefAnnotation.</dd>
-		</dl>
-		
-	<dd><code>SymbolTable</code> (a <code>HashMap<String, SymbolEntry>)</code> -
-		Self explanatory.</dd>
-	
-	<dd><code>SymbolEntry</code> (abstract) - All symbol table entries are of a
-		derived type.</dd>
-	
-	<dd><code>DeclaredEntry</code> (extends <code>SymbolEntry</code>) - A symbol
-		that is defined in a declaration.</dd>
-	
-	<dd><code>NameScopeEntry</code> (extends <code>DeclaredEntry</code>) - A
-		<code>DeclaredEntry</code> that defines a lexical name scope.</dd>
-	
-	<dd><code>Annotation</code> (abstract) - Base type for all AST node annotations.</dd>
-	
-	<dd><code>NameScope</code> (extends <code>Annotation</code>) - All Axxx classes
-		that define a lexical scope should be annotated with this. A
-		<code>NameScope</code> contains a <code>SymbolTable</code>.</dd>
-	
-	<dd><code>ExprAnnotation</code> (extends <code>Annotation</code>) - An annotation
-		for a expression node.</dd>
-	
-	<dd><code>ExprRefAnnotation</code> (extends <code>ExprAnnotation</code>) -
-		For expressions whose value is defined in the declaration of a symbol.</dd>
-	
-	<dd><code>IdentHandler</code> - An <code>IdentHandler</code> is attached to
-		enclosing scopes when a symbol
-		is not recognized but might be defined later in an enclosing scope. Later,
-		when the symbol is defined, attached Handlers are checked to see if any
-		refer to the symbol. If so, the Handler's <code>resolveRetroactively</code>
-		method is called, to resolve the original symbol reference.</dd>
-
-</dl>
-
 ## Compiler Output
 
 The compiler returns a [`CompilerState`](CompilerState.java) object. In the
