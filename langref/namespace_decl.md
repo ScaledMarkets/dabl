@@ -23,10 +23,5 @@ namespace mycompany.myproject
 ```
 
 There must be one and only one namespace declaration in a DABL file.
-
-## Namespace Declared In Multiple Files
-
-Multiple DABL files can
-specify the same namespace: in that case, each file adds to the same namespace,
-but only the public elements of each file are shared among the other files.
-It is an error if there are any conflicts.
+Also, there is no way to spread a namespace across multiple files: it must be contained
+in a single file.

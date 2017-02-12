@@ -6,3 +6,4 @@ Feature: TestTask
 	Scenario: Simple
 		When I compile a simple task
 		Then I can retrieve the the task by its name
+
