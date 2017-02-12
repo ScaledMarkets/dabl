@@ -57,9 +57,9 @@ to each nested scope within the source input.
 
 There are three kinds of annotation:
 
-* NameScope.
-* SymbolEntry.
-* IdRefAnnotation.
+* `NameScope`.
+* `SymbolEntry`.
+* `IdRefAnnotation`.
 
 Note that there are two separate Annotation tables: `in` and `out`. `in` annotations
 are added by `in`*Node-Type*() methods, and `out` annotations are added
