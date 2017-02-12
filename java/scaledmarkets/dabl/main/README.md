@@ -61,11 +61,13 @@ There are three kinds of annotation:
 * `SymbolEntry`.
 * `IdRefAnnotation`.
 
+Each implements the `Annotation` interface.
+
 Note that there are two separate annotation tables: `in` and `out`. `in` annotations
 are added by `in`*Node-Type*() methods, and `out` annotations are added
 by `out`*Node-Type*() methods.
 
-The structure of Annotations is shown in the figure.
+The structure of annotations is shown in the figure.
 
 ![Figure 4: AST Annotations](Compiler_Design_Fig4.png "Figure 4: AST Annotations")
 
