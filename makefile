@@ -154,8 +154,14 @@ compile_tests: $(test_build_dir)
 test:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
 		cucumber.api.cli.Main \
-		--glue scaledmarkets.dabl.test $(test_src_dir)/features \
+		--glue scaledmarkets.dabl.test \
+		$(test_src_dir)/features \
 		--tags @done
+
+test_check:
+	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
+		cucumber.api.cli.Main \
+		$(test_src_dir)/features \
 
 # Perform code quality scans.
 runsonar:
@@ -176,6 +182,12 @@ javadoc: $(javadoc_dir)
 	git add $(javadoc_dir)/
 	git commit -am "Generated api docs"
 	git push
+
+cukehelp:
+	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help
+
+cukever:
+	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --version
 
 cukehelp:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help
