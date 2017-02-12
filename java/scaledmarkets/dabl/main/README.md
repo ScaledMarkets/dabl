@@ -61,9 +61,9 @@ There are three kinds of annotation:
 * `SymbolEntry`.
 * `IdRefAnnotation`.
 
-Note that there are two separate Annotation tables: `in` and `out`. `in` annotations
+Note that there are two separate annotation tables: `in` and `out`. `in` annotations
 are added by `in`*Node-Type*() methods, and `out` annotations are added
-by out*Node-Type*() methods.
+by `out`*Node-Type*() methods.
 
 The structure of Annotations is shown in the figure.
 
