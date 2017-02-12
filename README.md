@@ -82,7 +82,8 @@ defined by the `scaledmarkets.dabl.node` package in the [Javadocs](https://scale
 
 For an example
 of accessing the object model, see the [piper project](https://github.com/Scaled-Markets/piper).
-Piper is a build system based on DABL.
+Piper is a build system based on DABL. The [behavioral test suite](/ScaledMarkets/dabl/tree/master/test)
+also illustrates how to access the AST.
 
 # Compiler Design
 
