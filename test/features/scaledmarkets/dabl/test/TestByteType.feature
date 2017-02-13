@@ -4,5 +4,3 @@ Feature: TestByteType
 	
 	@done
 	Scenario: Simple
-		When 
-		Then 
