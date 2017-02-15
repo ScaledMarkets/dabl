@@ -2,5 +2,5 @@
 
 Feature: TestByteType
 	
-	@done
+	@notdone
 	Scenario: Simple

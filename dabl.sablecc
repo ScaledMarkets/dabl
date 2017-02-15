@@ -128,8 +128,8 @@ Tokens
 	password = 'password';
 
 	// Variable Length Sequences:
-	number = digit+;
-	float_number = digit* per digit+;
+	whole_number = digit+;
+	//float_number = digit* per digit+;
 	whitespace = (blank | cr | nl | tab )+;
 	id = ( letter | underscore ) ( letter | digit | underscore )+;
 	//non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
@@ -195,19 +195,19 @@ Productions
 		;
 	
 	tab_decl {-> otypographic_declaration} =
-		tab_keyword equivalent to number spaces_keyword
-											{-> New otypographic_declaration.tab_decl(number)}
+		tab_keyword equivalent to whole_number spaces_keyword
+											{-> New otypographic_declaration.tab_decl(whole_number)}
 		;
 		
 	artifact_decl {-> oartifact_declaration} =
 		artifact id colon [expr1]:whole_number_expr
 			per_char [expr2]:whole_number_expr
-			artifact_stmts					{-> New oartifact_declaration(id, expr1.number,
-												expr2.number, [artifact_stmts.ocompatibility_spec])}
+			artifact_stmts					{-> New oartifact_declaration(id, expr1.whole_number,
+												expr2.whole_number, [artifact_stmts.ocompatibility_spec])}
 		;
 	
-	whole_number_expr {-> number} =
-		number								{-> number}
+	whole_number_expr {-> whole_number} =
+		whole_number								{-> whole_number}
 		;
 	
 	artifact_stmts {-> ocompatibility_spec*} =
@@ -372,9 +372,9 @@ Productions
 	  ;
 	
 	range_spec {-> orange_spec} =
-		{multiple} [from]:number dash [to]:number
+		{multiple} [from]:whole_number dash [to]:whole_number
 											{-> New orange_spec.range(from, to)}
-	  | {one} number						{-> New orange_spec.one(number)}
+	  | {one} whole_number						{-> New orange_spec.one(whole_number)}
 	  | {all} asterisk						{-> New orange_spec.all()}
 	  ;
 	
@@ -625,8 +625,31 @@ Productions
 	  ;
 	
 	numeric_literal {-> onumeric_literal} =
-		{int} number						{-> New onumeric_literal.int(number)}
-	  | {float} float_number				{-> New onumeric_literal.float(float_number)}
+		{int} sign_opt whole_number			{-> New onumeric_literal.int(sign_opt.osign, whole_number)}
+	  | {numeric_pattern} sign_opt num_slot fraction_seq
+	  										{-> New onumeric_literal.pattern(
+	  											sign_opt.osign, num_slot.onum_slot,
+	  											[fraction_seq.onum_slot])}
+	  ;
+	
+	sign_opt {-> osign} =
+		{pos} plus							{-> New osign.positive()}
+	  | {neg} dash							{-> New osign.negative()}
+	  |										{-> New osign.positive()}
+	  ;
+	
+	fraction_seq {-> onum_slot*} =
+		{many} fraction fraction_seq		{-> [fraction.onum_slot, fraction_seq.onum_slot]}
+	  | {one} fraction						{-> [fraction.onum_slot]}
+	  ;
+	  
+	fraction {-> onum_slot} =
+		per_char num_slot						{-> num_slot.onum_slot}
+		;
+	
+	num_slot {-> onum_slot} =
+		{num} whole_number					{-> New onum_slot.num(whole_number)}
+	  | {wildcard} asterisk					{-> New onum_slot.wildcard()}
 	  ;
 	
 	string_literal {-> ostring_literal} =
@@ -672,15 +695,15 @@ Abstract Syntax Tree
 	  ;
 
 	otypographic_declaration =
-		{tab_decl} number;
+		{tab_decl} whole_number;
 	
 	oartifact_declaration =
-		id [major]:number [minor]:number ocompatibility_spec*
+		id [major]:whole_number [minor]:whole_number ocompatibility_spec*
 		;
 	
 	orange_spec =
-		{range} [from]:number [to]:number
-	  | {one} number
+		{range} [from]:whole_number [to]:whole_number
+	  | {one} whole_number
 	  | {all}
 		;
 	
@@ -833,6 +856,16 @@ Abstract Syntax Tree
 	  ;
 	
 	onumeric_literal =
-		{int} number
-	  | {float} float_number
+		{int} osign whole_number
+	  | {pattern} osign [magnitude]:onum_slot [mantissa]:onum_slot*
 		;
+
+	onum_slot =
+		{num} whole_number
+	  | {wildcard}
+	  ;
+
+	osign =
+		{positive}
+	  | {negative}
+	  ;

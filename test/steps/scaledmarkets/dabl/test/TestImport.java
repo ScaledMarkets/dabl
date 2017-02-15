@@ -71,13 +71,13 @@ public class TestImport extends TestBase {
 	@When("^I import a multi-level namespace$")
 	public void i_import_a_multi_level_namespace() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 	
 	@When("^a namespace imports a second namespace, and that imports a third, which in turn imports the first$")
 	public void a_namespace_imports_a_second_namespace_and_that_imports_a_third_which_in_turn_imports_the_first() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 
 }

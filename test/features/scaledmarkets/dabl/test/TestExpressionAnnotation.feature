@@ -2,5 +2,5 @@
 
 Feature: TestExpressionAnnotation
 	
-	@done
+	@notdone
 	Scenario: Simple

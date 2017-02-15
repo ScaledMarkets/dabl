@@ -21,19 +21,19 @@ public class TestForwardReferences extends TestBase {
 	@When("^I declare a symbol after it is referenced$")
 	public void i_declare_a_symbol_after_it_is_referenced() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 	
 	@Then("^I can retrieve the IdRefAnnotation from the reference to the symbol$")
 	public void i_can_retrieve_the_IdRefAnnotation_from_the_reference_to_the_symbol() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 	
 	@Then("^the IdRefAnnotation is correct$")
 	public void the_IdRefAnnotation_is_correct() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 
 

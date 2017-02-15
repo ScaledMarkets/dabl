@@ -57,25 +57,25 @@ public class TestStringExpression extends TestBase {
 	@When("^a multi-line string is processed$")
 	public void a_multi_line_string_is_processed() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 	
 	@Then("^the full string value is obtainable from the AST$")
 	public void the_full_string_value_is_obtainable_from_the_AST() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 	
 	@When("^a triple-quote string is used$")
 	public void a_triple_quote_string_is_used() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 	
 	@Then("^one can obtain the full string value from the AST$")
 	public void one_can_obtain_the_full_string_value_from_the_AST() throws Throwable {
 		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+		throw new Exception();
 	}
 
 }
