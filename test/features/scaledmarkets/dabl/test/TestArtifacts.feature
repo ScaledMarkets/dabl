@@ -5,17 +5,17 @@ Feature: TestArtifacts
 	@done
 	Scenario: Name cannot conflict with another name of any kind
 		When a repo has the same name as the artifact
-		Then an error is generated
+		Then an error is generated when we process it
 
 	@done
 	Scenario: Cannot assert compability with itself
 		When an artifact assumes compatibility with itself
-		Then an error is generated
+		Then an error is generated when we process it
 
 	@done
 	Scenario: Cannot assert tested with itself
 		When an artifact asserts tested with itself
-		Then an error is generated
+		Then an error is generated when we process it
 
 	@done
 	Scenario: Wildcard in compatible major version number

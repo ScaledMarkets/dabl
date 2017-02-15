@@ -18,16 +18,52 @@ import java.util.LinkedList;
 
 public class TestArtifacts extends TestBase {
 	
-	@When("^a repo has the same name as the artifact$")
-	public void a_repo_has_the_same_name_as_the_artifact() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+"namespace simple\n" +
+"artifact ABC:2.3\n" +
+"assume compatible with XYZ:3.*\n" +
+"tested with XYZ:3.3-3.4");
+	
+	Reader reader;
+
+	@Before
+	public void beforeEachScenario() throws Exception {
+		reader = null;
 	}
 	
-	@Then("^an error is generated$")
-	public void an_error_is_generated() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new PendingException();
+	@When("^a repo has the same name as the artifact$")
+	public void a_repo_has_the_same_name_as_the_artifact() throws Throwable {
+
+		String base = 
+"namespace simple\n" +
+"artifact ABC:2.3\n" +
+"  tested with XYZ:3.3-3.4\n" +
+"repo $RepoName type git
+"  scheme \"https\" path \"github.com/myteam\" userid \"abc\" password \"def\"";
+
+		String correct = base.replace("$RepoName", "my_repo");
+		String incorrect = base.replace("$RepoName", "ABC");
+		
+		// First try it with a 'correct' version, to make sure our 'correct'
+		// version does not have an error.
+		reader = new StringReader(correct);
+		Dabl dabl = new Dabl(false, true, reader);
+		this.state = dabl.process();
+		
+		// Now try with the 'incorrect' version - this should generate an error
+		// when it is processed in the next step.
+		reader = new StringReader(incorrect);
+	}
+	
+	@Then("^an error is generated when we process it$")
+	public void an_error_is_generated_when_we_process_it() throws Throwable {
+		Dabl dabl = new Dabl(false, true, reader);
+		try {
+			this.state = dabl.process();
+		} catch (Exception ex) {
+			// Success - we expected an error
+			return;
+		}
+		assertThat(false, "An exception was not thrown");
 	}
 	
 	@When("^an artifact assumes compatibility with itself$")
