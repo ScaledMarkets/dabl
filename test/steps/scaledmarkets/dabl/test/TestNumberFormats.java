@@ -30,14 +30,52 @@ public class TestNumberFormats extends TestBase {
 	
 	@When("^a whole number is processed$")
 	public void a_whole_number_is_processed() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+
+		Reader reader = new StringReader(
+"namespace simple\n" +
+"  task t123\n" +
+"    when 1 < 2"
+			);
+		
+		Dabl dabl = new Dabl(false, true, reader);
+		this.state = dabl.process();
 	}
 	
 	@Then("^I can retrieve the numeric value$")
 	public void i_can_retrieve_the_numeric_value() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		NameScopeEntry namespaceEntry = getNamespaceSymbolEntry("simple");
+		DeclaredEntry repoEntry = getDeclaredEntry(namespaceEntry, "t123");
+		Node n = repoEntry.getDefiningNode();
+		assertThat(n instanceof AOtaskDeclaration, () -> {
+			System.out.println("\tn is a " + n.getClass().getName());
+		});
+		AOtaskDeclaration taskDecl = (AOtaskDeclaration)n;
+		
+		LinkedList<POexpr> whens = taskDecl.getWhen();
+		assertThat(whens.size() == 1);
+		POexpr when = whens.get(0);
+		assertThat(when instanceof ABinaryOexpr);
+		ABinaryOexpr binExpr = (ABinaryOexpr)when;
+		
+		POexpr op1 = binExpr.getOperand1();
+		assertThat(op1 instanceof ALiteralOexpr);
+		ALiteralOexpr lit = (ALiteralOexpr)op1;
+		
+		POliteral o = lit.getOliteral();
+		assertThat(o instanceof ANumericOliteral);
+		ANumericOliteral numlit = (ANumericOliteral)o;
+		
+		POnumericLiteral nl = numlit.getOnumericLiteral();
+		assertThat(nl instanceof AIntOnumericLiteral);
+		AIntOnumericLiteral intlit = (AIntOnumericLiteral)nl;
+		
+		POsign ps = intlit.getOsign();
+		assertThat(ps instanceof APositiveOsign);
+		APositiveOsign psign = (APositiveOsign)ps;
+		
+		TWholeNumber wn = intlit.getWholeNumber();
+		assertThat(wn.getText().equals("1"));
 	}
 	
 	// Test negative whole number

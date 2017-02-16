@@ -8,147 +8,147 @@ Package scaledmarkets.dabl;
 
 Helpers
 
-	any_character = [0x0 .. 0xfffff];
-	tab   = 9;
-	cr    = 13;
-	nl    = 10;
-	dollar = '$';
-	comma = ',';
-	blank = ' ';
-	lcletter = ['a' .. 'z'];
-	ucletter = ['A' .. 'Z'];
-	underscore = '_';
-	letter = (lcletter | ucletter | underscore);
-	digit = ['0' .. '9'];
-	escape = '%' digit digit;
-	quote = '"';
-	triplequote = '"""';
-	slashslash = '//';
-	slashslashslash = '///';
-	slashstar = '/*';
-	starslash = '*/';
-	slashslashstar = '//*';
-	starslashslash = '*//';
-	linetermination = (cr nl | nl);
-	per = '.';
+    any_character = [0x0 .. 0xfffff];
+    tab   = 9;
+    cr    = 13;
+    nl    = 10;
+    dollar = '$';
+    comma = ',';
+    blank = ' ';
+    lcletter = ['a' .. 'z'];
+    ucletter = ['A' .. 'Z'];
+    underscore = '_';
+    letter = (lcletter | ucletter | underscore);
+    digit = ['0' .. '9'];
+    escape = '%' digit digit;
+    quote = '"';
+    triplequote = '"""';
+    slashslash = '//';
+    slashslashslash = '///';
+    slashstar = '/*';
+    starslash = '*/';
+    slashslashstar = '//*';
+    starslashslash = '*//';
+    linetermination = (cr nl | nl);
+    per = '.';
 
 
 Tokens
 
-	// Punctuation:
-	tab_char = tab;
-	nl_char = nl;
-	comma_char = comma;
-	plus = '+';
-	dash = '-';
-	asterisk = '*';
-	div = '/';
-	gt = '>';
-	lt = '<';
-	ge = '>=';
-	le = '<=';
-	eq = '=';
-	ne = '!=';
-	colon = ':';
-	semicolon = ';';
-	dotdot = '..';
-	qmark = '?';
-	def = 'def';
-	left_paren = '(';
-	right_paren = ')';
-	left_cur = '{';
-	right_cur = '}';
-	left_brack = '[';
-	right_brack = ']';
-	per_char = per;
-	caret = '^';
-	
-	// Propositional Keywords:
-	from = 'from';
-	to = 'to';
-	in = 'in';
-	for = 'for';
-	with = 'with';
-	when = 'when';
-	on = 'on';
-	of = 'of';
-	than = 'than';
-	
-	// Non-Propositional Keywords:
-	namespace = 'namespace';
-	import = 'import';
-	tab_keyword = 'tab';
-	equivalent = 'equivalent';
-	spaces_keyword = 'spaces';
-	artifact = 'artifact';
-	task = 'task';
-	public = 'public';
-	repo = 'repo';
-	type = 'type';
-	git = 'git';
-	//maven = 'maven';
-	//svn = 'svn';
-	files = 'files';
-	shell = 'shell';
-	translation = 'translation';
-	translate = 'translate';
-	filename = 'filename';
-	prefer = 'prefer';
-	latest = 'latest';
-	assume = 'assume';
-	compatible = 'compatible';
-	tested = 'tested';
-	function = 'function';
-	binds = 'binds';
-	method = 'method';
-	returns = 'returns';
-	succeeded = 'succeeded';
-	failed = 'failed';
-	newer = 'newer';
-	older = 'older';
-	inputs = 'inputs';
-	outputs = 'outputs';
-	path_keyword = 'path';
-	scheme = 'scheme';
-	if = 'if';
-	end = 'end';
-	error = 'error';
-	string_keyword = 'string';
-	int_keyword = 'int';
-	float_keyword = 'float';
-	boolean_keyword = 'boolean';
-	not_keyword = 'not';
-	and_keyword = 'and';
-	or_keyword = 'or';
-	include = 'include';
-	exclude = 'exclude';
-	true_keyword = 'true';
-	false_keyword = 'false';
-	userid = 'userid';
-	password = 'password';
+    // Punctuation:
+    tab_char = tab;
+    nl_char = nl;
+    comma_char = comma;
+    plus = '+';
+    dash = '-';
+    asterisk = '*';
+    div = '/';
+    gt = '>';
+    lt = '<';
+    ge = '>=';
+    le = '<=';
+    eq = '=';
+    ne = '!=';
+    colon = ':';
+    semicolon = ';';
+    dotdot = '..';
+    qmark = '?';
+    def = 'def';
+    left_paren = '(';
+    right_paren = ')';
+    left_cur = '{';
+    right_cur = '}';
+    left_brack = '[';
+    right_brack = ']';
+    per_char = per;
+    caret = '^';
+    
+    // Propositional Keywords:
+    from = 'from';
+    to = 'to';
+    in = 'in';
+    for = 'for';
+    with = 'with';
+    when = 'when';
+    on = 'on';
+    of = 'of';
+    than = 'than';
+    
+    // Non-Propositional Keywords:
+    namespace = 'namespace';
+    import = 'import';
+    tab_keyword = 'tab';
+    equivalent = 'equivalent';
+    spaces_keyword = 'spaces';
+    artifact = 'artifact';
+    task = 'task';
+    public = 'public';
+    repo = 'repo';
+    type = 'type';
+    git = 'git';
+    //maven = 'maven';
+    //svn = 'svn';
+    files = 'files';
+    shell = 'shell';
+    translation = 'translation';
+    translate = 'translate';
+    filename = 'filename';
+    prefer = 'prefer';
+    latest = 'latest';
+    assume = 'assume';
+    compatible = 'compatible';
+    tested = 'tested';
+    function = 'function';
+    binds = 'binds';
+    method = 'method';
+    returns = 'returns';
+    succeeded = 'succeeded';
+    failed = 'failed';
+    newer = 'newer';
+    older = 'older';
+    inputs = 'inputs';
+    outputs = 'outputs';
+    path_keyword = 'path';
+    scheme = 'scheme';
+    if = 'if';
+    end = 'end';
+    error = 'error';
+    string_keyword = 'string';
+    int_keyword = 'int';
+    float_keyword = 'float';
+    boolean_keyword = 'boolean';
+    not_keyword = 'not';
+    and_keyword = 'and';
+    or_keyword = 'or';
+    include = 'include';
+    exclude = 'exclude';
+    true_keyword = 'true';
+    false_keyword = 'false';
+    userid = 'userid';
+    password = 'password';
 
-	// Variable Length Sequences:
-	whole_number = digit+;
-	//float_number = digit* per digit+;
-	whitespace = (blank | cr | nl | tab )+;
-	id = ( letter | underscore ) ( letter | digit | underscore )+;
-	//non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
-	string = quote [ any_character - quote ]* quote;
-	string2 = triplequote any_character* triplequote;
-	//string2 = triplequote [ any_character - triplequote ]* triplequote;
-	slashslashcomment = slashslash [ any_character - nl ]* nl;
-	slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
-	slashstarcomment = slashstar any_character* starslash;
-	slashslashstarcomment = slashslashstar any_character* starslashslash;
-	
+    // Variable Length Sequences:
+    whole_number = digit+;
+    //float_number = digit* per digit+;
+    whitespace = (blank | cr | nl | tab )+;
+    id = ( letter | underscore ) ( letter | digit | underscore )+;
+    //non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
+    string = quote [ any_character - quote ]* quote;
+    string2 = triplequote any_character* triplequote;
+    //string2 = triplequote [ any_character - triplequote ]* triplequote;
+    slashslashcomment = slashslash [ any_character - nl ]* nl;
+    slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
+    slashstarcomment = slashstar any_character* starslash;
+    slashslashstarcomment = slashslashstar any_character* starslashslash;
+    
 
 Ignored Tokens
 
-	slashslashcomment,
-	slashslashslashcomment,
-	slashstarcomment,
-	slashslashstarcomment,
-	whitespace;
+    slashslashcomment,
+    slashslashslashcomment,
+    slashstarcomment,
+    slashslashstarcomment,
+    whitespace;
 
 
 // -----------------------------------------------------------------------------
@@ -156,519 +156,519 @@ Ignored Tokens
 // -----------------------------------------------------------------------------
 Productions
 
-	specification {-> onamespace} =
-		{namespace_decl} namespace_decl spec_elt_seq
-											{-> New onamespace(
-													[namespace_decl.id],
-													[spec_elt_seq.onamespace_elt])};
-	
-	namespace_decl {-> id*} =
-		namespace path						{-> [path.id]};
-	
-	spec_elt_seq_opt {-> onamespace_elt*} =
-		{multiple} spec_elt_seq				{-> [spec_elt_seq.onamespace_elt]}
-	  | {none}								{-> []}
-	  ;
-	  
-	spec_elt_seq {-> onamespace_elt*} =
-		{multiple} spec_elt spec_elt_seq	{-> [spec_elt.onamespace_elt, spec_elt_seq.onamespace_elt]}
-	  | {one} spec_elt						{-> [spec_elt.onamespace_elt]}
-	  ;
-	 
-	spec_elt {-> onamespace_elt} =
-		{import_decl} import_decl			{-> import_decl.onamespace_elt}
-	  | {typographic_decl} typographic_decl	{-> New onamespace_elt.typographic(typographic_decl.otypographic_declaration)}
-	  | {artifact_decl} artifact_decl		{-> New onamespace_elt.artifact(artifact_decl.oartifact_declaration)}
-	  | {task_decl} task_decl				{-> New onamespace_elt.task(task_decl.otask_declaration)}
-	  | {repo_decl} repo_decl				{-> New onamespace_elt.repo(repo_decl.orepo_decl)}
-	  | {files_decl} files_decl				{-> New onamespace_elt.files(files_decl.ofiles_declaration)}
-	  | {function_decl} function_decl		{-> New onamespace_elt.function(function_decl.ofunction_declaration)}
-	  | {translation_decl} translation_decl	{-> New onamespace_elt.translation(translation_decl.otranslation_declaration)}
-	  ;
-	
-	typographic_decl {-> otypographic_declaration} =
-		tab_decl							{-> tab_decl.otypographic_declaration}
-		;
-	
-	import_decl {-> onamespace_elt} =
-		import path							{-> New onamespace_elt.import([path.id])}
-		;
-	
-	tab_decl {-> otypographic_declaration} =
-		tab_keyword equivalent to whole_number spaces_keyword
-											{-> New otypographic_declaration.tab_decl(whole_number)}
-		;
-		
-	artifact_decl {-> oartifact_declaration} =
-		artifact id colon [expr1]:whole_number_expr
-			per_char [expr2]:whole_number_expr
-			artifact_stmts					{-> New oartifact_declaration(id, expr1.whole_number,
-												expr2.whole_number, [artifact_stmts.ocompatibility_spec])}
-		;
-	
-	whole_number_expr {-> whole_number} =
-		whole_number								{-> whole_number}
-		;
-	
-	artifact_stmts {-> ocompatibility_spec*} =
-		{multiple} artifact_stmt artifact_stmts
-											{-> [artifact_stmt.ocompatibility_spec,
-													artifact_stmts.ocompatibility_spec]}
-	  | {one} artifact_stmt					{-> [artifact_stmt.ocompatibility_spec]}
-	  ;
-	
-	artifact_stmt {-> ocompatibility_spec} =
-		{assume_stmt} assume_stmt			{-> assume_stmt.ocompatibility_spec}
-	  | {tested_stmt} tested_stmt			{-> tested_stmt.ocompatibility_spec}
-	  ;
-	
-	assume_stmt {-> ocompatibility_spec} =
-		assume compatible with path colon version_spec
-											{-> New ocompatibility_spec.assume(
-												[path.id], [version_spec.orange_spec])}
-		;
-	
-	tested_stmt {-> ocompatibility_spec} =
-		tested with path colon version_spec	{-> New ocompatibility_spec.tested(
-												[path.id], [version_spec.orange_spec])}
-		;
-	
-	scope_decl {-> oscope} =
-		{public} public						{-> New oscope.public()}
-	  | {unspecified}						{-> New oscope.private()}
-	  ;
-	
-	task_decl {-> otask_declaration} =
-		scope_decl task id when_clause_opt input_sets_opt output_sets_opt
-			procedural_stmts_opt			{-> New otask_declaration(scope_decl.oscope,
-												id, [when_clause_opt.oexpr],
-												[input_sets_opt.onamed_artifact_set],
-												[output_sets_opt.onamed_artifact_set],
-												[procedural_stmts_opt.oproc_stmt])}
-		;
-	
-	when_clause_opt {-> oexpr*} =
-		{when} when_clause					{-> [when_clause.oexpr]}
-	  | {none}								{-> []}
-	  ;
-	
-	when_clause {-> oexpr} =
-		when expr							{-> expr.oexpr}  // must be a logical expr
-		;
-	
-	success_expr {-> osuccess_expr} =
-		{succeeded} id succeeded			{-> New osuccess_expr.succeeded(New oid_ref(id))}
-	  | {failed} id failed					{-> New osuccess_expr.failed(New oid_ref(id))}
-	  ;
-	
-	age_expr {-> oage_expr} =
-		{newer_than} [newer_id]:id newer than [older_id]:id
-											{-> New oage_expr.newer_than(
-												New oid_ref(newer_id), New oid_ref(older_id))}
-	  | {older_than} [older_id]:id older than [newer_id]:id
-	  										{-> New oage_expr.older_than(
-	  											New oid_ref(older_id), New oid_ref(newer_id))}
-	  ;
-	
-	input_sets_opt {-> onamed_artifact_set*} =
-		{multiple} input_sets				{-> [input_sets.onamed_artifact_set]}
-	  | {none}								{-> []}
-	  ;
-	
-	input_sets {-> onamed_artifact_set*} =
-		{multiple} input_set input_sets		{-> [input_set.onamed_artifact_set,
-												input_sets.onamed_artifact_set]}
-	  | {one} input_set						{-> [input_set.onamed_artifact_set]}
-	  ;
-	
-	input_set {-> onamed_artifact_set} =
-		{named} inputs id artifact_sets		{-> New onamed_artifact_set.named(id,
-												[artifact_sets.oartifact_set])}
-	  | {anonymous} inputs artifact_sets	{-> New onamed_artifact_set.anonymous(
-												[artifact_sets.oartifact_set])}
-		;
-	
-	output_sets_opt {-> onamed_artifact_set*} =
-		{multiple} output_sets				{-> [output_sets.onamed_artifact_set]}
-	  | {none}								{-> []}
-	  ;
-	
-	output_sets {-> onamed_artifact_set*} =
-		{multiple} output_set output_sets	{-> [output_set.onamed_artifact_set,
-												output_sets.onamed_artifact_set]}
-	  | {one} output_set					{-> [output_set.onamed_artifact_set]}
-	  ;
-	
-	output_set {-> onamed_artifact_set} =
-		{named} outputs id artifact_sets	{-> New onamed_artifact_set.named(id,
-												[artifact_sets.oartifact_set])}
-	  | {anonymous} outputs artifact_sets	{-> New onamed_artifact_set.anonymous(
-												[artifact_sets.oartifact_set])}
-		;
-	  
-	artifact_sets {-> oartifact_set*} =
-		{multiple} artifact_set comma_char artifact_sets
-											{-> [artifact_set.oartifact_set, artifact_sets.oartifact_set]}
-	  | {one} artifact_set					{-> [artifact_set.oartifact_set]}
-	  ;
-	
-	// Examples:
-	// files XYZ:3.3
-	// abc.jar
-	// $thisdir/**.java from "my_repo" in my_git
-	artifact_set {-> oartifact_set} =
-		fileset_spec from [project]:string_literal
-		in [repository_id]:id				{-> New oartifact_set(fileset_spec.ostring_literal,
-												project.ostring_literal, New oid_ref(repository_id))}
-		;
-	
-	fileset_spec {-> ostring_literal} =
-		string_literal						{-> string_literal.ostring_literal}
-		;
-	
-	files_decl {-> ofiles_declaration} =
-		files [name]:id from string_literal
-			in [source]:id prefer_stmt_opt
-			files_stmts						{-> New ofiles_declaration(name,
-												string_literal.ostring_literal, New oid_ref(source),
-												prefer_stmt_opt.ofile_preference,
-												[files_stmts.ofileset_operation])}
-		;
-	
-	files_stmts {-> ofileset_operation*} =
-		{multiple} files_stmt files_stmts	{-> [files_stmt.ofileset_operation,
-												files_stmts.ofileset_operation]}
-	  | {one} files_stmt					{-> [files_stmt.ofileset_operation]}
-	  ;
-	
-	files_stmt {-> ofileset_operation} =
-		{include} include_stmt				{-> include_stmt.ofileset_operation}
-	  | {exclude} exclude_stmt				{-> exclude_stmt.ofileset_operation}
-	  ;
-	
-	prefer_stmt {-> ofile_preference} =
-		prefer preference					{-> preference.ofile_preference}
-		;
-	
-	prefer_stmt_opt {-> ofile_preference} =
-		{one} prefer_stmt					{-> prefer_stmt.ofile_preference}
-	  | {none}								{-> New ofile_preference.no_preference()}
-	  ;
-	
-	preference {-> ofile_preference} =
-		{latest} latest version_criteria	{-> version_criteria.ofile_preference}
-	  | {version} version_spec				{-> New ofile_preference.version([version_spec.orange_spec])}
-	  ;
-	
-	version_criteria {-> ofile_preference} =
-		{compatible} compatible with		{-> New ofile_preference.latest_compatible()}
-	  | {tested} tested with				{-> New ofile_preference.latest_tested()}
-	  ;
-	
-	version_spec {-> orange_spec*} =
-		{multiple} range_spec per_char version_spec
-											{-> [range_spec.orange_spec, version_spec.orange_spec]}
-	  | {one} range_spec					{-> [range_spec.orange_spec]}
-	  ;
-	
-	range_spec {-> orange_spec} =
-		{multiple} [from]:whole_number dash [to]:whole_number
-											{-> New orange_spec.range(from, to)}
-	  | {one} whole_number						{-> New orange_spec.one(whole_number)}
-	  | {all} asterisk						{-> New orange_spec.all()}
-	  ;
-	
-	include_stmt {-> ofileset_operation} =
-		include fileset_spec				{-> New ofileset_operation.include(
-												fileset_spec.ostring_literal)}
-		;
-	
-	exclude_stmt {-> ofileset_operation} =
-		exclude fileset_spec				{-> New ofileset_operation.exclude(
-												fileset_spec.ostring_literal)}
-		;
-	
-	procedural_stmts_opt {-> oproc_stmt*} =
-		{multiple} procedural_stmts			{-> [procedural_stmts.oproc_stmt]}
-	  | {none}								{-> []}
-	  ;
-	
-	procedural_stmts {-> oproc_stmt*} =
-		{multiple} procedural_stmts procedural_stmt
-											{-> [procedural_stmts.oproc_stmt,
-												procedural_stmt.oproc_stmt]}
-	  | {one} procedural_stmt				{-> [procedural_stmt.oproc_stmt]}
-	  ;
-	  
-	procedural_stmt {-> oproc_stmt} =
-		{func_call} func_call_stmt			{-> func_call_stmt.oproc_stmt}
-	  | {if_error} if_error_stmt			{-> if_error_stmt.oproc_stmt}
-	  ;
-	
-	func_call_stmt {-> oproc_stmt} =
-		{no_target} id eq [func_name]:string_literal args
-											{-> New oproc_stmt.func_call(
-												func_name.ostring_literal,
-												[args.oexpr], New otarget_opt.target(id))}
-	  | {target} [func_name]:string_literal args
-											{-> New oproc_stmt.func_call(
-												func_name.ostring_literal,
-												[args.oexpr], New otarget_opt.no_target())}
-		;
-	
-	args {-> oexpr*} =
-		{multiple_args} arg arg_separator args
-											{-> [arg.oexpr, args.oexpr]}
-	  | {one_arg} arg						{-> [arg.oexpr]}
-	  ;
-	
-	arg_separator {-> otype_spec_separator} =
-		{comma} comma_char					{-> New otype_spec_separator.comma()}
-	  | {prep} preposition					{-> New otype_spec_separator.preposition(
-	  											preposition.opreposition)}
-	  ;
-	
-	arg {-> oexpr} =
-		expr								{-> expr.oexpr}
-		;
-	
-	if_error_stmt {-> oproc_stmt} =
-		[a]:if error procedural_stmts end [b]:if
-											{-> New oproc_stmt.if_error(
-												[procedural_stmts.oproc_stmt])}
-		;
-	
-	repo_decl {-> orepo_decl} =
-		repo [name]:id type [repo_type]:string_literal tcp_scheme_spec_opt
-			repo_path_spec userid_spec_opt password_spec_opt
-											{-> New orepo_decl(name, repo_type.ostring_literal,
-												tcp_scheme_spec_opt.ostring_value_opt,
-												repo_path_spec.ostring_literal,
-												userid_spec_opt.ostring_value_opt,
-												password_spec_opt.ostring_value_opt)}
-		;
-	
-	repo_path_spec {-> ostring_literal} =
-		path_keyword string_literal			{-> string_literal.ostring_literal}
-		;
-	
-	tcp_scheme_spec_opt {-> ostring_value_opt} =
-		{specified} tcp_scheme_spec			{-> New ostring_value_opt.specified(tcp_scheme_spec.ostring_literal)}
-	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
-	  ;
-	
-	tcp_scheme_spec {-> ostring_literal} =
-		scheme string_literal				{-> string_literal.ostring_literal}
-		;
-	
-	userid_spec_opt {-> ostring_value_opt} =
-		{specified} userid string_literal		{-> New ostring_value_opt.specified(string_literal.ostring_literal)}
-	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
-	  ;
-	
-	password_spec_opt {-> ostring_value_opt} =
-		{specified} password string_literal	{-> New ostring_value_opt.specified(string_literal.ostring_literal)}
-	  | {unspecified}						{-> New ostring_value_opt.unspecified()}
-	  ;
-	
-	translation_decl {-> otranslation_declaration} =
-		shell translation for string_literal
-			translation_stmts				{-> New otranslation_declaration(
-												string_literal.ostring_literal,
-												[translation_stmts.otranslation_stmt])}
-		;
-	
-	translation_stmts {-> otranslation_stmt*} =
-		{multiple} translation_stmt translation_stmts
-											{-> [translation_stmt.otranslation_stmt,
-													translation_stmts.otranslation_stmt]}
-	  | {one} translation_stmt				{-> [translation_stmt.otranslation_stmt]}
-	  ;
-	
-	translation_stmt {-> otranslation_stmt} =
-		translate filename [from_string]:string_literal
-			to [to_string]:string_literal	{-> New otranslation_stmt.filename(
-													from_string.ostring_literal,
-													to_string.ostring_literal)}
-		;
-	
-	function_decl {-> ofunction_declaration} =
-		function [dabl_name]:id type_spec_seq binds to [target_language]:string_literal
-			method [native_name]:string_literal returns type_spec
-											{-> New ofunction_declaration(
-													dabl_name, [type_spec_seq.otype_spec],
-													target_language.ostring_literal,
-													native_name.ostring_literal,
-													type_spec.otype_spec)}
-		;
-	
-	type_spec_seq {-> otype_spec*} =
-		{multiple} type_spec type_spec_separator type_spec_seq
-											{-> [type_spec.otype_spec,
-												New otype_spec.separator(type_spec_separator.otype_spec_separator),
-												type_spec_seq.otype_spec]}
-	  | {one} type_spec						{-> [type_spec.otype_spec]}
-	  ;
-	
-	type_spec_separator {-> otype_spec_separator} =
-		{comma} comma_char					{-> New otype_spec_separator.comma()}
-	  | {preposition} preposition  // for defining a keyword that goes before or after a function arg
-	  										{-> New otype_spec_separator.preposition(
-	  											preposition.opreposition)}
-	  ;
-	
-	preposition {-> opreposition} =
-		{from} from							{-> New opreposition.from()}
-	  | {to} to								{-> New opreposition.to()}
-	  | {in} in								{-> New opreposition.in()}
-	  | {for} for							{-> New opreposition.for()}
-	  | {with} with							{-> New opreposition.with()}
-	  | {when} when							{-> New opreposition.when()}
-	  | {on} on								{-> New opreposition.on()}
-	  | {of} of								{-> New opreposition.of()}
-	  | {than} than							{-> New opreposition.than()}
-	  ;
-	
-	type_spec {-> otype_spec} = 
-		{string} string_keyword				{-> New otype_spec.string()}
-	  | {int} int_keyword					{-> New otype_spec.int()}
-	  | {float} float_keyword				{-> New otype_spec.float()}
-	  | {boolean} boolean_keyword			{-> New otype_spec.logical()}
-	  ;
-	
-	path {-> id*} =
-		{multiple} id per_char path			{-> [id, path.id]}
-	  | {one} id							{-> [id]}
-	  ;
+    specification {-> onamespace} =
+        {namespace_decl} namespace_decl spec_elt_seq
+                                            {-> New onamespace(
+                                                    [namespace_decl.id],
+                                                    [spec_elt_seq.onamespace_elt])};
+    
+    namespace_decl {-> id*} =
+        namespace path                      {-> [path.id]};
+    
+    spec_elt_seq_opt {-> onamespace_elt*} =
+        {multiple} spec_elt_seq             {-> [spec_elt_seq.onamespace_elt]}
+      | {none}                              {-> []}
+      ;
+      
+    spec_elt_seq {-> onamespace_elt*} =
+        {multiple} spec_elt spec_elt_seq    {-> [spec_elt.onamespace_elt, spec_elt_seq.onamespace_elt]}
+      | {one} spec_elt                      {-> [spec_elt.onamespace_elt]}
+      ;
+     
+    spec_elt {-> onamespace_elt} =
+        {import_decl} import_decl           {-> import_decl.onamespace_elt}
+      | {typographic_decl} typographic_decl {-> New onamespace_elt.typographic(typographic_decl.otypographic_declaration)}
+      | {artifact_decl} artifact_decl       {-> New onamespace_elt.artifact(artifact_decl.oartifact_declaration)}
+      | {task_decl} task_decl               {-> New onamespace_elt.task(task_decl.otask_declaration)}
+      | {repo_decl} repo_decl               {-> New onamespace_elt.repo(repo_decl.orepo_decl)}
+      | {files_decl} files_decl             {-> New onamespace_elt.files(files_decl.ofiles_declaration)}
+      | {function_decl} function_decl       {-> New onamespace_elt.function(function_decl.ofunction_declaration)}
+      | {translation_decl} translation_decl {-> New onamespace_elt.translation(translation_decl.otranslation_declaration)}
+      ;
+    
+    typographic_decl {-> otypographic_declaration} =
+        tab_decl                            {-> tab_decl.otypographic_declaration}
+        ;
+    
+    import_decl {-> onamespace_elt} =
+        import path                         {-> New onamespace_elt.import([path.id])}
+        ;
+    
+    tab_decl {-> otypographic_declaration} =
+        tab_keyword equivalent to whole_number spaces_keyword
+                                            {-> New otypographic_declaration.tab_decl(whole_number)}
+        ;
+        
+    artifact_decl {-> oartifact_declaration} =
+        artifact id colon [expr1]:whole_number_expr
+            per_char [expr2]:whole_number_expr
+            artifact_stmts                  {-> New oartifact_declaration(id, expr1.whole_number,
+                                                expr2.whole_number, [artifact_stmts.ocompatibility_spec])}
+        ;
+    
+    whole_number_expr {-> whole_number} =
+        whole_number                        {-> whole_number}
+        ;
+    
+    artifact_stmts {-> ocompatibility_spec*} =
+        {multiple} artifact_stmt artifact_stmts
+                                            {-> [artifact_stmt.ocompatibility_spec,
+                                                    artifact_stmts.ocompatibility_spec]}
+      | {one} artifact_stmt                 {-> [artifact_stmt.ocompatibility_spec]}
+      ;
+    
+    artifact_stmt {-> ocompatibility_spec} =
+        {assume_stmt} assume_stmt           {-> assume_stmt.ocompatibility_spec}
+      | {tested_stmt} tested_stmt           {-> tested_stmt.ocompatibility_spec}
+      ;
+    
+    assume_stmt {-> ocompatibility_spec} =
+        assume compatible with path colon version_spec
+                                            {-> New ocompatibility_spec.assume(
+                                                [path.id], [version_spec.orange_spec])}
+        ;
+    
+    tested_stmt {-> ocompatibility_spec} =
+        tested with path colon version_spec {-> New ocompatibility_spec.tested(
+                                                [path.id], [version_spec.orange_spec])}
+        ;
+    
+    scope_decl {-> oscope} =
+        {public} public                     {-> New oscope.public()}
+      | {unspecified}                       {-> New oscope.private()}
+      ;
+    
+    task_decl {-> otask_declaration} =
+        scope_decl task id when_clause_opt input_sets_opt output_sets_opt
+            procedural_stmts_opt            {-> New otask_declaration(scope_decl.oscope,
+                                                id, [when_clause_opt.oexpr],
+                                                [input_sets_opt.onamed_artifact_set],
+                                                [output_sets_opt.onamed_artifact_set],
+                                                [procedural_stmts_opt.oproc_stmt])}
+        ;
+    
+    when_clause_opt {-> oexpr*} =
+        {when} when_clause                  {-> [when_clause.oexpr]}
+      | {none}                              {-> []}
+      ;
+    
+    when_clause {-> oexpr} =
+        when expr                           {-> expr.oexpr}  // must be a logical expr
+        ;
+    
+    success_expr {-> osuccess_expr} =
+        {succeeded} id succeeded            {-> New osuccess_expr.succeeded(New oid_ref(id))}
+      | {failed} id failed                  {-> New osuccess_expr.failed(New oid_ref(id))}
+      ;
+    
+    age_expr {-> oage_expr} =
+        {newer_than} [newer_id]:id newer than [older_id]:id
+                                            {-> New oage_expr.newer_than(
+                                                New oid_ref(newer_id), New oid_ref(older_id))}
+      | {older_than} [older_id]:id older than [newer_id]:id
+                                            {-> New oage_expr.older_than(
+                                                  New oid_ref(older_id), New oid_ref(newer_id))}
+      ;
+    
+    input_sets_opt {-> onamed_artifact_set*} =
+        {multiple} input_sets               {-> [input_sets.onamed_artifact_set]}
+      | {none}                              {-> []}
+      ;
+    
+    input_sets {-> onamed_artifact_set*} =
+        {multiple} input_set input_sets     {-> [input_set.onamed_artifact_set,
+                                                input_sets.onamed_artifact_set]}
+      | {one} input_set                     {-> [input_set.onamed_artifact_set]}
+      ;
+    
+    input_set {-> onamed_artifact_set} =
+        {named} inputs id artifact_sets     {-> New onamed_artifact_set.named(id,
+                                                [artifact_sets.oartifact_set])}
+      | {anonymous} inputs artifact_sets    {-> New onamed_artifact_set.anonymous(
+                                                [artifact_sets.oartifact_set])}
+        ;
+    
+    output_sets_opt {-> onamed_artifact_set*} =
+        {multiple} output_sets              {-> [output_sets.onamed_artifact_set]}
+      | {none}                              {-> []}
+      ;
+    
+    output_sets {-> onamed_artifact_set*} =
+        {multiple} output_set output_sets   {-> [output_set.onamed_artifact_set,
+                                                output_sets.onamed_artifact_set]}
+      | {one} output_set                    {-> [output_set.onamed_artifact_set]}
+      ;
+    
+    output_set {-> onamed_artifact_set} =
+        {named} outputs id artifact_sets    {-> New onamed_artifact_set.named(id,
+                                                [artifact_sets.oartifact_set])}
+      | {anonymous} outputs artifact_sets   {-> New onamed_artifact_set.anonymous(
+                                                [artifact_sets.oartifact_set])}
+        ;
+      
+    artifact_sets {-> oartifact_set*} =
+        {multiple} artifact_set comma_char artifact_sets
+                                            {-> [artifact_set.oartifact_set, artifact_sets.oartifact_set]}
+      | {one} artifact_set                  {-> [artifact_set.oartifact_set]}
+      ;
+    
+    // Examples:
+    // files XYZ:3.3
+    // abc.jar
+    // $thisdir/**.java from "my_repo" in my_git
+    artifact_set {-> oartifact_set} =
+        fileset_spec from [project]:string_literal
+        in [repository_id]:id               {-> New oartifact_set(fileset_spec.ostring_literal,
+                                                project.ostring_literal, New oid_ref(repository_id))}
+        ;
+    
+    fileset_spec {-> ostring_literal} =
+        string_literal                      {-> string_literal.ostring_literal}
+        ;
+    
+    files_decl {-> ofiles_declaration} =
+        files [name]:id from string_literal
+            in [source]:id prefer_stmt_opt
+            files_stmts                     {-> New ofiles_declaration(name,
+                                                string_literal.ostring_literal, New oid_ref(source),
+                                                prefer_stmt_opt.ofile_preference,
+                                                [files_stmts.ofileset_operation])}
+        ;
+    
+    files_stmts {-> ofileset_operation*} =
+        {multiple} files_stmt files_stmts   {-> [files_stmt.ofileset_operation,
+                                                files_stmts.ofileset_operation]}
+      | {one} files_stmt                    {-> [files_stmt.ofileset_operation]}
+      ;
+    
+    files_stmt {-> ofileset_operation} =
+        {include} include_stmt              {-> include_stmt.ofileset_operation}
+      | {exclude} exclude_stmt              {-> exclude_stmt.ofileset_operation}
+      ;
+    
+    prefer_stmt {-> ofile_preference} =
+        prefer preference                   {-> preference.ofile_preference}
+        ;
+    
+    prefer_stmt_opt {-> ofile_preference} =
+        {one} prefer_stmt                   {-> prefer_stmt.ofile_preference}
+      | {none}                              {-> New ofile_preference.no_preference()}
+      ;
+    
+    preference {-> ofile_preference} =
+        {latest} latest version_criteria    {-> version_criteria.ofile_preference}
+      | {version} version_spec              {-> New ofile_preference.version([version_spec.orange_spec])}
+      ;
+    
+    version_criteria {-> ofile_preference} =
+        {compatible} compatible with        {-> New ofile_preference.latest_compatible()}
+      | {tested} tested with                {-> New ofile_preference.latest_tested()}
+      ;
+    
+    version_spec {-> orange_spec*} =
+        {multiple} range_spec per_char version_spec
+                                            {-> [range_spec.orange_spec, version_spec.orange_spec]}
+      | {one} range_spec                    {-> [range_spec.orange_spec]}
+      ;
+    
+    range_spec {-> orange_spec} =
+        {multiple} [from]:whole_number dash [to]:whole_number
+                                            {-> New orange_spec.range(from, to)}
+      | {one} whole_number                  {-> New orange_spec.one(whole_number)}
+      | {all} asterisk                      {-> New orange_spec.all()}
+      ;
+    
+    include_stmt {-> ofileset_operation} =
+        include fileset_spec                {-> New ofileset_operation.include(
+                                                fileset_spec.ostring_literal)}
+        ;
+    
+    exclude_stmt {-> ofileset_operation} =
+        exclude fileset_spec                {-> New ofileset_operation.exclude(
+                                                fileset_spec.ostring_literal)}
+        ;
+    
+    procedural_stmts_opt {-> oproc_stmt*} =
+        {multiple} procedural_stmts         {-> [procedural_stmts.oproc_stmt]}
+      | {none}                              {-> []}
+      ;
+    
+    procedural_stmts {-> oproc_stmt*} =
+        {multiple} procedural_stmts procedural_stmt
+                                            {-> [procedural_stmts.oproc_stmt,
+                                                procedural_stmt.oproc_stmt]}
+      | {one} procedural_stmt               {-> [procedural_stmt.oproc_stmt]}
+      ;
+      
+    procedural_stmt {-> oproc_stmt} =
+        {func_call} func_call_stmt          {-> func_call_stmt.oproc_stmt}
+      | {if_error} if_error_stmt            {-> if_error_stmt.oproc_stmt}
+      ;
+    
+    func_call_stmt {-> oproc_stmt} =
+        {no_target} id eq [func_name]:string_literal args
+                                            {-> New oproc_stmt.func_call(
+                                                func_name.ostring_literal,
+                                                [args.oexpr], New otarget_opt.target(id))}
+      | {target} [func_name]:string_literal args
+                                            {-> New oproc_stmt.func_call(
+                                                func_name.ostring_literal,
+                                                [args.oexpr], New otarget_opt.no_target())}
+        ;
+    
+    args {-> oexpr*} =
+        {multiple_args} arg arg_separator args
+                                            {-> [arg.oexpr, args.oexpr]}
+      | {one_arg} arg                       {-> [arg.oexpr]}
+      ;
+    
+    arg_separator {-> otype_spec_separator} =
+        {comma} comma_char                  {-> New otype_spec_separator.comma()}
+      | {prep} preposition                  {-> New otype_spec_separator.preposition(
+                                                  preposition.opreposition)}
+      ;
+    
+    arg {-> oexpr} =
+        expr                                {-> expr.oexpr}
+        ;
+    
+    if_error_stmt {-> oproc_stmt} =
+        [a]:if error procedural_stmts end [b]:if
+                                            {-> New oproc_stmt.if_error(
+                                                [procedural_stmts.oproc_stmt])}
+        ;
+    
+    repo_decl {-> orepo_decl} =
+        repo [name]:id type [repo_type]:string_literal tcp_scheme_spec_opt
+            repo_path_spec userid_spec_opt password_spec_opt
+                                            {-> New orepo_decl(name, repo_type.ostring_literal,
+                                                tcp_scheme_spec_opt.ostring_value_opt,
+                                                repo_path_spec.ostring_literal,
+                                                userid_spec_opt.ostring_value_opt,
+                                                password_spec_opt.ostring_value_opt)}
+        ;
+    
+    repo_path_spec {-> ostring_literal} =
+        path_keyword string_literal         {-> string_literal.ostring_literal}
+        ;
+    
+    tcp_scheme_spec_opt {-> ostring_value_opt} =
+        {specified} tcp_scheme_spec         {-> New ostring_value_opt.specified(tcp_scheme_spec.ostring_literal)}
+      | {unspecified}                       {-> New ostring_value_opt.unspecified()}
+      ;
+    
+    tcp_scheme_spec {-> ostring_literal} =
+        scheme string_literal               {-> string_literal.ostring_literal}
+        ;
+    
+    userid_spec_opt {-> ostring_value_opt} =
+        {specified} userid string_literal   {-> New ostring_value_opt.specified(string_literal.ostring_literal)}
+      | {unspecified}                       {-> New ostring_value_opt.unspecified()}
+      ;
+    
+    password_spec_opt {-> ostring_value_opt} =
+        {specified} password string_literal {-> New ostring_value_opt.specified(string_literal.ostring_literal)}
+      | {unspecified}                       {-> New ostring_value_opt.unspecified()}
+      ;
+    
+    translation_decl {-> otranslation_declaration} =
+        shell translation for string_literal
+            translation_stmts               {-> New otranslation_declaration(
+                                                string_literal.ostring_literal,
+                                                [translation_stmts.otranslation_stmt])}
+        ;
+    
+    translation_stmts {-> otranslation_stmt*} =
+        {multiple} translation_stmt translation_stmts
+                                            {-> [translation_stmt.otranslation_stmt,
+                                                   translation_stmts.otranslation_stmt]}
+      | {one} translation_stmt              {-> [translation_stmt.otranslation_stmt]}
+      ;
+    
+    translation_stmt {-> otranslation_stmt} =
+        translate filename [from_string]:string_literal
+            to [to_string]:string_literal   {-> New otranslation_stmt.filename(
+                                                  from_string.ostring_literal,
+                                                  to_string.ostring_literal)}
+        ;
+    
+    function_decl {-> ofunction_declaration} =
+        function [dabl_name]:id type_spec_seq binds to [target_language]:string_literal
+            method [native_name]:string_literal returns type_spec
+                                            {-> New ofunction_declaration(
+                                                    dabl_name, [type_spec_seq.otype_spec],
+                                                    target_language.ostring_literal,
+                                                    native_name.ostring_literal,
+                                                    type_spec.otype_spec)}
+        ;
+    
+    type_spec_seq {-> otype_spec*} =
+        {multiple} type_spec type_spec_separator type_spec_seq
+                                            {-> [type_spec.otype_spec,
+                                                New otype_spec.separator(type_spec_separator.otype_spec_separator),
+                                                type_spec_seq.otype_spec]}
+      | {one} type_spec                     {-> [type_spec.otype_spec]}
+      ;
+    
+    type_spec_separator {-> otype_spec_separator} =
+        {comma} comma_char                  {-> New otype_spec_separator.comma()}
+      | {preposition} preposition  // for defining a keyword that goes before or after a function arg
+                                            {-> New otype_spec_separator.preposition(
+                                                  preposition.opreposition)}
+      ;
+    
+    preposition {-> opreposition} =
+        {from} from                         {-> New opreposition.from()}
+      | {to} to                             {-> New opreposition.to()}
+      | {in} in                             {-> New opreposition.in()}
+      | {for} for                           {-> New opreposition.for()}
+      | {with} with                         {-> New opreposition.with()}
+      | {when} when                         {-> New opreposition.when()}
+      | {on} on                             {-> New opreposition.on()}
+      | {of} of                             {-> New opreposition.of()}
+      | {than} than                         {-> New opreposition.than()}
+      ;
+    
+    type_spec {-> otype_spec} = 
+        {string} string_keyword             {-> New otype_spec.string()}
+      | {int} int_keyword                   {-> New otype_spec.int()}
+      | {float} float_keyword               {-> New otype_spec.float()}
+      | {boolean} boolean_keyword           {-> New otype_spec.logical()}
+      ;
+    
+    path {-> id*} =
+        {multiple} id per_char path         {-> [id, path.id]}
+      | {one} id                            {-> [id]}
+      ;
 
-	
-	// Expressions.
-	
-	expr {-> oexpr} =
-		{logical} logical_expr				{-> logical_expr.oexpr}
-	  | {numeric} numeric_expr				{-> numeric_expr.oexpr}
-	  | {value} value						{-> value.oexpr}
-	  ;
-	
-	value {-> oexpr} =
-		{value} literal						{-> New oexpr.literal(literal.oliteral)}
-	  | {variable} id						{-> New oexpr.variable(New ovariable(New oid_ref(id)))}
-	  | {parentheses} left_paren expr right_paren
-	  										{-> expr.oexpr}
-	  ;
-	
-	
-	// Logical expressions.
-	
-	logical_expr {-> oexpr} =
-		{many} [left]:logical_expr logical_operator [right]:value
-											{-> New oexpr.binary(
-												left.oexpr, logical_operator.obinary_op,
-												right.oexpr)}
-	  //| {one} value							{-> value.oexpr}
-		;
-	
-	logical_operator {-> obinary_op} =
-		{and} and_keyword					{-> New obinary_op.and()}
-	  | {or} or_keyword						{-> New obinary_op.or()}
-	  ;
-	
-	logical_value {-> oexpr} =
-		{not} not_expr						{-> not_expr.oexpr}
-	  | {success} success_expr				{-> New oexpr.success(success_expr.osuccess_expr)}
-	  | {age} age_expr						{-> New oexpr.age(age_expr.oage_expr)}
-	  | {op} logical_expr					{-> logical_expr.oexpr}
-	  ;
-	
-	not_expr {-> oexpr} =
-		not_keyword value					{-> New oexpr.unary(New ounary_op.negation(),
-												value.oexpr)}
-		;
-	
-	// Arithmetic expressions.
-	
-	numeric_expr {-> oexpr} =
-		{many} numeric_expr add_op product	{-> New oexpr.binary(
-												numeric_expr.oexpr,
-												add_op.obinary_op, product.oexpr)}
-	  | {one} product						{-> product.oexpr}
-	  ;
-	
-	product {-> oexpr} =
-		{many} product mult_op value		{-> New oexpr.binary(
-												product.oexpr, mult_op.obinary_op,
-												value.oexpr)}
-	  //| {one} value							{-> value.oexpr}
-	  ;
-	
-	add_op {-> obinary_op} =
-		{addition} plus						{-> New obinary_op.plus()}
-	  | {subtraction} dash					{-> New obinary_op.minus()}
-	  ;
-	
-	mult_op {-> obinary_op} =
-		{multiplication} asterisk			{-> New obinary_op.multiply()}
-	  | {division} div						{-> New obinary_op.divide()}
-	  ;
-	
-	// Literals.
-	
-	literal {-> oliteral} =
-		{logic} logical_literal				{-> New oliteral.logic(logical_literal.ologic_literal)}
-	  | {string} string_literal				{-> New oliteral.string(string_literal.ostring_literal)}
-	  | {numeric} numeric_literal			{-> New oliteral.numeric(numeric_literal.onumeric_literal)}
-	  ;
-	
-	logical_literal {-> ologic_literal} =
-		{true} true_keyword					{-> New ologic_literal.true()}
-	  | {false} false_keyword				{-> New ologic_literal.false()}
-	  ;
-	
-	numeric_literal {-> onumeric_literal} =
-		{int} sign_opt whole_number			{-> New onumeric_literal.int(sign_opt.osign, whole_number)}
-	  | {numeric_pattern} sign_opt num_slot fraction_seq
-	  										{-> New onumeric_literal.pattern(
-	  											sign_opt.osign, num_slot.onum_slot,
-	  											[fraction_seq.onum_slot])}
-	  ;
-	
-	sign_opt {-> osign} =
-		{pos} plus							{-> New osign.positive()}
-	  | {neg} dash							{-> New osign.negative()}
-	  |										{-> New osign.positive()}
-	  ;
-	
-	fraction_seq {-> onum_slot*} =
-		{many} fraction fraction_seq		{-> [fraction.onum_slot, fraction_seq.onum_slot]}
-	  | {one} fraction						{-> [fraction.onum_slot]}
-	  ;
-	  
-	fraction {-> onum_slot} =
-		per_char num_slot						{-> num_slot.onum_slot}
-		;
-	
-	num_slot {-> onum_slot} =
-		{num} whole_number					{-> New onum_slot.num(whole_number)}
-	  | {wildcard} asterisk					{-> New onum_slot.wildcard()}
-	  ;
-	
-	string_literal {-> ostring_literal} =
-		{str} string_value					{-> string_value.ostring_literal}
-	  | {strex} static_str_expr				{-> static_str_expr.ostring_literal}
-//	  | {non_ws} non_ws_char_seq  // this can be a path that references a variable
-//											{-> New ostring_literal.charseq(non_ws_char_seq)}
-	  ;
-	
-	static_str_expr {-> ostring_literal} =
-		{expr} [left]:string_literal caret [right]:string_value
-											{-> New ostring_literal.static_string_expr(
-	  											left.ostring_literal, right.ostring_literal)}
-		;
-	
-	string_value {-> ostring_literal} =
-		{string} string						{-> New ostring_literal.string(string)}
-	  | {string2} string2					{-> New ostring_literal.string2(string2)}
-	  ;
+    
+    // Expressions.
+    
+    expr {-> oexpr} =
+        {logical} logical_expr              {-> logical_expr.oexpr}
+      | {numeric} numeric_expr              {-> numeric_expr.oexpr}
+      | {value} value                       {-> value.oexpr}
+      ;
+    
+    value {-> oexpr} =
+        {value} literal                     {-> New oexpr.literal(literal.oliteral)}
+      | {variable} id                       {-> New oexpr.variable(New ovariable(New oid_ref(id)))}
+      | {parentheses} left_paren expr right_paren
+                                            {-> expr.oexpr}
+      ;
+    
+    
+    // Logical expressions.
+    
+    logical_expr {-> oexpr} =
+        {many} [left]:logical_expr logical_operator [right]:value
+                                            {-> New oexpr.binary(
+                                                left.oexpr, logical_operator.obinary_op,
+                                                right.oexpr)}
+      //| {one} value                       {-> value.oexpr}
+        ;
+    
+    logical_operator {-> obinary_op} =
+        {and} and_keyword                   {-> New obinary_op.and()}
+      | {or} or_keyword                     {-> New obinary_op.or()}
+      ;
+    
+    ....logical_value {-> oexpr} =
+        {not} not_expr                      {-> not_expr.oexpr}
+      | {success} success_expr              {-> New oexpr.success(success_expr.osuccess_expr)}
+      | {age} age_expr                      {-> New oexpr.age(age_expr.oage_expr)}
+      | {op} logical_expr                   {-> logical_expr.oexpr}
+      ;
+    
+    not_expr {-> oexpr} =
+        not_keyword value                   {-> New oexpr.unary(New ounary_op.negation(),
+                                                value.oexpr)}
+        ;
+    
+    // Arithmetic expressions.
+    
+    numeric_expr {-> oexpr} =
+        {many} numeric_expr add_op product  {-> New oexpr.binary(
+                                                numeric_expr.oexpr,
+                                                add_op.obinary_op, product.oexpr)}
+      | {one} product                       {-> product.oexpr}
+      ;
+    
+    product {-> oexpr} =
+        {many} product mult_op value        {-> New oexpr.binary(
+                                                product.oexpr, mult_op.obinary_op,
+                                                value.oexpr)}
+      //| {one} value                       {-> value.oexpr}
+      ;
+    
+    add_op {-> obinary_op} =
+        {addition} plus                     {-> New obinary_op.plus()}
+      | {subtraction} dash                  {-> New obinary_op.minus()}
+      ;
+    
+    mult_op {-> obinary_op} =
+        {multiplication} asterisk           {-> New obinary_op.multiply()}
+      | {division} div                      {-> New obinary_op.divide()}
+      ;
+    
+    // Literals.
+    
+    literal {-> oliteral} =
+        {logic} logical_literal             {-> New oliteral.logic(logical_literal.ologic_literal)}
+      | {string} string_literal             {-> New oliteral.string(string_literal.ostring_literal)}
+      | {numeric} numeric_literal           {-> New oliteral.numeric(numeric_literal.onumeric_literal)}
+      ;
+    
+    logical_literal {-> ologic_literal} =
+        {true} true_keyword                 {-> New ologic_literal.true()}
+      | {false} false_keyword               {-> New ologic_literal.false()}
+      ;
+    
+    numeric_literal {-> onumeric_literal} =
+        {int} sign_opt whole_number         {-> New onumeric_literal.int(sign_opt.osign, whole_number)}
+      | {numeric_pattern} sign_opt num_slot fraction_seq
+                                            {-> New onumeric_literal.pattern(
+                                                sign_opt.osign, num_slot.onum_slot,
+                                                [fraction_seq.onum_slot])}
+      ;
+    
+    sign_opt {-> osign} =
+        {pos} plus                          {-> New osign.positive()}
+      | {neg} dash                          {-> New osign.negative()}
+      |                                     {-> New osign.positive()}
+      ;
+    
+    fraction_seq {-> onum_slot*} =
+        {many} fraction fraction_seq        {-> [fraction.onum_slot, fraction_seq.onum_slot]}
+      | {one} fraction                      {-> [fraction.onum_slot]}
+      ;
+      
+    fraction {-> onum_slot} =
+        per_char num_slot                   {-> num_slot.onum_slot}
+        ;
+    
+    num_slot {-> onum_slot} =
+        {num} whole_number                  {-> New onum_slot.num(whole_number)}
+      | {wildcard} asterisk                 {-> New onum_slot.wildcard()}
+      ;
+    
+    string_literal {-> ostring_literal} =
+        {str} string_value                  {-> string_value.ostring_literal}
+      | {strex} static_str_expr             {-> static_str_expr.ostring_literal}
+//      | {non_ws} non_ws_char_seq  // this can be a path that references a variable
+//                                          {-> New ostring_literal.charseq(non_ws_char_seq)}
+      ;
+    
+    static_str_expr {-> ostring_literal} =
+        {expr} [left]:string_literal caret [right]:string_value
+                                            {-> New ostring_literal.static_string_expr(
+                                                  left.ostring_literal, right.ostring_literal)}
+        ;
+    
+    string_value {-> ostring_literal} =
+        {string} string                     {-> New ostring_literal.string(string)}
+      | {string2} string2                   {-> New ostring_literal.string2(string2)}
+      ;
 
 
 // -----------------------------------------------------------------------------
@@ -676,196 +676,196 @@ Productions
 // -----------------------------------------------------------------------------
 Abstract Syntax Tree
 
-	onamespace =
-		[path]:id* onamespace_elt*;
-	
-	oid_ref =
-		id
-		;
-	
-	onamespace_elt =
-		{import} id*
-	  | {typographic} otypographic_declaration
-	  | {artifact} oartifact_declaration
-	  | {repo} orepo_decl
-	  | {files} ofiles_declaration
-	  | {function} ofunction_declaration
-	  | {task} otask_declaration
-	  | {translation} otranslation_declaration
-	  ;
+    onamespace =
+        [path]:id* onamespace_elt*;
+    
+    oid_ref =
+        id
+        ;
+    
+    onamespace_elt =
+        {import} id*
+      | {typographic} otypographic_declaration
+      | {artifact} oartifact_declaration
+      | {repo} orepo_decl
+      | {files} ofiles_declaration
+      | {function} ofunction_declaration
+      | {task} otask_declaration
+      | {translation} otranslation_declaration
+      ;
 
-	otypographic_declaration =
-		{tab_decl} whole_number;
-	
-	oartifact_declaration =
-		id [major]:whole_number [minor]:whole_number ocompatibility_spec*
-		;
-	
-	orange_spec =
-		{range} [from]:whole_number [to]:whole_number
-	  | {one} whole_number
-	  | {all}
-		;
-	
-	ocompatibility_spec =
-		{assume} id* orange_spec*
-	  | {tested} id* orange_spec*
-		;
+    otypographic_declaration =
+        {tab_decl} whole_number;
+    
+    oartifact_declaration =
+        id [major]:whole_number [minor]:whole_number ocompatibility_spec*
+        ;
+    
+    orange_spec =
+        {range} [from]:whole_number [to]:whole_number
+      | {one} whole_number
+      | {all}
+        ;
+    
+    ocompatibility_spec =
+        {assume} id* orange_spec*
+      | {tested} id* orange_spec*
+        ;
 
-	orepo_decl =
-		[name]:id [type]:ostring_literal [scheme]:ostring_value_opt [path]:ostring_literal
-			[userid]:ostring_value_opt [password]:ostring_value_opt;
+    orepo_decl =
+        [name]:id [type]:ostring_literal [scheme]:ostring_value_opt [path]:ostring_literal
+            [userid]:ostring_value_opt [password]:ostring_value_opt;
 
-	ostring_value_opt =
-		{specified} ostring_literal
-	  | {unspecified}
-	  ;
-	
-	ofiles_declaration =
-		[name]:id ostring_literal [repository]:oid_ref ofile_preference ofileset_operation*;
+    ostring_value_opt =
+        {specified} ostring_literal
+      | {unspecified}
+      ;
+    
+    ofiles_declaration =
+        [name]:id ostring_literal [repository]:oid_ref ofile_preference ofileset_operation*;
 
-	ofile_preference =
-		{latest_compatible}
-	  | {latest_tested}
-	  | {version} orange_spec*
-	  | {no_preference}
-	  ;
-	
-	ofileset_operation =
-		{include} ostring_literal
-	  | {exclude} ostring_literal
-	  ;
-	
-	ofunction_declaration =
-		[name]:id otype_spec* [target_language]:ostring_literal [target_name]:ostring_literal
-			[return_type]:otype_spec;
+    ofile_preference =
+        {latest_compatible}
+      | {latest_tested}
+      | {version} orange_spec*
+      | {no_preference}
+      ;
+    
+    ofileset_operation =
+        {include} ostring_literal
+      | {exclude} ostring_literal
+      ;
+    
+    ofunction_declaration =
+        [name]:id otype_spec* [target_language]:ostring_literal [target_name]:ostring_literal
+            [return_type]:otype_spec;
 
-	otype_spec = 
-		{string}
-	  | {int}
-	  | {float}
-	  | {logical}
-	  | {separator} otype_spec_separator
-	  ;
-	
-	otype_spec_separator =
-		{comma}
-	  | {preposition} opreposition
-	  ;
+    otype_spec = 
+        {string}
+      | {int}
+      | {float}
+      | {logical}
+      | {separator} otype_spec_separator
+      ;
+    
+    otype_spec_separator =
+        {comma}
+      | {preposition} opreposition
+      ;
 
-	opreposition =
-		{from}
-	  | {to}
-	  | {in}
-	  | {for}
-	  | {with}
-	  | {when}
-	  | {on}
-	  | {of}
-	  | {than}
-	  ;
-	
-	otask_declaration =
-		oscope [name]:id [when]:oexpr*  // each expr must be a logical valued expr
-			[input]:onamed_artifact_set*
-			[output]:onamed_artifact_set* oproc_stmt*;
-	
-	oscope =
-		{public}
-	  | {private}
-	  ;
-	
-	onamed_artifact_set =
-		{named} id oartifact_set*
-	  | {anonymous} oartifact_set*
-	  ;
-	
-	oartifact_set =
-		[fileset_spec]:ostring_literal [project]:ostring_literal [repository_id]:oid_ref;
-	
-	oproc_stmt =
-		{func_call} ostring_literal oexpr* otarget_opt
-	  | {if_error} oproc_stmt*
-	  ;
-	
-	otarget_opt =
-		{target} id
-	  | {no_target}
-	  ;
-	
-	otranslation_declaration =
-		[os]:ostring_literal otranslation_stmt*;
-	
-	otranslation_stmt =
-		{filename} [from_string]:ostring_literal [to_string]:ostring_literal;
-	
-	osuccess_expr =
-		{succeeded} oid_ref
-	  | {failed} oid_ref
-	  ;
-	
-	oage_expr =
-		{newer_than} [newer_id]:oid_ref [older_id]:oid_ref
-	  | {older_than} [older_id]:oid_ref [newer_id]:oid_ref
-	  ;
-	
-	// Expressions.
-	
-	ounary_op =
-		{negation}
-		;
-	
-	obinary_op =
-		{plus}
-	  | {minus}
-	  | {multiply}
-	  | {divide}
-	  | {and}
-	  | {or}
-	  ;
-	
-	oexpr =
-		{literal} oliteral
-	  | {variable} ovariable
-	  | {unary} ounary_op oexpr
-	  | {binary} [operand1]:oexpr obinary_op [operand2]:oexpr
-	  | {success} osuccess_expr
-	  | {age} oage_expr
-	  ;
-	
-	oliteral =
-		{logic} ologic_literal
-	  | {string} ostring_literal
-	  | {numeric} onumeric_literal
-	  ;
-	
-	ovariable =
-		oid_ref
-		;
-	
-	ologic_literal =
-		{true}
-	  | {false}
-	  ;
-	
-	ostring_literal =
-		{string} string
-	  | {string2} string2
-	  | {static_string_expr} [left]:ostring_literal [right]:ostring_literal
-//	  | {charseq} non_ws_char_seq
-	  ;
-	
-	onumeric_literal =
-		{int} osign whole_number
-	  | {pattern} osign [magnitude]:onum_slot [mantissa]:onum_slot*
-		;
+    opreposition =
+        {from}
+      | {to}
+      | {in}
+      | {for}
+      | {with}
+      | {when}
+      | {on}
+      | {of}
+      | {than}
+      ;
+    
+    otask_declaration =
+        oscope [name]:id [when]:oexpr*  // each expr must be a logical valued expr
+            [input]:onamed_artifact_set*
+            [output]:onamed_artifact_set* oproc_stmt*;
+    
+    oscope =
+        {public}
+      | {private}
+      ;
+    
+    onamed_artifact_set =
+        {named} id oartifact_set*
+      | {anonymous} oartifact_set*
+      ;
+    
+    oartifact_set =
+        [fileset_spec]:ostring_literal [project]:ostring_literal [repository_id]:oid_ref;
+    
+    oproc_stmt =
+        {func_call} ostring_literal oexpr* otarget_opt
+      | {if_error} oproc_stmt*
+      ;
+    
+    otarget_opt =
+        {target} id
+      | {no_target}
+      ;
+    
+    otranslation_declaration =
+        [os]:ostring_literal otranslation_stmt*;
+    
+    otranslation_stmt =
+        {filename} [from_string]:ostring_literal [to_string]:ostring_literal;
+    
+    osuccess_expr =
+        {succeeded} oid_ref
+      | {failed} oid_ref
+      ;
+    
+    oage_expr =
+        {newer_than} [newer_id]:oid_ref [older_id]:oid_ref
+      | {older_than} [older_id]:oid_ref [newer_id]:oid_ref
+      ;
+    
+    // Expressions.
+    
+    ounary_op =
+        {negation}
+        ;
+    
+    obinary_op =
+        {plus}
+      | {minus}
+      | {multiply}
+      | {divide}
+      | {and}
+      | {or}
+      ;
+    
+    oexpr =
+        {literal} oliteral
+      | {variable} ovariable
+      | {unary} ounary_op oexpr
+      | {binary} [operand1]:oexpr obinary_op [operand2]:oexpr
+      | {success} osuccess_expr
+      | {age} oage_expr
+      ;
+    
+    oliteral =
+        {logic} ologic_literal
+      | {string} ostring_literal
+      | {numeric} onumeric_literal
+      ;
+    
+    ovariable =
+        oid_ref
+        ;
+    
+    ologic_literal =
+        {true}
+      | {false}
+      ;
+    
+    ostring_literal =
+        {string} string
+      | {string2} string2
+      | {static_string_expr} [left]:ostring_literal [right]:ostring_literal
+//      | {charseq} non_ws_char_seq
+      ;
+    
+    onumeric_literal =
+        {int} osign whole_number
+      | {pattern} osign [magnitude]:onum_slot [mantissa]:onum_slot*
+        ;
 
-	onum_slot =
-		{num} whole_number
-	  | {wildcard}
-	  ;
+    onum_slot =
+        {num} whole_number
+      | {wildcard}
+      ;
 
-	osign =
-		{positive}
-	  | {negative}
-	  ;
+    osign =
+        {positive}
+      | {negative}
+      ;
