@@ -4,40 +4,40 @@ Feature: TestNumberFormats
 	
 	@done
 	Scenario: Test whole number
-		When 
-		Then 
+		When a whole number is processed
+		Then I can retrieve the numeric value
 	
 	@done
 	Scenario: Test negative whole number
-		When 
-		Then 
+		When a negative whole number is processed
+		Then I can retrieve the numeric value
 	
 	@done
 	Scenario: Test decimal number
-		When 
-		Then 
+		When a decimal number is processed
+		Then I can retrieve the numeric value
 	
 	@done
 	Scenario: Test negative decimal number
-		When 
-		Then 
+		When a negative decimal number is processed
+		Then I can retrieve the numeric value
 	
 	@done
 	Scenario: Test simple numeric expression
-		When 
-		Then 
+		When a simple numeric expression is processed
+		Then I can retrieve the values and operators
 	
 	@done
 	Scenario: Test simple numeric expression with a negative number
-		When 
-		Then 
+		When a simple numeric expression with a negative number is processed
+		Then I can retrieve the values and operators
 	
 	@done
 	Scenario: Test numeric pattern with two decmial points
-		When 
-		Then 
+		When a numeric pattern with two decmial points is processed
+		Then I can retrieve the pattern components
 	
 	@done
 	Scenario: Test numeric pattern with a wildcard
-		When 
-		Then 
+		When a numeric pattern with a wildcard is processed
+		Then I can retrieve the pattern components
