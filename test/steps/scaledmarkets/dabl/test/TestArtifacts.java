@@ -32,7 +32,7 @@ public class TestArtifacts extends TestBase {
 "namespace simple\n" +
 " artifact ABC:2.3\n" +
 "  tested with XYZ:3.3-3.4\n" +
-" repo $RepoName type git\n" +
+" repo $RepoName type \"git\"\n" +
 "  scheme \"https\" path \"github.com/myteam\" userid \"abc\" password \"def\"";
 
 		String correct = base.replace("$RepoName", "my_repo");
