@@ -592,8 +592,8 @@ Productions
     // Arithmetic expressions.
     
     numeric_expr {-> oexpr} =
-        {many} numeric_expr add_op product_or_value  {-> New oexpr.binary(
-                                                numeric_expr.oexpr,
+        {many} expr add_op product_or_value  {-> New oexpr.binary(
+                                                expr.oexpr,
                                                 add_op.obinary_op, product_or_value.oexpr)}
       | {one} product                       {-> product.oexpr}
       ;
