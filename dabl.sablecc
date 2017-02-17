@@ -547,6 +547,7 @@ Productions
     expr {-> oexpr} =
         {logical} logical_expr              {-> logical_expr.oexpr}
       | {numeric} numeric_expr              {-> numeric_expr.oexpr}
+      | {logical_term} logical_term         {-> logical_term.oexpr}
       | {value} value                       {-> value.oexpr}
       ;
     
@@ -561,11 +562,10 @@ Productions
     // Logical expressions.
     
     logical_expr {-> oexpr} =
-        {many} [left]:logical_expr logical_operator [right]:value
+        {many} [left]:expr logical_operator [right]:logical_term_or_value
                                             {-> New oexpr.binary(
                                                 left.oexpr, logical_operator.obinary_op,
                                                 right.oexpr)}
-      //| {one} value                       {-> value.oexpr}
         ;
     
     logical_operator {-> obinary_op} =
@@ -573,11 +573,15 @@ Productions
       | {or} or_keyword                     {-> New obinary_op.or()}
       ;
     
-    ....logical_value {-> oexpr} =
+    logical_term {-> oexpr} =
         {not} not_expr                      {-> not_expr.oexpr}
       | {success} success_expr              {-> New oexpr.success(success_expr.osuccess_expr)}
       | {age} age_expr                      {-> New oexpr.age(age_expr.oage_expr)}
-      | {op} logical_expr                   {-> logical_expr.oexpr}
+      ;
+    
+    logical_term_or_value {-> oexpr} =
+        {term} logical_term                 {-> logical_term.oexpr}
+      | {value} value                       {-> value.oexpr}
       ;
     
     not_expr {-> oexpr} =
@@ -588,10 +592,15 @@ Productions
     // Arithmetic expressions.
     
     numeric_expr {-> oexpr} =
-        {many} numeric_expr add_op product  {-> New oexpr.binary(
+        {many} numeric_expr add_op product_or_value  {-> New oexpr.binary(
                                                 numeric_expr.oexpr,
-                                                add_op.obinary_op, product.oexpr)}
+                                                add_op.obinary_op, product_or_value.oexpr)}
       | {one} product                       {-> product.oexpr}
+      ;
+    
+    product_or_value {-> oexpr} =
+        {product} product                   {-> product.oexpr}
+      | {value} value                       {-> value.oexpr}
       ;
     
     product {-> oexpr} =
