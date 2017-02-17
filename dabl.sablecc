@@ -558,7 +558,6 @@ Productions
                                             {-> expr.oexpr}
       ;
     
-    
     // Logical expressions.
     
     logical_expr {-> oexpr} =
@@ -571,6 +570,12 @@ Productions
     logical_operator {-> obinary_op} =
         {and} and_keyword                   {-> New obinary_op.and()}
       | {or} or_keyword                     {-> New obinary_op.or()}
+      | {gt} gt                             {-> New obinary_op.gt()}
+      | {lt} lt                             {-> New obinary_op.lt()}
+      | {ge} ge                             {-> New obinary_op.ge()}
+      | {le} le                             {-> New obinary_op.le()}
+      | {eq} eq                             {-> New obinary_op.eq()}
+      | {ne} ne                             {-> New obinary_op.ne()}
       ;
     
     logical_term {-> oexpr} =
@@ -607,7 +612,6 @@ Productions
         {many} product mult_op value        {-> New oexpr.binary(
                                                 product.oexpr, mult_op.obinary_op,
                                                 value.oexpr)}
-      //| {one} value                       {-> value.oexpr}
       ;
     
     add_op {-> obinary_op} =
@@ -831,6 +835,12 @@ Abstract Syntax Tree
       | {divide}
       | {and}
       | {or}
+      | {gt}
+      | {lt}
+      | {ge}
+      | {le}
+      | {eq}
+      | {ne}
       ;
     
     oexpr =
