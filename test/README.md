@@ -1,6 +1,7 @@
 # Test Suite
 
-The test suite uses Cucumber. JUnit is not used: this is a
+The test suite uses [`Cucumber-JVM`](https://github.com/cucumber/cucumber-jvm).
+JUnit is not used: this is a
 [behavioral](https://en.wikipedia.org/wiki/Behavior_Driven_Development)
 test suite, not a unit test suite.
 
@@ -21,7 +22,7 @@ gherkin-2.12.2.jar
 ```
 
 These are specified in the [`makefile.inc`](https://github.com/ScaledMarkets/dabl/blob/master/makefile.inc)
-configuration file.
+configuration file. You can find them by searching for them online.
 
 The test suite can be built via
 the [`makefile`](https://github.com/ScaledMarkets/dabl/blob/master/makefile) with,
