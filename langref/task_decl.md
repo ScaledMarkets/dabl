@@ -24,6 +24,14 @@ A task declaration has the following syntax:
 If the input_set or output_set defines a name for the inputs or outputs,
 respectively, the name is scoped to the enclosing task.
 
+An input_set or output_set may be the same as the task's name. However, if that
+is the case, then to reference the task namefrom within itself, one would have to
+fully qualify the task name with the namespace. For example, if a namespace
+is called `abcnamespace`, and it contains a task called `somestuff`, and
+that task contains an input_set called `somestuff`, then to refer to the
+task, one would have to use the syntax `abcnamespace.somestuff`. A simple
+reference to `somestuff` from within the task would reference the input_set.
+
 ## Example
 
 ```
