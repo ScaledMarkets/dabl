@@ -142,6 +142,11 @@ _ (underscore)
 
 of the Latin-1 character set, and must not begin with a number.
 
+### Name Scope
+
+Identifiers declared within a namespace are scoped to that namespace unless they
+are declared `public`.
+
 ### Uniqueness and Name Overloading
 
 Any identifiers declared within a namespace at the outermost level must be unique.
