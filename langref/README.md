@@ -142,7 +142,7 @@ of the Latin-1 character set, and must not begin with a number.
 Any identifiers declared within a namespace at the outermost level must be unique.
 For example, a task may not be named the same as a repo.
 
-A declared idenetifier may be identical to the namespace name; however, doing that
+A declared identifier may be identical to the namespace name; however, doing that
 will mean that to reference the identifier one will have to qualify it (i.e., prefix it)
 with the namespace name. For example, if the namespace is called `abcstuff`,
 and within that namespace one defines a task called `abcstuff`, then to refer
