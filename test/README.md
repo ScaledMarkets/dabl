@@ -12,7 +12,7 @@ but the lack of backward compatibility is a problem regardless: the Cucucmber-JV
 has changed many times, and so one's test code depends on the versions of the
 various Cucumber-JVM components.
 
-This project uses these versions of the Cucumber components:
+This project uses these versions of the Cucumber-JVM components:
 
 ```
 cucumber-core-1.1.8.jar
