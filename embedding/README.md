@@ -1,5 +1,7 @@
 # Embedding the Compiler In an Application
 
+## What the Compiler Produces As Output
+
 When the compiler processes a DABL source file, the output of the compiler is a
 [`CompilerState`](https://scaledmarkets.github.io/dabl/scaledmarkets/dabl/main/CompilerState.html)
 object. A `CompilerState` contains a a field,
