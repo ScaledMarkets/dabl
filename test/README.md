@@ -1,6 +1,7 @@
 # Test Suite
 
-The test suite uses Cucumber. JUnit is not used.
+The test suite uses Cucumber. JUnit is not used: this is a behavioral test
+suite, not a unit test suite.
 
 Unfortunately, Cucumber versions are often not backward compatible, and Cucumber
 for Java consists of a number of different components, each with its own
