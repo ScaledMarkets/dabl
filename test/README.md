@@ -18,7 +18,8 @@ cucumber-jvm-deps-1.0.3.jar
 gherkin-2.12.2.jar
 ```
 
-These are specified in the makefile.inc configuration file.
+These are specified in the [makefile.inc](https://github.com/ScaledMarkets/dabl/blob/master/makefile.inc)
+configuration file.
 
 The test suite can be built via
 the makefile with,
