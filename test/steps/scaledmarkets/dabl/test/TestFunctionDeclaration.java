@@ -28,7 +28,7 @@ public class TestFunctionDeclaration extends TestBase {
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
-		this.state = dabl.process();
+		createHelper(dabl.process());
 		
 	}
 	
@@ -36,8 +36,8 @@ public class TestFunctionDeclaration extends TestBase {
 	public void i_can_obtain_meta_information_about_the_function() throws Exception {
 		
 		// Get the function name and arg types.
-		NameScopeEntry nameScopeEntry = getNamespaceSymbolEntry("simple");
-		DeclaredEntry functionEntry = getDeclaredEntry(nameScopeEntry, "f1");
+		NameScopeEntry nameScopeEntry = getHelper().getNamespaceSymbolEntry("simple");
+		DeclaredEntry functionEntry = getHelper().getDeclaredEntry(nameScopeEntry, "f1");
 		Node n = functionEntry.getDefiningNode();
 		assertThat(n instanceof AOfunctionDeclaration);
 		AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)n;

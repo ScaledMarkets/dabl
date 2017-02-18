@@ -42,7 +42,7 @@ public class TestArtifacts extends TestBase {
 		// version does not have an error.
 		reader = new StringReader(correct);
 		Dabl dabl = new Dabl(false, true, reader);
-		this.state = dabl.process();
+		createHelper(dabl.process());
 		
 		// Now try with the 'incorrect' version - this should generate an error
 		// when it is processed in the next step.
@@ -53,7 +53,7 @@ public class TestArtifacts extends TestBase {
 	public void an_error_is_generated_when_we_process_it() throws Throwable {
 		Dabl dabl = new Dabl(false, true, reader);
 		try {
-			this.state = dabl.process();
+			createHelper(dabl.process());
 		} catch (Exception ex) {
 			// Success - we expected an error
 			return;

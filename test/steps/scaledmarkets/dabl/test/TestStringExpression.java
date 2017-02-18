@@ -29,14 +29,14 @@ public class TestStringExpression extends TestBase {
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
-		this.state = dabl.process();
+		createHelper(dabl.process());
 	}
 	
 	@Then("^the expression value can be retrieved and is correct$")
 	public void the_expression_value_can_be_retrieved_and_is_correct() throws Exception {
 		
-		NameScopeEntry namespaceEntry = getNamespaceSymbolEntry("simple");
-		DeclaredEntry repoEntry = getDeclaredEntry(namespaceEntry, "my_git");
+		NameScopeEntry namespaceEntry = getHelper().getNamespaceSymbolEntry("simple");
+		DeclaredEntry repoEntry = getHelper().getDeclaredEntry(namespaceEntry, "my_git");
 		Node n = repoEntry.getDefiningNode();
 		assertThat(n instanceof AOrepoDecl, () -> {
 			System.out.println("\tn is a " + n.getClass().getName());

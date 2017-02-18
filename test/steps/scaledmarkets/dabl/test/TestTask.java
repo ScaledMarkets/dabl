@@ -30,16 +30,16 @@ public class TestTask extends TestBase {
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
-		this.state = dabl.process();
-		assertThat(state.globalScope != null);
-		System.out.println("scopeStack size: " + state.scopeStack.size());
-		assertThat(state.scopeStack.size() == 1);
+		createHelper(dabl.process());
+		assertThat(getHelper().getState().globalScope != null);
+		System.out.println("scopeStack size: " + getHelper().getState().scopeStack.size());
+		assertThat(getHelper().getState().scopeStack.size() == 1);
 	}
 	
 	@Then("^I can retrieve the the task by its name$")
 	public void i_can_retrieve_the_the_task_by_its_name() throws Exception {
 		
-		SymbolEntry entry = getNamespaceSymbolEntry("simple");
+		SymbolEntry entry = getHelper().getNamespaceSymbolEntry("simple");
 		
 		// Get the namespace's symbol table.
 		NameScopeEntry nse = (NameScopeEntry)entry;

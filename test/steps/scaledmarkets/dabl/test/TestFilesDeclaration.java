@@ -31,14 +31,14 @@ public class TestFilesDeclaration extends TestBase {
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
-		this.state = dabl.process();
+		createHelper(dabl.process());
 	}
 	
 	@Then("^I can reference the file set elsewhere$")
 	public void i_can_reference_the_file_set_elsewhere() throws Exception {
 		
-		NameScopeEntry nameScopeEntry = getNamespaceSymbolEntry("simple");
-		DeclaredEntry filesEntry = getDeclaredEntry(nameScopeEntry, "Stuff");
+		NameScopeEntry nameScopeEntry = getHelper().getNamespaceSymbolEntry("simple");
+		DeclaredEntry filesEntry = getHelper().getDeclaredEntry(nameScopeEntry, "Stuff");
 		Node n = filesEntry.getDefiningNode();
 		assertThat(n instanceof AOfilesDeclaration);
 	}

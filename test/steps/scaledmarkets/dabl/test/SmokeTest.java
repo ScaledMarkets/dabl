@@ -30,7 +30,7 @@ public class SmokeTest extends TestBase {
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
-		dabl.process();
+		createHelper(dabl.process());
 	}
 	
 	@Then("^the compiler returns without an error$")

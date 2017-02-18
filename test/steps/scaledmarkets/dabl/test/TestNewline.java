@@ -28,7 +28,7 @@ public class TestNewline extends TestBase {
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
-		this.state = dabl.process();
+		createHelper(dabl.process());
 	}
 	
 	@Then("^the namespace compiles without error$")

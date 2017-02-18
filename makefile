@@ -20,13 +20,9 @@ test_package_name = scaledmarkets.dabl.test
 main_class := $(package_name).main.Dabl
 
 # Intermediate artifacts:
-sourcefiles := $(src_dir)/$(package)/main/*.java \
-	./SableCCOutput/analysis/*.java \
-	./SableCCOutput/lexer/*.java \
-	./SableCCOutput/node/*.java \
-	./SableCCOutput/parser/*.java
 classfiles := \
 	$(build_dir)/$(package)/main/*.class \
+	$(build_dir)/$(package)/helper/*.class \
 	$(build_dir)/$(package)/analysis/*.class \
 	$(build_dir)/$(package)/lexer/*.class \
 	$(build_dir)/$(package)/node/*.class \
@@ -133,7 +129,8 @@ compile: config
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
 		$(src_dir)/sablecc/*.java \
 		$(src_dir)/$(package)/*.java \
-		$(src_dir)/$(package)/main/*.java
+		$(src_dir)/$(package)/main/*.java \
+		$(src_dir)/$(package)/helper/*.java
 
 # Define 'dist' target so we can reference it in 'all' target.
 dist: jar

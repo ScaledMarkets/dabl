@@ -1,5 +1,6 @@
 scaledmarkets.dabl
 scaledmarkets.dabl.analysis
+scaledmarkets.dabl.helper
 scaledmarkets.dabl.lexer
 scaledmarkets.dabl.main
 scaledmarkets.dabl.node

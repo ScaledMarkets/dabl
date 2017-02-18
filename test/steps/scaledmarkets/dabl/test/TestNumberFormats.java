@@ -38,14 +38,14 @@ public class TestNumberFormats extends TestBase {
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
-		this.state = dabl.process();
+		createHelper(dabl.process());
 	}
 	
 	@Then("^I can retrieve the numeric value$")
 	public void i_can_retrieve_the_numeric_value() throws Throwable {
 		
-		NameScopeEntry namespaceEntry = getNamespaceSymbolEntry("simple");
-		DeclaredEntry repoEntry = getDeclaredEntry(namespaceEntry, "t123");
+		NameScopeEntry namespaceEntry = getHelper().getNamespaceSymbolEntry("simple");
+		DeclaredEntry repoEntry = getHelper().getDeclaredEntry(namespaceEntry, "t123");
 		Node n = repoEntry.getDefiningNode();
 		assertThat(n instanceof AOtaskDeclaration, () -> {
 			System.out.println("\tn is a " + n.getClass().getName());

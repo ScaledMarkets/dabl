@@ -35,7 +35,7 @@ public class TestImport extends TestBase {
 		);
 
 		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(namespaces));
-		this.state = dabl.process();
+		createHelper(dabl.process());
 		
 	}
 	
@@ -44,9 +44,9 @@ public class TestImport extends TestBase {
 		
 		// Starting from the simple namespace, retrieve the DeclaredEntry of my_maven.
 		
-		NameScopeEntry simpleNamespaceEntry = getNamespaceSymbolEntry("simple");
+		NameScopeEntry simpleNamespaceEntry = getHelper().getNamespaceSymbolEntry("simple");
 		
-		DeclaredEntry stuffEntry = getDeclaredEntry(simpleNamespaceEntry, "Stuff");
+		DeclaredEntry stuffEntry = getHelper().getDeclaredEntry(simpleNamespaceEntry, "Stuff");
 		Node n = stuffEntry.getDefiningNode();
 		assertThat(n instanceof AOfilesDeclaration);
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
@@ -57,7 +57,7 @@ public class TestImport extends TestBase {
 		TId reposId = reposRef.getId();
 		assertThat(reposId.getText().equals("my_maven"));
 		
-		Annotation a = state.out.get(reposRef);
+		Annotation a = getHelper().getState().out.get(reposRef);
 		assertThat(a != null, "It appears that the local reference to my_maven was not resolved");
 		assertThat(a instanceof IdRefAnnotation, "a is a " + a.getClass().getName());
 		IdRefAnnotation idrefan = (IdRefAnnotation)a;

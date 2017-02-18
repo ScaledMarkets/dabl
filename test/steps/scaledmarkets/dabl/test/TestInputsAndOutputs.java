@@ -29,15 +29,15 @@ public class TestInputsAndOutputs extends TestBase {
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
-		this.state = dabl.process();
+		createHelper(dabl.process());
 		
 	}
 	
 	@Then("^the inputs and outputs are retrievable$")
 	public void the_inputs_and_outputs_are_retrievable() throws Exception {
 		
-		NameScopeEntry namespaceEntry = getNamespaceSymbolEntry("simple");
-		DeclaredEntry de = getDeclaredEntry(namespaceEntry, "t123");
+		NameScopeEntry namespaceEntry = getHelper().getNamespaceSymbolEntry("simple");
+		DeclaredEntry de = getHelper().getDeclaredEntry(namespaceEntry, "t123");
 		assertThat(de instanceof NameScopeEntry);
 		NameScopeEntry taskEntry = (NameScopeEntry)de;
 		
