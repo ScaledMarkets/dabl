@@ -22,12 +22,13 @@ public class TestArtifacts extends TestBase {
 
 	@Before
 	public void beforeEachScenario() throws Exception {
-		reader = null;
 	}
 	
 	@When("^a repo has the same name as the artifact$")
 	public void a_repo_has_the_same_name_as_the_artifact() throws Throwable {
 
+		System.out.println("Beginning TestArtifacts");
+		
 		String base = 
 "namespace simple\n" +
 " artifact ABC:2.3\n" +
@@ -40,23 +41,32 @@ public class TestArtifacts extends TestBase {
 		
 		// First try it with a 'correct' version, to make sure our 'correct'
 		// version does not have an error.
-		reader = new StringReader(correct);
-		Dabl dabl = new Dabl(false, true, reader);
+		Reader r = new StringReader(correct);
+		Dabl dabl = new Dabl(false, true, r);
 		createHelper(dabl.process());
 		
 		// Now try with the 'incorrect' version - this should generate an error
 		// when it is processed in the next step.
-		reader = new StringReader(incorrect);
+		this.reader = new StringReader(incorrect);
 	}
 	
 	@Then("^an error is generated when we process it$")
 	public void an_error_is_generated_when_we_process_it() throws Throwable {
-		Dabl dabl = new Dabl(false, true, reader);
+
+		System.out.println("Running TestArtifacts");
+		
+		
+		Dabl dabl = new Dabl(false, true, this.reader);
 		try {
 			createHelper(dabl.process());
 		} catch (Exception ex) {
-			// Success - we expected an error
+			Throwable t = ex.getCause();
+			assertThat(t != null);
+			assertThat(t instanceof SymbolEntryPresent);
+			// Success - we expected this error
 			return;
+		} finally {
+			System.out.println("Completed TestArtifacts");
 		}
 		assertThat(false, "An exception was not thrown");
 	}

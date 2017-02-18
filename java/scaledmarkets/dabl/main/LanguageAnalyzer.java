@@ -47,8 +47,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 
     public void outAOidRef(AOidRef node)
     {
-		// Find the declaration of the id. If it exists, annotate it with
-		// 
+		// Find the declaration of the id. If it exists, annotate it.
+		
 		TId id = node.getId();
 		LinkedList<TId> path = new LinkedList<TId>();
 		path.add(id);
@@ -61,8 +61,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			// into a scope. The handler should annotate the entry,
 			// and then remove itself from all of the scopes to which it is attached.
 			new IdentHandler(this, path, getCurrentNameScope()) {
-				public void resolveRetroactively(DeclaredEntry entry)
-				{
+				public void resolveRetroactively(DeclaredEntry entry) {
 					setIdRefAnnotation(node, entry);
 				}
 				// Note: the base class, IdentHandler, contains a method
@@ -71,7 +70,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			};
 			
 		} else {
-			// Attribute the Id reference with the DeclaredEntry that defines the Id.
+			// Annotate the Id reference with the DeclaredEntry that defines the Id.
 			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
 				"Unexpected: entry is a " + entry.getClass().getName());
 			DeclaredEntry declent = (DeclaredEntry)entry;
@@ -137,6 +136,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	}
 	
+	/* Task declarations. */
+	
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
 		
 		TId id = node.getName();
@@ -153,6 +154,10 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void inANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
 	{
 		TId id = node.getId();
+		
+		System.out.println("entered artifact " + id.getText());  // debug
+		
+		
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {
 			addSymbolEntry(entry, id);
@@ -165,6 +170,26 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void outANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
 	{
 		super.outANamedOnamedArtifactSet(node);
+	}
+	
+	
+	/* Artifact declaration. */
+	
+	public void inAOartifactDeclaration(AOartifactDeclaration node)
+	{
+		TId id = node.getId();
+		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+		try {
+			addSymbolEntry(entry, id);
+		} catch (SymbolEntryPresent ex) {
+			throw new RuntimeException(ex);
+		}
+		resolveForwardReferences(entry);
+	}
+	
+	public void outAOartifactDeclaration(AOartifactDeclaration node)
+	{
+		super.outAOartifactDeclaration(node);
 	}
 	
 	
