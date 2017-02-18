@@ -14,8 +14,16 @@ can be accessed at runtime; thus, one can build a tool that compiles DABL
 files and then operates on the resulting AST. The AST Java class types are
 defined by the `scaledmarkets.dabl.node` package in the [Javadocs](https://scaledmarkets.github.io/dabl/).
 
+## Helper Class
+
+The class [`scaledmarkets.dabl.helper.Helper`](https://scaledmarkets.github.io/dabl/scaledmarkets/dabl/helper/Helper.html)
+provides helper methods for accessing the AST and its annotations.
+You do not need to use the `Helper` class, but it greatly simplifies access
+to the AST.
+
+## Examples
+
 For an example
 of accessing the object model, see the [piper project](https://github.com/Scaled-Markets/piper).
 Piper is a build system based on DABL. The [behavioral test suite](https://github.com/ScaledMarkets/dabl/tree/master/test)
 also illustrates how to access the AST.
-
