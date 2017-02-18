@@ -127,8 +127,11 @@ to look for DABL files when resolving imported namespaces.
 
 ## Identifiers
 
-A DABL identifier is a name that is declared within a DABL file. Identifiers may
-consist of Unicode characters within the range
+A DABL identifier is a name that is declared within a DABL file.
+
+### Character Set
+
+Identifiers may consist of Unicode characters within the range
 
 ```
 a-z
@@ -138,6 +141,8 @@ _ (underscore)
 ```
 
 of the Latin-1 character set, and must not begin with a number.
+
+### Uniqueness and Name Overloading
 
 Any identifiers declared within a namespace at the outermost level must be unique.
 For example, a task may not be named the same as a repo.
