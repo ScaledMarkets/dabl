@@ -70,11 +70,6 @@ The DABL compiler is designed as a self-contained embeddable component that can 
 embedded in Java applications. For a guide on how to embed the DABL compiler,
 see [Embedding the Compiler In an Application](embedding/README.md).
 
-For an example
-of accessing the object model, see the [piper project](https://github.com/Scaled-Markets/piper).
-Piper is a build system based on DABL. The [behavioral test suite](https://github.com/ScaledMarkets/dabl/tree/master/test)
-also illustrates how to access the AST.
-
 # Compiler Design
 
 See [java/scaledmarkets/dabl/main](java/scaledmarkets/dabl/main).
