@@ -2,6 +2,9 @@ package scaledmarkets.dabl.main;
 
 import scaledmarkets.dabl.node.*;
 
+/**
+ * Annotation for an Id that is a declaration.
+ */
 public class DeclaredEntry extends SymbolEntry
 {
 	private Node definingNode;

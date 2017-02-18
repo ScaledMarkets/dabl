@@ -27,7 +27,35 @@ public class Helper {
 	}
 	
 	/**
-	 * Return the NameScopeEntry (in the global SymbolTable) for the namespace.
+	 * Return the root namespace symbol.
+	 */
+	public AOnamespace getPrimaryNamespace() throws Exception {
+		Start start = state.asts.get(0);
+		assertThat(start != null);
+		POnamespace n = start.getPOnamespace();
+		assertThat(n instanceof AOnamespace);
+		AOnamespace namespace = (AOnamespace)n;
+		return namespace;
+	}
+	
+	/**
+	 * Return the symbol table entry for the primary namespace. The entry is
+	 * in the global symbol table.
+	 */
+	public NameScopeEntry getPrimaryNamespaceSymbolEntry() throws Exception {
+		AOnamespace namespace = getPrimaryNamespace();
+		Annotation a = this.state.in.get(namespace);
+		assertThat(a != null);
+		assertThat(a instanceof NameScope);
+		NameScope nameScope = (NameScope)a;
+		NameScopeEntry entry = nameScope.getSelfEntry();
+		assertThat(entry != null);
+		return entry;
+	}
+	
+	/**
+	 * Return the NameScopeEntry (in the global SymbolTable) for the specified namespace.
+	 * The namespace can be the primary namespace, or an imported one.
 	 */
 	public NameScopeEntry getNamespaceSymbolEntry(String namespaceName) throws Exception {
 		
@@ -39,16 +67,43 @@ public class Helper {
 	}
 	
 	/**
-	 * Return the DeclaredEntry for the specified top level symbol. The caller
-	 * must provide the NameScopeEntry for the namespace.
+	 * Return the DeclaredEntry for the specified top level symbol of a
+	 * namespace. The caller must provide the NameScopeEntry for the namespace.
 	 */
 	public DeclaredEntry getDeclaredEntry(NameScopeEntry namespaceEntry, String name) throws Exception {
 		
 		NameScope scope = namespaceEntry.getOwnedScope();
 		SymbolEntry e = scope.getEntry(name);
-		assertThat(e != null);
+		if (e == null) return null;
 		assertThat(e instanceof DeclaredEntry, "entry is a " + e.getClass().getName());
 		return (DeclaredEntry)e;
+	}
+	
+	/**
+	 * Return the DeclaredEntry for the specified top level symbol of the primary
+	 * namespace.
+	 */
+	public DeclaredEntry getDeclaredEntry(String name) throws Exception {
+		
+		NameScopeEntry namespaceEntry = getPrimaryNamespaceSymbolEntry();
+		return getDeclaredEntry(NameScopeEntry namespaceEntry, name);
+	}
+	
+	public Node getDeclaration(String name) throws Exception {
+		
+		DeclaredEntry entry = getDeclaredEntry(artifactName);
+		if (entry == null) return null;
+		return entry.getDefiningNode();
+	}
+	
+	/**
+	 * Return the specified Artifact declaration, from the primary namespace.
+	 */
+	public AOartifactDeclaration getArtifactDeclaration(String artifactName) throws Exception {
+		
+		Node n = getDeclaration(artifactName);
+		assertThat(n instanceof AOartifactDeclaration);
+		return (AOartifactDeclaration)n;
 	}
 	
 	/**

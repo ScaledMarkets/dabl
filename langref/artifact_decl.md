@@ -16,14 +16,18 @@ The Id is the name that will be assigned to the artifact. The two expressions
 are the major and minor version numbers, respectively. The artifact-statements
 consist of zero or more `assume` statements and `tested with` statements.
 
-An `assume` statement declares that the artifact that is created by the DABL file
+An `assume compatible with` statement declares that the artifact that is created by the DABL file
 is expected to be compatible with the specified versions of another artifact.
 This is a design-time assertion, and there of course can be no absolute proof of
 compatibility.
 
+An artifact may not state that it is compatible with itself.
+
 A `tested with` statement declares that the artifact has actually been tested
 for compatibility with the specified versions of another artifact. This is also
 a design-time assertion, although tools might attempt to verify it.
+
+An artifact may not state that it has been tested with itself.
 
 An assume statement has the form,
 

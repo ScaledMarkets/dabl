@@ -27,8 +27,6 @@ public class TestArtifacts extends TestBase {
 	@When("^a repo has the same name as the artifact$")
 	public void a_repo_has_the_same_name_as_the_artifact() throws Throwable {
 
-		System.out.println("Beginning TestArtifacts");
-		
 		String base = 
 "namespace simple\n" +
 " artifact ABC:2.3\n" +
@@ -50,12 +48,9 @@ public class TestArtifacts extends TestBase {
 		this.reader = new StringReader(incorrect);
 	}
 	
-	@Then("^an error is generated when we process it$")
-	public void an_error_is_generated_when_we_process_it() throws Throwable {
+	@Then("^a SymbolEntryPresent error is generated when we process it$")
+	public void a_SymbolEntryPresent_error_is_generated_when_we_process_it() throws Throwable {
 
-		System.out.println("Running TestArtifacts");
-		
-		
 		Dabl dabl = new Dabl(false, true, this.reader);
 		try {
 			createHelper(dabl.process());
@@ -65,81 +60,110 @@ public class TestArtifacts extends TestBase {
 			assertThat(t instanceof SymbolEntryPresent);
 			// Success - we expected this error
 			return;
-		} finally {
-			System.out.println("Completed TestArtifacts");
 		}
 		assertThat(false, "An exception was not thrown");
 	}
 	
 	@When("^an artifact assumes compatibility with itself$")
 	public void an_artifact_assumes_compatibility_with_itself() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+
+		this.reader = new StringReader(
+"namespace simple\n" +
+" artifact ABC:2.3\n" +
+"  assume compatible with ABC:3.3-3.4");
+	}
+	
+	@Then("^an error is generated when we process it$")
+	public void an_error_is_generated_when_we_process_it() throws Throwable {
+
+		Dabl dabl = new Dabl(false, true, this.reader);
+		try {
+			createHelper(dabl.process());
+		} catch (Exception ex) {
+			// Success - we expected an error
+			return;
+		}
+		assertThat(false, "An exception was not thrown");
 	}
 	
 	@When("^an artifact asserts tested with itself$")
 	public void an_artifact_asserts_tested_with_itself() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		this.reader = new StringReader(
+"namespace simple\n" +
+" artifact ABC:2.3\n" +
+"  tested with ABC:3.3-3.4");
 	}
 	
 	@When("^an artifact asserts compatibility with major version XYZ:\\*\\.(\\d+)$")
 	public void an_artifact_asserts_compatibility_with_major_version_XYZ(int arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		this.reader = new StringReader(
+"namespace simple\n" +
+" artifact ABC:2.3\n" +
+"  assume compatible with XYZ:*." + arg1);
 	}
 	
 	@Then("^a correct compatibility spec is generated$")
 	public void a_correct_compatibility_spec_is_generated() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
+		NameScopeEntry nameScopeEntry = getHelper().getNamespaceSymbolEntry("simple");
+		DeclaredEntry filesEntry = getHelper().getDeclaredEntry(nameScopeEntry, "ABC");
+		Node n = filesEntry.getDefiningNode();
+		assertThat(n instanceof AOartifactDeclaration);
+		
+		
+		
+		
+		
 		throw new Exception();
 	}
 	
 	@When("^an artifact asserts compatibility with minor version XYZ:(\\d+)\\.\\*$")
 	public void an_artifact_asserts_compatibility_with_minor_version_XYZ(int arg1) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
 		throw new Exception();
 	}
 	
 	@When("^an artifact asserts compatibility with major and minor version XYZ:\\*\\.\\*$")
 	public void an_artifact_asserts_compatibility_with_major_and_minor_version_XYZ() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
 		throw new Exception();
 	}
 	
 	@When("^an artifact asserts compatibility with a range of versions, e\\.g\\., (\\d+)\\.(\\d+)-(\\d+)\\.(\\d+)$")
 	public void an_artifact_asserts_compatibility_with_a_range_of_versions_e_g(int arg1, int arg2, int arg3, int arg4) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
 		throw new Exception();
 	}
 	
 	@When("^an artifact asserts compatibility with a range of minor versions$")
 	public void an_artifact_asserts_compatibility_with_a_range_of_minor_versions() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
 		throw new Exception();
 	}
 	
 	@When("^an artifact asserts tested with a wildcard major version$")
 	public void an_artifact_asserts_tested_with_a_wildcard_major_version() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
 		throw new Exception();
 	}
 	
 	@When("^an artifact asserts tested with a wildcard minor version$")
 	public void an_artifact_asserts_tested_with_a_wildcard_minor_version() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
 		throw new Exception();
 	}
 	
 	@When("^an artifact asserts tested with a range of versions, e\\.g\\., (\\d+)\\.(\\d+)-(\\d+)\\.(\\d+)$")
 	public void an_artifact_asserts_tested_with_a_range_of_versions_e_g(int arg1, int arg2, int arg3, int arg4) throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
 		throw new Exception();
 	}
 	
 	@When("^an artifact asserts tested with a range of minor versions$")
 	public void an_artifact_asserts_tested_with_a_range_of_minor_versions() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
 		throw new Exception();
 	}
 }

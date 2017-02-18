@@ -5,7 +5,7 @@ Feature: TestArtifacts
 	@done
 	Scenario: Name cannot conflict with another name of any kind
 		When a repo has the same name as the artifact
-		Then an error is generated when we process it
+		Then a SymbolEntryPresent error is generated when we process it
 
 	@notdone
 	Scenario: Cannot assert compability with itself

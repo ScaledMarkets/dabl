@@ -36,4 +36,8 @@ public class TestBase {
 	public void assertThat(boolean expr, Runnable action) throws Exception {
 		this.helper.assertThat(expr, action);
 	}
+	
+	public void msg(String message) {
+		System.out.println(message);
+	}
 }

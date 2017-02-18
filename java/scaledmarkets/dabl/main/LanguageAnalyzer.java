@@ -87,6 +87,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		
 		NameScope enclosingScope = getCurrentNameScope();
 		NameScope newScope = createNameScope(name, node);  // pushes name scope
+											// and annotates the namespace Node.
 		SymbolEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
 		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
 			throw new RuntimeException(ex);
@@ -189,7 +190,11 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	public void outAOartifactDeclaration(AOartifactDeclaration node)
 	{
-		super.outAOartifactDeclaration(node);
+		// Verify that artifact does not assert compatibility with itself.
+		//....
+		
+		// Verify that artifact does not assert tested with itself.
+		//....
 	}
 	
 	
