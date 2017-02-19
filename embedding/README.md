@@ -27,5 +27,8 @@ to the AST.
 
 For an example
 of accessing the object model, see the [piper project](https://github.com/Scaled-Markets/piper).
-Piper is a build system based on DABL. The [behavioral test suite](https://github.com/ScaledMarkets/dabl/tree/master/test)
+Piper is a build system based on DABL. Another example of embedding the compiler is
+the [Dabl](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/main/Dabl.java)
+class itself, since its main mathod must instantiate the compiler calss.
+The [behavioral test suite](https://github.com/ScaledMarkets/dabl/tree/master/test)
 also illustrates how to access the AST.
