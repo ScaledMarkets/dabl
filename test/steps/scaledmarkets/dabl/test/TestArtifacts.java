@@ -104,8 +104,8 @@ public class TestArtifacts extends TestBase {
 "  assume compatible with XYZ:*.3");
 	}
 	
-	@Then("^a correct compatibility spec is generated$")
-	public void a_correct_compatibility_spec_is_generated() throws Throwable {
+	@Then("^a compatibility spec is generated for version \\*\\.3$")
+	public void a_compatibility_spec_is_generated_for_version_star_dot_3() throws Throwable {
 		
 		Node n = getHelper().getDeclaration("ABC");
 		assertThat(n instanceof AOartifactDeclaration);
@@ -140,44 +140,92 @@ public class TestArtifacts extends TestBase {
 		throw new Exception();
 	}
 	
+	@Then("^a compatibility spec is generated for version 3\\.\\*$")
+	public void a_compatibility_spec_is_generated_for_version_3_dot_star() throws Throwable {
+		
+		throw new Exception();
+	}
+		
 	@When("^an artifact asserts compatibility with major and minor version XYZ:\\*\\.\\*$")
 	public void an_artifact_asserts_compatibility_with_major_and_minor_version_XYZ() throws Throwable {
 		
 		throw new Exception();
 	}
 	
-	@When("^an artifact asserts compatibility with a range of versions, e\\.g\\., (\\d+)\\.(\\d+)-(\\d+)\\.(\\d+)$")
-	public void an_artifact_asserts_compatibility_with_a_range_of_versions_e_g(int arg1, int arg2, int arg3, int arg4) throws Throwable {
+	@Then("^a compatibility spec is generated for version \\*\\.\\*$")
+	public void a_compatibility_spec_is_generated_for_version_star_dot_star() throws Throwable {
+		
+		throw new Exception();
+	}
+		
+	@When("^an artifact asserts compatibility with a range of major versions, such as, 3\\.0-4\\.0$")
+	public void an_artifact_asserts_compatibility_with_a_range_of_major_versions(int arg1, int arg2, int arg3, int arg4) throws Throwable {
 		
 		throw new Exception();
 	}
 	
-	@When("^an artifact asserts compatibility with a range of minor versions$")
+	@Then("^a compatibility spec is generated for range 3\\.0 to 4\\.0$")
+	public void a_compatibility_spec_is_generated_for_range_3_dot_0_to_4_dot_0() throws Throwable {
+		
+		throw new Exception();
+	}
+		
+	@When("^an artifact asserts compatibility with a range of minor versions, such as, 3\\.3-3\\.4$")
 	public void an_artifact_asserts_compatibility_with_a_range_of_minor_versions() throws Throwable {
 		
 		throw new Exception();
 	}
 	
-	@When("^an artifact asserts tested with a wildcard major version$")
+	@Then("^a compatibility spec is generated for range 3\\.3 to 3\\.4$")
+	public void a_compatibility_spec_is_generated_for_range_3_dot_3_to_3_dot_4() throws Throwable {
+		
+		throw new Exception();
+	}
+		
+	@When("^an artifact asserts tested with a wildcard major version, such as, *\\.3$")
 	public void an_artifact_asserts_tested_with_a_wildcard_major_version() throws Throwable {
 		
 		throw new Exception();
 	}
 	
-	@When("^an artifact asserts tested with a wildcard minor version$")
+	@Then("^a compatibility spec is generated for version \\3\\.3$")
+	public void a_compatibility_spec_is_generated_for_version_star_dot_3() throws Throwable {
+		
+		throw new Exception();
+	}
+		
+	@When("^an artifact asserts tested with a wildcard minor version, such as, 3\\.\\*$")
 	public void an_artifact_asserts_tested_with_a_wildcard_minor_version() throws Throwable {
 		
 		throw new Exception();
 	}
 	
-	@When("^an artifact asserts tested with a range of versions, e\\.g\\., (\\d+)\\.(\\d+)-(\\d+)\\.(\\d+)$")
-	public void an_artifact_asserts_tested_with_a_range_of_versions_e_g(int arg1, int arg2, int arg3, int arg4) throws Throwable {
+	@Then("^a compatibility spec is generated for version 3\\.\\*$")
+	public void a_compatibility_spec_is_generated_for_version_3_dot_star() throws Throwable {
+		
+		throw new Exception();
+	}
+		
+	@When("^an artifact asserts tested with a range of major versions, such as, 3\\.3-4\\.0$")
+	public void an_artifact_asserts_tested_with_a_range_of_major_versions() throws Throwable {
 		
 		throw new Exception();
 	}
 	
-	@When("^an artifact asserts tested with a range of minor versions$")
+	@Then("^a compatibility spec is generated for versions 3\\.3-4\\.0$")
+	public void a_compatibility_spec_is_generated_for_versions_3_dot_3_to_4_dot_0() throws Throwable {
+		
+		throw new Exception();
+	}
+		
+	@When("^an artifact asserts tested with a range of minor versions, such as, 3\\.3-4\\.4$")
 	public void an_artifact_asserts_tested_with_a_range_of_minor_versions() throws Throwable {
+		
+		throw new Exception();
+	}
+	
+	@Then("^a compatibility spec is generated for versions 3\\.3-4\\.4$")
+	public void a_compatibility_spec_is_generated_for_versions_3_dot_3_to_4_dot_4() throws Throwable {
 		
 		throw new Exception();
 	}

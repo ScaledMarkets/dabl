@@ -20,44 +20,44 @@ Feature: TestArtifacts
 	@notdone
 	Scenario: Wildcard in compatible major version number
 		When an artifact asserts compatibility with major version XYZ:*.3
-		Then a correct compatibility spec is generated
+		Then a compatibility spec is generated for XYZ version *.3
 
 	@notdone
 	Scenario: Wildcard in compatible minor version number
 		When an artifact asserts compatibility with minor version XYZ:3.*
-		Then a correct compatibility spec is generated
+		Then a compatibility spec is generated for XYZ version 3.*
 
 	@notdone
 	Scenario: Wildcard in compatible minor version number
 		When an artifact asserts compatibility with major and minor version XYZ:*.*
-		Then a correct compatibility spec is generated
+		Then a compatibility spec is generated for XYZ *.*
 
 	@notdone
 	Scenario: Range in compatible major version number
-		When an artifact asserts compatibility with a range of versions, e.g., 3.3-3.4
-		Then a correct compatibility spec is generated
+		When an artifact asserts compatibility with a range of major versions, such as, 3.0-4.0
+		Then a compatibility spec is generated for range 3.0 to 4.0
 
 	@notdone
 	Scenario: Range in compatible minor version number
-		When an artifact asserts compatibility with a range of minor versions
-		Then a correct compatibility spec is generated
+		When an artifact asserts compatibility with a range of minor versions, such as, 3.3-3.4
+		Then a compatibility spec is generated for range 3.3 to 3.4
 
 	@notdone
 	Scenario: Wildcard in tested with major version number
-		When an artifact asserts tested with a wildcard major version
-		Then a correct compatibility spec is generated
+		When an artifact asserts tested with a wildcard major version, such as, *.3
+		Then a compatibility spec is generated for version *.3
 
 	@notdone
 	Scenario: Wildcard in tested with minor version number
-		When an artifact asserts tested with a wildcard minor version
-		Then a correct compatibility spec is generated
+		When an artifact asserts tested with a wildcard minor version, such as, 3.*
+		Then a compatibility spec is generated for version 3.*
 
 	@notdone
 	Scenario: Range in tested with major version number
-		When an artifact asserts tested with a range of versions, e.g., 3.3-3.4
-		Then a correct compatibility spec is generated
+		When an artifact asserts tested with a range of major versions, such as, 3.3-4.0
+		Then a compatibility spec is generated for versions 3.3-4.0
 
 	@notdone
 	Scenario: Range in tested with minor version number
-		When an artifact asserts tested with a range of minor versions
-		Then a correct compatibility spec is generated
+		When an artifact asserts tested with a range of minor versions, such as, 3.3-4.4
+		Then a compatibility spec is generated for versions 3.3-4.4
