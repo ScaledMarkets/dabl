@@ -118,7 +118,7 @@ public class TestArtifacts extends TestBase {
 		AAssumeOcompatibilitySpec assumeSpec = (AAssumeOcompatibilitySpec)s;
 		
 		LinkedList<TId> pathIds = assumeSpec.getId();
-		LinkedList<POrangeSpec> rangesSpecs = assumeSpec.getOrangeSpec();
+		LinkedList<POrangeSpec> rangeSpecs = assumeSpec.getOrangeSpec();
 		
 		assertThat(pathIds.size() == 1);
 		assertThat(pathIds.get(0).getText().equals("XYZ"));

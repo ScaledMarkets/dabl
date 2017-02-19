@@ -86,7 +86,7 @@ public class Helper {
 	public DeclaredEntry getDeclaredEntry(String name) throws Exception {
 		
 		NameScopeEntry namespaceEntry = getPrimaryNamespaceSymbolEntry();
-		return getDeclaredEntry(NameScopeEntry namespaceEntry, name);
+		return getDeclaredEntry(namespaceEntry, name);
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public class Helper {
 	 */
 	public Node getDeclaration(String name) throws Exception {
 		
-		DeclaredEntry entry = getDeclaredEntry(artifactName);
+		DeclaredEntry entry = getDeclaredEntry(name);
 		if (entry == null) return null;
 		return entry.getDefiningNode();
 	}
@@ -144,6 +144,6 @@ public class Helper {
 	
 	public void printAST(String title) {
 		System.out.println(title);
-		PrettyPrint.pp(start);
+		PrettyPrint.pp(state.asts.get(0));
 	}
 }
