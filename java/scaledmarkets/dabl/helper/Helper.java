@@ -27,7 +27,7 @@ public class Helper {
 	}
 	
 	/**
-	 * Return the root namespace symbol.
+	 * Return the root namespace Node.
 	 */
 	public AOnamespace getPrimaryNamespace() throws Exception {
 		Start start = state.asts.get(0);
@@ -89,6 +89,10 @@ public class Helper {
 		return getDeclaredEntry(NameScopeEntry namespaceEntry, name);
 	}
 	
+	/**
+	 * Return the Node corresponding to the declaration that is identified by
+	 * the specified name.
+	 */
 	public Node getDeclaration(String name) throws Exception {
 		
 		DeclaredEntry entry = getDeclaredEntry(artifactName);

@@ -21,8 +21,7 @@ CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-java-1.
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-jvm-deps-1.0.3.jar
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/gherkin-2.12.2.jar
 
-# Java compatibility: Compiler uses Java 7 (but might work with earlier versions),
-# and test suite requires Java 8.
+# Java compatibility: Requires Java 8.
 
 # For Mac:
 JAVA_HOME := $(shell /usr/libexec/java_home)
