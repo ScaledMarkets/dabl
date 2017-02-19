@@ -30,7 +30,7 @@ then accessing the resulting object model, see the
 [piper project](https://github.com/Scaled-Markets/piper).
 Piper is a build system based on DABL.
 Another example of instantiating and using the compiler is
-the [Dabl](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/main/Dabl.java)
-class itself, since its main mathod must instantiate the compiler class.
+the [`Dabl`](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/main/Dabl.java)
+class itself, since its `main` method must instantiate the compiler class.
 The [behavioral test suite](https://github.com/ScaledMarkets/dabl/tree/master/test)
 provides additional examples.
