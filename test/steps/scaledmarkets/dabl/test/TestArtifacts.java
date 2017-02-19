@@ -95,28 +95,43 @@ public class TestArtifacts extends TestBase {
 "  tested with ABC:3.3-3.4");
 	}
 	
-	@When("^an artifact asserts compatibility with major version XYZ:\\*\\.(\\d+)$")
-	public void an_artifact_asserts_compatibility_with_major_version_XYZ(int arg1) throws Throwable {
+	@When("^an artifact asserts compatibility with major version XYZ:\\*\\.3$")
+	public void an_artifact_asserts_compatibility_with_major_version_XYZ() throws Throwable {
 		
 		this.reader = new StringReader(
 "namespace simple\n" +
 " artifact ABC:2.3\n" +
-"  assume compatible with XYZ:*." + arg1);
+"  assume compatible with XYZ:*.3");
 	}
 	
 	@Then("^a correct compatibility spec is generated$")
 	public void a_correct_compatibility_spec_is_generated() throws Throwable {
 		
-		NameScopeEntry nameScopeEntry = getHelper().getNamespaceSymbolEntry("simple");
-		DeclaredEntry filesEntry = getHelper().getDeclaredEntry(nameScopeEntry, "ABC");
-		Node n = filesEntry.getDefiningNode();
+		Node n = getHelper().getDeclaration("ABC");
 		assertThat(n instanceof AOartifactDeclaration);
+		AOartifactDeclaration artDecl = (AOartifactDeclaration)n;
 		
+		LinkedList<POcompatibilitySpec> compatibilities = artDecl.getOcompatibilitySpec();
+		assertThat(compatibilities.size() == 1);
+		POcompatibilitySpec s = compatibilities.get(0);
+		assertThat(s instanceof AAssumeOcompatibilitySpec);
+		AAssumeOcompatibilitySpec assumeSpec = (AAssumeOcompatibilitySpec)s;
 		
+		LinkedList<TId> pathIds = assumeSpec.getId();
+		LinkedList<POrangeSpec> rangesSpecs = assumeSpec.getOrangeSpec();
 		
+		assertThat(pathIds.size() == 1);
+		assertThat(pathIds.get(0).getText().equals("XYZ"));
 		
+		assertThat(rangeSpecs.size() == 2);
+		POrangeSpec p = rangeSpecs.get(0);
+		assertThat(p instanceof AAllOrangeSpec);
 		
-		throw new Exception();
+		p = rangeSpecs.get(1);
+		assertThat(p instanceof AOneOrangeSpec);
+		AOneOrangeSpec numSpec = (AOneOrangeSpec)p;
+		TWholeNumber num = numSpec.getWholeNumber();
+		assertThat(num.getText().equals("3"));
 	}
 	
 	@When("^an artifact asserts compatibility with minor version XYZ:(\\d+)\\.\\*$")

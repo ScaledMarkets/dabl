@@ -141,4 +141,9 @@ public class Helper {
 			throw new Exception("Assertion violation");
 		}
 	}
+	
+	public void printAST(String title) {
+		System.out.println(title);
+		PrettyPrint.pp(start);
+	}
 }

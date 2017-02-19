@@ -40,4 +40,8 @@ public class TestBase {
 	public void msg(String message) {
 		System.out.println(message);
 	}
+	
+	public void printAST(String title) {
+		this.helper.printAST(title);
+	}
 }
