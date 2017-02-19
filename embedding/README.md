@@ -25,10 +25,12 @@ to the AST.
 
 ## Examples
 
-For an example
-of accessing the object model, see the [piper project](https://github.com/Scaled-Markets/piper).
-Piper is a build system based on DABL. Another example of embedding the compiler is
+For an example of instantiating the compiler class, running it to process input, and
+then accessing the resulting object model, see the
+[piper project](https://github.com/Scaled-Markets/piper).
+Piper is a build system based on DABL.
+Another example of instantiating and using the compiler is
 the [Dabl](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/main/Dabl.java)
-class itself, since its main mathod must instantiate the compiler calss.
+class itself, since its main mathod must instantiate the compiler class.
 The [behavioral test suite](https://github.com/ScaledMarkets/dabl/tree/master/test)
-also illustrates how to access the AST.
+provides additional examples.
