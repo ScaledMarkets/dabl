@@ -10,6 +10,8 @@ import scaledmarkets.dabl.main.*;
 
 import sablecc.PrettyPrint;
 
+import java.util.List;
+
 /**
  * Convenience methods for traversing the final AST and Annotations that are produced
  * by the DABL compiler.
@@ -31,39 +33,73 @@ public class Helper {
 	 */
 	public AOnamespace getPrimaryNamespace() throws Exception {
 		Start start = state.asts.get(0);
+		return getPrimaryNamespace(start);
+	}
+	
+	public AOnamespace getPrimaryNamespace(Start start) throws Exception {
+	
 		assertThat(start != null);
 		POnamespace n = start.getPOnamespace();
 		assertThat(n instanceof AOnamespace);
 		AOnamespace namespace = (AOnamespace)n;
 		return namespace;
 	}
-	
+
 	public List<AImportOnamespaceElt> getImportedNamespaces() throws Exception {
-		
-		....
+		Start start = state.asts.get(0);
+		return getImportedNamespaces(start);
 	}
 	
+	public List<AImportOnamespaceElt> getImportedNamespaces(Start start) throws Exception {
+		....
+	}
+		
 	public List<AOartifactDeclaration> getArtifactDeclarations() throws Exception {
+		Start start = state.asts.get(0);
+		return getArtifactDeclarations(start);
+	}
+	
+	public List<AOartifactDeclaration> getArtifactDeclarations(Start start) throws Exception {
 		
 		....
 	}
 	
 	public List<AOrepoDeclaration> getRepoDeclarations() throws Exception {
+		Start start = state.asts.get(0);
+		return getRepoDeclarations(start);
+	}
+	
+	public List<AOrepoDeclaration> getRepoDeclarations(Start start) throws Exception {
 		
 		....
 	}
 	
 	public List<AOfilesDeclaration> getFilesDeclarations() throws Exception {
+		Start start = state.asts.get(0);
+		return getFilesDeclarations(start);
+	}
+	
+	public List<AOfilesDeclaration> getFilesDeclarations(Start start) throws Exception {
 		
 		....
 	}
 	
 	public List<AOfunctionDeclaration> getFunctionDeclarations() throws Exception {
+		Start start = state.asts.get(0);
+		return getFunctionDeclarations(start);
+	}
+	
+	public List<AOfunctionDeclaration> getFunctionDeclarations(Start start) throws Exception {
 		
 		....
 	}
 	
 	public List<AOtaskDeclaration> getTaskDeclarations() throws Exception {
+		Start start = state.asts.get(0);
+		return getTaskDeclarations(start);
+	}
+	
+	public List<AOtaskDeclaration> getTaskDeclarations(Start start) throws Exception {
 		
 		....
 	}
@@ -173,7 +209,12 @@ public class Helper {
 	}
 	
 	public void printAST(String title) {
+		Start start = state.asts.get(0);
+		printAST(title, start);
+	}
+	
+	public void printAST(String title, Start start) {
 		System.out.println(title);
-		PrettyPrint.pp(state.asts.get(0));
+		PrettyPrint.pp(start);
 	}
 }
