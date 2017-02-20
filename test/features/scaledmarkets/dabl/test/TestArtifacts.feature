@@ -45,19 +45,19 @@ Feature: TestArtifacts
 	@notdone
 	Scenario: Wildcard in tested with major version number
 		When an artifact asserts tested with a wildcard major version, such as, *.3
-		Then a compatibility spec is generated for version *.3
+		Then a tested with spec is generated for version *.3
 
 	@notdone
 	Scenario: Wildcard in tested with minor version number
 		When an artifact asserts tested with a wildcard minor version, such as, 3.*
-		Then a compatibility spec is generated for version 3.*
+		Then a tested with spec is generated for version 3.*
 
 	@notdone
 	Scenario: Range in tested with major version number
 		When an artifact asserts tested with a range of major versions, such as, 3.3-4.0
-		Then a compatibility spec is generated for versions 3.3-4.0
+		Then a tested with spec is generated for versions 3.3-4.0
 
 	@notdone
 	Scenario: Range in tested with minor version number
 		When an artifact asserts tested with a range of minor versions, such as, 3.3-4.4
-		Then a compatibility spec is generated for versions 3.3-4.4
+		Then a tested with spec is generated for versions 3.3-4.4

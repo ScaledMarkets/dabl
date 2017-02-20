@@ -51,7 +51,7 @@ public class CompilerState
 	
 	public void setGlobalScope(NameScope scope) { this.globalScope = scope; }
 
-    public Object getIn(Node node) { return in.get(node); }
+    public Annotation getIn(Node node) { return in.get(node); }
     
-    public Object getOut(Node node) { return out.get(node); }
+    public Annotation getOut(Node node) { return out.get(node); }
 }

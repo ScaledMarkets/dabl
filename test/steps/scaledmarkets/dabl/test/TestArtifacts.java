@@ -188,8 +188,8 @@ public class TestArtifacts extends TestBase {
 		throw new Exception();
 	}
 	
-	@Then("^a compatibility spec is generated for version \\3\\.3$")
-	public void a_compatibility_spec_is_generated_for_version_star_dot_3() throws Throwable {
+	@Then("^a tested with spec is generated for version \\3\\.3$")
+	public void a_tested_with_spec_is_generated_for_version_3_dot_3() throws Throwable {
 		
 		throw new Exception();
 	}
@@ -200,8 +200,8 @@ public class TestArtifacts extends TestBase {
 		throw new Exception();
 	}
 	
-	@Then("^a compatibility spec is generated for version 3\\.\\*$")
-	public void a_compatibility_spec_is_generated_for_version_3_dot_star() throws Throwable {
+	@Then("^a tested with spec is generated for version 3\\.\\*$")
+	public void a_tested_with_spec_is_generated_for_version_3_dot_star() throws Throwable {
 		
 		throw new Exception();
 	}
@@ -212,8 +212,8 @@ public class TestArtifacts extends TestBase {
 		throw new Exception();
 	}
 	
-	@Then("^a compatibility spec is generated for versions 3\\.3-4\\.0$")
-	public void a_compatibility_spec_is_generated_for_versions_3_dot_3_to_4_dot_0() throws Throwable {
+	@Then("^a tested with spec is generated for versions 3\\.3-4\\.0$")
+	public void a_tested_with_spec_is_generated_for_versions_3_dot_3_to_4_dot_0() throws Throwable {
 		
 		throw new Exception();
 	}
@@ -224,8 +224,8 @@ public class TestArtifacts extends TestBase {
 		throw new Exception();
 	}
 	
-	@Then("^a compatibility spec is generated for versions 3\\.3-4\\.4$")
-	public void a_compatibility_spec_is_generated_for_versions_3_dot_3_to_4_dot_4() throws Throwable {
+	@Then("^a tested with spec is generated for versions 3\\.3-4\\.4$")
+	public void a_tested_with_spec_is_generated_for_versions_3_dot_3_to_4_dot_4() throws Throwable {
 		
 		throw new Exception();
 	}

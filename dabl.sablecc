@@ -129,13 +129,10 @@ Tokens
 
     // Variable Length Sequences:
     whole_number = digit+;
-    //float_number = digit* per digit+;
     whitespace = (blank | cr | nl | tab )+;
     id = ( letter | underscore ) ( letter | digit | underscore )+;
-    //non_ws_char_seq = [ any_character - [ quote + comma ] ]*;
     string = quote [ any_character - quote ]* quote;
     string2 = triplequote any_character* triplequote;
-    //string2 = triplequote [ any_character - triplequote ]* triplequote;
     slashslashcomment = slashslash [ any_character - nl ]* nl;
     slashslashslashcomment = slashslashslash [ any_character - nl ]* nl;
     slashstarcomment = slashstar any_character* starslash;
@@ -327,10 +324,10 @@ Productions
         ;
     
     files_decl {-> ofiles_declaration} =
-        files [name]:id from string_literal
+        files [name]:id from [project]:string_literal
             in [source]:id prefer_stmt_opt
             files_stmts                     {-> New ofiles_declaration(name,
-                                                string_literal.ostring_literal, New oid_ref(source),
+                                                project.ostring_literal, New oid_ref(source),
                                                 prefer_stmt_opt.ofile_preference,
                                                 [files_stmts.ofileset_operation])}
         ;
@@ -735,7 +732,7 @@ Abstract Syntax Tree
       ;
     
     ofiles_declaration =
-        [name]:id ostring_literal [repository]:oid_ref ofile_preference ofileset_operation*;
+        [name]:id [project]:ostring_literal [repository]:oid_ref ofile_preference ofileset_operation*;
 
     ofile_preference =
         {latest_compatible}

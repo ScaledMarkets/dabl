@@ -18,23 +18,51 @@ import java.util.LinkedList;
 
 public class TestForwardReferences extends TestBase {
 	
+	Reader reader;
+	
 	@When("^I declare a symbol after it is referenced$")
 	public void i_declare_a_symbol_after_it_is_referenced() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
-	}
-	
-	@Then("^I can retrieve the IdRefAnnotation from the reference to the symbol$")
-	public void i_can_retrieve_the_IdRefAnnotation_from_the_reference_to_the_symbol() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		this.reader = new StringReader(
+"namespace simple\n" +
+"  files Stuff from \"myrepo\" in my_maven\n" +
+"    include \"*.java\"" +
+"  repo my_maven type \"maven\"\n" +
+"    path \"mymaven.abc.com\"\n" +
+"    userid \"MavenUserId\" password \"MavenPassword\"\n"
+			);
 	}
 	
 	@Then("^the IdRefAnnotation is correct$")
 	public void the_IdRefAnnotation_is_correct() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		Dabl dabl = new Dabl(false, true, this.reader);
+		createHelper(dabl.process());
+		
+		// Find the Id that references my_repo from the files declaration.
+		
+		Node n = getHelper().getDeclaration("Stuff");
+		assertThat(n instanceof AOfilesDeclaration);
+		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
+		
+		POidRef p = filesDecl.getRepository();
+		assertThat(p instanceof AOidRef);
+		AOidRef idRef = (AOidRef)p;
+		
+		TId id = idRef.getId();
+		assertThat(id.getText().equals("my_maven"));
+		Annotation annot = getHelper().getState().getOut(idRef)
+		assertThat(annot != null);
+		assertThat(annot instanceof IdRefAnnotation);
+		IdRefAnnotation idRefAnnot = (IdRefAnnotation)annot;
+		SymbolEntry entry = idRefAnnot.getDefiningSymbolEntry();
+		assertThat(entry != null);
+		assertThat(entry instanceof DeclaredEntry);
+		DeclaredEntry declEntry = (DeclaredEntry)entry;
+		
+		Node n = declEntry.getDefiningNode();
+		assertThat(n != null);
+		assertThat(n instanceof AOrepoDecl);
+		AOrepoDecl repoDecl = (AOrepoDecl)n;
 	}
-
-
 }
