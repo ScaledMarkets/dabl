@@ -11,6 +11,7 @@ import scaledmarkets.dabl.main.*;
 import sablecc.PrettyPrint;
 
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Convenience methods for traversing the final AST and Annotations that are produced
@@ -48,7 +49,31 @@ public class Helper {
 		AOnamespace namespace = (AOnamespace)n;
 		return namespace;
 	}
+	
+	public String getNamespaceFullName(AOnamespace namespace) {
+		LinkedList<TId> ids = namespace.getPath();
+		String name = "";
+		boolean firstTime = true;
+		for (TId id : ids) {
+			if (firstTime) { firstTime = false; } else {
+				name = name + ".";
+			}
+			name = name + id.getText();
+		}
+		return name;
+	}
 
+	public List<POnamespaceElt> getNamespaceElements() throws Exception {
+		Start start = state.asts.get(0);
+		return getNamespaceElements(start);
+	}
+	
+	public List<POnamespaceElt> getNamespaceElements(Start start) throws Exception {
+		
+		AOnamespace namespace = getPrimaryNamespace(start);
+		return namespace.getOnamespaceElt();
+	}
+	
 	public List<AImportOnamespaceElt> getImportedNamespaces() throws Exception {
 		Start start = state.asts.get(0);
 		return getImportedNamespaces(start);
@@ -56,8 +81,9 @@ public class Helper {
 	
 	public List<AImportOnamespaceElt> getImportedNamespaces(Start start) throws Exception {
 		....
-	}
 		
+	}
+	
 	public List<AOartifactDeclaration> getArtifactDeclarations() throws Exception {
 		Start start = state.asts.get(0);
 		return getArtifactDeclarations(start);
@@ -65,7 +91,15 @@ public class Helper {
 	
 	public List<AOartifactDeclaration> getArtifactDeclarations(Start start) throws Exception {
 		
-		....
+		List<POnamespaceElt> elts = getNamespaceElements(start);
+		List<AOartifactDeclaration> decls = new LinkedList<AOartifactDeclaration>();
+		for (POnamespaceElt elt : elts) {
+			if (elt instanceof AArtifactOnamespaceElt) {
+				AArtifactOnamespaceElt anelt = (AArtifactOnamespaceElt)elt;
+				decls.add((AOartifactDeclaration)(anelt.getOartifactDeclaration()));
+			}
+		}
+		return decls;
 	}
 	
 	public List<AOrepoDeclaration> getRepoDeclarations() throws Exception {
@@ -75,7 +109,15 @@ public class Helper {
 	
 	public List<AOrepoDeclaration> getRepoDeclarations(Start start) throws Exception {
 		
-		....
+		List<POnamespaceElt> elts = getNamespaceElements(start);
+		List<AOrepoDeclaration> decls = new LinkedList<ArepoDeclaration>();
+		for (POnamespaceElt elt : elts) {
+			if (elt instanceof ARepoOnamespaceElt) {
+				ARepoOnamespaceElt anelt = (ARepoOnamespaceElt)elt;
+				decls.add((AOrepoDeclaration)(anelt.getOrepoDeclaration()));
+			}
+		}
+		return decls;
 	}
 	
 	public List<AOfilesDeclaration> getFilesDeclarations() throws Exception {
@@ -85,7 +127,15 @@ public class Helper {
 	
 	public List<AOfilesDeclaration> getFilesDeclarations(Start start) throws Exception {
 		
-		....
+		List<POnamespaceElt> elts = getNamespaceElements(start);
+		List<AOfilesDeclaration> decls = new LinkedList<AOfilesDeclaration>();
+		for (POnamespaceElt elt : elts) {
+			if (elt instanceof AFilesOnamespaceElt) {
+				AFilesOnamespaceElt anelt = (AFilesOnamespaceElt)elt;
+				decls.add((AOfilesDeclaration)(anelt.getOfilesDeclaration()));
+			}
+		}
+		return decls;
 	}
 	
 	public List<AOfunctionDeclaration> getFunctionDeclarations() throws Exception {
@@ -95,7 +145,15 @@ public class Helper {
 	
 	public List<AOfunctionDeclaration> getFunctionDeclarations(Start start) throws Exception {
 		
-		....
+		List<POnamespaceElt> elts = getNamespaceElements(start);
+		List<AOfunctionDeclaration> decls = new LinkedList<AOfunctionDeclaration>();
+		for (POnamespaceElt elt : elts) {
+			if (elt instanceof AFunctionOnamespaceElt) {
+				AFunctionOnamespaceElt anelt = (AFunctionOnamespaceElt)elt;
+				decls.add((AOfunctionDeclaration)(anelt.getOfunctionDeclaration()));
+			}
+		}
+		return decls;
 	}
 	
 	public List<AOtaskDeclaration> getTaskDeclarations() throws Exception {
@@ -105,7 +163,15 @@ public class Helper {
 	
 	public List<AOtaskDeclaration> getTaskDeclarations(Start start) throws Exception {
 		
-		....
+		List<POnamespaceElt> elts = getNamespaceElements(start);
+		List<AOtaskDeclaration> decls = new LinkedList<AOtaskDeclaration>();
+		for (POnamespaceElt elt : elts) {
+			if (elt instanceof ATaskOnamespaceElt) {
+				ATaskOnamespaceElt anelt = (ATaskOnamespaceElt)elt;
+				decls.add((AOtaskDeclaration)(anelt.getOtaskDeclaration()));
+			}
+		}
+		return decls;
 	}
 	
 	/**
