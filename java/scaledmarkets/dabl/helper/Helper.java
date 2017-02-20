@@ -28,6 +28,10 @@ public class Helper {
 		return this.state;
 	}
 	
+	public List<Start> getASTs() {
+		return state.asts;
+	}
+	
 	/**
 	 * Return the root namespace Node.
 	 */
