@@ -82,10 +82,10 @@ public class Helper {
 	public List<AImportOnamespaceElt> getImportedNamespaces(Start start) throws Exception {
 		
 		List<POnamespaceElt> elts = getNamespaceElements(start);
-		List<AImportONamespaceElt> importElts = new LinkedList<AImportONamespaceElt>();
+		List<AImportOnamespaceElt> importElts = new LinkedList<AImportOnamespaceElt>();
 		for (POnamespaceElt elt : elts) {
-			if (elt instanceof AImportONamespaceElt) {
-				AImportONamespaceElt importElt = (AImportONamespaceElt)elt;
+			if (elt instanceof AImportOnamespaceElt) {
+				AImportOnamespaceElt importElt = (AImportOnamespaceElt)elt;
 				importElts.add(importElt);
 			}
 		}
@@ -118,7 +118,7 @@ public class Helper {
 	public List<AOrepoDeclaration> getRepoDeclarations(Start start) throws Exception {
 		
 		List<POnamespaceElt> elts = getNamespaceElements(start);
-		List<AOrepoDeclaration> decls = new LinkedList<ArepoDeclaration>();
+		List<AOrepoDeclaration> decls = new LinkedList<AOrepoDeclaration>();
 		for (POnamespaceElt elt : elts) {
 			if (elt instanceof ARepoOnamespaceElt) {
 				ARepoOnamespaceElt anelt = (ARepoOnamespaceElt)elt;
