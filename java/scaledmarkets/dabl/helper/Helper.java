@@ -29,19 +29,27 @@ public class Helper {
 		return this.state;
 	}
 	
+	/**
+	 * Return the ASTs that were parsed by the compiler.
+	 */
 	public List<Start> getASTs() {
 		return state.asts;
 	}
 	
 	/**
-	 * Return the root namespace Node.
+	 * Return the primary namespace Node. The primary namespace is the namespace
+	 * that is declared by the DABL that was processed. Other namespaces might
+	 * have been imported by the DABL input, but those are not primary.
 	 */
 	public AOnamespace getPrimaryNamespace() throws Exception {
 		Start start = state.asts.get(0);
 		return getPrimaryNamespace(start);
 	}
 	
-	public AOnamespace getPrimaryNamespace(Start start) throws Exception {
+	/**
+	 * Return the namespace for the specified AST.
+	 */
+	public AOnamespace getNamespace(Start start) throws Exception {
 	
 		assertThat(start != null);
 		POnamespace n = start.getPOnamespace();
@@ -50,6 +58,10 @@ public class Helper {
 		return namespace;
 	}
 	
+	/**
+	 * Return the fully qualified name (i.e., all parts of the path) of the
+	 * specified namespace.
+	 */
 	public String getNamespaceFullName(AOnamespace namespace) {
 		LinkedList<TId> ids = namespace.getPath();
 		String name = "";
@@ -63,22 +75,38 @@ public class Helper {
 		return name;
 	}
 
+	/**
+	 * Return the top level Nodes that are owned by the primary namespace.
+	 */
 	public List<POnamespaceElt> getNamespaceElements() throws Exception {
 		Start start = state.asts.get(0);
 		return getNamespaceElements(start);
 	}
 	
+	/**
+	 * Return the top level Nodes that are owned by the namespace of the specified AST.
+	 */
 	public List<POnamespaceElt> getNamespaceElements(Start start) throws Exception {
 		
 		AOnamespace namespace = getPrimaryNamespace(start);
 		return namespace.getOnamespaceElt();
 	}
 	
+	/**
+	 * Return the imports of the primary namespace. Only namespaces that are directly
+	 * imported are returned: any that are imported by those that are imported
+	 * are not included.
+	 */
 	public List<AImportOnamespaceElt> getImportedNamespaces() throws Exception {
 		Start start = state.asts.get(0);
 		return getImportedNamespaces(start);
 	}
 	
+	/**
+	 * Return the imports of the namespace of the specified AST. Only namespaces
+	 * that are directly imported are returned: any that are imported by those that
+	 * are imported are not included.
+	 */
 	public List<AImportOnamespaceElt> getImportedNamespaces(Start start) throws Exception {
 		
 		List<POnamespaceElt> elts = getNamespaceElements(start);
@@ -92,11 +120,17 @@ public class Helper {
 		return importElts;
 	}
 	
+	/**
+	 * Return the artifact declarations in the primary namespace.
+	 */
 	public List<AOartifactDeclaration> getArtifactDeclarations() throws Exception {
 		Start start = state.asts.get(0);
 		return getArtifactDeclarations(start);
 	}
 	
+	/**
+	 * Return the artifact declarations in the namespace of the specified AST.
+	 */
 	public List<AOartifactDeclaration> getArtifactDeclarations(Start start) throws Exception {
 		
 		List<POnamespaceElt> elts = getNamespaceElements(start);
@@ -110,11 +144,17 @@ public class Helper {
 		return decls;
 	}
 	
+	/**
+	 * Return the repo declarations in the primary namespace.
+	 */
 	public List<AOrepoDeclaration> getRepoDeclarations() throws Exception {
 		Start start = state.asts.get(0);
 		return getRepoDeclarations(start);
 	}
 	
+	/**
+	 * Return the repo declarations in the namespace of the specified AST.
+	 */
 	public List<AOrepoDeclaration> getRepoDeclarations(Start start) throws Exception {
 		
 		List<POnamespaceElt> elts = getNamespaceElements(start);
@@ -128,11 +168,17 @@ public class Helper {
 		return decls;
 	}
 	
+	/**
+	 * Return the files declarations in the primary namespace.
+	 */
 	public List<AOfilesDeclaration> getFilesDeclarations() throws Exception {
 		Start start = state.asts.get(0);
 		return getFilesDeclarations(start);
 	}
 	
+	/**
+	 * Return the files declarations in the namespace of the specified AST.
+	 */
 	public List<AOfilesDeclaration> getFilesDeclarations(Start start) throws Exception {
 		
 		List<POnamespaceElt> elts = getNamespaceElements(start);
@@ -146,11 +192,17 @@ public class Helper {
 		return decls;
 	}
 	
+	/**
+	 * Return the function declarations in the primary namespace.
+	 */
 	public List<AOfunctionDeclaration> getFunctionDeclarations() throws Exception {
 		Start start = state.asts.get(0);
 		return getFunctionDeclarations(start);
 	}
 	
+	/**
+	 * Return the function declarations in the namespace of the specified AST.
+	 */
 	public List<AOfunctionDeclaration> getFunctionDeclarations(Start start) throws Exception {
 		
 		List<POnamespaceElt> elts = getNamespaceElements(start);
@@ -164,11 +216,17 @@ public class Helper {
 		return decls;
 	}
 	
+	/**
+	 * Return the task declarations in the primary namespace.
+	 */
 	public List<AOtaskDeclaration> getTaskDeclarations() throws Exception {
 		Start start = state.asts.get(0);
 		return getTaskDeclarations(start);
 	}
 	
+	/**
+	 * Return the task declarations in the namespace of the specified AST.
+	 */
 	public List<AOtaskDeclaration> getTaskDeclarations(Start start) throws Exception {
 		
 		List<POnamespaceElt> elts = getNamespaceElements(start);
@@ -268,16 +326,25 @@ public class Helper {
 		return stringValue;
 	}*/
 	
+	/**
+	 * If expr is false, throw an Exception.
+	 */
 	public void assertThat(boolean expr) throws Exception {
 		if (! expr) throw new Exception("Assertion violation");
 	}
 	
+	/**
+	 * If expr is false, print the message and throw an Exception.
+	 */
 	public void assertThat(boolean expr, String msg) throws Exception {
 		if (msg == null) msg = "";
 		if (msg != null) msg = "; " + msg;
 		if (! expr) throw new Exception("Assertion violation: " + msg);
 	}
 	
+	/**
+	 * If expr is false, perform the specified action and then throw an Exception.
+	 */
 	public void assertThat(boolean expr, Runnable action) throws Exception {
 		if (! expr) {
 			System.out.println("Assertion violation");
@@ -286,11 +353,18 @@ public class Helper {
 		}
 	}
 	
+	/**
+	 * Print title, followed by the primary AST to stdout. The primary AST is
+	 * the first element of state.asts.
+	 */
 	public void printAST(String title) {
 		Start start = state.asts.get(0);
 		printAST(title, start);
 	}
 	
+	/**
+	 * Print title, followed by the specified AST to stdout.
+	 */
 	public void printAST(String title, Start start) {
 		System.out.println(title);
 		PrettyPrint.pp(start);
