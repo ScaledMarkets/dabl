@@ -51,7 +51,7 @@ public class TestForwardReferences extends TestBase {
 		
 		TId id = idRef.getId();
 		assertThat(id.getText().equals("my_maven"));
-		Annotation annot = getHelper().getState().getOut(idRef)
+		Annotation annot = getHelper().getState().getOut(idRef);
 		assertThat(annot != null);
 		assertThat(annot instanceof IdRefAnnotation);
 		IdRefAnnotation idRefAnnot = (IdRefAnnotation)annot;
@@ -60,7 +60,7 @@ public class TestForwardReferences extends TestBase {
 		assertThat(entry instanceof DeclaredEntry);
 		DeclaredEntry declEntry = (DeclaredEntry)entry;
 		
-		Node n = declEntry.getDefiningNode();
+		n = declEntry.getDefiningNode();
 		assertThat(n != null);
 		assertThat(n instanceof AOrepoDeclaration);
 		AOrepoDeclaration repoDeclaration = (AOrepoDeclaration)n;
