@@ -38,10 +38,10 @@ public class TestStringExpression extends TestBase {
 		NameScopeEntry namespaceEntry = getHelper().getNamespaceSymbolEntry("simple");
 		DeclaredEntry repoEntry = getHelper().getDeclaredEntry(namespaceEntry, "my_git");
 		Node n = repoEntry.getDefiningNode();
-		assertThat(n instanceof AOrepoDecl, () -> {
+		assertThat(n instanceof AOrepoDeclaration, () -> {
 			System.out.println("\tn is a " + n.getClass().getName());
 		});
-		AOrepoDecl repoDec = (AOrepoDecl)n;
+		AOrepoDeclaration repoDec = (AOrepoDeclaration)n;
 		
 		POstringValueOpt p = repoDec.getPassword();
 		assertThat(p != null);

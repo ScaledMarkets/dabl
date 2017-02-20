@@ -220,7 +220,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	/* Add repo declarations to the namespace. */
 	
-	public void inAOrepoDecl(AOrepoDecl node)
+	public void inAOrepoDeclaration(AOrepoDeclaration node)
 	{
 	 	TId id = node.getName();
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
@@ -243,9 +243,9 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		resolveForwardReferences(entry);
 	}
 	
-	public void outAOrepoDecl(AOrepoDecl node)
+	public void outAOrepoDeclaration(AOrepoDeclaration node)
 	{
-		super.outAOrepoDecl(node);
+		super.outAOrepoDeclaration(node);
 	}
 	
 	

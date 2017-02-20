@@ -62,7 +62,7 @@ public class TestForwardReferences extends TestBase {
 		
 		Node n = declEntry.getDefiningNode();
 		assertThat(n != null);
-		assertThat(n instanceof AOrepoDecl);
-		AOrepoDecl repoDecl = (AOrepoDecl)n;
+		assertThat(n instanceof AOrepoDeclaration);
+		AOrepoDeclaration repoDeclaration = (AOrepoDeclaration)n;
 	}
 }

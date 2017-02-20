@@ -65,7 +65,7 @@ public class TestImport extends TestBase {
 		assertThat(e instanceof DeclaredEntry);
 		DeclaredEntry reposEntry = (DeclaredEntry)e;
 		assertThat(reposEntry.getName().equals("my_maven"));
-		assertThat(reposEntry.getDefiningNode() instanceof AOrepoDecl);
+		assertThat(reposEntry.getDefiningNode() instanceof AOrepoDeclaration);
 	}
 
 	@When("^I import a multi-level namespace$")

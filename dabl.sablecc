@@ -177,7 +177,7 @@ Productions
       | {typographic_decl} typographic_decl {-> New onamespace_elt.typographic(typographic_decl.otypographic_declaration)}
       | {artifact_decl} artifact_decl       {-> New onamespace_elt.artifact(artifact_decl.oartifact_declaration)}
       | {task_decl} task_decl               {-> New onamespace_elt.task(task_decl.otask_declaration)}
-      | {repo_decl} repo_decl               {-> New onamespace_elt.repo(repo_decl.orepo_decl)}
+      | {repo_decl} repo_decl               {-> New onamespace_elt.repo(repo_decl.orepo_declaration)}
       | {files_decl} files_decl             {-> New onamespace_elt.files(files_decl.ofiles_declaration)}
       | {function_decl} function_decl       {-> New onamespace_elt.function(function_decl.ofunction_declaration)}
       | {translation_decl} translation_decl {-> New onamespace_elt.translation(translation_decl.otranslation_declaration)}
@@ -435,10 +435,10 @@ Productions
                                                 [procedural_stmts.oproc_stmt])}
         ;
     
-    repo_decl {-> orepo_decl} =
+    repo_decl {-> orepo_declaration} =
         repo [name]:id type [repo_type]:string_literal tcp_scheme_spec_opt
             repo_path_spec userid_spec_opt password_spec_opt
-                                            {-> New orepo_decl(name, repo_type.ostring_literal,
+                                            {-> New orepo_declaration(name, repo_type.ostring_literal,
                                                 tcp_scheme_spec_opt.ostring_value_opt,
                                                 repo_path_spec.ostring_literal,
                                                 userid_spec_opt.ostring_value_opt,
@@ -697,7 +697,7 @@ Abstract Syntax Tree
         {import} id*
       | {typographic} otypographic_declaration
       | {artifact} oartifact_declaration
-      | {repo} orepo_decl
+      | {repo} orepo_declaration
       | {files} ofiles_declaration
       | {function} ofunction_declaration
       | {task} otask_declaration
@@ -722,7 +722,7 @@ Abstract Syntax Tree
       | {tested} id* orange_spec*
         ;
 
-    orepo_decl =
+    orepo_declaration =
         [name]:id [type]:ostring_literal [scheme]:ostring_value_opt [path]:ostring_literal
             [userid]:ostring_value_opt [password]:ostring_value_opt;
 

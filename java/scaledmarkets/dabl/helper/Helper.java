@@ -38,6 +38,36 @@ public class Helper {
 		return namespace;
 	}
 	
+	public List<AImportOnamespaceElt> getImportedNamespaces() throws Exception {
+		
+		....
+	}
+	
+	public List<AOartifactDeclaration> getArtifactDeclarations() throws Exception {
+		
+		....
+	}
+	
+	public List<AOrepoDeclaration> getRepoDeclarations() throws Exception {
+		
+		....
+	}
+	
+	public List<AOfilesDeclaration> getFilesDeclarations() throws Exception {
+		
+		....
+	}
+	
+	public List<AOfunctionDeclaration> getFunctionDeclarations() throws Exception {
+		
+		....
+	}
+	
+	public List<AOtaskDeclaration> getTaskDeclarations() throws Exception {
+		
+		....
+	}
+	
 	/**
 	 * Return the symbol table entry for the primary namespace. The entry is
 	 * in the global symbol table.
