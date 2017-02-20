@@ -80,8 +80,16 @@ public class Helper {
 	}
 	
 	public List<AImportOnamespaceElt> getImportedNamespaces(Start start) throws Exception {
-		....
 		
+		List<POnamespaceElt> elts = getNamespaceElements(start);
+		List<AImportONamespaceElt> importElts = new LinkedList<AImportONamespaceElt>();
+		for (POnamespaceElt elt : elts) {
+			if (elt instanceof AImportONamespaceElt) {
+				AImportONamespaceElt importElt = (AImportONamespaceElt)elt;
+				importElts.add(importElt);
+			}
+		}
+		return importElts;
 	}
 	
 	public List<AOartifactDeclaration> getArtifactDeclarations() throws Exception {
