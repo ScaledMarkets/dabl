@@ -57,7 +57,7 @@ public class TestImport extends TestBase {
 		TId reposId = reposRef.getId();
 		assertThat(reposId.getText().equals("my_maven"));
 		
-		Annotation a = getHelper().getState().out.get(reposRef);
+		Annotation a = getHelper().getState().getOut(reposRef);
 		assertThat(a != null, "It appears that the local reference to my_maven was not resolved");
 		assertThat(a instanceof IdRefAnnotation, "a is a " + a.getClass().getName());
 		IdRefAnnotation idrefan = (IdRefAnnotation)a;

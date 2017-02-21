@@ -7,51 +7,56 @@ import java.util.List;
 import java.util.LinkedList;
 import java.net.URLClassLoader;
 
+/**
+ * Contains the entire state of the compiler when processing an input file.
+ * When the compiler finishes processing a file, it returns the CompilerState.
+ */
 public class CompilerState
 {
+	public List<Start> getASTs() { return this.asts; }
+	
+	public NameScope getGlobalScope() { return this.globalScope; }
+	
+    public Annotation getIn(Node node) { return in.get(node); }
+    
+    public Annotation getOut(Node node) { return out.get(node); }
+	
+    
+	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
+
 	/**
 	 * Root of the ASTs that are created. The first AST is for the main file;
 	 * others are for imported namespaces.
 	 */
-	public List<Start> asts = new LinkedList<Start>();
+	protected List<Start> asts = new LinkedList<Start>();
 	
 	/**
 	 * Scope in which the namespace is defined.
 	 */
-	public NameScope globalScope;
+	protected NameScope globalScope;
 	
 	/**
 	 * A stack of NameScopes that is maintained during the Analysis phase.
 	 * If Analysis completes without error, there will only be one NameScope
 	 * in the stack: the global scope.
 	 */
-	public List<NameScope> scopeStack = new LinkedList<NameScope>();
+	protected List<NameScope> scopeStack = new LinkedList<NameScope>();
 	
 	/**
 	 * AST Node annotations that are set on entry to the Node type's analysis
 	 * method.
 	 */
-	public Hashtable<Node, Annotation> in = new Hashtable<Node, Annotation>();
+	protected Hashtable<Node, Annotation> in = new Hashtable<Node, Annotation>();
 	
 	/**
 	 * AST Node annotations that are set on exit from the Node type's analysis
 	 * method.
 	 */
-	public Hashtable<Node, Annotation> out = new Hashtable<Node, Annotation>();
+	protected Hashtable<Node, Annotation> out = new Hashtable<Node, Annotation>();
 
-	public CompilerState()
-	{
-	}
+	protected void pushScope(NameScope scope) { this.scopeStack.add(0, scope); }
 	
-	public void pushScope(NameScope scope) { this.scopeStack.add(0, scope); }
-	
-	public NameScope popScope() {
+	protected NameScope popScope() {
 		return this.scopeStack.remove(0);
 	}
-	
-	public void setGlobalScope(NameScope scope) { this.globalScope = scope; }
-
-    public Annotation getIn(Node node) { return in.get(node); }
-    
-    public Annotation getOut(Node node) { return out.get(node); }
 }

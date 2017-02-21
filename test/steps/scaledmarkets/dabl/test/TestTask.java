@@ -31,9 +31,7 @@ public class TestTask extends TestBase {
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getHelper().getState().globalScope != null);
-		System.out.println("scopeStack size: " + getHelper().getState().scopeStack.size());
-		assertThat(getHelper().getState().scopeStack.size() == 1);
+		assertThat(getHelper().getState().getGlobalScope() != null);
 	}
 	
 	@Then("^I can retrieve the the task by its name$")

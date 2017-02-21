@@ -33,7 +33,7 @@ public class Helper {
 	 * Return the ASTs that were parsed by the compiler.
 	 */
 	public List<Start> getASTs() {
-		return state.asts;
+		return state.getASTs();
 	}
 	
 	/**
@@ -42,8 +42,8 @@ public class Helper {
 	 * have been imported by the DABL input, but those are not primary.
 	 */
 	public AOnamespace getPrimaryNamespace() throws Exception {
-		Start start = state.asts.get(0);
-		return getPrimaryNamespace(start);
+		Start start = state.getASTs().get(0);
+		return getNamespace(start);
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class Helper {
 	 * Return the top level Nodes that are owned by the primary namespace.
 	 */
 	public List<POnamespaceElt> getNamespaceElements() throws Exception {
-		Start start = state.asts.get(0);
+		Start start = state.getASTs().get(0);
 		return getNamespaceElements(start);
 	}
 	
@@ -88,7 +88,7 @@ public class Helper {
 	 */
 	public List<POnamespaceElt> getNamespaceElements(Start start) throws Exception {
 		
-		AOnamespace namespace = getPrimaryNamespace(start);
+		AOnamespace namespace = getNamespace(start);
 		return namespace.getOnamespaceElt();
 	}
 	
@@ -98,7 +98,7 @@ public class Helper {
 	 * are not included.
 	 */
 	public List<AImportOnamespaceElt> getImportedNamespaces() throws Exception {
-		Start start = state.asts.get(0);
+		Start start = state.getASTs().get(0);
 		return getImportedNamespaces(start);
 	}
 	
@@ -124,7 +124,7 @@ public class Helper {
 	 * Return the artifact declarations in the primary namespace.
 	 */
 	public List<AOartifactDeclaration> getArtifactDeclarations() throws Exception {
-		Start start = state.asts.get(0);
+		Start start = state.getASTs().get(0);
 		return getArtifactDeclarations(start);
 	}
 	
@@ -148,7 +148,7 @@ public class Helper {
 	 * Return the repo declarations in the primary namespace.
 	 */
 	public List<AOrepoDeclaration> getRepoDeclarations() throws Exception {
-		Start start = state.asts.get(0);
+		Start start = state.getASTs().get(0);
 		return getRepoDeclarations(start);
 	}
 	
@@ -172,7 +172,7 @@ public class Helper {
 	 * Return the files declarations in the primary namespace.
 	 */
 	public List<AOfilesDeclaration> getFilesDeclarations() throws Exception {
-		Start start = state.asts.get(0);
+		Start start = state.getASTs().get(0);
 		return getFilesDeclarations(start);
 	}
 	
@@ -196,7 +196,7 @@ public class Helper {
 	 * Return the function declarations in the primary namespace.
 	 */
 	public List<AOfunctionDeclaration> getFunctionDeclarations() throws Exception {
-		Start start = state.asts.get(0);
+		Start start = state.getASTs().get(0);
 		return getFunctionDeclarations(start);
 	}
 	
@@ -220,7 +220,7 @@ public class Helper {
 	 * Return the task declarations in the primary namespace.
 	 */
 	public List<AOtaskDeclaration> getTaskDeclarations() throws Exception {
-		Start start = state.asts.get(0);
+		Start start = state.getASTs().get(0);
 		return getTaskDeclarations(start);
 	}
 	
@@ -246,7 +246,7 @@ public class Helper {
 	 */
 	public NameScopeEntry getPrimaryNamespaceSymbolEntry() throws Exception {
 		AOnamespace namespace = getPrimaryNamespace();
-		Annotation a = this.state.in.get(namespace);
+		Annotation a = this.state.getIn(namespace);
 		assertThat(a != null);
 		assertThat(a instanceof NameScope);
 		NameScope nameScope = (NameScope)a;
@@ -261,7 +261,7 @@ public class Helper {
 	 */
 	public NameScopeEntry getNamespaceSymbolEntry(String namespaceName) throws Exception {
 		
-		NameScope globalScope = this.state.globalScope;
+		NameScope globalScope = this.state.getGlobalScope();
 		SymbolEntry entry = globalScope.getEntry(namespaceName);
 		assertThat(entry != null);
 		assertThat(entry instanceof NameScopeEntry);
@@ -355,10 +355,10 @@ public class Helper {
 	
 	/**
 	 * Print title, followed by the primary AST to stdout. The primary AST is
-	 * the first element of state.asts.
+	 * the first element of state.getASTs().
 	 */
 	public void printAST(String title) {
-		Start start = state.asts.get(0);
+		Start start = state.getASTs().get(0);
 		printAST(title, start);
 	}
 	
