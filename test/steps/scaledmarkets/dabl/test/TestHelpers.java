@@ -18,19 +18,21 @@ import java.util.HashMap;
 
 public class TestHelpers extends TestBase {
 
-	@Before
-	public setup() {
+	private AOnamespace primaryNamespace;
+	private AOnamespace importedNamespace;
+	
+	public TestHelpers() {
 		
 		Reader reader = new StringReader(
 "namespace simple.is.better \n" +
-"  import another\n" +
+"  import another.one\n" +
 "  files Stuff from \"myrepo\" in my_maven\n" +
 "    include \"*.java\""
 			);
 		
 		Map<String, String> namespaces = new HashMap<String, String>();
-		namespaces.put("another",
-"namespace another\n" +
+		namespaces.put("another.one",
+"namespace another.one\n" +
 "  repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
 		);
 
@@ -41,35 +43,49 @@ public class TestHelpers extends TestBase {
 	@When("^I call getPrimaryNamespace$")
 	public void i_call_getPrimaryNamespace() throws Throwable {
 		
-		AOnamespace namespace = getHelper().getPrimaryNamespace();
-		assertThat(namespace != null);
-		LinkedList<TId> path = namespace.getPath();
+		this.primaryNamespace = getHelper().getPrimaryNamespace();
+		assertThat(this.primaryNamespace != null);
+		LinkedList<TId> path = this.primaryNamespace.getPath();
 		assertThat(path.size() == 3);
 		assertThat(Utilities.createNameFromPath(path).equals("simple.is.better"));
 	}
 	
 	@Then("^it returns the correct AOnamespace symbol$")
 	public void it_returns_the_correct_AOnamespace_symbol() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		// Should be empty: if the prior step fails, we won't get here.
 	}
 	
 	@When("^I call getNamespace with a start symbol$")
 	public void i_call_getNamespace_with_a_start_symbol() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		List<Start> asts = getHelper().getASTs();
+		assertThat(asts.size() == 2);
+		Start importedAST = asts.get(1);
+		this.importedNamespace = getHelper().getNamespace(importedAST);
+		assertThat(this.importedNamespace != null);
+		LinkedList<TId> path = this.importedNamespace.getPath();
+		assertThat(path.size() == 2);
+		assertThat(Utilities.createNameFromPath(path).equals("another.one"));
 	}
 	
 	@Then("^it returns the AOnamespace symbol for that AST$")
 	public void it_returns_the_AOnamespace_symbol_for_that_AST() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		// Should be empty: if the prior step fails, we won't get here.
 	}
 	
 	@When("^I call getNamespaceFullName with a namespace argument$")
 	public void i_call_getNamespaceFullName_with_a_namespace_argument() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		AOnamespace namespace1 = getNamespaceFullName("simple.is.better");
+		assertThat(namespace1 != null);
+		List<TId> path1 = namespace1.getPath()
+		assertThat(path1.size() == 3);
+		assertThat(Utilities.createNameFromPath(path1).equals("simple.is.better"));
+		
+		AOnamespace namespace2 = getNamespaceFullName("another.one");
+		List<TId> path2 = namespace2.getPath()
+		assertThat(path2.size() == 2);
+		assertThat(Utilities.createNameFromPath(path2).equals("another.one"));
 	}
 	
 	@Then("^it returns the fully qualified name of that namespace$")
