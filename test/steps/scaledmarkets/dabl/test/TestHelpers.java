@@ -15,13 +15,15 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
 
 public class TestHelpers extends TestBase {
 
 	private AOnamespace primaryNamespace;
 	private AOnamespace importedNamespace;
 	
-	public TestHelpers() {
+	public TestHelpers() throws Exception {
 		
 		Reader reader = new StringReader(
 "namespace simple.is.better \n" +
@@ -76,16 +78,11 @@ public class TestHelpers extends TestBase {
 	@When("^I call getNamespaceFullName with a namespace argument$")
 	public void i_call_getNamespaceFullName_with_a_namespace_argument() throws Throwable {
 		
-		AOnamespace namespace1 = getNamespaceFullName("simple.is.better");
-		assertThat(namespace1 != null);
-		List<TId> path1 = namespace1.getPath()
-		assertThat(path1.size() == 3);
-		assertThat(Utilities.createNameFromPath(path1).equals("simple.is.better"));
+		String namespace1Name = getHelper().getNamespaceFullName(primaryNamespace);
+		assertThat(namespace1Name.equals("simple.is.better"));
 		
-		AOnamespace namespace2 = getNamespaceFullName("another.one");
-		List<TId> path2 = namespace2.getPath()
-		assertThat(path2.size() == 2);
-		assertThat(Utilities.createNameFromPath(path2).equals("another.one"));
+		String namespace2Name = getHelper().getNamespaceFullName(importedNamespace);
+		assertThat(namespace2Name.equals("another.one"));
 	}
 	
 	@Then("^it returns the fully qualified name of that namespace$")
