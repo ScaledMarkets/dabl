@@ -83,7 +83,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	public void inAOnamespace(AOnamespace node) {
 		LinkedList<TId> path = node.getPath();
-		String name = createNameFromPath(path);
+		String name = Utilities.createNameFromPath(path);
 		
 		NameScope enclosingScope = getCurrentNameScope();
 		NameScope newScope = createNameScope(name, node);  // pushes name scope
@@ -105,7 +105,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		
 		
 		
-		String name = createNameFromPath(node.getId());
+		String name = Utilities.createNameFromPath(node.getId());
 
 		
 		System.out.println(">>>>>>>>created name: " + name + "...");  // debug
@@ -386,19 +386,5 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		
 		setExprAnnotation(node, result);
 		*/
-	}
-	
-	
-	/* Utilities */
-	
-	String createNameFromPath(LinkedList<TId> path) {
-		String name = "";
-		boolean firstTime = true;
-		for (TId id : path) {
-			if (firstTime) firstTime = false;
-			else name = name + ".";
-			name = name + id.getText();
-		}
-		return name;
 	}
 }
