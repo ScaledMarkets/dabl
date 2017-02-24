@@ -87,8 +87,7 @@ public class TestHelpers extends TestBase {
 	
 	@Then("^it returns the fully qualified name of that namespace$")
 	public void it_returns_the_fully_qualified_name_of_that_namespace() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		// Should be empty: if the prior step fails, we won't get here.
 	}
 	
 	@When("^I call getNamespaceElements$")
