@@ -92,8 +92,9 @@ public class TestHelpers extends TestBase {
 	
 	@When("^I call getNamespaceElements$")
 	public void i_call_getNamespaceElements() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		List<POnamespaceElt> elts = getHelper().getNamespaceElements();
+		assertThat(elts.size() == 2);
 	}
 	
 	@Then("^it returns the POnamespaceElt elements of the namespace$")
