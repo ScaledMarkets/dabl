@@ -57,3 +57,56 @@ timestamp than all of the files that are specified by the output set.
 * When the task is invoked, the bash command will be performed, after the value
 of $thisdir has been substituted. ($thisdir evaluates to the directory in which
 the DABL script exists.)
+
+## Semantics of the When Clause
+
+A task's `when` clause is evaluated each time a DABL file is processed.
+Thus, a non-sensical `when` clause such as,
+```
+    when outputs A newer than inputs
+```
+in which the outputs must be newer than the inputs, will cause the task to
+be performed all the time.
+
+The `inputs` and `output` clauses of a task define a dataflow in terms of the
+`files` that they reference. That dataflow determines the sequence for the
+evaluation of task `when` clauses. Thus, if a task's outputs are inputs to
+another task, the first task's `when` clause is evaluated before the second task's.
+Cycles such that a task's `outputs` feed back to its `inputs`, either directly or
+indirectly, are not allowed, and a DABL file that contains that type of cycle
+should compile with an error.
+
+If a `task` has multiple `when` clauses, then the task is executed if any of them
+is true.
+
+## Task Execution
+
+Task execution consists of performing the task’s procedural statements in sequence.
+Each task creates an operating system container. (e.g., a Linux container), in which
+it performs the task’s procedural statements. Task inputs and outputs are available
+via input and output streams named after the input and output names. For example,
+the following task,
+```
+task compileit
+  inputs A $thisdir/**.java from "my_repo" in my_git
+  inputs XYZ
+  outputs B ./**.class, ./**.txt
+```
+can read from A and XYZ, and write to B. When the task starts, the inputs are copied
+into the temporary filesystem of the container, with a separate root level directory
+for each input or output. On successful task completion, the outputs are copied to the
+file system of the DABL process context. The directory structure of the inputs
+and outputs is preserved, as are file attributes.
+
+### Task Lifecycle Model
+
+A task is only executed if its `when` condition is met.
+
+If an error occurs while performing a task procedural statement, the default behavior
+is to terminate the task. However, an error handler can be installed using the `on` keyword.
+Once an error handler is installed, the error handler is triggered if the task
+performs a procedural statement that returns a non-zero process status. A
+procedural statement can obtain the error status via the built-in function `error_status()`.
+When an error handler is triggered, it resets the error status before completing.
+If a task generates an error but the error is handled, then the task is considered
+to have succeeded.

@@ -38,3 +38,17 @@ post abc.jar to my_maven/myproject/abc.jar
 ```
 
 In this example, the word `to` is a preposition that is ignored by the DABL parser.
+
+## Built-In Functions
+
+The following functions are pre-defined by DABL:
+
+<dl>
+<dd><code>post</code> <i>artifact</i> <code>to</code> <i>destination-repo</i>/<i>path</i></dd>
+<dd><code>report</code> <i>string-message</i></dd>
+<dd><code>bash</code> <i>command string</i></dd>
+<dd><code>powershell</code> <i>command string</i></dd>
+<dd><code>deploy</code> <i>template-file-ref</i> => <i>deployment-ref</i></dd>
+<dd><code>ssh</code> <i>target-host command string</i></dd>
+<dd><code>destroy</code> <i>deployment-ref</i></dd>
+</dl>

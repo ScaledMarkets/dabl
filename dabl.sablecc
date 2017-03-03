@@ -868,7 +868,6 @@ Abstract Syntax Tree
         {string} string
       | {string2} string2
       | {static_string_expr} [left]:ostring_literal [right]:ostring_literal
-//      | {charseq} non_ws_char_seq
       ;
     
     onumeric_literal =
