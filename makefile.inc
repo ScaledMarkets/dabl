@@ -1,6 +1,12 @@
 # Environment configurations for makefile.
 # Edit this file to specify the locations of required tools and build directory.
 
+# Configurations particular to why this build is being run:
+maxerrs = 5
+.DELETE_ON_ERROR:
+.DEFAULT_GOAL: compile
+
+# Versions produced by this build:
 DABL_VERSION = 0.1
 BUILD_TAG = 0
 
@@ -22,7 +28,6 @@ CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-jvm-dep
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/gherkin-2.12.2.jar
 
 # Java compatibility: Requires Java 8.
-
 # For Mac:
 JAVA_HOME := $(shell /usr/libexec/java_home)
 #JAVA_HOME := /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home

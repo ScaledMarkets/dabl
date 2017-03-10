@@ -43,6 +43,11 @@ artifact ABC:2.$MinorVersionNumber  // Defines artifact "ABC", version 2.<mvn>
     /* One could define tasks inside the artifact, but then they would not
         be referenceable outside the artifact spec unless one prefixed
         their name with the name with the name of the artifact. */
+    
+    variant OSX  // implicitly declares artifact 'ABC.OSX'.
+    
+    variant Windows  // implicitly declares artifact 'ABC.Windows'.
+        tested with XYZ:3.3  // overrides for this variant
 
 //* Define a parameterized template that can be instantiated in this or
     any other namespace. *//
@@ -66,6 +71,7 @@ public task publish
     inputs thisdir/tests/results/3.3/*, thisdir/tests/results/3.4/**
     //* Push artifact to an artifact repository. *//
     post abc.jar to my_maven/myproject/abc.jar
+    post abc.jar as ABC:2.$MinorVersionNumber
     report "Success"  /* This is performed when the task completes without
         error. */
 
@@ -79,13 +85,13 @@ task compileit
         "
 
 //* Declare a git repo. *//
-repo my_git type git
+repo my_git type "git"
     scheme "https"
     path "github.com/myteam"
     userid "$GitUserId" password "$GitPassword"
 
 //* Declare a maven repo. *//
-repo my_maven type maven
+repo my_maven type "maven"
     path "mymaven.abc.com"
     userid "$MavenUserId" key file "~/mykey.pem"
 
@@ -96,6 +102,14 @@ files XYZ from "my_other_repo" in my_maven
     include "/src/xyz/*.java"
     exclude "/src/xyz/*_test.java"
     include "/src/xyz/tests/**/*.java"
+   
+files QRS from "scaledmarkets.project9.linux" in my_piper  // 'scaledmarkets.project9' is the artifact.
+    // The artifact (all variants) is mapped or pulled (read only) into each task's
+    // file system, in a '/QRS' directory.
+    publisher public key "............"  // used to validate artifact's signature
+
+repo my_piper type "piper"
+	path ....
 
 //* Bind a groovy static method (defined externally) to a function
     Named 'sign', so that we can call it in this file. *//

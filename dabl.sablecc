@@ -403,13 +403,13 @@ Productions
       ;
     
     func_call_stmt {-> oproc_stmt} =
-        {no_target} id eq [func_name]:string_literal args
+        {no_target} [target]:id eq [func_name]:id args
                                             {-> New oproc_stmt.func_call(
-                                                func_name.ostring_literal,
-                                                [args.oexpr], New otarget_opt.target(id))}
-      | {target} [func_name]:string_literal args
+                                                New oid_ref(func_name),
+                                                [args.oexpr], New otarget_opt.target(target))}
+      | {target} [func_name]:id args
                                             {-> New oproc_stmt.func_call(
-                                                func_name.ostring_literal,
+                                                New oid_ref(func_name),
                                                 [args.oexpr], New otarget_opt.no_target())}
         ;
     
@@ -794,7 +794,7 @@ Abstract Syntax Tree
         [fileset_spec]:ostring_literal [project]:ostring_literal [repository_id]:oid_ref;
     
     oproc_stmt =
-        {func_call} ostring_literal oexpr* otarget_opt
+        {func_call} oid_ref oexpr* otarget_opt
       | {if_error} oproc_stmt*
       ;
     

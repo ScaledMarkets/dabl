@@ -6,6 +6,8 @@
 
 include makefile.inc
 
+.ONESHELL:
+.SUFFIXES:
 
 # Artifact names:
 ORG = Scaled Markets
@@ -27,13 +29,6 @@ classfiles := \
 	$(build_dir)/$(package)/lexer/*.class \
 	$(build_dir)/$(package)/node/*.class \
 	$(build_dir)/$(package)/parser/*.class
-
-# Configurations particular to why this build is being run:
-maxerrs = 5
-.DELETE_ON_ERROR:
-.ONESHELL:
-.SUFFIXES:
-.DEFAULT_GOAL: compile
 
 # Command aliases:
 SHELL = /bin/sh
