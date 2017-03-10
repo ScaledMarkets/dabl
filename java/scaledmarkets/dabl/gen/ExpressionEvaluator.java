@@ -1,6 +1,8 @@
-package scaledmarkets.piper;
+package scaledmarkets.dabl.gen;
 
 import scaledmarkets.dabl.node.*;
+import java.util.LinkedList;
+import java.util.Date;
 
 public class ExpressionEvaluator {
 	
@@ -21,14 +23,14 @@ public class ExpressionEvaluator {
 		} else if (expr instanceof AVariableOexpr) {
 			return evaluateVariable(((AVariableOexpr)expr).getOvariable());
 		} else if (expr instanceof AUnaryOexpr) {
-			return evaluateUnaryExr((AUnaryOexpr)expr);
+			return evaluateUnaryExpr((AUnaryOexpr)expr);
 		} else if (expr instanceof ABinaryOexpr) {
 			return evaluateBinaryExpr((ABinaryOexpr)expr);
 		} else if (expr instanceof ASuccessOexpr) {
-			return evaluateSuccessExpr((ASuccessOexpr)exor);
+			return evaluateSuccessExpr((ASuccessOexpr)expr);
 		} else if (expr instanceof AAgeOexpr) {
 			return evaluateAgeExpr((AAgeOexpr)expr);
-		} else throw new RuntimeExpr("Unexpected expr type: " + expr.getClass().getName());
+		} else throw new RuntimeException("Unexpected expr type: " + expr.getClass().getName());
 	}
 	
 	Object evaluateLiteral(POliteral literal) {
@@ -45,7 +47,7 @@ public class ExpressionEvaluator {
 			ANumericOliteral numLit = (ANumericOliteral)literal;
 			POnumericLiteral p = numLit.getOnumericLiteral();
 			if (p instanceof AIntOnumericLiteral) {
-				intNumLit AIntOnumericLiteral = (AIntOnumericLiteral)p;
+				AIntOnumericLiteral intNumLit = (AIntOnumericLiteral)p;
 				POsign ps = intNumLit.getOsign();
 				boolean isPositive;
 				if (ps instanceof ANegativeOsign) {
@@ -141,49 +143,49 @@ public class ExpressionEvaluator {
 		
 		PObinaryOp pOp = bexpr.getObinaryOp();
 		
-		if (pOp instanceof AAndBinaryOp) {
+		if (pOp instanceof AAndObinaryOp) {
 			if (! ((left instanceof Boolean) && (right instanceof Boolean)))
 				throw new RuntimeException("Expected two boolean arguments");
 			return (Boolean)left && (Boolean)right;
-		} else if (pOp instanceof ADivideBinaryOp) {
+		} else if (pOp instanceof ADivideObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Double(((Number)left).asDouble() / ((Number)right).asDouble());
-		} else if (pOp instanceof AEqBinaryOp) {
+			return new Double(((Number)left).doubleValue() / ((Number)right).doubleValue());
+		} else if (pOp instanceof AEqObinaryOp) {
 			return left.equals(right);
-		} else if (pOp instanceof AGeBinaryOp) {
+		} else if (pOp instanceof AGeObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Boolean(((Number)left).asDouble() >= ((Number)right).asDouble());
-		} else if (pOp instanceof AGtBinaryOp) {
+			return new Boolean(((Number)left).doubleValue() >= ((Number)right).doubleValue());
+		} else if (pOp instanceof AGtObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Boolean(((Number)left).asDouble() > ((Number)right).asDouble());
-		} else if (pOp instanceof ALeBinaryOp) {
+			return new Boolean(((Number)left).doubleValue() > ((Number)right).doubleValue());
+		} else if (pOp instanceof ALeObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Boolean(((Number)left).asDouble() <= ((Number)right).asDouble());
-		} else if (pOp instanceof ALtBinaryOp) {
+			return new Boolean(((Number)left).doubleValue() <= ((Number)right).doubleValue());
+		} else if (pOp instanceof ALtObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Boolean(((Number)left).asDouble() < ((Number)right).asDouble());
-		} else if (pOp instanceof APlusBinaryOp) {
+			return new Boolean(((Number)left).doubleValue() < ((Number)right).doubleValue());
+		} else if (pOp instanceof APlusObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Double(((Number)left).asDouble() + ((Number)right).asDouble());
-		} else if (pOp instanceof AMinusBinaryOp) {
+			return new Double(((Number)left).doubleValue() + ((Number)right).doubleValue());
+		} else if (pOp instanceof AMinusObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Double(((Number)left).asDouble() - ((Number)right).asDouble());
-		} else if (pOp instanceof AMultiplyBinaryOp) {
+			return new Double(((Number)left).doubleValue() - ((Number)right).doubleValue());
+		} else if (pOp instanceof AMultiplyObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Double(((Number)left).asDouble() * ((Number)right).asDouble());
-		} else if (pOp instanceof ANeBinaryOp) {
+			return new Double(((Number)left).doubleValue() * ((Number)right).doubleValue());
+		} else if (pOp instanceof ANeObinaryOp) {
 			if (! ((left instanceof Number) && (right instanceof Number)))
 				throw new RuntimeException("Expected two boolean arguments");
-			return new Boolean(((Number)left).asDouble() != ((Number)right).asDouble());
-		} else if (pOp instanceof AOrBinaryOp) {
+			return new Boolean(((Number)left).doubleValue() != ((Number)right).doubleValue());
+		} else if (pOp instanceof AOrObinaryOp) {
 			if (! ((left instanceof Boolean) && (right instanceof Boolean)))
 				throw new RuntimeException("Expected two boolean arguments");
 			return (Boolean)left || (Boolean)right;
@@ -216,26 +218,28 @@ public class ExpressionEvaluator {
 		
 		POageExpr pAgeExpr = aexpr.getOageExpr();
 		boolean isTrue;
-		if (pAgeExpr instanceof ANewerThanOageExpr) {
-			ANewerThanOageExpr newExpr = (ANewerThanOageExpr)pAgeExpr;
-			TId newerId = ((AOidRef)(newExpr.getNewerId())).getId();
-			TId olderId = ((AOidRef)(newExpr.getOlderId())).getId();
-			
-			Date newerDate = this.context.getAge(newerId.getText());
-			Date olderDate = this.context.getAge(olderId.getText());
-			isTrue = (newerDate < olderDate);
-			
-		} else if (pAgeExpr instanceof AOlderThanOageExpr) {
-			AOlderThanOageExpr olderExpr = (AOlderThanOageExpr)pAgeExpr;
-			POidRef olderId = olderExpr.getOlderId();
-			POidRef newId = olderExpr.getNewerId();
-			
-			Date newerDate = this.context.getAge(newerId.getText());
-			Date olderDate = this.context.getAge(olderId.getText());
-			isTrue = (olderDate > newerDate);
-			
-		} else throw new RuntimeException(
-			"Unexpected age expr type: " + pAgeExpr.getClass().getName());
+		try {
+			if (pAgeExpr instanceof ANewerThanOageExpr) {
+				ANewerThanOageExpr newExpr = (ANewerThanOageExpr)pAgeExpr;
+				TId newerId = ((AOidRef)(newExpr.getNewerId())).getId();
+				TId olderId = ((AOidRef)(newExpr.getOlderId())).getId();
+				
+				Date newerDate = this.context.getAge(newerId.getText());
+				Date olderDate = this.context.getAge(olderId.getText());
+				isTrue = (newerDate.compareTo(olderDate) > 0);
+				
+			} else if (pAgeExpr instanceof AOlderThanOageExpr) {
+				AOlderThanOageExpr olderExpr = (AOlderThanOageExpr)pAgeExpr;
+				TId olderId = ((AOidRef)(olderExpr.getOlderId())).getId();
+				TId newerId = ((AOidRef)(olderExpr.getNewerId())).getId();
+				
+				Date newerDate = this.context.getAge(newerId.getText());
+				Date olderDate = this.context.getAge(olderId.getText());
+				isTrue = (newerDate.compareTo(olderDate) > 0);
+				
+			} else throw new RuntimeException(
+				"Unexpected age expr type: " + pAgeExpr.getClass().getName());
+		} catch (Exception ex) { throw new RuntimeException(ex); }
 		
 		return new Boolean(isTrue);
 	}
@@ -252,14 +256,14 @@ public class ExpressionEvaluator {
 			return evaluateStringLiteral(sexpr.getLeft()) +
 				evaluateStringLiteral(sexpr.getRight());
 		} else throw new RuntimeException(
-			"Unexpected literal type: " + literal.getClass().getName());
+			"Unexpected literal type: " + plit.getClass().getName());
 	}
 	
-	Long getNumSlotValue(POnumSlot pNumSlot) {
+	String getNumSlotValueString(POnumSlot pNumSlot) {
 		if (pNumSlot instanceof ANumOnumSlot) {
 			TWholeNumber number = ((ANumOnumSlot)pNumSlot).getWholeNumber();
 			try {
-				magnitude = new Long(number.getText());
+				return number.getText();
 			} catch (NumberFormatException ex) { throw new RuntimeException(ex); }
 		} else if (pNumSlot instanceof AWildcardOnumSlot) {
 			throw new RuntimeException(

@@ -1,4 +1,4 @@
-package scaledmarkets.piper;
+package scaledmarkets.dabl.gen;
 
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.Config;
@@ -23,5 +23,13 @@ public class Artifact {
 	
 	void addConsumer(Task t) {
 		consumers.add(t);
+	}
+	
+	Set<Task> getConsumers() {
+		return consumers;
+	}
+	
+	Set<Task> getProducers() {
+		return producers;
 	}
 }

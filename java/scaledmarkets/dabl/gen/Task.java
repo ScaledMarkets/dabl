@@ -1,4 +1,4 @@
-package scaledmarkets.piper;
+package scaledmarkets.dabl.gen;
 
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.Config;

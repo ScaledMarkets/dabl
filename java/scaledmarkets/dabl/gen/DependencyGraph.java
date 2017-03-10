@@ -1,4 +1,4 @@
-package scaledmarkets.piper;
+package scaledmarkets.dabl.gen;
 
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.lexer.*;
@@ -8,6 +8,7 @@ import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.Config;
 
 import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.helper.*;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -49,6 +50,10 @@ public class DependencyGraph {
 		}
 	}
 	
+	DependencyGraph(CompilerState state) {
+		this.state = state;
+	}
+	
 	/**
 	 * 
 	 */
@@ -56,7 +61,10 @@ public class DependencyGraph {
 		
 		// 1. Create a graph of the artifact/task flow relationships:
 		Helper helper = new Helper(state);
-		List<AOtaskDeclaration> taskDecls = helper.getTaskDeclarations();
+		List<AOtaskDeclaration> taskDecls;
+		try { taskDecls = helper.getTaskDeclarations(); } catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 		for (AOtaskDeclaration taskDecl : taskDecls) { // each task declaration
 			// a. Add a new Task to the set of tasks.
 			Task task = createTask(taskDecl);
@@ -138,7 +146,7 @@ public class DependencyGraph {
 	 * 
 	 */
 	protected Task createTask(AOtaskDeclaration taskDecl) {
-		if (tasks.get(taskDecl) != null) return;
+		if (tasks.get(taskDecl) != null) return null;
 		Task task = new Task(taskDecl);
 		tasks.put(taskDecl, task);
 		return task;
@@ -148,7 +156,7 @@ public class DependencyGraph {
 	 * 
 	 */
 	protected Artifact createArtifact(AOartifactSet a) {
-		if (artifacts.get(a) != null) return;
+		if (artifacts.get(a) != null) return null;
 		Artifact artifact = new Artifact(a);
 		artifacts.put(a, artifact);
 		return artifact;

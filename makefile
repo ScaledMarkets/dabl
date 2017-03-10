@@ -24,6 +24,7 @@ main_class := $(package_name).main.Dabl
 # Intermediate artifacts:
 classfiles := \
 	$(build_dir)/$(package)/main/*.class \
+	$(build_dir)/$(package)/gen/*.class \
 	$(build_dir)/$(package)/helper/*.class \
 	$(build_dir)/$(package)/analysis/*.class \
 	$(build_dir)/$(package)/lexer/*.class \
@@ -125,6 +126,7 @@ compile: config
 		$(src_dir)/sablecc/*.java \
 		$(src_dir)/$(package)/*.java \
 		$(src_dir)/$(package)/main/*.java \
+		$(src_dir)/$(package)/gen/*.java \
 		$(src_dir)/$(package)/helper/*.java
 
 # Define 'dist' target so we can reference it in 'all' target.
