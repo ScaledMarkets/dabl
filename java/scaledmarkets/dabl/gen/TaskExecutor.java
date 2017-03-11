@@ -13,7 +13,10 @@ public class TaskExecutor {
 		// Parse the procedural statements.
 		
 		
+		TaskContext taskContext = new TaskContext();
 		
+		
+		.....
 	}
 	
 }

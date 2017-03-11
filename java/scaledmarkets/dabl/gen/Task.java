@@ -15,16 +15,12 @@ public class Task {
 		this.taskDecl = taskDecl;
 	}
 	
-	public Task(AOtaskDeclaration taskDecl, TaskContext context) {
+	public Task(AOtaskDeclaration taskDecl) {
 		this(taskDecl);
-		this.context = context;
 	}
 	
 	public String getName() { return taskDecl.getName().getText(); }
-	
-	public TaskContext getContext() { return this.context; }
-	
-	private TaskContext context = null;
+		
 	private AOtaskDeclaration taskDecl;
 	private Set<Artifact> inputs = new TreeSet<Artifact>();
 	private Set<Artifact> outputs = new TreeSet<Artifact>();
@@ -76,5 +72,14 @@ public class Task {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Perform a task's procedural statements. This should be done in isolation.
+	 * Therefore, launch a Linux container and run a TaskExecutor.
+	 */
+	public void executeTask(TaskContext context) {
+		System.out.println("Performing task " + task.getName());
+		context.executeTask(....);
 	}
 }

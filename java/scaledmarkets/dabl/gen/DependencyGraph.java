@@ -26,7 +26,8 @@ import java.util.LinkedList;
 public class DependencyGraph {
 
 	private CompilerState state;
-	private TaskContextFactory taskContextFactory;
+	private TaskContext taskContext = new TaskContext();
+	private TaskContainerFactory taskContainerFactory;
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
 	private Map<AOartifactSet, Artifact> artifacts = new HashMap<AOartifactSet, Artifact>();
 	private Set<Task> rootTasks = new TreeSet<Task>();
@@ -36,9 +37,9 @@ public class DependencyGraph {
 	 * relationships between tasks.
 	 */
 	public static DependencyGraph genDependencySet(CompilerState state,
-		TaskContextFactory contextFactory) {
+		TaskContainerFactory taskContainerFactory) {
 		
-		DependencyGraph graph = new DependencyGraph(state, contextFactory);
+		DependencyGraph graph = new DependencyGraph(state, taskContainerFactory);
 		graph.genDependencies();
 		return graph;
 	}
@@ -52,9 +53,9 @@ public class DependencyGraph {
 		}
 	}
 	
-	DependencyGraph(CompilerState state, TaskContextFactory contextFactory) {
+	DependencyGraph(CompilerState state, TaskContainerFactory taskContainerFactory) {
 		this.state = state;
-		this.taskContextFactory = contextFactory;
+		this.taskContainerFactory = taskContainerFactory;
 	}
 	
 	/**
@@ -176,9 +177,12 @@ public class DependencyGraph {
 			
 			task.visit();  // mark that we have been here.
 			
-			TaskContext taskContext = this.taskContextFactory.createTaskContext();
 			if (task.taskWhenConditionIsTrue(taskContext)) {
-				executeTask(task, taskContext);
+				// Create a container.
+				TaskContainer TaskContainer = this.taskContainerFactory.createTaskContainer();
+				
+				// Execute the task in the container.
+				TaskContainer.executeTask(task);
 			}
 			
 			for (Task t_o : task.getConsumers()) {
@@ -186,19 +190,6 @@ public class DependencyGraph {
 				executeTaskTree(t_o);
 			}
 		}
-	}
-	
-	/**
-	 * Perform a task's procedural statements. This should be done in isolation.
-	 * Therefore, launch a Linux container and run a TaskExecutor.
-	 */
-	protected void executeTask(Task task, TaskContext taskContext) {
-		
-		// Launch a task execution container, containing the task interpreter, and
-		// provide the task procedural statements as a file parameter.
-		// For now, just print that we are performing the task.
-		System.out.println("Performing task " + task.getName());
-		
 	}
 	
 	/**

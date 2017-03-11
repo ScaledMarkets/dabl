@@ -97,12 +97,8 @@ public class Dabl
 		}
 		
 		// Perform actions.
-		TaskContextFactory taskContextFactory = new TaskContextFactory() {
-			public TaskContext createTaskContext() {
-				....
-			}
-		};
-		Generator gen = new DefaultGenerator(state, taskContextFactory);
+		TaskContainerFactory taskContainerFactory = new TaskContainerFactory();
+		Generator gen = new DefaultGenerator(state, taskContainerFactory);
 		try {
 			gen.generate();
 		} catch (Exception ex) {
