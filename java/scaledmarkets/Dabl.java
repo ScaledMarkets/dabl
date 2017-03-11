@@ -5,6 +5,7 @@ import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.gen.*;
 import scaledmarkets.dabl.Config;
 
 import sablecc.PrettyPrint;
@@ -96,7 +97,12 @@ public class Dabl
 		}
 		
 		// Perform actions.
-		Generator gen = new DefaultGenerator(state);
+		TaskContextFactory taskContextFactory = new TaskContextFactory() {
+			public TaskContext createTaskContext() {
+				....
+			}
+		};
+		Generator gen = new DefaultGenerator(state, taskContextFactory);
 		try {
 			gen.generate();
 		} catch (Exception ex) {

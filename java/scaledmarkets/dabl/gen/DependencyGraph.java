@@ -26,7 +26,7 @@ import java.util.LinkedList;
 public class DependencyGraph {
 
 	private CompilerState state;
-	private TaskContext taskContext;
+	private TaskContextFactory taskContextFactory;
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
 	private Map<AOartifactSet, Artifact> artifacts = new HashMap<AOartifactSet, Artifact>();
 	private Set<Task> rootTasks = new TreeSet<Task>();
@@ -36,9 +36,9 @@ public class DependencyGraph {
 	 * relationships between tasks.
 	 */
 	public static DependencyGraph genDependencySet(CompilerState state,
-		TaskContext context) {
+		TaskContextFactory contextFactory) {
 		
-		DependencyGraph graph = new DependencyGraph(state, context);
+		DependencyGraph graph = new DependencyGraph(state, contextFactory);
 		graph.genDependencies();
 		return graph;
 	}
@@ -52,9 +52,9 @@ public class DependencyGraph {
 		}
 	}
 	
-	DependencyGraph(CompilerState state, TaskContext context) {
+	DependencyGraph(CompilerState state, TaskContextFactory contextFactory) {
 		this.state = state;
-		this.taskContext = context;
+		this.taskContextFactory = contextFactory;
 	}
 	
 	/**
@@ -176,8 +176,9 @@ public class DependencyGraph {
 			
 			task.visit();  // mark that we have been here.
 			
-			if (task.taskWhenConditionIsTrue()) {
-				executeTask(task);
+			TaskContext taskContext = this.taskContextFactory.createTaskContext();
+			if (task.taskWhenConditionIsTrue(taskContext)) {
+				executeTask(task, taskContext);
 			}
 			
 			for (Task t_o : task.getConsumers()) {
@@ -191,7 +192,7 @@ public class DependencyGraph {
 	 * Perform a task's procedural statements. This should be done in isolation.
 	 * Therefore, launch a Linux container and run a TaskExecutor.
 	 */
-	protected void executeTask(Task task) {
+	protected void executeTask(Task task, TaskContext taskContext) {
 		
 		// Launch a task execution container, containing the task interpreter, and
 		// provide the task procedural statements as a file parameter.
