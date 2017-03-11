@@ -11,6 +11,20 @@ import java.util.LinkedList;
 
 public class Task {
 	
+	public Task(AOtaskDeclaration taskDecl) {
+		this.taskDecl = taskDecl;
+	}
+	
+	public Task(AOtaskDeclaration taskDecl, TaskContext context) {
+		this(taskDecl);
+		this.context = context;
+	}
+	
+	public String getName() { return taskDecl.getName().getText(); }
+	
+	public TaskContext getContext() { return this.context; }
+	
+	private TaskContext context = null;
 	private AOtaskDeclaration taskDecl;
 	private Set<Artifact> inputs = new TreeSet<Artifact>();
 	private Set<Artifact> outputs = new TreeSet<Artifact>();
@@ -19,12 +33,6 @@ public class Task {
 	private Set<Task> isProducerFor = new TreeSet<Task>();
 	
 	private boolean visited = false;
-	
-	Task(AOtaskDeclaration taskDecl) {
-		this.taskDecl = taskDecl;
-	}
-	
-	String getName() { return taskDecl.getName().getText(); }
 	
 	void addInput(Artifact a) {
 		inputs.add(a);
@@ -62,7 +70,7 @@ public class Task {
 		
 		LinkedList<POexpr> exprs = taskDecl.getWhen();
 		for (POexpr expr : exprs) {
-			Object result = (new ExpressionEvaluator()).evaluateExpr(expr);
+			Object result = (new ExpressionEvaluator(getContext())).evaluateExpr(expr);
 			if (result instanceof Boolean) {
 				if ((Boolean)result) return true;
 			}

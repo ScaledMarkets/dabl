@@ -3,6 +3,11 @@ package scaledmarkets.dabl.gen;
 import java.util.HashMap;
 import java.util.Date;
 
+/**
+ * The execution context of the task. Provides access to the runtime, when the
+ * task is executed. This can be used to obtain environment variables, etc.,
+ * when the task is actually performed.
+ */
 public class TaskContext extends HashMap {
 	
 	public Object getValueForVariable(String variableName) {

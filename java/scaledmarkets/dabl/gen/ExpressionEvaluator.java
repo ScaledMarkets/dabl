@@ -13,7 +13,11 @@ public class ExpressionEvaluator {
 	}
 	
 	public ExpressionEvaluator(TaskContext context) {
-		this.context = context;
+		if (context == null) {
+			this();
+		} else {
+			this.context = context;
+		}
 	}
 	
 	public Object evaluateExpr(POexpr expr) {

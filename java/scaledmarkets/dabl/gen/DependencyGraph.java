@@ -26,6 +26,7 @@ import java.util.LinkedList;
 public class DependencyGraph {
 
 	private CompilerState state;
+	private TaskContext taskContext;
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
 	private Map<AOartifactSet, Artifact> artifacts = new HashMap<AOartifactSet, Artifact>();
 	private Set<Task> rootTasks = new TreeSet<Task>();
@@ -34,9 +35,10 @@ public class DependencyGraph {
 	 * Create a dependency graph that explicitly models the producer/consumer
 	 * relationships between tasks.
 	 */
-	public static DependencyGraph genDependencySet(CompilerState state) {
+	public static DependencyGraph genDependencySet(CompilerState state,
+		TaskContext context) {
 		
-		DependencyGraph graph = new DependencyGraph(state);
+		DependencyGraph graph = new DependencyGraph(state, context);
 		graph.genDependencies();
 		return graph;
 	}
@@ -50,8 +52,9 @@ public class DependencyGraph {
 		}
 	}
 	
-	DependencyGraph(CompilerState state) {
+	DependencyGraph(CompilerState state, TaskContext context) {
 		this.state = state;
+		this.taskContext = context;
 	}
 	
 	/**
@@ -147,7 +150,7 @@ public class DependencyGraph {
 	 */
 	protected Task createTask(AOtaskDeclaration taskDecl) {
 		if (tasks.get(taskDecl) != null) return null;
-		Task task = new Task(taskDecl);
+		Task task = new Task(taskDecl, this.taskContext);
 		tasks.put(taskDecl, task);
 		return task;
 	}

@@ -9,6 +9,10 @@ public class DefaultGenerator implements Generator {
 	}
 	
 	public void generate() {
+		TaskContext taskContext = ....
+		DependencyGraph graph = DependencyGraph.genDependencySet(this.state, taskContext);
+		graph.executeAll();
+		
 		
 	}
 }
