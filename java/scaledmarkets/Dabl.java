@@ -1,10 +1,10 @@
-package scaledmarkets.dabl.main;
+package scaledmarkets.dabl;
 
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
-
+import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.Config;
 
 import sablecc.PrettyPrint;
@@ -85,11 +85,24 @@ public class Dabl
 			argno++;
 		}
 		
-		try { dabl.process(); }
+		// Parse input and perform analysis.
+		CompilerState state;
+		try { state = dabl.process(); }
 		catch (Exception ex)
 		{
 			if (dabl.printTrace) ex.printStackTrace();
 			else System.out.println(ex.getMessage());
+			System.exit(1);
+		}
+		
+		// Perform actions.
+		Generator gen = new DefaultGenerator(state);
+		try {
+			gen.generate();
+		} catch (Exception ex) {
+			if (dabl.printTrace) ex.printStackTrace();
+			else System.out.println(ex.getMessage());
+			System.exit(1);
 		}
 	}
 	

@@ -7,7 +7,7 @@ import scaledmarkets.dabl.parser.*;
 
 import scaledmarkets.dabl.Config;
 
-import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.helper.*;
 
 import java.io.IOException;

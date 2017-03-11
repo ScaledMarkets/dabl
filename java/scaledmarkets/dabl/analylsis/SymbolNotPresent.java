@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.main;
+package scaledmarkets.dabl.analysis;
 
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.lexer.*;
@@ -10,10 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedList;
 
-public class SymbolEntryPresent extends Exception
+public class SymbolNotPresent extends Exception
 {
-	public SymbolEntryPresent(String name)
+	public SymbolNotPresent(String name)
 	{
-		super("There is already an entry present with name " + name);
+		super("There is no entry with name " + name);
 	}
 }

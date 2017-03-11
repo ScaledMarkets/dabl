@@ -2,7 +2,7 @@ package scaledmarkets.dabl.gen;
 
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.Config;
-import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.analysis.*;
 
 import java.util.Set;
 import java.util.TreeSet;

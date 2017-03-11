@@ -6,7 +6,7 @@ import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
 
 import scaledmarkets.dabl.Config;
-import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.analysis.*;
 
 import sablecc.PrettyPrint;
 
