@@ -179,10 +179,10 @@ public class DependencyGraph {
 			
 			if (task.taskWhenConditionIsTrue(taskContext)) {
 				// Create a container.
-				TaskContainer TaskContainer = this.taskContainerFactory.createTaskContainer();
+				TaskContainer taskContainer = this.taskContainerFactory.createTaskContainer();
 				
 				// Execute the task in the container.
-				TaskContainer.executeTask(task);
+				taskContainer.executeTask(task);
 			}
 			
 			for (Task t_o : task.getConsumers()) {
