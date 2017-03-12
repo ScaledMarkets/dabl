@@ -25,6 +25,8 @@ public class Dabl
 {
 	boolean print = false;
 	boolean printTrace = false;
+	boolean analysisOnly = false;
+	
 	Reader reader = null;
 	ImportHandler importHandler = null;
 	
@@ -67,6 +69,7 @@ public class Dabl
 			}
 			else if (arg.equals("-p") || arg.equals("--print")) dabl.print = true;
 			else if (arg.equals("-t") || arg.equals("--trace")) dabl.printTrace = true;
+			else if (arg.equals("-a") || arg.equals("--analysis")) dabl.analysisOnly = true;
 			else if (arg.startsWith("-"))
 			{
 				System.out.println("Unrecognized option: " + arg);
@@ -95,6 +98,8 @@ public class Dabl
 			else System.out.println(ex.getMessage());
 			System.exit(1);
 		}
+		
+		if (analysisOnly) return;
 		
 		// Perform actions.
 		TaskContainerFactory taskContainerFactory = new TaskContainerFactory();
@@ -158,6 +163,7 @@ public class Dabl
 			"\t\twhere options can be\n" +
 			"\t\t\t-p or --print (print the AST)\n" +
 			"\t\t\t-t or --trace (print stack trace instead of just error msg)\n" +
+			"\t\t\t-a or --analysis (analysis only - do not perform any actions)\n" +
 			"\t\t\t-h or --help"
 			);
 		return;
