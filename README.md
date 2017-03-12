@@ -10,6 +10,16 @@ leave much to be desired. They tend to be non-[composable](https://en.wikipedia.
 weakly typed, and have poor extensibility features. As such, they make build processes
 brittle and unreliable and also limit reusability.
 
+Another problem with existing build languages is that they don't promote idempotency.
+That is, it is common that build systems operate on a "workspace" or current
+directory, and so running a build often leaves behind intermediate artifacts.
+Such artifacts can cause a build to succeed but then fail if run a second time.
+This is also true with tests: that running a test once, if it leaves behind
+artifacts, can cause a second run of the same tests to have a different outcome.
+Build languages do not generally impose any form of idempotency, because they
+don't define any kind of isolation or containerization concept for build tasks,
+with inputs and outputs clearly defined and no side effects.
+
 There is no reason why it needs to be this way: The current state of affairs stems from
 the “guru” culture of system administration, and the still present 1980s era tradition
 that build languages are quick-to-modify scripts that are maintained by sysadmin
@@ -28,7 +38,10 @@ purpose language as many so-called "domain-specific languages" are.
 For robust infrastructure code, a better model than current practice is needed, whereby,
 
 * The build language is strongly typed, in order to promote maintainability and reliability.
-* The build language uses information hiding, encapsulation, and true modularity in order to promote reuse and extensibility.
+* The build language uses information hiding, encapsulation, and true modularity 
+	in order to promote reuse and extensibility.
+* The build language defines isolation for tasks, with clearly defined inputs
+	and outputs and no side effects.
 * The build language is defined as a true language, with a normative language definition and
 	well specified syntax and semantics (see [Language Reference](langref)),
 	thereby avoiding ambiguity in the language itself.
