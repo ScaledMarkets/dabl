@@ -7,6 +7,6 @@ public class TaskContainerFactory {
 	 * that enables one to control the container.
 	 */
 	public TaskContainer createTaskContainer() {
-		....
+		return new TaskContainer();
 	}
 }

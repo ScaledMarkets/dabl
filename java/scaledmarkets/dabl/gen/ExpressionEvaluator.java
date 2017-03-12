@@ -228,8 +228,8 @@ public class ExpressionEvaluator {
 				TId newerId = ((AOidRef)(newExpr.getNewerId())).getId();
 				TId olderId = ((AOidRef)(newExpr.getOlderId())).getId();
 				
-				Date newerDate = this.context.getAge(newerId.getText());
-				Date olderDate = this.context.getAge(olderId.getText());
+				Date newerDate = this.context.getDateOfMostRecentChange(newerId.getText());
+				Date olderDate = this.context.getDateOfMostRecentChange(olderId.getText());
 				isTrue = (newerDate.compareTo(olderDate) > 0);
 				
 			} else if (pAgeExpr instanceof AOlderThanOageExpr) {
@@ -237,8 +237,8 @@ public class ExpressionEvaluator {
 				TId olderId = ((AOidRef)(olderExpr.getOlderId())).getId();
 				TId newerId = ((AOidRef)(olderExpr.getNewerId())).getId();
 				
-				Date newerDate = this.context.getAge(newerId.getText());
-				Date olderDate = this.context.getAge(olderId.getText());
+				Date newerDate = this.context.getDateOfMostRecentChange(newerId.getText());
+				Date olderDate = this.context.getDateOfMostRecentChange(olderId.getText());
 				isTrue = (newerDate.compareTo(olderDate) > 0);
 				
 			} else throw new RuntimeException(

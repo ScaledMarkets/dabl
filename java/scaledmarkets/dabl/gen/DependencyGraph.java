@@ -47,7 +47,7 @@ public class DependencyGraph {
 	/**
 	 * 
 	 */
-	public void executeAll() {
+	public void executeAll() throws Exception {
 		for (Task task : rootTasks) { // each root task tr,
 			executeTaskTree(task);
 		}
@@ -169,7 +169,7 @@ public class DependencyGraph {
 	/**
 	 * 
 	 */
-	protected void executeTaskTree(Task task) {
+	protected void executeTaskTree(Task task) throws Exception {
 		if (isDownstreamFromUnvisitedTask(task)) {
 
 			if (task.hasBeenVisited()) throw new RuntimeException(

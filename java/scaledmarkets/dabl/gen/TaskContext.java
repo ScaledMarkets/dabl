@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * The execution context of the task. Provides a task with access to the runtime,
  * when the task is executed. This can be used to obtain environment variables, etc.,
- * when the task is actually performed.
+ * when the task is actually performed. A TaskContext is only 
  */
 public class TaskContext extends HashMap {
 	
@@ -22,7 +22,12 @@ public class TaskContext extends HashMap {
 		return ((Integer)obj).intValue();
 	}
 	
-	public Date getAge(String name) throws Exception {
-		....
+	/**
+	 * Return the most recent date/time at which the input or output represented
+	 * by the specified identifier was changed.
+	 */
+	public Date getDateOfMostRecentChange(String name) throws Exception {
+		//....
+		throw new RuntimeException("Not implemented yet");
 	}
 }

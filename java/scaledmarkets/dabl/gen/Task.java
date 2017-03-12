@@ -78,7 +78,7 @@ public class Task {
 	 * Perform a task's procedural statements. This should be done in isolation.
 	 * Therefore, launch a Linux container and run a TaskExecutor.
 	 */
-	public void executeTask(TaskContainer container) {
+	public void executeTask(TaskContainer container) throws Exception {
 		System.out.println("Performing task " + task.getName());
 		container.executeTask(this);
 	}
