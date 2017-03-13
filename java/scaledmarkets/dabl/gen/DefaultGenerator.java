@@ -1,5 +1,7 @@
 package scaledmarkets.dabl.gen;
 
+import scaledmarkets.dabl.analysis.CompilerState;
+
 /**
  * Determine which tasks should be executed, and execute them.
  */

@@ -15,10 +15,6 @@ public class Task {
 		this.taskDecl = taskDecl;
 	}
 	
-	public Task(AOtaskDeclaration taskDecl) {
-		this(taskDecl);
-	}
-	
 	public String getName() { return taskDecl.getName().getText(); }
 		
 	private AOtaskDeclaration taskDecl;
