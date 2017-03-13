@@ -1,4 +1,4 @@
-package scaledmarkets.dabl;
+package scaledmarkets.dabl.analysis;
 
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.lexer.*;
@@ -44,7 +44,8 @@ public class Dabl
 		this(print, printTrace, reader, new DefaultImportHandler());
 	}
 	
-	protected Dabl() {
+	protected Dabl(Reader reader) {
+		this.reader = reader;
 		this.importHandler = new DefaultImportHandler();
 	}
 
@@ -65,12 +66,6 @@ public class Dabl
 	 */
 	public NameScope process(CompilerState state) throws Exception {
 		
-		if (this.reader == null)
-		{
-			displayInstructions();
-			return null;
-		}
-		
 		// ....Need to insert template processor here
 		
 		// Parse the input and generate an AST.
@@ -78,7 +73,7 @@ public class Dabl
 		Parser parser = new Parser(lexer);
 		Start start = parser.parse();
 		System.out.println("Syntax is correct");
-		state.asts.add(start);
+		state.getASTs().add(start);
 		
 		if (print) PrettyPrint.pp(start);
 		

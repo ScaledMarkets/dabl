@@ -15,7 +15,7 @@ public class DefaultGenerator implements Generator {
 		this.taskContainerFactory = taskContainerFactory;
 	}
 	
-	public void generate() {
+	public void generate() throws Exception {
 		DependencyGraph graph = DependencyGraph.genDependencySet(this.state, this.taskContainerFactory);
 		graph.executeAll();
 	}

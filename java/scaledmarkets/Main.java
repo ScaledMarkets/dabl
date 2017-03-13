@@ -28,7 +28,7 @@ public class Main
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		Dabl dabl = new Dabl();
+		Dabl dabl;
 		String filename = null;
 
 		int argno = 0;
@@ -57,11 +57,17 @@ public class Main
 					return;
 				}
 				filename = arg;
-				dabl.reader = new FileReader(arg);
-				System.out.println("Processing file " + filename);
 			}
 			argno++;
 		}
+		
+		if (filename == null) {
+			displayInstructions();
+			return;
+		}
+		
+		dabl = new Dabl(new FileReader(filename));
+		System.out.println("Processing file " + filename);
 		
 		// Parse input and perform analysis.
 		CompilerState state;

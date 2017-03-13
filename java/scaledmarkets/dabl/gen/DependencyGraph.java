@@ -151,7 +151,7 @@ public class DependencyGraph {
 	 */
 	protected Task createTask(AOtaskDeclaration taskDecl) {
 		if (tasks.get(taskDecl) != null) return null;
-		Task task = new Task(taskDecl, this.taskContext);
+		Task task = new Task(taskDecl);
 		tasks.put(taskDecl, task);
 		return task;
 	}

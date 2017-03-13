@@ -19,7 +19,7 @@ package=scaledmarkets/dabl
 test_package=scaledmarkets/dabl/test
 package_name = scaledmarkets.dabl
 test_package_name = scaledmarkets.dabl.test
-main_class := $(package_name).Dabl
+main_class := $(package_name).Main
 
 # Intermediate artifacts:
 classfiles := \
@@ -136,7 +136,7 @@ dist: jar
 # can recognize the language.
 check:
 	echo "\n         namespace simple import abc      \n" > simple.dabl
-	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.Dabl -t simple.dabl
+	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.Main -t simple.dabl
 
 # Compile the test source files.
 compile_tests: $(test_build_dir)

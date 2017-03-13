@@ -75,7 +75,7 @@ public class Task {
 	 * Therefore, launch a Linux container and run a TaskExecutor.
 	 */
 	public void executeTask(TaskContainer container) throws Exception {
-		System.out.println("Performing task " + task.getName());
+		System.out.println("Performing task " + this.getName());
 		container.executeTask(this);
 	}
 }

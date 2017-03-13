@@ -8,16 +8,16 @@ public class ExpressionEvaluator {
 	
 	private TaskContext context;
 	
-	public ExpressionEvaluator() {
-		this.context = new TaskContext();
-	}
-	
 	public ExpressionEvaluator(TaskContext context) {
 		if (context == null) {
-			this();
+			this.context = new TaskContext();
 		} else {
 			this.context = context;
 		}
+	}
+	
+	public ExpressionEvaluator() {
+		this(null);
 	}
 	
 	public Object evaluateExpr(POexpr expr) {

@@ -1,5 +1,5 @@
 package scaledmarkets.dabl.gen;
 
 public interface Generator {
-	void generate();
+	void generate() throws Exception;
 }
