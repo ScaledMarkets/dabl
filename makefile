@@ -19,11 +19,11 @@ package=scaledmarkets/dabl
 test_package=scaledmarkets/dabl/test
 package_name = scaledmarkets.dabl
 test_package_name = scaledmarkets.dabl.test
-main_class := $(package_name).main.Dabl
+main_class := $(package_name).Dabl
 
 # Intermediate artifacts:
 classfiles := \
-	$(build_dir)/$(package)/main/*.class \
+	$(build_dir)/$(package)/*.class \
 	$(build_dir)/$(package)/gen/*.class \
 	$(build_dir)/$(package)/helper/*.class \
 	$(build_dir)/$(package)/analysis/*.class \
@@ -125,7 +125,7 @@ compile: config
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
 		$(src_dir)/sablecc/*.java \
 		$(src_dir)/$(package)/*.java \
-		$(src_dir)/$(package)/main/*.java \
+		$(src_dir)/$(package)/analysis/*.java \
 		$(src_dir)/$(package)/gen/*.java \
 		$(src_dir)/$(package)/helper/*.java
 
@@ -136,7 +136,7 @@ dist: jar
 # can recognize the language.
 check:
 	echo "\n         namespace simple import abc      \n" > simple.dabl
-	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.main.Dabl -t simple.dabl
+	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.Dabl -t simple.dabl
 
 # Compile the test source files.
 compile_tests: $(test_build_dir)
