@@ -34,6 +34,10 @@ public class Task {
 		outputs.add(a);
 	}
 	
+	boolean hasOutputs() {
+		return (outputs.size() > 0);
+	}
+	
 	void addProducer(Task t) {
 		isConsumerOf.add(t);
 	}

@@ -102,6 +102,11 @@ public class DefaultExecutor implements Executor {
 	 *	2. has outputs.
 	 */
 	protected boolean isDownstreamFromOutputtingTask(Task task) {
-		....
+		
+		for (Task p : task.getProducers()) {
+			if (p.hasBeenVisited() && p.hasOutputs()) return true;
+			if (isDownstreamFromOutputtingTask(p)) return true;
+		}
+		return false;
 	}
 }
