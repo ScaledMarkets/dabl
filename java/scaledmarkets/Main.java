@@ -66,10 +66,9 @@ public class Main
 			return;
 		}
 		
-		dabl = new Dabl(new FileReader(filename));
-		System.out.println("Processing file " + filename);
-		
 		// Parse input and perform analysis.
+		System.out.println("Processing file " + filename + "...");
+		dabl = new Dabl(new FileReader(filename));
 		CompilerState state;
 		try { state = dabl.process(); }
 		catch (Exception ex)
@@ -82,6 +81,7 @@ public class Main
 		if (analysisOnly) return;
 		
 		// Perform actions.
+		System.out.println("Performing actions...");
 		TaskContainerFactory taskContainerFactory = new TaskContainerFactory();
 		Executor exec = new DefaultExecutor(state, taskContainerFactory);
 		try {

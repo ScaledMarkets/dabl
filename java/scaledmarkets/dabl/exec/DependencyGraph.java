@@ -26,8 +26,9 @@ import java.util.LinkedList;
 public class DependencyGraph {
 
 	private CompilerState state;
-	private TaskContext taskContext = new TaskContext();
 	private TaskContainerFactory taskContainerFactory;
+	private boolean verbose;
+	private DablContext dablContext = new DablContext();
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
 	private Map<AOartifactSet, Artifact> artifacts = new HashMap<AOartifactSet, Artifact>();
 	private Set<Task> rootTasks = new TreeSet<Task>();
@@ -37,9 +38,9 @@ public class DependencyGraph {
 	 * relationships between tasks.
 	 */
 	public static DependencyGraph genDependencySet(CompilerState state,
-		TaskContainerFactory taskContainerFactory) {
+		TaskContainerFactory taskContainerFactory, boolean verbose) {
 		
-		DependencyGraph graph = new DependencyGraph(state, taskContainerFactory);
+		DependencyGraph graph = new DependencyGraph(state, taskContainerFactory, verbose);
 		graph.genDependencies();
 		return graph;
 	}
@@ -53,9 +54,11 @@ public class DependencyGraph {
 		}
 	}
 	
-	DependencyGraph(CompilerState state, TaskContainerFactory taskContainerFactory) {
+	protected DependencyGraph(CompilerState state, TaskContainerFactory taskContainerFactory,
+		boolean verbose) {
 		this.state = state;
 		this.taskContainerFactory = taskContainerFactory;
+		this.verbose = verbose;
 	}
 	
 	/**
@@ -176,8 +179,12 @@ public class DependencyGraph {
 				"Task has already been executed");
 			
 			task.visit();  // mark that we have been here.
+			if (verbose) System.out.println("Visiting task " + task.getName());
 			
-			if (task.taskWhenConditionIsTrue(taskContext)) {
+			if (task.taskWhenConditionIsTrue(dablContext)) {
+				
+				if (verbose) System.out.println("\ttask 'when' condition is true");
+				
 				// Create a container.
 				TaskContainer taskContainer = this.taskContainerFactory.createTaskContainer();
 				

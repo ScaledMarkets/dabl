@@ -24,7 +24,7 @@ main_class := $(package_name).Main
 # Intermediate artifacts:
 classfiles := \
 	$(build_dir)/$(package)/*.class \
-	$(build_dir)/$(package)/gen/*.class \
+	$(build_dir)/$(package)/exec/*.class \
 	$(build_dir)/$(package)/helper/*.class \
 	$(build_dir)/$(package)/analysis/*.class \
 	$(build_dir)/$(package)/lexer/*.class \
@@ -45,7 +45,7 @@ test_src_dir := $(CurDir)/test
 test_build_dir := $(CurDir)/buildtest
 test_package = $(package)/test
 testsourcefiles := $(test_src_dir)/$(test_package)/*.java
-testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/gen/*.class
+testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/exec/*.class
 sable_out_dir := $(CurDir)/SableCCOutput
 javadoc_dir := $(CurDir)/docs
 
@@ -126,7 +126,7 @@ compile: config
 		$(src_dir)/sablecc/*.java \
 		$(src_dir)/$(package)/*.java \
 		$(src_dir)/$(package)/analysis/*.java \
-		$(src_dir)/$(package)/gen/*.java \
+		$(src_dir)/$(package)/exec/*.java \
 		$(src_dir)/$(package)/helper/*.java
 
 # Define 'dist' target so we can reference it in 'all' target.

@@ -6,18 +6,10 @@ import java.util.Date;
 
 public class ExpressionEvaluator {
 	
-	private TaskContext context;
+	private ExpressionContext context;
 	
-	public ExpressionEvaluator(TaskContext context) {
-		if (context == null) {
-			this.context = new TaskContext();
-		} else {
-			this.context = context;
-		}
-	}
-	
-	public ExpressionEvaluator() {
-		this(null);
+	public ExpressionEvaluator(ExpressionContext context) {
+		this.context = context;
 	}
 	
 	public Object evaluateExpr(POexpr expr) {

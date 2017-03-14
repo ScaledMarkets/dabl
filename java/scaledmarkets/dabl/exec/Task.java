@@ -58,11 +58,11 @@ public class Task {
 		return visited;
 	}
 	
-	boolean taskWhenConditionIsTrue(TaskContext context) {
+	boolean taskWhenConditionIsTrue(DablContext dablContext) {
 		
 		LinkedList<POexpr> exprs = taskDecl.getWhen();
 		for (POexpr expr : exprs) {
-			Object result = (new ExpressionEvaluator(context)).evaluateExpr(expr);
+			Object result = (new ExpressionEvaluator(dablContext)).evaluateExpr(expr);
 			if (result instanceof Boolean) {
 				if ((Boolean)result) return true;
 			}

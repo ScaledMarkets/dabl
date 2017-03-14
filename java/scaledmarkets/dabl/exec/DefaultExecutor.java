@@ -16,7 +16,13 @@ public class DefaultExecutor implements Executor {
 	}
 	
 	public void execute() throws Exception {
-		DependencyGraph graph = DependencyGraph.genDependencySet(this.state, this.taskContainerFactory);
+		System.out.println("Determining dependency graph...");
+		DependencyGraph graph = DependencyGraph.genDependencySet(this.state,
+			this.taskContainerFactory, false);
+
+		System.out.println("Executing tasks...");
 		graph.executeAll();
+		
+		System.out.println("...done executing tasks.");
 	}
 }
