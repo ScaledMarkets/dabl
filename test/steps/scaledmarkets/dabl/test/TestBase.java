@@ -1,6 +1,6 @@
 package scaledmarkets.dabl.test;
 
-import scaledmarkets.dabl.main.*;
+import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.helper.*;
 import scaledmarkets.dabl.node.*;
 
