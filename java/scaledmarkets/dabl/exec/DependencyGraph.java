@@ -21,14 +21,12 @@ import java.util.List;
 import java.util.LinkedList;
 
 /**
- * 
+ * Construct a dependency graph, that represents the input/output dependencies
+ * among the tasks.
  */
 public class DependencyGraph {
 
 	private CompilerState state;
-	private TaskContainerFactory taskContainerFactory;
-	private boolean verbose;
-	private DablContext dablContext = new DablContext();
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
 	private Map<AOartifactSet, Artifact> artifacts = new HashMap<AOartifactSet, Artifact>();
 	private Set<Task> rootTasks = new TreeSet<Task>();
@@ -37,28 +35,17 @@ public class DependencyGraph {
 	 * Create a dependency graph that explicitly models the producer/consumer
 	 * relationships between tasks.
 	 */
-	public static DependencyGraph genDependencySet(CompilerState state,
-		TaskContainerFactory taskContainerFactory, boolean verbose) {
+	public static DependencyGraph genDependencySet(CompilerState state) {
 		
-		DependencyGraph graph = new DependencyGraph(state, taskContainerFactory, verbose);
+		DependencyGraph graph = new DependencyGraph(state);
 		graph.genDependencies();
 		return graph;
 	}
 	
-	/**
-	 * 
-	 */
-	public void executeAll() throws Exception {
-		for (Task task : rootTasks) { // each root task tr,
-			executeTaskTree(task);
-		}
-	}
+	public Set<Task> getRootTasks() { return rootTasks; }
 	
-	protected DependencyGraph(CompilerState state, TaskContainerFactory taskContainerFactory,
-		boolean verbose) {
+	protected DependencyGraph(CompilerState state) {
 		this.state = state;
-		this.taskContainerFactory = taskContainerFactory;
-		this.verbose = verbose;
 	}
 	
 	/**
@@ -167,47 +154,5 @@ public class DependencyGraph {
 		Artifact artifact = new Artifact(a);
 		artifacts.put(a, artifact);
 		return artifact;
-	}
-
-	/**
-	 * 
-	 */
-	protected void executeTaskTree(Task task) throws Exception {
-		if (isDownstreamFromUnvisitedTask(task)) {
-
-			if (task.hasBeenVisited()) throw new RuntimeException(
-				"Task has already been executed");
-			
-			task.visit();  // mark that we have been here.
-			if (verbose) System.out.println("Visiting task " + task.getName());
-			
-			if (task.taskWhenConditionIsTrue(dablContext)) {
-				
-				if (verbose) System.out.println("\ttask 'when' condition is true");
-				
-				// Create a container.
-				TaskContainer taskContainer = this.taskContainerFactory.createTaskContainer();
-				
-				// Execute the task in the container.
-				taskContainer.executeTask(task);
-			}
-			
-			for (Task t_o : task.getConsumers()) {
-				// for each task t_o that is immediately downstream of task,
-				executeTaskTree(t_o);
-			}
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	protected boolean isDownstreamFromUnvisitedTask(Task task) {
-		
-		for (Task p : task.getProducers()) {
-			if (! p.hasBeenVisited()) return true;
-			if (isDownstreamFromUnvisitedTask(p)) return true;
-		}
-		return false;
 	}
 }

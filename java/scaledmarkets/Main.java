@@ -30,6 +30,7 @@ public class Main
 		
 		Dabl dabl;
 		String filename = null;
+		boolean simulate = false;
 
 		int argno = 0;
 		for (;;)
@@ -44,6 +45,7 @@ public class Main
 			else if (arg.equals("-p") || arg.equals("--print")) dabl.print = true;
 			else if (arg.equals("-t") || arg.equals("--trace")) dabl.printTrace = true;
 			else if (arg.equals("-a") || arg.equals("--analysis")) dabl.analysisOnly = true;
+			else 9f (arg.equals("-s") || arg.equals("--simulate")) simulate = true;
 			else if (arg.startsWith("-"))
 			{
 				System.out.println("Unrecognized option: " + arg);
@@ -82,7 +84,9 @@ public class Main
 		
 		// Perform actions.
 		System.out.println("Performing actions...");
-		TaskContainerFactory taskContainerFactory = new TaskContainerFactory();
+		TaskContainerFactory taskContainerFactory;
+		if (simulate) taskContainerFactory = new TaskSimulatorFactory();
+		else taskContainerFactory = new TaskDockerContainerFactory();
 		Executor exec = new DefaultExecutor(state, taskContainerFactory);
 		try {
 			exec.execute();
@@ -101,6 +105,7 @@ public class Main
 			"\t\t\t-p or --print (print the AST)\n" +
 			"\t\t\t-t or --trace (print stack trace instead of just error msg)\n" +
 			"\t\t\t-a or --analysis (analysis only - do not perform any actions)\n" +
+			"\t\t\t-s or --simulate (simulate only - print tasks instead of executing them)\n" +
 			"\t\t\t-h or --help"
 			);
 		return;
