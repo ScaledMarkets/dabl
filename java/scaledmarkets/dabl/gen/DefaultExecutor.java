@@ -5,17 +5,17 @@ import scaledmarkets.dabl.analysis.CompilerState;
 /**
  * Determine which tasks should be executed, and execute them.
  */
-public class DefaultGenerator implements Generator {
+public class DefaultExecutor implements Executor {
 	
 	private CompilerState state;
 	private TaskContainerFactory taskContainerFactory;
 	
-	public DefaultGenerator(CompilerState state, TaskContainerFactory taskContainerFactory) {
+	public DefaultExecutor(CompilerState state, TaskContainerFactory taskContainerFactory) {
 		this.state = state;
 		this.taskContainerFactory = taskContainerFactory;
 	}
 	
-	public void generate() throws Exception {
+	public void execute() throws Exception {
 		DependencyGraph graph = DependencyGraph.genDependencySet(this.state, this.taskContainerFactory);
 		graph.executeAll();
 	}

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 /**
- * Main entry point for DABL processor.
+ * DABL command line processor.
  * Args: (see displayInstructions() below).
  */
 public class Main
@@ -83,9 +83,9 @@ public class Main
 		
 		// Perform actions.
 		TaskContainerFactory taskContainerFactory = new TaskContainerFactory();
-		Generator gen = new DefaultGenerator(state, taskContainerFactory);
+		Executor exec = new DefaultExecutor(state, taskContainerFactory);
 		try {
-			gen.generate();
+			exec.execute();
 		} catch (Exception ex) {
 			if (dabl.printTrace) ex.printStackTrace();
 			else System.out.println(ex.getMessage());

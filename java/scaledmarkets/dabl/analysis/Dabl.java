@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.LinkedList;
 
 /**
- * Main entry point for DABL processor.
- * Args: (see displayInstructions() below).
+ * Wrapper for analyzer, making it convenient to call and providing options.
+ * When embedding Dabl in other applications, instantiate this class.
  */
 public class Dabl
 {
@@ -29,10 +29,6 @@ public class Dabl
 	Reader reader = null;
 	ImportHandler importHandler = null;
 	
-	/**
-	 * Applications that embed a DABL compiler should instantiate a Dabl instance
-	 * using this constructor.
-	 */
 	public Dabl(boolean print, boolean printTrace, Reader reader, ImportHandler importHandler) {
 		this.print = print;
 		this.printTrace = printTrace;
@@ -44,7 +40,7 @@ public class Dabl
 		this(print, printTrace, reader, new DefaultImportHandler());
 	}
 	
-	protected Dabl(Reader reader) {
+	public Dabl(Reader reader) {
 		this.reader = reader;
 		this.importHandler = new DefaultImportHandler();
 	}
