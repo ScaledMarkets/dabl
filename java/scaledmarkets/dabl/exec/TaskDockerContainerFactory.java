@@ -7,7 +7,7 @@ public class TaskDockerContainerFactory {
 	 * that enables one to control the container.
 	 */
 	public TaskContainer createTaskContainer() {
-		return new TaskContainer();
+		return new DockerTaskContainer();
 	}
 	
 	public boolean isASimulation() { return false; }
