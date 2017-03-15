@@ -317,13 +317,14 @@ Productions
         fileset_spec from [project]:string_literal
         in [repository_id]:id               {-> New oartifact_set(fileset_spec.ostring_literal,
                                                 project.ostring_literal, New oid_ref(repository_id))}
+      | .....reference a named artifact set
         ;
     
     fileset_spec {-> ostring_literal} =
         string_literal                      {-> string_literal.ostring_literal}
         ;
     
-    files_decl {-> ofiles_declaration} =
+    files_decl {-> ofiles_declaration} =     <- needs to produce a onamed_artifact_set.......
         files [name]:id from [project]:string_literal
             in [source]:id prefer_stmt_opt
             files_stmts                     {-> New ofiles_declaration(name,
