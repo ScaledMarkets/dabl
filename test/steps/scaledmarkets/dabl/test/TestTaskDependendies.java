@@ -17,21 +17,46 @@ import java.util.LinkedList;
 
 public class TestTaskDependencies extends TestBase {
 	
-	@Given("^I have two tasks and one has an output that is an input to the other$")
-	public void i_have_two_tasks_and_one_has_an_output_that_is_an_input_to_the_other() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+	DependencyGraph graph;
+	
+	@Given("^I have tasks A and B and A has an output that is an input to B$")
+	public void i_have_tasks_A_and_B_and_A_has_an_output_that_is_an_input_to_B() throws Throwable {
+		
+		Reader reader = new StringReader(
+"namespace simple \n" +
+"task A\n" +
+"  inputs \"x\" from \"repo1\" in my_git\n" +
+"  outputs \"y\" from \"repo2\" in my_git\n" +
+"task B\n" +
+"  inputs \"x\" from \"repo1\" in my_git\n" +
+"  outputs \"y\" from \"repo2\" in my_git"
+			);
+		
+		Dabl dabl = new Dabl(false, true, reader);
+		createHelper(dabl.process());
+		assertThat(getHelper().getState().getGlobalScope() != null);
 		throw new Exception();
 	}
 	
 	@When("^I compile them in simulate mode$")
 	public void i_compile_them_in_simulate_mode() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		this.graph = DependencyGraph.genDependencySet(getHelper().getState());
 	}
 	
-	@Then("^I can verify the task dependency$")
-	public void i_can_verify_the_task_dependency() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+	@Then("^I can verify that B depends on A$")
+	public void i_can_verify_that_B_depends_on_A() throws Throwable {
+		
+		AOtaskDeclaration taskADecl = getHelper().getTaskDeclaration("A");
+		assertThat(taskADecl != null);
+		AOtaskDeclaration taskBDecl = getHelper().getTaskDeclaration("B");
+		assertThat(taskBDecl != null);
+		Task taskA = this.graph.getTaskForDeclaration(taskADecl);
+		assertThat(taskA != null);
+		Task taskB = this.graph.getTaskForDeclaration(taskBDecl);
+		assertThat(taskB != null);
+		assertThat(taskB.getProducers().contains(taskA));
+		
 		throw new Exception();
 	}
 }

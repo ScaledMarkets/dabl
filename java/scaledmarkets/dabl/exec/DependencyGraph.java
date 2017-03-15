@@ -44,6 +44,14 @@ public class DependencyGraph {
 	
 	public Set<Task> getRootTasks() { return rootTasks; }
 	
+	public Task getTaskForDeclaration(AOtaskDeclaration taskDecl) {
+		return tasks.get(taskDecl);
+	}
+	
+	public Artifact getArtifactForSet(AOartifactSet a) {
+		return artifacts.get(a);
+	}
+	
 	protected DependencyGraph(CompilerState state) {
 		this.state = state;
 	}

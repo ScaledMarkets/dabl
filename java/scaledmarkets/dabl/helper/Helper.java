@@ -302,6 +302,13 @@ public class Helper {
 		return entry.getDefiningNode();
 	}
 	
+	public AOtaskDeclaration getTaskDeclaration(String taskName) throws Exception {
+		
+		Node n = getDeclaration(artifactName);
+		assertThat(n instanceof AOtaskDeclaration);
+		return (AOtaskDeclaration)n;
+	}
+	
 	/**
 	 * Return the specified Artifact declaration, from the primary namespace.
 	 */
