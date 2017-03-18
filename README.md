@@ -83,7 +83,7 @@ see [Embedding the Compiler In an Application](embedding/README.md).
 
 # Compiler Design
 
-See [java/scaledmarkets/dabl/main](java/scaledmarkets/dabl/main).
+See [java/scaledmarkets/dabl](java/scaledmarkets/dabl).
 
 Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
 
