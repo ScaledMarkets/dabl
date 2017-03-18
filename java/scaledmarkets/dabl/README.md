@@ -24,7 +24,7 @@ Parse phase.
 ## Key Dynamic Structures
 
 The compiler's dynamic structure is completely encapsulated in the
-[`CompilerState`](CompilerState.java) object.
+[`CompilerState`](analysis/CompilerState.java) object.
 The argument-less `process()` method creates a `CompilerState` instance and provides
 it when constructing a `LanguageAnalyzer`.
 
