@@ -321,7 +321,7 @@ Productions
     
     files_decl {-> ofiles_declaration} =
         files [name]:id artifact_set        {-> New ofiles_declaration(name,
-                                                artifact_set.onamed_artifact_set)}
+                                                artifact_set.oartifact_set)}
         ;
     
     files_stmts_opt {-> ofileset_operation*} =
@@ -729,7 +729,7 @@ Abstract Syntax Tree
       ;
     
     ofiles_declaration =
-        [name]:id onamed_artifact_set;
+        [name]:id oartifact_set;
 
     ofile_preference =
         {latest_compatible}
