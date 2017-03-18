@@ -120,7 +120,6 @@ Tokens
     not_keyword = 'not';
     and_keyword = 'and';
     or_keyword = 'or';
-    include = 'include';
     exclude = 'exclude';
     true_keyword = 'true';
     false_keyword = 'false';
@@ -279,10 +278,10 @@ Productions
       ;
     
     input_set {-> onamed_artifact_set} =
-        {named} inputs id artifact_sets     {-> New onamed_artifact_set.named(id,
-                                                [artifact_sets.oartifact_set])}
-      | {anonymous} inputs artifact_sets    {-> New onamed_artifact_set.anonymous(
-                                                [artifact_sets.oartifact_set])}
+        {named} inputs id artifact_set      {-> New onamed_artifact_set.named(id,
+                                                artifact_set.oartifact_set)}
+      | {anonymous} inputs artifact_set     {-> New onamed_artifact_set.anonymous(
+                                                artifact_set.oartifact_set)}
         ;
     
     output_sets_opt {-> onamed_artifact_set*} =
@@ -297,10 +296,10 @@ Productions
       ;
     
     output_set {-> onamed_artifact_set} =
-        {named} outputs id artifact_sets    {-> New onamed_artifact_set.named(id,
-                                                [artifact_sets.oartifact_set])}
-      | {anonymous} outputs artifact_sets   {-> New onamed_artifact_set.anonymous(
-                                                [artifact_sets.oartifact_set])}
+        {named} outputs id artifact_set     {-> New onamed_artifact_set.named(id,
+                                                artifact_set.oartifact_set)}
+      | {anonymous} outputs artifact_set    {-> New onamed_artifact_set.anonymous(
+                                                artifact_set.oartifact_set)}
         ;
       
     artifact_sets {-> oartifact_set*} =
@@ -309,29 +308,26 @@ Productions
       | {one} artifact_set                  {-> [artifact_set.oartifact_set]}
       ;
     
-    // Examples:
-    // files XYZ:3.3
-    // abc.jar
-    // $thisdir/**.java from "my_repo" in my_git
     artifact_set {-> oartifact_set} =
-        fileset_spec from [project]:string_literal
-        in [repository_id]:id               {-> New oartifact_set(fileset_spec.ostring_literal,
+        of [project]:string_literal in [repository_id]:id prefer_stmt_opt files_stmts_opt
+                                            {-> New oartifact_set(
+                                                [files_stmts_opt.ofileset_operation],
                                                 project.ostring_literal, New oid_ref(repository_id))}
-      | .....reference a named artifact set
         ;
     
     fileset_spec {-> ostring_literal} =
         string_literal                      {-> string_literal.ostring_literal}
         ;
     
-    files_decl {-> ofiles_declaration} =     <- needs to produce a onamed_artifact_set.......
-        files [name]:id from [project]:string_literal
-            in [source]:id prefer_stmt_opt
-            files_stmts                     {-> New ofiles_declaration(name,
-                                                project.ostring_literal, New oid_ref(source),
-                                                prefer_stmt_opt.ofile_preference,
-                                                [files_stmts.ofileset_operation])}
+    files_decl {-> ofiles_declaration} =
+        files [name]:id artifact_set        {-> New ofiles_declaration(name,
+                                                artifact_set.onamed_artifact_set)}
         ;
+    
+    files_stmts_opt {-> ofileset_operation*} =
+        {some} files_stmts                  {-> [files_stmts.ofileset_operation]}
+      | {none}                              {-> []}
+      ;
     
     files_stmts {-> ofileset_operation*} =
         {multiple} files_stmt files_stmts   {-> [files_stmt.ofileset_operation,
@@ -377,7 +373,7 @@ Productions
       ;
     
     include_stmt {-> ofileset_operation} =
-        include fileset_spec                {-> New ofileset_operation.include(
+        fileset_spec                        {-> New ofileset_operation.include(
                                                 fileset_spec.ostring_literal)}
         ;
     
@@ -733,7 +729,7 @@ Abstract Syntax Tree
       ;
     
     ofiles_declaration =
-        [name]:id [project]:ostring_literal [repository]:oid_ref ofile_preference ofileset_operation*;
+        [name]:id onamed_artifact_set;
 
     ofile_preference =
         {latest_compatible}
@@ -787,12 +783,12 @@ Abstract Syntax Tree
       ;
     
     onamed_artifact_set =
-        {named} id oartifact_set*
-      | {anonymous} oartifact_set*
+        {named} id oartifact_set
+      | {anonymous} oartifact_set
       ;
     
     oartifact_set =
-        [fileset_spec]:ostring_literal [project]:ostring_literal [repository_id]:oid_ref;
+        ofileset_operation* [project]:ostring_literal [repository_id]:oid_ref;
     
     oproc_stmt =
         {func_call} oid_ref oexpr* otarget_opt

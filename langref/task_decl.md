@@ -39,7 +39,7 @@ reference to `somestuff` from within the task would reference the input_set.
 ```
 task compileit
     when inputs A newer than outputs
-    inputs A "$thisdir/**.java" from "my_repo" in my_git, XYZ
+    inputs A "$thisdir/**.java" of "my_repo" in my_git, XYZ
     outputs "./**.class", "./**.txt"
     bash "
         javac $thisdir/*.java
@@ -88,7 +88,7 @@ via input and output streams named after the input and output names. For example
 the following task,
 ```
 task compileit
-  inputs A $thisdir/**.java from "my_repo" in my_git
+  inputs A $thisdir/**.java of "my_repo" in my_git
   inputs XYZ
   outputs B ./**.class, ./**.txt
 ```

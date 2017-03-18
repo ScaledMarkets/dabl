@@ -11,7 +11,7 @@ recent versions should be used.
 A files declaration has the following syntax:
 
 <dl>
-<dd><code>files</code> <i>Id</i> <code>from</code> <i>repo-Id</i> <code>in</code>
+<dd><code>files</code> <i>Id</i> <code>of</code> <i>repo-Id</i> <code>in</code>
 <i>project-Id files-stmts</i>
 </dl>
 
@@ -44,7 +44,7 @@ and version-criteria is one of,
 ## Example
 
 ```
-files Stuff from "myrepo" in my_maven
+files Stuff of "myrepo" in my_maven
   include "*.java"
 repo my_maven type "maven"
   path "mymaven.abc.com"
