@@ -82,12 +82,12 @@ that are declared by that declarative region. This is depicted in the figure.
 
 ## Compiler Output
 
-The compiler returns a [`CompilerState`](CompilerState.java) object. In the
+The compiler returns a [`CompilerState`](analysis/CompilerState.java) object. In the
 `CompilerState`, the `globalScope` variable references the root level
-[`NameScope`](NameScope.java) object.
-A `NameScope` references a [`SymbolTable`](SymbolTable.java) consisting of
-[`SymbolEntries`](SymbolEntry.java).
-`SymbolEntries` that are [`NameScopeEntries`](NameScopeEntry.java) own their
+[`NameScope`](analysis/NameScope.java) object.
+A `NameScope` references a [`SymbolTable`](analysis/SymbolTable.java) consisting of
+[`SymbolEntries`](analysis/SymbolEntry.java).
+`SymbolEntries` that are [`NameScopeEntries`](analysis/NameScopeEntry.java) own their
 own `NameScopes`,
 which in turn reference their own `SymbolTables`, creating a hierarchy
 of `NameScopes`.
@@ -102,6 +102,6 @@ can be found in package `scaledmarkets.dabl.node` of the
 [generated javadocs](https://scaledmarkets.github.io/dabl/).
 
 The linkage between the AST and the `NameScope` hierarchy is as follows:
-`SymbolEntries` that are [`DeclaredEntries`](DeclaredEntry.java)
+`SymbolEntries` that are [`DeclaredEntries`](analysis/DeclaredEntry.java)
 provide a `getDefiningNode()` method, which provides a reference to
 the AST `Node` that declares the symbol that the `SymbolEntry` defines.
