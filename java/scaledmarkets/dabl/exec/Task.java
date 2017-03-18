@@ -46,11 +46,11 @@ public class Task {
 		isProducerFor.add(t);
 	}
 	
-	Set<Task> getProducers() {
+	public Set<Task> getProducers() {
 		return isConsumerOf;
 	}
 	
-	Set<Task> getConsumers() {
+	public Set<Task> getConsumers() {
 		return isProducerFor;
 	}
 	

@@ -26,7 +26,7 @@ public class TestForwardReferences extends TestBase {
 		this.reader = new StringReader(
 "namespace simple\n" +
 "  files Stuff from \"myrepo\" in my_maven\n" +
-"    include \"*.java\"" +
+"    \"*.java\"" +
 "  repo my_maven type \"maven\"\n" +
 "    path \"mymaven.abc.com\"\n" +
 "    userid \"MavenUserId\" password \"MavenPassword\"\n"
@@ -45,7 +45,10 @@ public class TestForwardReferences extends TestBase {
 		assertThat(n instanceof AOfilesDeclaration);
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
 		
-		POidRef p = filesDecl.getRepository();
+		//POidRef p = filesDecl.getRepository();
+		POartifactSet pas = filesDecl.getOartifactSet();
+		AOartifactSet as = (AOartifactSet)pas;
+		POidRef p = as.getRepositoryId();
 		assertThat(p instanceof AOidRef);
 		AOidRef idRef = (AOidRef)p;
 		

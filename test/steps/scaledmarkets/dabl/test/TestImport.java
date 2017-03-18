@@ -51,7 +51,9 @@ public class TestImport extends TestBase {
 		assertThat(n instanceof AOfilesDeclaration);
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
 		
-		POidRef p = filesDecl.getRepository();
+		POartifactSet pas = filesDecl.getOartifactSet();
+		AOartifactSet as = (AOartifactSet)pas;
+		POidRef p = as.getRepositoryId();
 		assertThat(p instanceof AOidRef);
 		AOidRef reposRef = (AOidRef)p;
 		TId reposId = reposRef.getId();
