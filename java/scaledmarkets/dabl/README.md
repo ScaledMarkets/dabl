@@ -35,7 +35,7 @@ object is returned by the compiler.
 
 ## Language Analyzer
 
-The [LanguageAnalyzer](LanguageAnalyzer.java) class performs the Analysis processing phase
+The [LanguageAnalyzer](analysis/LanguageAnalyzer.java) class performs the Analysis processing phase
 (see https://github.com/Scaled-Markets/dabl/tree/master/langref#processing-phases).
 
 The Analysis phase walks the tree in a depth-first manner, visiting each `Node`,
