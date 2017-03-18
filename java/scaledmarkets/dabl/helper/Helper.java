@@ -304,7 +304,7 @@ public class Helper {
 	
 	public AOtaskDeclaration getTaskDeclaration(String taskName) throws Exception {
 		
-		Node n = getDeclaration(artifactName);
+		Node n = getDeclaration(taskName);
 		assertThat(n instanceof AOtaskDeclaration);
 		return (AOtaskDeclaration)n;
 	}

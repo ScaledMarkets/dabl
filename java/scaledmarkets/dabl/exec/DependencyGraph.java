@@ -75,7 +75,7 @@ public class DependencyGraph {
 			LinkedList<POnamedArtifactSet> inputs = taskDecl.getInput();
 			for (POnamedArtifactSet p : inputs) {
 				
-				LinkedList<POartifactSet> artifactSet;
+				POartifactSet artifactSet;
 				
 				if (p instanceof AAnonymousOnamedArtifactSet) {
 					artifactSet = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
@@ -84,23 +84,21 @@ public class DependencyGraph {
 				} else throw new RuntimeException(
 					"Unexpected Node type: " + p.getClass().getName());
 				
-				for (POartifactSet a : artifactSet) {
-					// 1. If the input Artifact does not exist, then create a new Artifact.
-					Artifact artifact = createArtifact((AOartifactSet)a);
-					
-					// 2. Add the task to the input Artifact’s list of “IsReadBy”.
-					artifact.addConsumer(task);
-					
-					// 3. Add the input Artifact to the task’s list of inputs.
-					task.addInput(artifact);
-				}
+				// 1. If the input Artifact does not exist, then create a new Artifact.
+				Artifact artifact = createArtifact((AOartifactSet)artifactSet);
+				
+				// 2. Add the task to the input Artifact’s list of “IsReadBy”.
+				artifact.addConsumer(task);
+				
+				// 3. Add the input Artifact to the task’s list of inputs.
+				task.addInput(artifact);
 			}
 			
 			// c. For each of the task’s outputs,
 			LinkedList<POnamedArtifactSet> outputs = taskDecl.getOutput();
 			for (POnamedArtifactSet p : outputs) {
 				
-				LinkedList<POartifactSet> artifactSet;
+				POartifactSet artifactSet;
 				
 				if (p instanceof AAnonymousOnamedArtifactSet) {
 					artifactSet = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
@@ -109,16 +107,14 @@ public class DependencyGraph {
 				} else throw new RuntimeException(
 					"Unexpected Node type: " + p.getClass().getName());
 				
-				for (POartifactSet a : artifactSet) {
-					// 1. If the output Artifact does not exist, then create a new Artifact.
-					Artifact artifact = createArtifact((AOartifactSet)a);
-					
-					// 2. Add the task to the output Artifact’s list of “IsWrittenBy”.
-					artifact.addProducer(task);
-					
-					// 3. Add the output Artifact to the task’s list of outputs.
-					task.addOutput(artifact);
-				}
+				// 1. If the output Artifact does not exist, then create a new Artifact.
+				Artifact artifact = createArtifact((AOartifactSet)artifactSet);
+				
+				// 2. Add the task to the output Artifact’s list of “IsWrittenBy”.
+				artifact.addProducer(task);
+				
+				// 3. Add the output Artifact to the task’s list of outputs.
+				task.addOutput(artifact);
 			}
 		}
 		
