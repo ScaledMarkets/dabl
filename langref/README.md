@@ -182,19 +182,19 @@ to the task, one would have to use the syntax `abcstuff.abcstuff`.
 
 A DABL file is processed in the following phases:
 <ol>
-<li>Template - All environment variable references in the file are converted to
+<li><b>Template</b> - All environment variable references in the file are converted to
 	their runtime values, regardless of the context in which they appear (e.g.,
 	inside of a string). Thus, environment variable values are bound
 	at the time that a DABL file is parsed. This is a simple token replacement
 	and is not related to the syntax of the DABL language, much like the
 	pre-processing phase in C.</li>
-<li>Parse - The output of the prior phase is parsed and an object model is created.</li>
-<li>Analysis - Identifiers are resolved, matching them up with their declarations.
+<li><b>Parse</b> - The output of the prior phase is parsed and an object model is created.</li>
+<li><b>Analysis</b> - Identifiers are resolved, matching them up with their declarations.
 	String concatenations are performed. Logical and arithmetic expressions
 	<i>may</i> be partially evaluated, where possible. Values
 	that depend on the DABL file context (e.g., its location on a file system)
 	are elaborated.</li>
-<li>Execution - The actions implied by the file are performed. The actions depend
+<li><b>Execution</b> - The actions implied by the file are performed. The actions depend
 	on the tool that is processing the DABL file. Actions might include contextual
 	analysis such as security analysis or other kinds of integrity analysis; it
 	may also include preparation for execution, such as adding listeners for events,
