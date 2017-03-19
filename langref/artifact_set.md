@@ -11,7 +11,7 @@ of the task specifying the artifact set.
 An artifact set has the following syntax:
 
 <dl>
-<dd><code>of <i>project-Id</i> in <i>repository-Id</i> [ <i>prefer-stmt</i> ] [ <i>files-stmts</i> ]</dd>
+<dd><code>of</code> <i>project-Id</i> <code>in</code> <i>repository-Id</i> [ <i>prefer-stmt</i> ] [ <i>files-stmts</i> ]</dd>
 </dl>
 
 The *repository-Id* is the Id of a repository that is defined by
