@@ -11,35 +11,12 @@ recent versions should be used.
 A files declaration has the following syntax:
 
 <dl>
-<dd><code>files</code> <i>Id</i> <code>of</code> <i>repo-Id</i> <code>in</code>
-<i>project-Id files-stmts</i>
+<dd><code>files</code> <i>Id</i> <i>artifact-set</i>
 </dl>
 
 The *Id* is used to refer to the collection of files elsewhere in the DABL file.
-The *repo-Id* is the Id of a repository that is defined by a repo declaration.
-The *project-Id* is the name of a project (e.g., a github "repo") within the
-repository.
 
-*files-stmts* consists of zero or more `prefer` statements. The syntax of a
-`prefer` statement is as follows:
-
-<dl>
-<dd><code>prefer</code> <i>preference</i>
-</dl>
-
-where *preference* is one of,
-
-<dl>
-<dd><code>latest</code> <i>version-criteria</i></dd>
-<dd><i><a href="version_spec.md">version-spec</a></i></dd>
-</dl>
-
-and version-criteria is one of,
-
-<dl>
-<dd><code>compatible with</code></dd>
-<dd><code>tested with</code></dd>
-</dl>
+An <i><a href="artifact_set.md">artifact-set</a></i> specifies a set of files from somewhere.
 
 ## Example
 

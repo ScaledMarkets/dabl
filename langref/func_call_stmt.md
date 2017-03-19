@@ -41,7 +41,9 @@ In this example, the word `to` is a preposition that is ignored by the DABL pars
 
 ## Built-In Functions
 
-The following functions are pre-defined by DABL:
+The namespace dabl.standard is implicitly imported in a DABL file.
+
+The following functions are pre-defined in dabl.standard:
 
 <dl>
 <dd><code>post</code> <i>artifact</i> <code>to</code> <i>destination-repo</i>/<i>path</i></dd>
