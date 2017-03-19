@@ -1,14 +1,25 @@
 # DABL Language Reference, version Alpha
 
+## Current Status
+
 Note: DABL version 1.0 is still being developed, and this spec reflect that
 development and is therefore subject to change.
 Once the spec is labeled version 1.0, it will not change: changes to the language
 will be published as separate versions. After 1.0 has been published, great effort
 will be made to avoid breaking changes in future versions.
 
+## Background
+
 This is a normative spec.
 
-The elements of a DABL file are as follows:
+The purpose of the DABL language is to provide a robust way to define highly
+reliable and maintainable software build programs. DABL supports the concept
+of "infrastructure as code", and as such it is designed in a manner similar
+to a programming language.
+
+## Language Elements
+
+The top level elements of a DABL file are as follows:
 
 * [Namespace Declaration](namespace_decl.md)
 * [Import Declarations](import_decl.md)
