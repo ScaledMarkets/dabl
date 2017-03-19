@@ -23,7 +23,7 @@ A <i><i>logical-expression</i></i> can consist of any of the following operators
 </dd>
 <dd><i><b>Next highest precedence:</i></b>
 <dl>
-<ddLnot <i>logical-expression</i></dd>
+<dd>not <i>logical-expression</i></dd>
 </dl>
 </dd>
 <dd><i><b>Next highest precedence:</i></b>
