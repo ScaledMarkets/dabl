@@ -22,7 +22,9 @@ repository.
 
 *files-stmts* have the following syntax:
 
-[ `exclude` ] *fileset-spec*
+<dl>
+<dd>[ <code>exclude</code> ] <i>fileset-spec</i></dd>
+</dl>
 
 where a *fileset-spec* is a string value expression that specifies a set of files
 in the project. Wildcards may be used to match parts of a filename or directory.
