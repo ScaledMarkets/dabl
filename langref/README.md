@@ -6,6 +6,8 @@ Once the spec is labeled version 1.0, it will not change: changes to the languag
 will be published as separate versions. After 1.0 has been published, great effort
 will be made to avoid breaking changes in future versions.
 
+This is a normative spec.
+
 The elements of a DABL file are as follows:
 
 * [Namespace Declaration](namespace_decl.md)
