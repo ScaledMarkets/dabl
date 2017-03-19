@@ -213,6 +213,6 @@ something... - indicates that "something" is a sequence of one or more things.
 [something...] - indicates that "something" is a sequence of zero or more things.
 
 *something* - indicates that "something" is a value such as an identifier,
-  string,, or numeric value.
+  string, or numeric value.
 
 `something` - indicates that "something" is verbatim.
