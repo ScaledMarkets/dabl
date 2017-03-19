@@ -13,20 +13,23 @@ The syntax of a when clause is,
 A <i>logical-expression</i> can consist of any of the following operators:
 
 <dl>
-<dd>Highest precedence:</dd>
+<dd>Highest precedence:
 <dl>
 <dd>task succeeded</dd>
 <dd>task failed</dd>
 <dd>artifact newer than artifact</dd>
 <dd>artifact older than artifact</dd>
 </dl>
-<dd>Next highest precedence:</dd>
+</dd>
+<dd>Next highest precedence:
 <dl>
 <ddLnot logical-expression</dd>
 </dl>
-<dd>Next highest precedence:</dd>
+</dd>
+<dd>Next highest precedence:
 <dl>
 <dd>logical-expression and logical-expression</dd>
 <dd>logical-expression or logical-expression</dd>
 </dl>
+</dd>
 </dl>
