@@ -1,3 +1,5 @@
+Note: this example is out of date and needs to be updated.
+
 /* DABL = Dependent Artifact Build Language.
     This is a sample DABL file.
     DABL enables one to define dependencies among artifacts, and the tasks

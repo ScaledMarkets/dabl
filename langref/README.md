@@ -1,4 +1,10 @@
-# DABL Language Reference
+# DABL Language Reference, version Alpha
+
+Note: DABL version 1.0 is still being developed, and this spec reflect that
+development and is therefore subject to change.
+Once the spec is labeled version 1.0, it will not change: changes to the language
+will be published as separate versions. After 1.0 has been published, great effort
+will be made to avoid breaking changes in future versions.
 
 The elements of a DABL file are as follows:
 
