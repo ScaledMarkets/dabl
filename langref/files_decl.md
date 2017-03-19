@@ -22,7 +22,8 @@ An <i><a href="artifact_set.md">artifact-set</a></i> specifies a set of files fr
 
 ```
 files Stuff of "myrepo" in my_maven
-  include "*.java"
+  "*.java"
+  exclude "*.class"
 repo my_maven type "maven"
   path "mymaven.abc.com"
   userid "MavenUserId" password "MavenPassword"
