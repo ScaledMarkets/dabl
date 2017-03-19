@@ -2,34 +2,34 @@
 
 ## Purpose
 
-A when clause specifies an expression for determining whether a task should be invoked.
+A when clause specifies an expression for determining whether a <i>task</i> should be invoked.
 The syntax of a when clause is,
 
 <dl>
-<dd><code>when</code> <i>logical-expression</i></dd>
+<dd><code>when</code> <i><i>logical-expression</i></i></dd>
 </dl>
 
 
-A <i>logical-expression</i> can consist of any of the following operators:
+A <i><i>logical-expression</i></i> can consist of any of the following operators:
 
 <dl>
 <dd><i><b>Highest precedence:</b></i>
 <dl>
-<dd>task succeeded</dd>
-<dd>task failed</dd>
-<dd>artifact newer than artifact</dd>
-<dd>artifact older than artifact</dd>
+<dd><i>task</i> succeeded</dd>
+<dd><i>task</i> failed</dd>
+<dd><i>artifact</i> newer than <i>artifact</i></dd>
+<dd><i>artifact</i> older than <i>artifact</i></dd>
 </dl>
 </dd>
 <dd><i><b>Next highest precedence:</i></b>
 <dl>
-<ddLnot logical-expression</dd>
+<ddLnot <i>logical-expression</i></dd>
 </dl>
 </dd>
 <dd><i><b>Next highest precedence:</i></b>
 <dl>
-<dd>logical-expression and logical-expression</dd>
-<dd>logical-expression or logical-expression</dd>
+<dd><i>logical-expression</i> and <i>logical-expression</i></dd>
+<dd><i>logical-expression</i> or <i>logical-expression</i></dd>
 </dl>
 </dd>
 </dl>
