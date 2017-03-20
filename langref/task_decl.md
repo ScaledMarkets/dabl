@@ -21,32 +21,6 @@ A task declaration has the following syntax:
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
   	[ [procedural_stmts](procedural_stmt.md)...]
 
-## Inputs and Outputs
-
-The inputs are the files that are read by the task, and the outputs are the files
-that are created or updated by the task. The input and output constructs specify
-intention and are not verified by the language, but a tool could attempt to
-verify them. Inputs and outputs can be given names, but this is not required.
-
-## Procedural Statements
-
-The procedural statements that are declared for a task constitute the logical process that
-is defined by the task. The procedural statements are executed in the order in which
-they appear.
-
-## Name Scope and Name Overloading
-
-If the input_set or output_set defines a name for the inputs or outputs,
-respectively, the name is scoped to the enclosing task.
-
-An input_set or output_set may be the same as the task's name. However, if that
-is the case, then to reference the task namefrom within itself, one would have to
-fully qualify the task name with the namespace. For example, if a namespace
-is called `abcnamespace`, and it contains a task called `somestuff`, and
-that task contains an input_set called `somestuff`, then to refer to the
-task, one would have to use the syntax `abcnamespace.somestuff`. A simple
-reference to `somestuff` from within the task would reference the input_set.
-
 ## Example
 
 ```
@@ -70,6 +44,43 @@ timestamp than all of the files that are specified by the output set.
 * When the task is invoked, the bash command will be performed, after the value
 of $thisdir has been substituted. ($thisdir evaluates to the directory in which
 the DABL script exists.)
+
+## Inputs and Outputs
+
+The inputs are the files that are read by the task, and the outputs are the files
+that are created or updated by the task. The input and output constructs specify
+intention and are not verified by the language, but a tool could attempt to
+verify them. Inputs and outputs can be given names, but this is not required.
+
+## Procedural Statements
+
+The procedural statements that are declared for a task constitute the logical process that
+is defined by the task. The procedural statements are executed in the order in which
+they appear.
+
+## Name Scope and Name Overloading
+
+If the input_set or output_set defines a name for the inputs or outputs,
+respectively, the name is scoped to the enclosing task. However, a task
+may reference the inputs or outputs of another task, by explicitly qualifying
+the input or output name with the task in which it was defined.
+This allows a task's input statement to reference the outputs of another task, by
+qualifying the output with the task name. For example,
+```
+task compileit
+    outputs A "$thisdir/**.java" of "my_repo" in my_git, XYZ
+
+task packageit
+    inputs compileit.A
+```
+
+An input_set or output_set may be the same as the task's name. However, if that
+is the case, then to reference the task namefrom within itself, one would have to
+fully qualify the task name with the namespace. For example, if a namespace
+is called `abcnamespace`, and it contains a task called `somestuff`, and
+that task contains an input_set called `somestuff`, then to refer to the
+task, one would have to use the syntax `abcnamespace.somestuff`. A simple
+reference to `somestuff` from within the task would reference the input_set.
 
 ## Semantics of the When Clause
 
