@@ -21,6 +21,21 @@ A task declaration has the following syntax:
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
   	[ [procedural_stmts](procedural_stmt.md)...]
 
+### Inputs and Outputs
+
+The inputs are the files that are read by the task, and the outputs are the files
+that are created or updated by the task. Inputs and outputs can be given names,
+but this is not required. Inputs and outputs *may* be copied to a temporary
+workspace for task execution, rather than used in place.
+
+### Procedural Statements
+
+The procedural statements that are declared for a task constitute the logical process that
+is defined by the task. The procedural statements are executed in the order in which
+they appear. A task's procedural statements are executed in a container, and any files
+created by the task are not visible to other tasks unless the files are declared
+in an `output` construct.
+
 ## Example
 
 ```
@@ -35,28 +50,15 @@ task compileit
 
 In this example,
 
-* A task named "compileit" is defined.
-* An input set called "A" is defined.
-* Another input set called "XYZ" is defined.
+* A task named `compileit` is defined.
+* An input set called `A` is defined.
+* Another input set called `XYZ` is defined.
 * An output set (with no name) is defined.
-* The task will be invoked whenever at least one file of input set A has a more recent
+* The task will be invoked whenever at least one file of input set `A` has a more recent
 timestamp than all of the files that are specified by the output set.
-* When the task is invoked, the bash command will be performed, after the value
-of $thisdir has been substituted. ($thisdir evaluates to the directory in which
+* When the task is invoked, the `bash` command will be performed, after the value
+of `$thisdir` has been substituted. (`$thisdir` evaluates to the directory in which
 the DABL script exists.)
-
-## Inputs and Outputs
-
-The inputs are the files that are read by the task, and the outputs are the files
-that are created or updated by the task. The input and output constructs specify
-intention and are not verified by the language, but a tool could attempt to
-verify them. Inputs and outputs can be given names, but this is not required.
-
-## Procedural Statements
-
-The procedural statements that are declared for a task constitute the logical process that
-is defined by the task. The procedural statements are executed in the order in which
-they appear.
 
 ## Name Scope and Name Overloading
 
