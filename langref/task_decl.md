@@ -21,6 +21,19 @@ A task declaration has the following syntax:
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
   	[ [procedural_stmts](procedural_stmt.md)...]
 
+## Inputs and Outputs
+
+The inputs are the files that are read by the task, and the outputs are the files
+that are created or updated by the task. The input and output constructs specify
+intention and are not verified by the language, but a tool could attempt to
+verify them. Inputs and outputs can be given names, but this is not required.
+
+## Procedural Statements
+
+The procedural statements that are declared for a task constitute the logical process that
+is defined by the task. The procedural statements are executed in the order in which
+they appear.
+
 ## Name Scope and Name Overloading
 
 If the input_set or output_set defines a name for the inputs or outputs,
