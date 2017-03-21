@@ -20,7 +20,6 @@ import java.util.LinkedList;
 
 public class TestHelpers extends TestBase {
 
-	private AOnamespace primaryNamespace;
 	private AOnamespace importedNamespace;
 	
 	public TestHelpers() throws Exception {
@@ -29,7 +28,7 @@ public class TestHelpers extends TestBase {
 "namespace simple.is.better \n" +
 "  import another.one\n" +
 "  files Stuff of \"myrepo\" in my_maven\n" +
-"    include \"*.java\""
+"    \"*.java\""
 			);
 		
 		Map<String, String> namespaces = new HashMap<String, String>();
@@ -45,9 +44,9 @@ public class TestHelpers extends TestBase {
 	@When("^I call getPrimaryNamespace$")
 	public void i_call_getPrimaryNamespace() throws Throwable {
 		
-		this.primaryNamespace = getHelper().getPrimaryNamespace();
-		assertThat(this.primaryNamespace != null);
-		LinkedList<TId> path = this.primaryNamespace.getPath();
+		AOnamespace primaryNamespace = getHelper().getPrimaryNamespace();
+		assertThat(primaryNamespace != null);
+		LinkedList<TId> path = primaryNamespace.getPath();
 		assertThat(path.size() == 3);
 		assertThat(Utilities.createNameFromPath(path).equals("simple.is.better"));
 	}
@@ -63,7 +62,7 @@ public class TestHelpers extends TestBase {
 		List<Start> asts = getHelper().getASTs();
 		assertThat(asts.size() == 2);
 		Start importedAST = asts.get(1);
-		this.importedNamespace = getHelper().getNamespace(importedAST);
+		AOnamespace importedNamespace = getHelper().getNamespace(importedAST);
 		assertThat(this.importedNamespace != null);
 		LinkedList<TId> path = this.importedNamespace.getPath();
 		assertThat(path.size() == 2);
@@ -78,9 +77,17 @@ public class TestHelpers extends TestBase {
 	@When("^I call getNamespaceFullName with a namespace argument$")
 	public void i_call_getNamespaceFullName_with_a_namespace_argument() throws Throwable {
 		
+		AOnamespace primaryNamespace = getHelper().getPrimaryNamespace();
+		assertThat(primaryNamespace != null);
+
 		String namespace1Name = getHelper().getNamespaceFullName(primaryNamespace);
 		assertThat(namespace1Name.equals("simple.is.better"));
 		
+		List<Start> asts = getHelper().getASTs();
+		assertThat(asts.size() == 2);
+		Start importedAST = asts.get(1);
+		AOnamespace importedNamespace = getHelper().getNamespace(importedAST);
+
 		String namespace2Name = getHelper().getNamespaceFullName(importedNamespace);
 		assertThat(namespace2Name.equals("another.one"));
 	}

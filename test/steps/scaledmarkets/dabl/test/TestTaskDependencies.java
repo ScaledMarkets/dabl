@@ -30,11 +30,11 @@ public class TestTaskDependencies extends TestBase {
 "files XYZ of \"my_repo\" in my_maven\n" +
 "files QRS of \"qrs\" in my_git\n" +
 "task A\n" +
-"  inputs \"x\" of \"repo1\" in my_git\n" +
-"  outputs \"y\" of \"repo2\" in my_git\n" +
+"  inputs of \"repo1\" in my_git \"x\"\n" +
+"  outputs of \"repo2\" in my_git \"y\"\n" +
 "task B\n" +
-"  inputs \"x\" of \"repo1\" in my_git\n" +
-"  outputs \"y\" of \"repo2\" in my_git"
+"  inputs of \"repo1\" in my_git \"x\"\n" +
+"  outputs of \"repo2\" in my_git \"y\""
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
