@@ -27,14 +27,14 @@ public class TestTaskDependencies extends TestBase {
 "namespace simple \n" +
 "repo my_git type \"git\" scheme \"https\" path \"github.com/myteam\"\n" +
 "  userid \"GitUserId\" password \"GitPassword\"\n" +
-"files XYZ from \"my_repo\" in my_maven\n" +
-"files QRS from \"qrs\" in my_git\n" +
+"files XYZ of \"my_repo\" in my_maven\n" +
+"files QRS of \"qrs\" in my_git\n" +
 "task A\n" +
-"  inputs \"x\" from \"repo1\" in my_git\n" +
-"  outputs \"y\" from \"repo2\" in my_git\n" +
+"  inputs \"x\" of \"repo1\" in my_git\n" +
+"  outputs \"y\" of \"repo2\" in my_git\n" +
 "task B\n" +
-"  inputs \"x\" from \"repo1\" in my_git\n" +
-"  outputs \"y\" from \"repo2\" in my_git"
+"  inputs \"x\" of \"repo1\" in my_git\n" +
+"  outputs \"y\" of \"repo2\" in my_git"
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

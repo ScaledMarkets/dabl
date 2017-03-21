@@ -28,7 +28,7 @@ public class TestHelpers extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple.is.better \n" +
 "  import another.one\n" +
-"  files Stuff from \"myrepo\" in my_maven\n" +
+"  files Stuff of \"myrepo\" in my_maven\n" +
 "    include \"*.java\""
 			);
 		

@@ -24,8 +24,8 @@ public class TestTask extends TestBase {
 "namespace simple \n" +
 "task t123\n" +
 "  when true\n" +
-"  inputs \"x\" from \"repo1\" in my_git\n" +
-"  outputs \"y\" from \"repo2\" in my_git\n" +
+"  inputs \"x\" of \"repo1\" in my_git\n" +
+"  outputs \"y\" of \"repo2\" in my_git\n" +
 "  abc = \"def\" true"
 			);
 		

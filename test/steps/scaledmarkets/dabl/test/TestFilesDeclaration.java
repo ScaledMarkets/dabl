@@ -26,7 +26,7 @@ public class TestFilesDeclaration extends TestBase {
 "  repo my_maven type \"maven\"\n" +
 "    path \"mymaven.abc.com\"\n" +
 "    userid \"MavenUserId\" password \"MavenPassword\"\n" +
-"  files Stuff from \"myrepo\" in my_maven\n" +
+"  files Stuff of \"myrepo\" in my_maven\n" +
 "    include \"*.java\""
 			);
 		

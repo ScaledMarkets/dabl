@@ -23,9 +23,9 @@ public class TestInputsAndOutputs extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple\n" +
 "  task t123\n" +
-"    inputs MyInputs \"abc.jar\" from \"myrepo\" in MyRepository, \n" +
-"      \"java/*.java\" from \"myrepo\" in MyRepository\n" +
-"    outputs MyOutputs \"classes/*.class\" from \"myrepo\" in MyRepository"
+"    inputs MyInputs of \"myrepo\" in MyRepository \"abc.jar\"\n" +
+"    inputs of \"myrepo\" in MyRepository \"java/*.java\"\n" +
+"    outputs MyOutputs of \"myrepo\" in MyRepository \"classes/*.class\""
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

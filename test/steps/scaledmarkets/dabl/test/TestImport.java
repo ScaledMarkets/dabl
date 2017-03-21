@@ -24,7 +24,7 @@ public class TestImport extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple \n" +
 "  import another\n" +
-"  files Stuff from \"myrepo\" in my_maven\n" +
+"  files Stuff of \"myrepo\" in my_maven\n" +
 "    include \"*.java\""
 			);
 		

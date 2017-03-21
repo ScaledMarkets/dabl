@@ -25,7 +25,7 @@ public class TestForwardReferences extends TestBase {
 		
 		this.reader = new StringReader(
 "namespace simple\n" +
-"  files Stuff from \"myrepo\" in my_maven\n" +
+"  files Stuff of \"myrepo\" in my_maven\n" +
 "    \"*.java\"" +
 "  repo my_maven type \"maven\"\n" +
 "    path \"mymaven.abc.com\"\n" +
