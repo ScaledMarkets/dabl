@@ -142,6 +142,7 @@ check:
 compile_tests: $(test_build_dir)
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(compile_tests_cp) -d $(test_build_dir) \
 		$(test_src_dir)/steps/$(test_package)/*.java \
+		$(test_src_dir)/steps/$(test_package)/exec/*.java \
 		$(src_dir)/sablecc/*.java
 
 # Run Cucumber tests.
@@ -150,7 +151,8 @@ test:
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
 		$(test_src_dir)/features \
-		--tags @done
+		--tags @exec
+		#--tags @done
 
 test_exec:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
