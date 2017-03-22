@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.test;
+package scaledmarkets.dabl.test.analyzer;
 
 import cucumber.api.Format;
 import cucumber.api.java.Before;
