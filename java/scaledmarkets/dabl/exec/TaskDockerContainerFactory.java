@@ -1,6 +1,6 @@
 package scaledmarkets.dabl.exec;
 
-public class TaskDockerContainerFactory {
+public class TaskDockerContainerFactory extends TaskContainerFactory {
 	
 	/**
 	 * Create a container, containing the task interpreter. Return an object

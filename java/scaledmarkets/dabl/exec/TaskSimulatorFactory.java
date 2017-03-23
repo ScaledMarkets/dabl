@@ -1,6 +1,6 @@
 package scaledmarkets.dabl.exec;
 
-public class TaskSimulatorFactory {
+public class TaskSimulatorFactory extends TaskContainerFactory {
 	
 	/**
 	 * Create a pretend-container.

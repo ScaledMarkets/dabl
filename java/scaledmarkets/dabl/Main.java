@@ -30,6 +30,9 @@ public class Main
 		
 		Dabl dabl;
 		String filename = null;
+		boolean print = false;
+		boolean printTrace = false;
+		boolean analysisOnly = false;
 		boolean simulate = false;
 
 		int argno = 0;
@@ -42,10 +45,10 @@ public class Main
 				displayInstructions();
 				return;
 			}
-			else if (arg.equals("-p") || arg.equals("--print")) dabl.print = true;
-			else if (arg.equals("-t") || arg.equals("--trace")) dabl.printTrace = true;
-			else if (arg.equals("-a") || arg.equals("--analysis")) dabl.analysisOnly = true;
-			else 9f (arg.equals("-s") || arg.equals("--simulate")) simulate = true;
+			else if (arg.equals("-p") || arg.equals("--print")) print = true;
+			else if (arg.equals("-t") || arg.equals("--trace")) printTrace = true;
+			else if (arg.equals("-a") || arg.equals("--analysis")) analysisOnly = true;
+			else if (arg.equals("-s") || arg.equals("--simulate")) simulate = true;
 			else if (arg.startsWith("-"))
 			{
 				System.out.println("Unrecognized option: " + arg);
@@ -70,12 +73,12 @@ public class Main
 		
 		// Parse input and perform analysis.
 		System.out.println("Processing file " + filename + "...");
-		dabl = new Dabl(new FileReader(filename));
-		CompilerState state;
+		dabl = new Dabl(print, printTrace, new FileReader(filename));
+		CompilerState state = null;
 		try { state = dabl.process(); }
 		catch (Exception ex)
 		{
-			if (dabl.printTrace) ex.printStackTrace();
+			if (printTrace) ex.printStackTrace();
 			else System.out.println(ex.getMessage());
 			System.exit(1);
 		}
@@ -87,11 +90,11 @@ public class Main
 		TaskContainerFactory taskContainerFactory;
 		if (simulate) taskContainerFactory = new TaskSimulatorFactory();
 		else taskContainerFactory = new TaskDockerContainerFactory();
-		Executor exec = new DefaultExecutor(state, taskContainerFactory);
+		Executor exec = new DefaultExecutor(state, taskContainerFactory, simulate);
 		try {
 			exec.execute();
 		} catch (Exception ex) {
-			if (dabl.printTrace) ex.printStackTrace();
+			if (printTrace) ex.printStackTrace();
 			else System.out.println(ex.getMessage());
 			System.exit(1);
 		}
