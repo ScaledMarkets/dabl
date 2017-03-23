@@ -27,7 +27,7 @@ public class TestTask extends TestBase {
 "  when true\n" +
 "  inputs of \"repo1\" in my_git \"x\"\n" +
 "  outputs of \"repo2\" in my_git \"y\"\n" +
-"  abc = \"def\" true"
+"  abc = ff true"
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

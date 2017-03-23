@@ -10,7 +10,7 @@ import cucumber.api.java.en.When;
 import sablecc.*;
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.node.*;
-import scaledmarkets.dabl.test.TestBase;
+import scaledmarkets.dabl.test.*;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -21,8 +21,6 @@ import java.util.LinkedList;
 
 public class TestHelpers extends TestBase {
 
-	private AOnamespace importedNamespace;
-	
 	public TestHelpers() throws Exception {
 		
 		Reader reader = new StringReader(
@@ -64,8 +62,8 @@ public class TestHelpers extends TestBase {
 		assertThat(asts.size() == 2);
 		Start importedAST = asts.get(1);
 		AOnamespace importedNamespace = getHelper().getNamespace(importedAST);
-		assertThat(this.importedNamespace != null);
-		LinkedList<TId> path = this.importedNamespace.getPath();
+		assertThat(importedNamespace != null);
+		LinkedList<TId> path = importedNamespace.getPath();
 		assertThat(path.size() == 2);
 		assertThat(Utilities.createNameFromPath(path).equals("another.one"));
 	}

@@ -27,13 +27,13 @@ public class TestTaskDependencies extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple \n" +
 "repo my_git type \"git\" scheme \"https\" path \"github.com/myteam\"\n" +
-"  userid \"GitUserId\" password \"GitPassword\"\n" +
-"files XYZ of \"my_repo\" in my_maven\n" +
-"files QRS of \"qrs\" in my_git\n" +
-"task A\n" +
+"  userid \"GitUserId\" password \"GitPassword\" \n" +
+"files XYZ of \"my_repo\" in my_maven \n" +
+"files QRS of \"qrs\" in my_git \n" +
+"task Atask\n" +
 "  inputs of \"repo1\" in my_git \"x\"\n" +
-"  outputs of \"repo2\" in my_git \"y\"\n" +
-"task B\n" +
+"  outputs of \"repo2\" in my_git \"y\" \n" +
+"task Btask\n" +
 "  inputs of \"repo1\" in my_git \"x\"\n" +
 "  outputs of \"repo2\" in my_git \"y\""
 			);
@@ -53,9 +53,9 @@ public class TestTaskDependencies extends TestBase {
 	@Then("^I can verify that B depends on A$")
 	public void i_can_verify_that_B_depends_on_A() throws Throwable {
 		
-		AOtaskDeclaration taskADecl = getHelper().getTaskDeclaration("A");
+		AOtaskDeclaration taskADecl = getHelper().getTaskDeclaration("Atask");
 		assertThat(taskADecl != null);
-		AOtaskDeclaration taskBDecl = getHelper().getTaskDeclaration("B");
+		AOtaskDeclaration taskBDecl = getHelper().getTaskDeclaration("Btask");
 		assertThat(taskBDecl != null);
 		Task taskA = this.graph.getTaskForDeclaration(taskADecl);
 		assertThat(taskA != null);

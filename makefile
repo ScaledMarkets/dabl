@@ -152,8 +152,8 @@ test:
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
 		$(test_src_dir)/features \
-		--tags @exec
-		#--tags @done
+		--tags @done
+		#--tags @exec
 
 test_exec:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
