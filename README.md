@@ -57,8 +57,6 @@ For robust infrastructure code, a better model than current practice is needed, 
 	addition, we plan to submit both the DABL language and the runtime object model
 	(Abstract Syntax Tree) to a standards body.
 
-See also https://drive.google.com/open?id=1xoyDMebGHedfBUFcsMUkjQJHSwrt3sCFF8CDhrVaTjo
-
 # What's In This Project
 
 * The language definition (formal grammar file [dabl.sablecc](dabl.sablecc), and

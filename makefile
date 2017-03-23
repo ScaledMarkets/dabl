@@ -142,6 +142,7 @@ check:
 compile_tests: $(test_build_dir)
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(compile_tests_cp) -d $(test_build_dir) \
 		$(test_src_dir)/steps/$(test_package)/*.java \
+		$(test_src_dir)/steps/$(test_package)/analyzer/*.java \
 		$(test_src_dir)/steps/$(test_package)/exec/*.java \
 		$(src_dir)/sablecc/*.java
 
@@ -165,6 +166,9 @@ test_check:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
 		cucumber.api.cli.Main \
 		$(test_src_dir)/features \
+
+test_clean:
+	rm -r -f $(test_build_dir)/*
 
 # Perform code quality scans.
 runsonar:
@@ -197,6 +201,7 @@ cukehelp:
 
 clean:
 	rm -r -f $(build_dir)/*
+	rm -r -f $(test_build_dir)/*
 	rm -r -f $(jar_dir)/*
 	rm -r -f $(sable_out_dir)/*
 	rm -f Manifest

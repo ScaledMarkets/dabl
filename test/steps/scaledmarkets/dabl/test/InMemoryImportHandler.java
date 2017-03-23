@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.test.analyzer;
+package scaledmarkets.dabl.test;
 
 import scaledmarkets.dabl.analysis.*;
 
