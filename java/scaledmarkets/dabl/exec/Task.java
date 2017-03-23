@@ -5,7 +5,7 @@ import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analysis.*;
 
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -18,11 +18,11 @@ public class Task {
 	public String getName() { return taskDecl.getName().getText(); }
 		
 	private AOtaskDeclaration taskDecl;
-	private Set<Artifact> inputs = new TreeSet<Artifact>();
-	private Set<Artifact> outputs = new TreeSet<Artifact>();
+	private Set<Artifact> inputs = new HashSet<Artifact>();
+	private Set<Artifact> outputs = new HashSet<Artifact>();
 	
-	private Set<Task> isConsumerOf = new TreeSet<Task>();
-	private Set<Task> isProducerFor = new TreeSet<Task>();
+	private Set<Task> isConsumerOf = new HashSet<Task>();
+	private Set<Task> isProducerFor = new HashSet<Task>();
 	
 	private boolean visited = false;
 	

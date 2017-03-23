@@ -5,13 +5,13 @@ import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analysis.*;
 
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 
 public class Artifact {
 	
 	private AOartifactSet artifactSet;
-	private Set<Task> consumers = new TreeSet<Task>();
-	private Set<Task> producers = new TreeSet<Task>();
+	private Set<Task> consumers = new HashSet<Task>();
+	private Set<Task> producers = new HashSet<Task>();
 	
 	Artifact(AOartifactSet artifactSet) {
 		this.artifactSet = artifactSet;

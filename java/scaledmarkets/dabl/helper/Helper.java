@@ -245,14 +245,8 @@ public class Helper {
 	 * in the global symbol table.
 	 */
 	public NameScopeEntry getPrimaryNamespaceSymbolEntry() throws Exception {
-		AOnamespace namespace = getPrimaryNamespace();
-		Annotation a = this.state.getIn(namespace);
-		assertThat(a != null);
-		assertThat(a instanceof NameScope);
-		NameScope nameScope = (NameScope)a;
-		NameScopeEntry entry = nameScope.getSelfEntry();
-		assertThat(entry != null);
-		return entry;
+		
+		return state.getPrimaryNamespaceSymbolEntry();
 	}
 	
 	/**

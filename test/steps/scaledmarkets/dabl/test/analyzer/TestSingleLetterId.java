@@ -22,17 +22,13 @@ public class TestSingleLetterId extends TestBase {
 	public void a_namespace_decl_ends_with_a_newline() throws Exception {
 		
 		Reader reader = new StringReader(
-"namespace simple\n" + // no space between 'simple' and the newlilne
-"task t123\n" +
+"namespace simple \n" + // no space between 'simple' and the newlilne
+"task t\n" +
 "  when true\n" +
-"  abc = \"def\" true"
+"  abc = f true"
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-	}
-	
-	@Then("^the namespace compiles without error$")
-	public void the_namespace_compiles_without_error() throws Exception {
 	}
 }

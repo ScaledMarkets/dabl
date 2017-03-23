@@ -41,7 +41,6 @@ public class TestTaskDependencies extends TestBase {
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
 		assertThat(getHelper().getState().getGlobalScope() != null);
-		throw new Exception();
 	}
 	
 	@When("^I compile them in simulate mode$")

@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +29,7 @@ public class DependencyGraph {
 	private CompilerState state;
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
 	private Map<AOartifactSet, Artifact> artifacts = new HashMap<AOartifactSet, Artifact>();
-	private Set<Task> rootTasks = new TreeSet<Task>();
+	private Set<Task> rootTasks = new HashSet<Task>();
 	
 	/**
 	 * Create a dependency graph that explicitly models the producer/consumer

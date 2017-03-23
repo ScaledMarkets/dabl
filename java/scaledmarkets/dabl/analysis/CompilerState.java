@@ -20,6 +20,8 @@ public class CompilerState
     public Annotation getIn(Node node) { return in.get(node); }
     
     public Annotation getOut(Node node) { return out.get(node); }
+    
+    public NameScopeEntry getPrimaryNamespaceSymbolEntry() { return primaryNamespaceSymbolEntry; }
 	
     
 	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
@@ -34,6 +36,11 @@ public class CompilerState
 	 * Scope in which the namespace is defined.
 	 */
 	protected NameScope globalScope;
+	
+	/**
+	 * The entry in the global scope that references the primary namespace.
+	 */
+	protected NameScopeEntry primaryNamespaceSymbolEntry;
 	
 	/**
 	 * A stack of NameScopes that is maintained during the Analysis phase.
@@ -58,5 +65,9 @@ public class CompilerState
 	
 	protected NameScope popScope() {
 		return this.scopeStack.remove(0);
+	}
+	
+	protected void setPrimaryNamespaceSymbolEntry(NameScopeEntry e) {
+		primaryNamespaceSymbolEntry = e;
 	}
 }

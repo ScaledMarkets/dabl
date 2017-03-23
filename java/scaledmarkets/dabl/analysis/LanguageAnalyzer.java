@@ -22,6 +22,7 @@ import java.util.LinkedList;
 public class LanguageAnalyzer extends DablBaseAdapter
 {
 	protected ImportHandler importHandler;
+	protected NameScopeEntry enclosingScopeEntry;
 	protected NameScope namespaceNamescope;
 	
 	public LanguageAnalyzer(CompilerState state, ImportHandler importHandler) {
@@ -34,6 +35,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	}
 	
 	public ImportHandler getImportHandler() { return importHandler; }
+	
+	public NameScopeEntry getEnclosingScopeEntry() { return enclosingScopeEntry; }
 	
 	public NameScope getNamespaceNamescope() { return namespaceNamescope; }
 	
@@ -88,10 +91,11 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		NameScope enclosingScope = getCurrentNameScope();
 		NameScope newScope = createNameScope(name, node);  // pushes name scope
 											// and annotates the namespace Node.
-		SymbolEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
+		NameScopeEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
 		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
+		this.enclosingScopeEntry = entry;
 		this.namespaceNamescope = newScope;
 	}
 	

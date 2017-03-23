@@ -63,6 +63,9 @@ public class NameScope implements Annotation
 	/**
 	 * Save reference to the entry that parent scope's symbol table has for this
 	 * name scope. Thus, this is the symbol table entry for this scope's name.
+	 * Note: a namespace does not have a self-entry, since the self entry would
+	 * point outside the namespace (into the global symbol table), and we want the
+	 * namespace model to be self-contained.
 	 */
 	public NameScopeEntry setSelfEntry(NameScopeEntry entry)
 	{

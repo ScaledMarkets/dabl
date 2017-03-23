@@ -79,6 +79,7 @@ public class Dabl
 		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
 		start.apply(analyzer);
 		
+		state.setPrimaryNamespaceSymbolEntry(analyzer.getEnclosingScopeEntry());
 		return analyzer.getNamespaceNamescope();
 	}
 }
