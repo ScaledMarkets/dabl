@@ -61,6 +61,7 @@ public class TestTaskDependencies extends TestBase {
 		Task taskB = this.graph.getTaskForDeclaration(taskBDecl);
 		assertThat(taskB != null);
 		assertThat(taskB.getProducers().contains(taskA));
+		assertThat(taskA.getConsumers().contains(taskB));
 		
 		throw new Exception();
 	}
