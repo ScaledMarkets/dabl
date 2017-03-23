@@ -32,9 +32,9 @@ public class TestTaskDependencies extends TestBase {
 "files QRS of \"qrs\" in my_git \n" +
 "task Atask\n" +
 "  inputs of \"repo1\" in my_git \"x\"\n" +
-"  outputs of \"repo2\" in my_git \"y\" \n" +
+"  outputs Aoutput of \"repo2\" in my_git \"y\" \n" +
 "task Btask\n" +
-"  inputs of \"repo1\" in my_git \"x\"\n" +
+"  inputs Atask.Aoutput \n" +
 "  outputs of \"repo2\" in my_git \"y\""
 			);
 		

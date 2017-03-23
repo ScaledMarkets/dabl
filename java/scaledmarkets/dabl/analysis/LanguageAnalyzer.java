@@ -80,6 +80,23 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			setIdRefAnnotation(node, declent);
 		}
     }
+    
+    public void inAOqualifiedNameRef(AOqualifiedNameRef node)
+    {
+    	defaultIn(node);
+    }
+    
+    public void outAOqualifiedNameRef(AOqualifiedNameRef node)
+    {
+		// Only an input is possible.
+		// May only be a name of the form <task-name>.<output-name>, referring to
+		// the output of another task. Need to link the Id to the
+		// place that it is defined. (An output is always a single Id.)
+    	
+		
+		// locate the namespace referenced
+		//....
+    }
 	
 	
 	/* Only onamespace and otask_declaration define name scopes. */
@@ -139,7 +156,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		TId id = node.getId();
 		
 		System.out.println("entered artifact " + id.getText());  // debug
-		
 		
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {

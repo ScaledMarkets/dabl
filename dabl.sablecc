@@ -282,6 +282,11 @@ Productions
                                                 artifact_set.oartifact_set)}
       | {anonymous} inputs artifact_set     {-> New onamed_artifact_set.anonymous(
                                                 artifact_set.oartifact_set)}
+      | {files} inputs id                   {-> New onamed_artifact_set.files(
+                                                New oid_ref(id))}
+      | {task} inputs [task]:id per_char [output]:id
+                                            {-> New onamed_artifact_set.task(
+                                                New oqualified_name_ref([task, output]))}
         ;
     
     output_sets_opt {-> onamed_artifact_set*} =
@@ -300,6 +305,8 @@ Productions
                                                 artifact_set.oartifact_set)}
       | {anonymous} outputs artifact_set    {-> New onamed_artifact_set.anonymous(
                                                 artifact_set.oartifact_set)}
+      | {files} outputs id                  {-> New onamed_artifact_set.files(
+                                                New oid_ref(id))}
         ;
       
     artifact_sets {-> oartifact_set*} =
@@ -690,6 +697,10 @@ Abstract Syntax Tree
         id
         ;
     
+    oqualified_name_ref =
+        id*
+        ;
+    
     onamespace_elt =
         {import} id*
       | {typographic} otypographic_declaration
@@ -785,6 +796,8 @@ Abstract Syntax Tree
     onamed_artifact_set =
         {named} id oartifact_set
       | {anonymous} oartifact_set
+      | {files} oid_ref
+      | {task} oqualified_name_ref
       ;
     
     oartifact_set =

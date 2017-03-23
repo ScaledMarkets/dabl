@@ -10,9 +10,6 @@ import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.helper.*;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
