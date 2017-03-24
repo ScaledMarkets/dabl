@@ -277,7 +277,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	/**
 	 * An expression whose value is defined in the declaration of a symbol.
 	 */
-	protected IdRefAnnotation setIdRefAnnotation(AOidRef idRef, SymbolEntry entry)
+	protected IdRefAnnotation setIdRefAnnotation(Node idRef, SymbolEntry entry)
 	{
 		IdRefAnnotation annotation = new IdRefAnnotation(idRef, entry);
 		this.setOut(idRef, annotation);

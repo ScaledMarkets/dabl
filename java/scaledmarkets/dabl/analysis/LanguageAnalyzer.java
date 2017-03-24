@@ -53,7 +53,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		TId id = node.getId();
 		LinkedList<TId> path = new LinkedList<TId>();
 		path.add(id);
-    	outRefNode(Node node, path);
+    	outRefNode(node, path, new PublicVisibilityChecker(path));
     }
     
     public void inAOqualifiedNameRef(AOqualifiedNameRef node)
@@ -64,20 +64,26 @@ public class LanguageAnalyzer extends DablBaseAdapter
     public void outAOqualifiedNameRef(AOqualifiedNameRef node)
     {
     	List<TId> path = node.getId();
-    	outRefNode(node, path, new VisibilityChecker() {
-    		public void check(NameScope refScope, SymbolEntry entry) {
-    			NameScope entryNamespaceScope = getNamespaceNameScope(entry.getEnclosingScope());
-				if (getNamespaceNameScope(refScope) != entryNamespaceScope) {
-					// referring scope is in a different namespace than entry name scope
-					if (! entry.isDeclaredPublic()) {
-						throw new RuntimeException(
-							"Element " + Utilities.createNameFromPath(path) +
-								" is not public in " + entryNamespaceScope.getName());
-					}
+    	outRefNode(node, path, new PublicVisibilityChecker(path));
+    }
+    
+    static class PublicVisibilityChecker implements VisibilityChecker {
+    	
+    	PublicVisibilityChecker(List<TId> path) { this.path = path; }
+    	private List<TId> path;
+    	
+		public void check(NameScope refScope, SymbolEntry entry) {
+			NameScope entryNamespaceScope = getNamespaceNameScope(entry.getEnclosingScope());
+			if (getNamespaceNameScope(refScope) != entryNamespaceScope) {
+				// referring scope is in a different namespace than entry name scope
+				if (! entry.isDeclaredPublic()) {
+					throw new RuntimeException(
+						"Element " + Utilities.createNameFromPath(path) +
+							" is not public in " + entryNamespaceScope.getName());
 				}
 			}
-		});
-    }
+		}
+	}
     
     static NameScope getNamespaceNameScope(NameScope scope) {
     	
@@ -85,6 +91,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
     		Node node = scope.getNodeThatDefinesScope();
     		if (node instanceof AOnamespace) return scope;
     		s = s.getParentNameScope();
+    		if (s == null) break;
     	}
     	throw new RuntimeException("Namespace not found");
     }

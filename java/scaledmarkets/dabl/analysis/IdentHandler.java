@@ -1,7 +1,7 @@
 package scaledmarkets.dabl.analysis;
 
 import scaledmarkets.dabl.node.*;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * An IdentHandler is attached to enclosing scopes when a symbol is not recognized
@@ -13,10 +13,10 @@ import java.util.LinkedList;
 public abstract class IdentHandler
 {
 	private DablBaseAdapter analyzer;
-	private LinkedList<TId> path;
+	private List<TId> path;
 	private NameScope originalScope;
 	
-	public IdentHandler(DablBaseAdapter analyzer, LinkedList<TId> path, NameScope scope)
+	public IdentHandler(DablBaseAdapter analyzer, List<TId> path, NameScope scope)
 	{
 		this.analyzer = analyzer;
 		this.path = path;
@@ -25,7 +25,7 @@ public abstract class IdentHandler
 		attachToEnclosingScopes();
 	}
 	
-	public LinkedList<TId> getPath() { return path; }
+	public List<TId> getPath() { return path; }
 	
 	public NameScope getOriginalScope() { return originalScope; }
 	
@@ -91,7 +91,7 @@ public abstract class IdentHandler
 	{
 		TId id = path.get(0);
 		throw new RuntimeException(
-			"Unrecognized identifier: " + DablBaseAdapter.pathToString(path) + 
+			"Unrecognized identifier: " + Utilities.createNameFromPath(path) + 
 			", at line " + id.getLine() + ", col " + id.getPos());
 	}
 }
