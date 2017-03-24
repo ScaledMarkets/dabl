@@ -18,14 +18,13 @@ public abstract class SymbolEntry implements Annotation
 {
 	private String name;
 	private NameScope enclosingScope;
-	private boolean declaredPublic;
+	private boolean declaredPublic = false;
 	
-	public SymbolEntry(String name, NameScope enclosingScope, declaredPublic)
+	public SymbolEntry(String name, NameScope enclosingScope)
 	{
 		this.name = name;
 		if (name.equals("")) throw new RuntimeException("Empty name");
 		this.enclosingScope = enclosingScope;  // the scope in which the id is defined.
-		this.declaredPublic = declaredPublic;
 	}
 	
 	public String getName() { return name; }
@@ -33,6 +32,8 @@ public abstract class SymbolEntry implements Annotation
 	public NameScope getEnclosingScope() { return enclosingScope; }
 	
 	public boolean isDeclaredPublic() { return declaredPublic; }
+	
+	protected void setDeclaredPublic() { declaredPublic = true; }
 	
 	public String toString()
 	{

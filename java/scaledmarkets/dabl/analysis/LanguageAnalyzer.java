@@ -71,7 +71,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 					// entry name scope is in a different namespace than scope
 					) {
 					if (! entry.isDeclaredPublic()) {
-						String otherNamespaceName = ....
+						String otherNamespaceName = entry.getNamespace().getName();
 						throw new RuntimeException(
 							"Element " + Utilities.createNameFromPath(path) +
 								" is not public in " + otherNamespaceName);
@@ -124,7 +124,10 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
 		
 		TId id = node.getName();
-		createNameScope(id, node);
+		NameScope scope = createNameScope(id, node);
+		
+		POscope p = node.getOscope();
+		if (p instanceof APublicOscope) scope.getSelfEntry().setDeclaredPublic();
 	}
 	
 	public void outAOtaskDeclaration(AOtaskDeclaration node) {

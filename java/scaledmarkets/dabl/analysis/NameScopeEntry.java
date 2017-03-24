@@ -12,10 +12,9 @@ public class NameScopeEntry extends DeclaredEntry
 {
 	private NameScope ownedScope;
 	
-	public NameScopeEntry(NameScope ownedScope, String name, NameScope enclosingScope,
-		boolean declaredPublic)
+	public NameScopeEntry(NameScope ownedScope, String name, NameScope enclosingScope)
 	{
-		super(name, enclosingScope, ownedScope.getNodeThatDefinesScope(), declaredPublic);
+		super(name, enclosingScope, ownedScope.getNodeThatDefinesScope());
 		this.ownedScope = ownedScope;
 	}
 	
