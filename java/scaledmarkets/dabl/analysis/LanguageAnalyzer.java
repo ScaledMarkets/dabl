@@ -65,20 +65,28 @@ public class LanguageAnalyzer extends DablBaseAdapter
     {
     	List<TId> path = node.getId();
     	outRefNode(node, path, new VisibilityChecker() {
-    		public void check(NameScope scope, SymbolEntry entry) {
-				if (
-					scope.getNamespace().getNameScope() != entry.getNameScope()
-					// entry name scope is in a different namespace than scope
-					) {
+    		public void check(NameScope refScope, SymbolEntry entry) {
+    			NameScope entryNamespaceScope = getNamespaceNameScope(entry.getEnclosingScope());
+				if (getNamespaceNameScope(refScope) != entryNamespaceScope) {
+					// referring scope is in a different namespace than entry name scope
 					if (! entry.isDeclaredPublic()) {
-						String otherNamespaceName = entry.getNamespace().getName();
 						throw new RuntimeException(
 							"Element " + Utilities.createNameFromPath(path) +
-								" is not public in " + otherNamespaceName);
+								" is not public in " + entryNamespaceScope.getName());
 					}
 				}
 			}
 		});
+    }
+    
+    static NameScope getNamespaceNameScope(NameScope scope) {
+    	
+    	for (NameScope s = scope;;) {
+    		Node node = scope.getNodeThatDefinesScope();
+    		if (node instanceof AOnamespace) return scope;
+    		s = s.getParentNameScope();
+    	}
+    	throw new RuntimeException("Namespace not found");
     }
     
 	
