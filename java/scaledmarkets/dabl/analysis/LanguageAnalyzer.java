@@ -50,35 +50,10 @@ public class LanguageAnalyzer extends DablBaseAdapter
 
     public void outAOidRef(AOidRef node)
     {
-		// Find the declaration of the id. If it exists, annotate it.
-		
 		TId id = node.getId();
 		LinkedList<TId> path = new LinkedList<TId>();
 		path.add(id);
-		SymbolEntry entry = resolveSymbol(path);
-		if (entry == null) {
-			// Might be a reference to something that is declared later.
-			// 
-			// Identify all the enclosing scopes, and attach a handler to each one.
-			// The handler should be invoked whenever a new symbol is entered
-			// into a scope. The handler should annotate the entry,
-			// and then remove itself from all of the scopes to which it is attached.
-			new IdentHandler(this, path, getCurrentNameScope()) {
-				public void resolveRetroactively(DeclaredEntry entry) {
-					setIdRefAnnotation(node, entry);
-				}
-				// Note: the base class, IdentHandler, contains a method
-				// checkForPathResolution, which calls resolveRetroactively, 
-				// followed by removeFromAllScopes().
-			};
-			
-		} else {
-			// Annotate the Id reference with the DeclaredEntry that defines the Id.
-			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
-				"Unexpected: entry is a " + entry.getClass().getName());
-			DeclaredEntry declent = (DeclaredEntry)entry;
-			setIdRefAnnotation(node, declent);
-		}
+    	outRefNode(Node node, path);
     }
     
     public void inAOqualifiedNameRef(AOqualifiedNameRef node)
@@ -88,16 +63,24 @@ public class LanguageAnalyzer extends DablBaseAdapter
     
     public void outAOqualifiedNameRef(AOqualifiedNameRef node)
     {
-		// Only an input is possible.
-		// May only be a name of the form <task-name>.<output-name>, referring to
-		// the output of another task. Need to link the Id to the
-		// place that it is defined. (An output is always a single Id.)
-    	
-		
-		// locate the namespace referenced
-		//....
+    	List<TId> path = node.getId();
+    	outRefNode(node, path, new VisibilityChecker() {
+    		public void check(NameScope scope, SymbolEntry entry) {
+				if (
+					scope.getNamespace().getNameScope() != entry.getNameScope()
+					// entry name scope is in a different namespace than scope
+					) {
+					if (! entry.isDeclaredPublic()) {
+						String otherNamespaceName = ....
+						throw new RuntimeException(
+							"Element " + Utilities.createNameFromPath(path) +
+								" is not public in " + otherNamespaceName);
+					}
+				}
+			}
+		});
     }
-	
+    
 	
 	/* Only onamespace and otask_declaration define name scopes. */
 	

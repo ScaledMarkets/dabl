@@ -85,12 +85,44 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		return state.scopeStack.get(0);
 	}
 	
+    protected void outRefNode(Node node, List<TId> path, VisibilityChecker checker)
+    {
+		// Find the declaration of the id. If it exists, annotate it.
+		
+		SymbolEntry entry = resolveSymbol(path);
+		if (entry == null) {
+			// Might be a reference to something that is declared later.
+			// 
+			// Identify all the enclosing scopes, and attach a handler to each one.
+			// The handler should be invoked whenever a new symbol is entered
+			// into a scope. The handler should annotate the entry,
+			// and then remove itself from all of the scopes to which it is attached.
+			new IdentHandler(this, path, getCurrentNameScope()) {
+				public void resolveRetroactively(DeclaredEntry entry) {
+					checker.check(getCurrentNameScope(), entry);
+					setIdRefAnnotation(node, entry);
+				}
+				// Note: the base class, IdentHandler, contains a method
+				// checkForPathResolution, which calls resolveRetroactively, 
+				// followed by removeFromAllScopes().
+			};
+			
+		} else {
+			// Annotate the Id reference with the DeclaredEntry that defines the Id.
+			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
+				"Unexpected: entry is a " + entry.getClass().getName());
+			checker.check(getCurrentNameScope(), entry);
+			DeclaredEntry declent = (DeclaredEntry)entry;
+			setIdRefAnnotation(node, declent);
+		}
+	}
+    
 	/**
 	 * Find the entry in the symbol table that defines the specified id. The id
 	 * is the last id on the specified path. Each id in the path represents the id
 	 * of an enclosing scope. The current scope is first searched, and if the
 	 * path is not found relative to the current scope, then the global scope
-	 * is searched.
+	 * is searched. Return null if not found.
 	 */
 	protected SymbolEntry resolveSymbol(List<TId> path)
 	{
@@ -127,7 +159,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		}
 		
 		if (count < path.size()) throw new RuntimeException(
-			"'" + theid.getText() + "' in " + pathToString(path) +
+			"'" + theid.getText() + "' in " + Utilities.createNameFromPath(path) +
 			" is not the last element of the path, and it does" +
 			" not define a scope.");
 		else
@@ -250,21 +282,5 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		IdRefAnnotation annotation = new IdRefAnnotation(idRef, entry);
 		this.setOut(idRef, annotation);
 		return annotation;
-	}
-	
-	
-	/* Utilities */
-
-	public static String pathToString(List<TId> path)
-	{
-		String s = "";
-		boolean firstTime = true;
-		for (TId id : path)
-		{
-			if (firstTime) firstTime = false;
-			else s += ".";
-			s += id.getText();
-		}
-		return s;
 	}
 }
