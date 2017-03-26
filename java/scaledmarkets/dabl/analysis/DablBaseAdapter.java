@@ -236,7 +236,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	protected NameScope createNameScope(Node node)
 	{
 		NameScope newScope = new NameScope(node, getCurrentNameScope());
-		this.setOut(node, pushNameScope(newScope));
+		this.setIn(node, pushNameScope(newScope));
 		return newScope;
 	}
 	

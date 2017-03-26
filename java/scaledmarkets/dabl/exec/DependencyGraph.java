@@ -78,6 +78,10 @@ public class DependencyGraph {
 					artifactSet = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
 				} else if (p instanceof ANamedOnamedArtifactSet) {
 					artifactSet = ((ANamedOnamedArtifactSet)p).getOartifactSet();
+				} else if (p instanceof AFilesOnamedArtifactSet) {
+					artifactSet = getArtifactSet((AFilesOnamedArtifactSet)p);
+				} else if (p instanceof ATaskOnamedArtifactSet) {
+					artifactSet = getArtifactSet((ATaskOnamedArtifactSet)p);
 				} else throw new RuntimeException(
 					"Unexpected Node type: " + p.getClass().getName());
 				
@@ -155,5 +159,72 @@ public class DependencyGraph {
 		Artifact artifact = new Artifact(a);
 		artifacts.put(a, artifact);
 		return artifact;
+	}
+	
+	/**
+	 * Retrieve the artifact set referenced by the oid_ref.
+	 */
+	protected AOartifactSet getArtifactSet(AFilesOnamedArtifactSet node) {
+		
+		POidRef p = node.getOidRef();
+		AOidRef oidRef = (AOidRef)p;
+		
+		TId id = oidRef.getId();
+		Annotation a = state.getIn(id);
+		if (a == null) throw new RuntimeException("Unable to identify " + id.getText());
+		DeclaredEntry entry = null;
+		if (a instanceof DeclaredEntry) {
+			entry = (DeclaredEntry)a;
+		} else throw new RuntimeException("Unexpected Node type: " + a.getClass().getName());
+		
+		// The defining node should be a files declaration.
+			
+		Node n = entry.getDefiningNode();
+		AOfilesDeclaration filesDecl;
+		if (n instanceof AOfilesDeclaration) {
+			filesDecl = (AOfilesDeclaration)n;
+		} else throw new RuntimeException(
+			id.getText() + " was expected to refer to a files declaration");
+		
+		POartifactSet b = filesDecl.getOartifactSet();
+		Utilities.assertThat(b instanceof AOartifactSet,
+			"Unexpected Node type: " + b.getClass().getName());
+		
+		return (AOartifactSet)b;
+	}
+	
+	/**
+	 * Retrieve the artifact set referenced by the qualified name.
+	 */
+	protected AOartifactSet getArtifactSet(ATaskOnamedArtifactSet node) {
+		
+		POqualifiedNameRef p = node.getOqualifiedNameRef();
+		Utilities.assertThat(p instanceof AOqualifiedNameRef,
+			"Unexpected Node type: " + p.getClass().getName());
+		AOqualifiedNameRef nameRef = (AOqualifiedNameRef)p;
+		
+		Annotation a = state.getOut(nameRef);
+		if (a == null) throw new RuntimeException(
+			"Unable to identify " + Utilities.createNameFromPath(nameRef.getId()));
+		DeclaredEntry entry = null;
+		if (a instanceof DeclaredEntry) {
+			entry = (DeclaredEntry)a;
+		} else throw new RuntimeException("Unexpected Node type: " + a.getClass().getName());
+		
+		// The defining node should be a ANamedOnamedArtifactSet.
+		
+		Node n = entry.getDefiningNode();
+		ANamedOnamedArtifactSet namedArtifactSet;
+		if (n instanceof ANamedOnamedArtifactSet) {
+			namedArtifactSet = (ANamedOnamedArtifactSet)n;
+		} else throw new RuntimeException(
+			Utilities.createNameFromPath(nameRef.getId()) +
+			" was expected to refer to an output in a task declaration");
+		
+		POartifactSet b = namedArtifactSet.getOartifactSet();
+		Utilities.assertThat(b instanceof AOartifactSet,
+			"Unexpected Node type: " + b.getClass().getName());
+		
+		return (AOartifactSet)b;
 	}
 }

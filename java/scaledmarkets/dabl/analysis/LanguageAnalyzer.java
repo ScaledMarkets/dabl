@@ -169,9 +169,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void inANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
 	{
 		TId id = node.getId();
-		
-		System.out.println("entered artifact " + id.getText());  // debug
-		
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {
 			addSymbolEntry(entry, id);
