@@ -4,7 +4,8 @@
 
 An import declaration makes the public elements of the imported namespace visible
 to the importing DABL file. Think of an import the way that you think of a
-Java import.
+Java import. An element is public if it is declared to be public, or if it is
+implicitly public (such as artifact declarations are).
 
 ## Syntax
 

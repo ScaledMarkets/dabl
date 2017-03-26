@@ -32,7 +32,7 @@ public class TestImport extends TestBase {
 		Map<String, String> namespaces = new HashMap<String, String>();
 		namespaces.put("another",
 "namespace another\n" +
-"  repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
+"  public repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
 		);
 
 		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(namespaces));

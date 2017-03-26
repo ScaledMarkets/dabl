@@ -11,7 +11,7 @@ recent versions should be used.
 A files declaration has the following syntax:
 
 <dl>
-<dd><code>files</code> <i>Id</i> <i>artifact-set</i>
+<dd>[<code>public</code>] <code>files</code> <i>Id</i> <i>artifact-set</i>
 </dl>
 
 The *Id* is used to refer to the collection of files elsewhere in the DABL file.

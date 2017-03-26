@@ -12,6 +12,8 @@ tool could attempt to verify the assertions.
 
 `artifact` *Id* : *number*.*number* *artifact-statements*
 
+Artifacts are implicitly public.
+
 The Id is the name that will be assigned to the artifact. The two expressions
 are the major and minor version numbers, respectively. The artifact-statements
 consist of zero or more `assume` statements and `tested with` statements.

@@ -67,24 +67,33 @@ public class LanguageAnalyzer extends DablBaseAdapter
     	outRefNode(node, path, new PublicVisibilityChecker(path));
     }
     
+    /**
+     * A callback handler for checking if access is allowed to an element.
+     * Used by outAOidRef and outAOqualifiedNameRef.
+     */
     static class PublicVisibilityChecker implements VisibilityChecker {
     	
     	PublicVisibilityChecker(List<TId> path) { this.path = path; }
     	private List<TId> path;
     	
 		public void check(NameScope refScope, SymbolEntry entry) {
+			NameScope referringNameScope = getNamespaceNameScope(refScope);
 			NameScope entryNamespaceScope = getNamespaceNameScope(entry.getEnclosingScope());
-			if (getNamespaceNameScope(refScope) != entryNamespaceScope) {
+			if (referringNameScope != entryNamespaceScope) {
 				// referring scope is in a different namespace than entry name scope
 				if (! entry.isDeclaredPublic()) {
 					throw new RuntimeException(
 						"Element " + Utilities.createNameFromPath(path) +
-							" is not public in " + entryNamespaceScope.getName());
+							" is referenced from " + referringNameScope.getName() + 
+							" but is not public in " + entryNamespaceScope.getName());
 				}
 			}
 		}
 	}
     
+	/**
+	 * Determine the name scope of the namespace that encloses the specified scope.
+	 */
     static NameScope getNamespaceNameScope(NameScope scope) {
     	
     	for (NameScope s = scope;;) {
@@ -93,7 +102,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
     		s = s.getParentNameScope();
     		if (s == null) break;
     	}
-    	throw new RuntimeException("Namespace not found");
+    	throw new RuntimeException("Namespace for scope " + scope.getName() + " not found");
     }
     
 	
@@ -208,6 +217,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
+		if (node.getOscope() instanceof APublicOscope) entry.setDeclaredPublic();
 		resolveForwardReferences(entry);
 	}
 
@@ -224,21 +234,11 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	 	TId id = node.getName();
 		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 		try {
-			
-			
-			System.out.println("--->>>Adding symbol entry for " + id.getText()); // debug
-			
 			addSymbolEntry(entry, id);
-			
-			// debug
-			Annotation a = this.getIn(id);
-			SymbolEntry e = (SymbolEntry)a;
-			System.out.println("--->>>Added annotation for " + e.getName());
-			// end debug
-			
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
+		if (node.getOscope() instanceof APublicOscope) entry.setDeclaredPublic();
 		resolveForwardReferences(entry);
 	}
 	
@@ -259,6 +259,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		} catch (SymbolEntryPresent ex) {
 			throw new RuntimeException(ex);
 		}
+		if (node.getOscope() instanceof APublicOscope) entry.setDeclaredPublic();
 		resolveForwardReferences(entry);
 	}
 

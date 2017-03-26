@@ -17,7 +17,7 @@ not hard-coded into the file.
 A repo declaration has the form,
 
 <dl>
-<dd><code>repo</code> <i>name</i> <code>type</code> <i>repo_type</i>
+<dd>[<code>public</code>] <code>repo</code> <i>name</i> <code>type</code> <i>repo_type</i>
 	[<code>scheme</code> <i>tcp_scheme</i>] <code>path</code> <i>repo-path</i>
 	[<code>userid</code> <i>userid</i>] [<code>password</code> <i>password</i>]
 </dd>

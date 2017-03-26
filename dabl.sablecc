@@ -183,7 +183,7 @@ Productions
       ;
     
     typographic_decl {-> otypographic_declaration} =
-        tab_decl                            {-> tab_decl.otypographic_declaration}
+        tab_decl                 {-> tab_decl.otypographic_declaration}
         ;
     
     import_decl {-> onamespace_elt} =
@@ -327,8 +327,9 @@ Productions
         ;
     
     files_decl {-> ofiles_declaration} =
-        files [name]:id artifact_set        {-> New ofiles_declaration(name,
-                                                artifact_set.oartifact_set)}
+        scope_decl files [name]:id artifact_set
+                                            {-> New ofiles_declaration(scope_decl.oscope,
+                                                name, artifact_set.oartifact_set)}
         ;
     
     files_stmts_opt {-> ofileset_operation*} =
@@ -440,9 +441,10 @@ Productions
         ;
     
     repo_decl {-> orepo_declaration} =
-        repo [name]:id type [repo_type]:string_literal tcp_scheme_spec_opt
+        scope_decl repo [name]:id type [repo_type]:string_literal tcp_scheme_spec_opt
             repo_path_spec userid_spec_opt password_spec_opt
-                                            {-> New orepo_declaration(name, repo_type.ostring_literal,
+                                            {-> New orepo_declaration(scope_decl.oscope,
+                                                name, repo_type.ostring_literal,
                                                 tcp_scheme_spec_opt.ostring_value_opt,
                                                 repo_path_spec.ostring_literal,
                                                 userid_spec_opt.ostring_value_opt,
@@ -494,9 +496,9 @@ Productions
         ;
     
     function_decl {-> ofunction_declaration} =
-        function [dabl_name]:id type_spec_seq binds to [target_language]:string_literal
+        scope_decl function [dabl_name]:id type_spec_seq binds to [target_language]:string_literal
             method [native_name]:string_literal returns type_spec
-                                            {-> New ofunction_declaration(
+                                            {-> New ofunction_declaration(scope_decl.oscope,
                                                     dabl_name, [type_spec_seq.otype_spec],
                                                     target_language.ostring_literal,
                                                     native_name.ostring_literal,
@@ -731,7 +733,7 @@ Abstract Syntax Tree
         ;
 
     orepo_declaration =
-        [name]:id [type]:ostring_literal [scheme]:ostring_value_opt [path]:ostring_literal
+        oscope [name]:id [type]:ostring_literal [scheme]:ostring_value_opt [path]:ostring_literal
             [userid]:ostring_value_opt [password]:ostring_value_opt;
 
     ostring_value_opt =
@@ -740,7 +742,7 @@ Abstract Syntax Tree
       ;
     
     ofiles_declaration =
-        [name]:id oartifact_set;
+        oscope [name]:id oartifact_set;
 
     ofile_preference =
         {latest_compatible}
@@ -755,7 +757,7 @@ Abstract Syntax Tree
       ;
     
     ofunction_declaration =
-        [name]:id otype_spec* [target_language]:ostring_literal [target_name]:ostring_literal
+        oscope [name]:id otype_spec* [target_language]:ostring_literal [target_name]:ostring_literal
             [return_type]:otype_spec;
 
     otype_spec = 

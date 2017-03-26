@@ -187,8 +187,6 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	{
 		assertThat(name != null);
 		assertThat(initialScope != null);
-		//System.out.println("Entered resolveSymbol(" + name + ", " +
-		//	(initialScope == getGlobalScope() ? "global scope" : initialScope.getSelfEntry().getName()));
 		
 		for (NameScope scope = initialScope; scope != null; scope = scope.getParentNameScope())
 		{
