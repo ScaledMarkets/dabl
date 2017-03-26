@@ -34,6 +34,12 @@ public class NameScope implements Annotation
 	
 	public NameScope(String name, Node nodeThatDefinesScope, NameScope parentScope)
 	{
+		if (name != null) {
+			if ((! name.equals("Global")) && (parentScope == null)) {
+				System.out.println("**************************");
+				throw new RuntimeException("**************************");
+			}
+		}
 		this.nodeThatDefinesScope = nodeThatDefinesScope;
 		this.parentScope = parentScope;
 		SymbolTable parentTable = (parentScope == null ? null : parentScope.getSymbolTable());
@@ -81,12 +87,36 @@ public class NameScope implements Annotation
 	
 	public void removeIdentHandler(TId id) { identHandlers.remove(id); }
 	
+	/**
+	 * Iterate through this scope's delayed name resolution handlers, and attempt
+	 * to resolve the unresolved references.
+	 */
 	public void resolveForwardReferences(DeclaredEntry entry)
 	{
 		Collection<IdentHandler> handlerList = identHandlers.values();
 		for (IdentHandler handler : new LinkedList<IdentHandler>(handlerList))
 		{
 			handler.checkForPathResolution(entry);
+		}
+	}
+	
+	/**
+	 * Diagnostic method: print out the contents of this name scope.
+	 */
+	public void print() {
+		System.out.println("name scope " + this.getName());
+		getSymbolTable().print();
+	}
+	
+	/**
+	 * Diagnostic method: print this name scope, and all enclosing name scopes,
+	 * beginning from this one and proceeding upward.
+	 */
+	public void printUpward() {
+		System.out.println("Name scopes:");
+		for (NameScope scope = this; scope != null; scope = scope.getParentNameScope()) {
+			scope.print();
+			System.out.println("-------");
 		}
 	}
 }

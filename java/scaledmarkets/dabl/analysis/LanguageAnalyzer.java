@@ -82,6 +82,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			if (referringNameScope != entryNamespaceScope) {
 				// referring scope is in a different namespace than entry name scope
 				if (! entry.isDeclaredPublic()) {
+					referringNameScope.printUpward();
 					throw new RuntimeException(
 						"Element " + Utilities.createNameFromPath(path) +
 							" is referenced from " + referringNameScope.getName() + 
@@ -97,11 +98,14 @@ public class LanguageAnalyzer extends DablBaseAdapter
     static NameScope getNamespaceNameScope(NameScope scope) {
     	
     	for (NameScope s = scope;;) {
-    		Node node = scope.getNodeThatDefinesScope();
-    		if (node instanceof AOnamespace) return scope;
+    		Node node = s.getNodeThatDefinesScope();
+    		if (node instanceof AOnamespace) return s;
+    			else System.out.println("node is a " + node.getClass().getName()); // debug
     		s = s.getParentNameScope();
     		if (s == null) break;
     	}
+    	System.out.println("Namespace for scope " + scope.getName() + " not found");
+    	scope.printUpward();  // debug
     	throw new RuntimeException("Namespace for scope " + scope.getName() + " not found");
     }
     
@@ -142,6 +146,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		state.scopeStack = originalScopeStack;
 		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
 	}
+	
 	
 	/* Task declarations. */
 	

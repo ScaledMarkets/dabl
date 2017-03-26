@@ -198,7 +198,9 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	}
 	
 	/**
-	 * 
+	 * Beginning with the current scope, and progressing outward, attempt to
+	 * resolve the unresolved references that are attached to each scope.
+	 * This method should be called after each name declaration is processed.
 	 */
 	protected void resolveForwardReferences(DeclaredEntry entry)
 	{
