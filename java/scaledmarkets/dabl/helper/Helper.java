@@ -51,9 +51,9 @@ public class Helper {
 	 */
 	public AOnamespace getNamespace(Start start) throws Exception {
 	
-		assertThat(start != null);
+		Utilities.assertThat(start != null);
 		POnamespace n = start.getPOnamespace();
-		assertThat(n instanceof AOnamespace);
+		Utilities.assertThat(n instanceof AOnamespace);
 		AOnamespace namespace = (AOnamespace)n;
 		return namespace;
 	}
@@ -257,8 +257,8 @@ public class Helper {
 		
 		NameScope globalScope = this.state.getGlobalScope();
 		SymbolEntry entry = globalScope.getEntry(namespaceName);
-		assertThat(entry != null);
-		assertThat(entry instanceof NameScopeEntry);
+		Utilities.assertThat(entry != null);
+		Utilities.assertThat(entry instanceof NameScopeEntry);
 		return (NameScopeEntry)entry;
 	}
 	
@@ -271,7 +271,7 @@ public class Helper {
 		NameScope scope = namespaceEntry.getOwnedScope();
 		SymbolEntry e = scope.getEntry(name);
 		if (e == null) return null;
-		assertThat(e instanceof DeclaredEntry, "entry is a " + e.getClass().getName());
+		Utilities.assertThat(e instanceof DeclaredEntry, "entry is a " + e.getClass().getName());
 		return (DeclaredEntry)e;
 	}
 	
@@ -299,7 +299,7 @@ public class Helper {
 	public AOtaskDeclaration getTaskDeclaration(String taskName) throws Exception {
 		
 		Node n = getDeclaration(taskName);
-		assertThat(n instanceof AOtaskDeclaration);
+		Utilities.assertThat(n instanceof AOtaskDeclaration);
 		return (AOtaskDeclaration)n;
 	}
 	
@@ -309,7 +309,7 @@ public class Helper {
 	public AOartifactDeclaration getArtifactDeclaration(String artifactName) throws Exception {
 		
 		Node n = getDeclaration(artifactName);
-		assertThat(n instanceof AOartifactDeclaration);
+		Utilities.assertThat(n instanceof AOartifactDeclaration);
 		return (AOartifactDeclaration)n;
 	}
 	
@@ -319,10 +319,10 @@ public class Helper {
 	public String getStringLiteralValue(POstringLiteral literal) throws Exception {
 		
 		Object obj = state.getOut(literal);
-		assertThat(obj instanceof ExprAnnotation);
+		Utilities.assertThat(obj instanceof ExprAnnotation);
 		ExprAnnotation annot = (ExprAnnotation)obj;
 		Object value = annot.getValue();
-		assertThat(value instanceof String);
+		Utilities.assertThat(value instanceof String);
 		String stringValue = (String)value;
 		return stringValue;
 	}*/
@@ -330,28 +330,22 @@ public class Helper {
 	/**
 	 * If expr is false, throw an Exception.
 	 */
-	public void assertThat(boolean expr) throws Exception {
-		if (! expr) throw new Exception("Assertion violation");
+	public static void assertThat(boolean expr) throws Exception {
+		Utilities.assertThat(expr);
 	}
 	
 	/**
 	 * If expr is false, print the message and throw an Exception.
 	 */
-	public void assertThat(boolean expr, String msg) throws Exception {
-		if (msg == null) msg = "";
-		if (msg != null) msg = "; " + msg;
-		if (! expr) throw new Exception("Assertion violation: " + msg);
+	public static void assertThat(boolean expr, String msg) throws Exception {
+		Utilities.assertThat(expr, msg);
 	}
 	
 	/**
 	 * If expr is false, perform the specified action and then throw an Exception.
 	 */
-	public void assertThat(boolean expr, Runnable action) throws Exception {
-		if (! expr) {
-			System.out.println("Assertion violation");
-			action.run();
-			throw new Exception("Assertion violation");
-		}
+	public static void assertThat(boolean expr, Runnable action) throws Exception {
+		Utilities.assertThat(expr, action);
 	}
 	
 	/**

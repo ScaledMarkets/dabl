@@ -53,16 +53,6 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
     public Annotation getOut(Node node) { return state.out.get(node); }
 
-	public void assertThat(boolean expr)
-	{
-		if (! expr) throw new RuntimeException("Assertion failure");
-	}
-	
-	public void assertThat(boolean expr, String msg)
-	{
-		if (! expr) throw new RuntimeException("Assertion failure: " + msg);
-	}
-
 	
 	/* Scope management */
 	
@@ -185,8 +175,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	protected SymbolEntry resolveSymbol(String name, NameScope initialScope)
 	{
-		assertThat(name != null);
-		assertThat(initialScope != null);
+		Utilities.assertThat(name != null);
+		Utilities.assertThat(initialScope != null);
 		
 		for (NameScope scope = initialScope; scope != null; scope = scope.getParentNameScope())
 		{

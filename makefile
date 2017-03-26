@@ -129,6 +129,10 @@ compile: config
 		$(src_dir)/$(package)/exec/*.java \
 		$(src_dir)/$(package)/helper/*.java
 
+compile_clean:
+	rm -r -f $(build_dir)/*
+	rm -r -f $(jar_dir)/*
+
 # Define 'dist' target so we can reference it in 'all' target.
 dist: jar
 
@@ -199,10 +203,7 @@ cukever:
 cukehelp:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help
 
-clean:
-	rm -r -f $(build_dir)/*
-	rm -r -f $(test_build_dir)/*
-	rm -r -f $(jar_dir)/*
+clean: compile_clean test_clean
 	rm -r -f $(sable_out_dir)/*
 	rm -f Manifest
 	rm -r -f $(javadoc_dir)/*
