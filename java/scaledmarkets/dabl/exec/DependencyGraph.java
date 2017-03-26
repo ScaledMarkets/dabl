@@ -66,27 +66,30 @@ public class DependencyGraph {
 		}
 		for (AOtaskDeclaration taskDecl : taskDecls) { // each task declaration
 			// a. Add a new Task to the set of tasks.
-			Task task = createTask(taskDecl);
+			Task task = tasks.get(taskDecl);
+			if (task == null) task = createTask(taskDecl);
 			
 			// b. For each of the task’s inputs,
 			LinkedList<POnamedArtifactSet> inputs = taskDecl.getInput();
 			for (POnamedArtifactSet p : inputs) {
 				
-				POartifactSet artifactSet;
+				POartifactSet pas;
 				
 				if (p instanceof AAnonymousOnamedArtifactSet) {
-					artifactSet = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
+					pas = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
 				} else if (p instanceof ANamedOnamedArtifactSet) {
-					artifactSet = ((ANamedOnamedArtifactSet)p).getOartifactSet();
+					pas = ((ANamedOnamedArtifactSet)p).getOartifactSet();
 				} else if (p instanceof AFilesOnamedArtifactSet) {
-					artifactSet = getArtifactSet((AFilesOnamedArtifactSet)p);
+					pas = getArtifactSet((AFilesOnamedArtifactSet)p);
 				} else if (p instanceof ATaskOnamedArtifactSet) {
-					artifactSet = getArtifactSet((ATaskOnamedArtifactSet)p);
+					pas = getArtifactSet((ATaskOnamedArtifactSet)p);
 				} else throw new RuntimeException(
 					"Unexpected Node type: " + p.getClass().getName());
 				
 				// 1. If the input Artifact does not exist, then create a new Artifact.
-				Artifact artifact = createArtifact((AOartifactSet)artifactSet);
+				AOartifactSet artifactSet = (AOartifactSet)pas;
+				Artifact artifact = artifacts.get(artifactSet);
+				if (artifact == null) artifact = createArtifact(artifactSet);
 				
 				// 2. Add the task to the input Artifact’s list of “IsReadBy”.
 				artifact.addConsumer(task);
@@ -99,17 +102,19 @@ public class DependencyGraph {
 			LinkedList<POnamedArtifactSet> outputs = taskDecl.getOutput();
 			for (POnamedArtifactSet p : outputs) {
 				
-				POartifactSet artifactSet;
+				POartifactSet pas;
 				
 				if (p instanceof AAnonymousOnamedArtifactSet) {
-					artifactSet = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
+					pas = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
 				} else if (p instanceof ANamedOnamedArtifactSet) {
-					artifactSet = ((ANamedOnamedArtifactSet)p).getOartifactSet();
+					pas = ((ANamedOnamedArtifactSet)p).getOartifactSet();
 				} else throw new RuntimeException(
 					"Unexpected Node type: " + p.getClass().getName());
 				
 				// 1. If the output Artifact does not exist, then create a new Artifact.
-				Artifact artifact = createArtifact((AOartifactSet)artifactSet);
+				AOartifactSet artifactSet = (AOartifactSet)pas;
+				Artifact artifact = artifacts.get(artifactSet);
+				if (artifact == null) artifact = createArtifact(artifactSet);
 				
 				// 2. Add the task to the output Artifact’s list of “IsWrittenBy”.
 				artifact.addProducer(task);
@@ -145,7 +150,8 @@ public class DependencyGraph {
 	 * 
 	 */
 	protected Task createTask(AOtaskDeclaration taskDecl) {
-		if (tasks.get(taskDecl) != null) return null;
+		Task t = tasks.get(taskDecl);
+		if (t != null) throw new RuntimeException("Task " + t.getName() + " exists");
 		Task task = new Task(taskDecl);
 		tasks.put(taskDecl, task);
 		return task;
@@ -154,10 +160,11 @@ public class DependencyGraph {
 	/**
 	 * 
 	 */
-	protected Artifact createArtifact(AOartifactSet a) {
-		if (artifacts.get(a) != null) return null;
-		Artifact artifact = new Artifact(a);
-		artifacts.put(a, artifact);
+	protected Artifact createArtifact(AOartifactSet aset) {
+		Artifact a = artifacts.get(aset);
+		if (a != null) throw new RuntimeException("Artifact exists");
+		Artifact artifact = new Artifact(aset);
+		artifacts.put(aset, artifact);
 		return artifact;
 	}
 	
@@ -206,10 +213,16 @@ public class DependencyGraph {
 		Annotation a = state.getOut(nameRef);
 		if (a == null) throw new RuntimeException(
 			"Unable to identify " + Utilities.createNameFromPath(nameRef.getId()));
-		DeclaredEntry entry = null;
-		if (a instanceof DeclaredEntry) {
-			entry = (DeclaredEntry)a;
-		} else throw new RuntimeException("Unexpected Node type: " + a.getClass().getName());
+		IdRefAnnotation eref = null;
+		if (a instanceof IdRefAnnotation) {
+			eref = (IdRefAnnotation)a;
+		} else throw new RuntimeException("Unexpected annotation type: " + a.getClass().getName());
+		
+		SymbolEntry e = eref.getDefiningSymbolEntry();
+		DeclaredEntry entry;
+		if (e instanceof DeclaredEntry) {
+			entry = (DeclaredEntry)e;
+		} else throw new RuntimeException("Unexpected annotation type: " + e.getClass().getName());
 		
 		// The defining node should be a ANamedOnamedArtifactSet.
 		
