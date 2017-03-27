@@ -100,7 +100,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
     	for (NameScope s = scope;;) {
     		Node node = s.getNodeThatDefinesScope();
     		if (node instanceof AOnamespace) return s;
-    			else System.out.println("node is a " + node.getClass().getName()); // debug
     		s = s.getParentNameScope();
     		if (s == null) break;
     	}

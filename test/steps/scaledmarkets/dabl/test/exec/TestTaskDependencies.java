@@ -10,6 +10,7 @@ import cucumber.api.java.en.When;
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.Main;
 import scaledmarkets.dabl.test.TestBase;
 
 import java.io.Reader;
@@ -38,8 +39,7 @@ public class TestTaskDependencies extends TestBase {
 "  outputs of \"repo2\" in my_git \"y\""
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
-		createHelper(dabl.process());
+		createHelper(Main.compile(false, true, false, true, reader));
 		assertThat(getHelper().getState().getGlobalScope() != null);
 	}
 	

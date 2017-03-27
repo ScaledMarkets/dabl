@@ -11,11 +11,7 @@ import scaledmarkets.dabl.Config;
 import sablecc.PrettyPrint;
 
 import java.io.Reader;
-import java.io.PushbackReader;
 import java.io.FileReader;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  * DABL command line processor.
@@ -73,7 +69,14 @@ public class Main
 		
 		// Parse input and perform analysis.
 		System.out.println("Processing file " + filename + "...");
-		dabl = new Dabl(print, printTrace, new FileReader(filename));
+		Reader reader = new FileReader(filename);
+		compile(print, printTrace, analysisOnly, simulate, reader);
+	}
+	
+	public static CompilerState compile(boolean print, boolean printTrace,
+		boolean analysisOnly, boolean simulate, Reader reader) throws Exception {
+		
+		Dabl dabl = new Dabl(print, printTrace, reader);
 		CompilerState state = null;
 		try { state = dabl.process(); }
 		catch (Exception ex)
@@ -83,7 +86,7 @@ public class Main
 			System.exit(1);
 		}
 		
-		if (analysisOnly) return;
+		if (analysisOnly) return state;
 		
 		// Perform actions.
 		System.out.println("Performing actions...");
@@ -98,6 +101,8 @@ public class Main
 			else System.out.println(ex.getMessage());
 			System.exit(1);
 		}
+		
+		return state;
 	}
 	
 	static void displayInstructions()
