@@ -9,9 +9,19 @@ public class TaskSimulatorFactory extends TaskContainerFactory {
 	/**
 	 * Create a pretend-container.
 	 */
-	public TaskContainer createTaskContainer() {
+	public TaskContainer createTaskContainer() throws Exception {
 		return new PretendTaskContainer();
 	}
 	
+	public void containerWasDestroyed(TaskContainer container) {
+		
+		....
+	}
+
+	public Set<TaskContainer> getTaskContainers() {
+		
+		....
+	}
+
 	public boolean isASimulation() { return true; }
 }
