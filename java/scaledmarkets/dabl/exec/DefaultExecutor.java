@@ -47,8 +47,9 @@ public class DefaultExecutor implements Executor {
 	 * 
 	 */
 	protected void executeTaskTree(DependencyGraph graph, Task task) throws Exception {
-		if (isDownstreamFromUnvisitedTask(task)) {
-
+		
+		if (! isDownstreamFromUnvisitedTask(task)) {
+			
 			if (task.hasBeenVisited()) throw new RuntimeException(
 				"Task has already been executed");
 			
