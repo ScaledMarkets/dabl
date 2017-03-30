@@ -8,7 +8,7 @@ public abstract class TaskContainerFactory {
 	 * Create a container, containing the task interpreter. Return an object
 	 * that enables one to control the container.
 	 */
-	public abstract TaskContainer createTaskContainer() throws Exception;
+	public abstract TaskContainer createTaskContainer(String[] pathsToMap) throws Exception;
 	
 	/**
 	 * Callback: notify this factory that the underlying container was destroyed,

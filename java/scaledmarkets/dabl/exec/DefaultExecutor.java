@@ -70,8 +70,12 @@ public class DefaultExecutor implements Executor {
 				
 				if (verbose) System.out.println("\ttask 'when' condition is true");
 				
+				// Identify the input and output paths.
+				String[] pathsToMap = null; //....
+				
 				// Create a container.
-				TaskContainer taskContainer = this.taskContainerFactory.createTaskContainer();
+				TaskContainer taskContainer =
+					this.taskContainerFactory.createTaskContainer(pathsToMap);
 				
 				// Execute the task in the container.
 				taskContainer.executeTask(task);

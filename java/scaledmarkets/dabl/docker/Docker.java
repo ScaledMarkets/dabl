@@ -5,17 +5,24 @@ import javax.ws.rs.client.*;
 
 public class Docker {
 	
-	private static const String DockerURL = "unix:///var/run/docker.sock";
+	private static String DockerURL = "unix:///var/run/docker.sock";
 	private WebTarget endpoint;
 	
 	public static Docker connect() throws Exception {
 		
 		Client client = ClientBuilder.newClient();
-		this.endpoint = client.target(DockerURL);
-		
+		WebTarget endpoint = client.target(DockerURL);
+		Docker docker = new Docker(endpoint);
 		
 		// Verify that the required base image is present.
-		....
+		//....
+		
+		
+		return docker;
+	}
+	
+	protected Docker(WebTarget endpoint) {
+		this.endpoint = endpoint;
 	}
 	
 	/**
@@ -33,6 +40,7 @@ public class Docker {
 		Response response = invocationBuilder.get();
 
 		System.out.println(response.getStatus());
+		return String.valueOf(response.getStatus());
 	}
 	
 	public DockerContainer createContainer(String imageName) throws Exception {
@@ -50,7 +58,9 @@ public class Docker {
 		Response response =
 			target.request(MediaType.TEXT_PLAIN_TYPE)
 				.post(Entity.entity("A string entity to be POSTed", MediaType.TEXT_PLAIN));
-		....
+		//....
+		
+		String containerId = null; //....parse response
 		
 		// Wrap the container Id in an object that we can return.
 		DockerContainer container = new DockerContainer(this, containerId);
@@ -58,19 +68,19 @@ public class Docker {
 		return container;
 	}
 	
-	public void startContainer(String containerId) throws Exception {
+	public void startContainer(String containerId, String[] pathsToMap) throws Exception {
 		
 		// Perform a docker 'run'.
 		
 		
-		....
+		//....
 		
 	}
 	
 	public void stopContainer(String containerId) throws Exception {
 
 		// Perform a docker 'stop'.
-		....
+		//....
 		
 		
 	}
@@ -79,11 +89,11 @@ public class Docker {
 		
 		// Perform a docker 'rm'.
 		
-		....
+		//....
 	}
 	
 	public DockerContainer[] getContainers() throws Exception {
 		
-		return ....
+		return null;
 	}
 }

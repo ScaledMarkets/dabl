@@ -7,7 +7,7 @@ package scaledmarkets.dabl.docker;
 public class DockerContainer {
 	
 	private Docker docker;
-	private string containerId;
+	private String containerId;
 	
 	public DockerContainer(Docker docker, String containerId) {
 		this.docker = docker;
@@ -16,7 +16,7 @@ public class DockerContainer {
 	
 	public void start(String[] pathsToMap) throws Exception {
 		
-		this.docker.startContainer(this.containerId);
+		this.docker.startContainer(this.containerId, pathsToMap);
 	}
 	
 	public void stop() throws Exception {

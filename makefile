@@ -24,6 +24,7 @@ main_class := $(package_name).Main
 # Intermediate artifacts:
 classfiles := \
 	$(build_dir)/$(package)/*.class \
+	$(build_dir)/$(package)/docker/*.class \
 	$(build_dir)/$(package)/exec/*.class \
 	$(build_dir)/$(package)/helper/*.class \
 	$(build_dir)/$(package)/analysis/*.class \
@@ -125,6 +126,7 @@ compile: config
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp):$(third_party_cp) -d $(build_dir) \
 		$(src_dir)/sablecc/*.java \
 		$(src_dir)/$(package)/*.java \
+		$(src_dir)/$(package)/docker/*.java \
 		$(src_dir)/$(package)/analysis/*.java \
 		$(src_dir)/$(package)/exec/*.java \
 		$(src_dir)/$(package)/helper/*.java
