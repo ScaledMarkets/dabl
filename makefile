@@ -53,7 +53,7 @@ javadoc_dir := $(CurDir)/docs
 buildcp := $(build_dir)
 compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
 test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
-third_party_cp := $(jax-rs)/api/javax.ws.rs-api-2.0.1.jar
+third_party_cp := $(jaxrs)/api/javax.ws.rs-api-2.0.1.jar
 
 ################################################################################
 # Tasks
