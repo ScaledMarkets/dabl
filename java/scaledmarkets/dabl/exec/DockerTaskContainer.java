@@ -23,7 +23,7 @@ public class DockerTaskContainer extends TaskContainer {
 	public void executeTask(Task task) throws Exception {
 		
 		// Start the container.
-		try { this.dockerContainer.start();
+		try { this.dockerContainer.start(....paths to map);
 		
 		// Execute the task in the container.
 		....

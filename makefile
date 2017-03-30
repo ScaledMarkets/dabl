@@ -53,7 +53,7 @@ javadoc_dir := $(CurDir)/docs
 buildcp := $(build_dir)
 compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
 test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
-
+third_party_cp := $(jax-rs)/api/javax.ws.rs-api-2.0.1.jar
 
 ################################################################################
 # Tasks
@@ -122,7 +122,7 @@ $(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir) $(jar_dir)
 
 # Define the 'compile' target so that we can reference it in .DEFAULT_GOAL.
 compile: config
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp):$(third_party_cp) -d $(build_dir) \
 		$(src_dir)/sablecc/*.java \
 		$(src_dir)/$(package)/*.java \
 		$(src_dir)/$(package)/analysis/*.java \
@@ -152,7 +152,7 @@ compile_tests: $(test_build_dir)
 
 # Run Cucumber tests.
 test:
-	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
+	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar \
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
 		$(test_src_dir)/features \

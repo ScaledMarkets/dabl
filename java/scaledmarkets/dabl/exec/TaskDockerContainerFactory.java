@@ -39,8 +39,7 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	}
 	
 	public Set<TaskContainer> getTaskContainers() {
-		
-		....
+		return taskContainers.keySet();
 	}
 
 	public boolean isASimulation() { return false; }

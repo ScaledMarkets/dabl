@@ -89,7 +89,17 @@ Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
 
 To build the project, set the environment-specific tool locations in
 [makefile.inc](https://github.com/Scaled-Markets/dabl/blob/master/makefile.inc).
-Then run `make all`. The output of the
+The third party components that are required for running DABL are,
+
+* [Jersey](https://jersey.java.net/)
+
+The third party tools that are required for building or testing DABL are,
+
+* [SableCC](http://www.sablecc.org/)
+* [Cucumber-JVM](https://github.com/cucumber/cucumber-jvm)
+
+Once you have set the third party component locations in `makefile.inc`,
+run `make all`. The output of the
 build is a JAR file, `dabl.jar`, which can be included in any
 Java project. (See "Binary Download" below.)
 

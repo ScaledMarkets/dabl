@@ -1,5 +1,9 @@
 package scaledmarkets.dabl.docker;
 
+/**
+ * A wrapper for a docker container. Enables one to start, stop, and remove
+ * the container.
+ */
 public class DockerContainer {
 	
 	private Docker docker;
@@ -10,7 +14,7 @@ public class DockerContainer {
 		this.containerId = containerId;
 	}
 	
-	public void start() throws Exception {
+	public void start(String[] pathsToMap) throws Exception {
 		
 		this.docker.startContainer(this.containerId);
 	}

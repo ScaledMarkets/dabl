@@ -22,6 +22,7 @@ junit_dir := $(Library)/JUnit
 log4jcore := $(Library)/apache-log4j-2.0.2-bin/log4j-core-2.0.2.jar
 log4japi := $(Library)/apache-log4j-2.0.2-bin/log4j-1.2-api-2.0.2.jar
 commonslogging12 := $(Library)/commons-logging-1.2/commons-logging-1.2.jar
+jaxrs := $(Library)/jaxrs-ri
 CUCUMBER_CLASSPATH := $(Library)/Cucumber/cucumber-core-1.1.8.jar
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-java-1.1.8.jar
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-jvm-deps-1.0.3.jar
