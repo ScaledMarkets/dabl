@@ -7,6 +7,7 @@ public class Docker {
 	
 	private String dockerURL;
 	private WebTarget endpoint;
+	public static String DefaultDockerURL = "unix:///var/run/docker.sock";
 	
 	public static Docker connect(String dockerURL) throws Exception {
 		
@@ -20,6 +21,10 @@ public class Docker {
 		
 		
 		return docker;
+	}
+	
+	public static Docker connect() throws Exception {
+		return connect(DefaultDockerURL);
 	}
 	
 	protected Docker(WebTarget endpoint) {

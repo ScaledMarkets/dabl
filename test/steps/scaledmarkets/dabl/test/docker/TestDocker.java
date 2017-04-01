@@ -26,7 +26,7 @@ public class TestDocker extends TestBase {
 	@When("^I make a ping request to docker$")
 	public void i_make_a_ping_request_to_docker() throws Exception {
 		
-		Docker docker = Docker.connect(String dockerURL);
+		Docker docker = Docker.connect();
 		String response = docker.ping();
 	}
 	

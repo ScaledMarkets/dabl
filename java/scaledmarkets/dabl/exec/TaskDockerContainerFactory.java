@@ -7,7 +7,6 @@ import java.util.TreeMap;
 
 public class TaskDockerContainerFactory extends TaskContainerFactory {
 	
-	public static String DockerURL = "unix:///var/run/docker.sock";
 	public static String dockerImageName = "centos7.2";
 	private Map<TaskContainer, TaskContainer> taskContainers = new TreeMap<TaskContainer, TaskContainer>();
 	private Docker docker;
@@ -15,7 +14,7 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	public TaskDockerContainerFactory() throws Exception {
 		
 		// Conntect to docker.
-		this.docker = Docker.connect(dockerURL);
+		this.docker = Docker.connect();
 	}
 	
 	/**
