@@ -5,11 +5,12 @@ import javax.ws.rs.client.*;
 
 public class Docker {
 	
-	private static String DockerURL = "unix:///var/run/docker.sock";
+	private String dockerURL;
 	private WebTarget endpoint;
 	
-	public static Docker connect() throws Exception {
+	public static Docker connect(String dockerURL) throws Exception {
 		
+		this.dockerURL = dockerURL;
 		Client client = ClientBuilder.newClient();
 		WebTarget endpoint = client.target(DockerURL);
 		Docker docker = new Docker(endpoint);
@@ -35,8 +36,7 @@ public class Docker {
 		
 		Invocation.Builder invocationBuilder =
 			target.request(MediaType.TEXT_PLAIN_TYPE);
-				invocationBuilder.header("some-header", "true");
-
+		
 		Response response = invocationBuilder.get();
 
 		System.out.println(response.getStatus());
@@ -53,7 +53,8 @@ public class Docker {
 		
 		Invocation.Builder invocationBuilder =
 			targetWithQueryParam.request(MediaType.TEXT_PLAIN_TYPE);
-				invocationBuilder.header("some-header", "true");
+		
+		invocationBuilder.header("some-header", "true");
 		
 		Response response =
 			target.request(MediaType.TEXT_PLAIN_TYPE)
