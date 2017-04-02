@@ -54,7 +54,7 @@ javadoc_dir := $(CurDir)/docs
 buildcp := $(build_dir)
 compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
 test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
-third_party_cp := $(jaxrs)/api/javax.ws.rs-api-2.0.1.jar
+third_party_cp := $(jaxrs):$(junixsocket):$(apache_http)
 
 ################################################################################
 # Tasks
@@ -117,7 +117,7 @@ $(jar_dir):
 # Package application into a JAR file.
 jar: $(jar_dir)/$(JAR_NAME).jar
 
-$(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir) $(jar_dir)
+$(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
 	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest -C $(build_dir) scaledmarkets
 	rm Manifest
 
@@ -149,6 +149,7 @@ compile_tests: $(test_build_dir)
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(compile_tests_cp) -d $(test_build_dir) \
 		$(test_src_dir)/steps/$(test_package)/*.java \
 		$(test_src_dir)/steps/$(test_package)/analyzer/*.java \
+		$(test_src_dir)/steps/$(test_package)/docker/*.java \
 		$(test_src_dir)/steps/$(test_package)/exec/*.java \
 		$(src_dir)/sablecc/*.java
 
@@ -158,7 +159,7 @@ test:
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
 		$(test_src_dir)/features \
-		--tags @done
+		--tags @docker
 		#--tags @exec
 
 test_exec:

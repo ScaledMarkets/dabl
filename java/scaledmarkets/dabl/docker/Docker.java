@@ -2,23 +2,44 @@ package scaledmarkets.dabl.docker;
 
 import javax.ws.rs.core.*;
 import javax.ws.rs.client.*;
+import java.net.URI;
 
+//import org.glassfish.jersey.client.ClientConfig;
+
+/*
+	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/UnixConnectionSocketFactory.java
+	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/DockerCmdExecFactoryImpl.java
+	https://github.com/kohlschutter/junixsocket
+	org.glassfish.jersey.apache.connector.ApacheConnectorProvider
+ */
+
+/**
+ * Provide access to a docker daemon.
+ * This is not a full docker client: it provides only the access that is needed
+ * by DABL.
+ */
 public class Docker {
 	
 	private String dockerURL;
+	private URI uri;
 	private WebTarget endpoint;
 	public static String DefaultDockerURL = "unix:///var/run/docker.sock";
 	
 	public static Docker connect(String dockerURL) throws Exception {
 		
-		this.dockerURL = dockerURL;
 		Client client = ClientBuilder.newClient();
-		WebTarget endpoint = client.target(DockerURL);
+		URI originalUri = new URI(dockerURL);
+		URI uri;
+		if (originalUri.getScheme().equals("unix")) {
+			uri = UnixConnectionSocketFactory.sanitizeUri(originalUri);
+		} else {
+			uri = originalUri;
+		}
+		
+		WebTarget endpoint = client.target(uri);
 		Docker docker = new Docker(endpoint);
 		
-		// Verify that the required base image is present.
-		//....
-		
+		docker.validateRequiredConfiguration();
 		
 		return docker;
 	}
@@ -32,8 +53,17 @@ public class Docker {
 	}
 	
 	/**
-	 * Verify that the docker daemon is running, and verify that the required
-	 * base image is available.
+	 * 
+	 */
+	public void validateRequiredConfiguration() throws Exception {
+		// Verify that the required base image is present.
+		//....
+		
+		
+	}
+	
+	/**
+	 * Verify that the docker daemon is running and can be accessed.
 	 */
 	public String ping() throws Exception {
 		

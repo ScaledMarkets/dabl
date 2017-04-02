@@ -1,5 +1,6 @@
 # language: en
 
+@docker
 Feature: TestDocker
 	
 	@done
