@@ -36,8 +36,7 @@ public class Docker {
 			uri = originalUri;
 		}
 		
-		WebTarget endpoint = client.target(uri);
-		Docker docker = new Docker(endpoint);
+		Docker docker = new Docker(client.target(uri));
 		
 		docker.validateRequiredConfiguration();
 		

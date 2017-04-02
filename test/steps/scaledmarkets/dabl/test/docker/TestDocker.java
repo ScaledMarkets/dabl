@@ -27,7 +27,9 @@ public class TestDocker extends TestBase {
 	public void i_make_a_ping_request_to_docker() throws Exception {
 		
 		//Docker docker = Docker.connect("unix://localhost/var/run/docker.sock");
-		Docker docker = Docker.connect("tcp://127.0.0.1:2375");
+		//Docker docker = Docker.connect("unix://localhost/var/tmp/docker.sock");
+		//Docker docker = Docker.connect("tcp://127.0.0.1:2375");
+		Docker docker = Docker.connect();
 		String response = docker.ping();
 	}
 	
