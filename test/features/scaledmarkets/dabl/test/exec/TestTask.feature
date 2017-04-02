@@ -13,3 +13,9 @@ Feature: TestTask
 		When I compile them in simulate mode
 		Then I can verify the task dependency
 	
+	@done @exec
+	Scenario: Execute bash
+		Given I have a task containing bash commands
+		When I compile the task
+		Then the bash commands are executed
+	

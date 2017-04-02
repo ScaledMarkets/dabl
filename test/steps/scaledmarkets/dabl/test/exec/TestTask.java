@@ -59,4 +59,29 @@ public class TestTask extends TestBase {
 		// Write code here that turns the phrase above into concrete actions
 		throw new Exception();
 	}
+	
+	@Given("^I have a task containing bash commands$")
+	public void i_have_a_task_containing_bash_commands() throws Throwable {
+		Reader reader = new StringReader(
+"namespace simple \n" +
+"task t123\n" +
+"  when true\n" +
+"  bash echo hello\n" +
+			);
+		
+		Dabl dabl = new Dabl(false, true, reader);
+		createHelper(dabl.process());
+		assertThat(getHelper().getState().getGlobalScope() != null);
+	}
+	
+	@When("^I compile the task$")
+	public void i_compile_the_task() throws Throwable {
+		TaskContainerFactory taskContainerFactory = new TaskDockerContainerFactory();
+		Executor exec = new DefaultExecutor(state, taskContainerFactory, false);
+		exec.execute();
+	}
+	
+	@Then("^the bash commands are executed$")
+	public void the_bash_commands_are_executed() throws Throwable {
+	}
 }
