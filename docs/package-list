@@ -1,5 +1,6 @@
 scaledmarkets.dabl
 scaledmarkets.dabl.analysis
+scaledmarkets.dabl.docker
 scaledmarkets.dabl.exec
 scaledmarkets.dabl.helper
 scaledmarkets.dabl.lexer
