@@ -154,8 +154,10 @@ compile_tests: $(test_build_dir)
 		$(src_dir)/sablecc/*.java
 
 # Run Cucumber tests.
+# Note: We could export LD_LIBRARY_PATH instead of passing it in the java command.
 test:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar \
+		-Djava.library.path=$(jar_dir)/$(JAR_NAME).jar \
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
 		$(test_src_dir)/features \
