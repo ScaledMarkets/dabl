@@ -8,6 +8,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.test.TestBase;
 
@@ -66,7 +67,7 @@ public class TestTask extends TestBase {
 "namespace simple \n" +
 "task t123\n" +
 "  when true\n" +
-"  bash echo hello\n" +
+"  bash echo hello\n"
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);
@@ -77,7 +78,7 @@ public class TestTask extends TestBase {
 	@When("^I compile the task$")
 	public void i_compile_the_task() throws Throwable {
 		TaskContainerFactory taskContainerFactory = new TaskDockerContainerFactory();
-		Executor exec = new DefaultExecutor(state, taskContainerFactory, false);
+		Executor exec = new DefaultExecutor(getHelper().getState(), taskContainerFactory, false);
 		exec.execute();
 	}
 	
