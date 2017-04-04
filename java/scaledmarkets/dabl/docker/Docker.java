@@ -3,6 +3,9 @@ package scaledmarkets.dabl.docker;
 import javax.ws.rs.core.*;
 import javax.ws.rs.client.*;
 import java.net.URI;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.config.Registry;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
 
 //import org.glassfish.jersey.client.ClientConfig;
 
