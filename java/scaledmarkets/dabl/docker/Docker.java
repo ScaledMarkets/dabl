@@ -20,24 +20,34 @@ import java.net.URI;
  */
 public class Docker {
 	
+	public static String DefaultDockerURL = "unix:///var/run/docker.sock";
+
 	private String dockerURL;
 	private URI uri;
 	private WebTarget endpoint;
-	public static String DefaultDockerURL = "unix:///var/run/docker.sock";
+	private Client client;
 	
 	public static Docker connect(String dockerURL) throws Exception {
 		
-		Client client = ClientBuilder.newClient();
+		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+			.register("unix", new UnixConnectionSocketFactory(uri))
+			.build();
+		
+		clientConfig.property(ApacheClientProperties.CONNECTION_MANAGER, connManager);
+		ClientBuilder clientBuilder = ClientBuilder.newBuilder().withConfig(
+			clientConfig);
+		
+		Client client = clientBuilder.build();
+		
 		URI originalUri = new URI(dockerURL);
-		URI uri;
+		URI uri = originalUri;
 		if (originalUri.getScheme().equals("unix")) {
 			uri = UnixConnectionSocketFactory.sanitizeUri(originalUri);
-		} else {
-			uri = originalUri;
+			//uri = UnixConnectionSocketFactory.sanitizeUri(originalUri);
 		}
 		
-		Docker docker = new Docker(client.target(uri));
-		
+		Docker docker = new Docker(client, client.target(uri));
+
 		docker.validateRequiredConfiguration();
 		
 		return docker;
@@ -47,7 +57,8 @@ public class Docker {
 		return connect(DefaultDockerURL);
 	}
 	
-	protected Docker(WebTarget endpoint) {
+	protected Docker(Client client, WebTarget endpoint) {
+		this.client = client;
 		this.endpoint = endpoint;
 	}
 	
