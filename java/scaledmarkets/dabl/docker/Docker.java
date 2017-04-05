@@ -11,10 +11,7 @@ import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.CommonProperties;
-
 //import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-
-//import org.glassfish.jersey.client.ClientConfig;
 
 /*
 	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/UnixConnectionSocketFactory.java
