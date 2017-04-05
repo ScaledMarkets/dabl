@@ -6,6 +6,13 @@ import java.net.URI;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.Registry;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.glassfish.jersey.apache.connector.ApacheClientProperties;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.CommonProperties;
+
+//import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 //import org.glassfish.jersey.client.ClientConfig;
 
@@ -32,22 +39,32 @@ public class Docker {
 	
 	public static Docker connect(String dockerURL) throws Exception {
 		
-		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
-			.register("unix", new UnixConnectionSocketFactory(uri))
-			.build();
-		
-		clientConfig.property(ApacheClientProperties.CONNECTION_MANAGER, connManager);
-		ClientBuilder clientBuilder = ClientBuilder.newBuilder().withConfig(
-			clientConfig);
-		
-		Client client = clientBuilder.build();
-		
 		URI originalUri = new URI(dockerURL);
 		URI uri = originalUri;
 		if (originalUri.getScheme().equals("unix")) {
 			uri = UnixConnectionSocketFactory.sanitizeUri(originalUri);
 			//uri = UnixConnectionSocketFactory.sanitizeUri(originalUri);
 		}
+		
+		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+			.register("unix", new UnixConnectionSocketFactory(uri))
+			.build();
+		
+		ClientConfig clientConfig = new ClientConfig();
+		clientConfig.connectorProvider(new ApacheConnectorProvider());
+		clientConfig.property(CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE,
+				true);
+
+		PoolingHttpClientConnectionManager connManager =
+			new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+		//clientConfig.register(ResponseStatusExceptionFilter.class);
+		//clientConfig.register(JsonClientFilter.class);
+		//clientConfig.register(JacksonJsonProvider.class);
+		clientConfig.property(ApacheClientProperties.CONNECTION_MANAGER, connManager);
+	
+		ClientBuilder clientBuilder = ClientBuilder.newBuilder().withConfig(clientConfig);
+		
+		Client client = clientBuilder.build();
 		
 		Docker docker = new Docker(client, client.target(uri));
 

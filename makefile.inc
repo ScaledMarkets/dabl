@@ -25,6 +25,7 @@ commonslogging12 := $(Library)/commons-logging-1.2/commons-logging-1.2.jar
 jaxrs := $(Library)/jaxrs-ri/api/*
 jaxrs := $(jaxrs):$(Library)/jaxrs-ri/lib/*
 jaxrs := $(jaxrs):$(Library)/jaxrs-ri/ext/*
+jersey := $(Library)/jersey/*
 #apache_http := $(Library)/httpcomponents-client-4.4.6/lib/*
 apache_http := $(Library)/httpcomponents-client-4.5.3/lib/*
 junixsocket := /Users/cliffordberg/Documents/ScaledMarkets/DABL/junixsocket/lib/junixsocket.jar

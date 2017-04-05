@@ -54,7 +54,7 @@ javadoc_dir := $(CurDir)/docs
 buildcp := $(build_dir)
 compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
 test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
-third_party_cp := $(jaxrs):$(junixsocket):$(apache_http)
+third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey)
 
 ################################################################################
 # Tasks
