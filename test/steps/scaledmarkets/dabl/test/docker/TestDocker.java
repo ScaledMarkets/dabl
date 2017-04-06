@@ -17,6 +17,8 @@ public class TestDocker extends TestBase {
 	
 	@Before
 	public void beforeEachScenario() throws Exception {
+		System.setProperty("java.library.path",
+			"/Users/cliffordberg/Documents/ScaledMarkets/DABL/junixsocket/");
 	}
 	
 	@After
@@ -25,6 +27,7 @@ public class TestDocker extends TestBase {
 	
 	@When("^I make a ping request to docker$")
 	public void i_make_a_ping_request_to_docker() throws Exception {
+		
 		
 		//Docker docker = Docker.connect("unix://localhost/var/run/docker.sock");
 		//Docker docker = Docker.connect("unix://localhost/var/tmp/docker.sock");
