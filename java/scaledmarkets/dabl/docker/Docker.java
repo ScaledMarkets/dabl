@@ -40,11 +40,10 @@ public class Docker {
 		URI uri = originalUri;
 		if (originalUri.getScheme().equals("unix")) {
 			uri = UnixConnectionSocketFactory.sanitizeUri(originalUri);
-			//uri = UnixConnectionSocketFactory.sanitizeUri(originalUri);
 		}
 		
 		Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
-			.register("unix", new UnixConnectionSocketFactory(uri))
+			.register("unix", new UnixConnectionSocketFactory(originalUri))
 			.build();
 		
 		ClientConfig clientConfig = new ClientConfig();
