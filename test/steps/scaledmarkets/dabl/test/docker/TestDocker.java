@@ -12,13 +12,12 @@ import scaledmarkets.dabl.test.TestBase;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Properties;
 
 public class TestDocker extends TestBase {
 	
 	@Before
 	public void beforeEachScenario() throws Exception {
-		System.setProperty("java.library.path",
-			"/Users/cliffordberg/Documents/ScaledMarkets/DABL/junixsocket/");
 	}
 	
 	@After

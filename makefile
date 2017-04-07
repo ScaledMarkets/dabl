@@ -156,13 +156,14 @@ compile_tests: $(test_build_dir)
 # Run Cucumber tests.
 # Note: We could export LD_LIBRARY_PATH instead of passing it in the java command.
 test:
-	LD_LIBRARY_PATH=$(junixsocketnative) DYLD_LIBRARY_PATH=$(junixsocketnative) java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar \
+	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar \
 		-Djava.library.path=$(junixsocketnative) \
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
 		$(test_src_dir)/features \
 		--tags @docker
 		#--tags @exec
+		#--tags @smoke
 
 test_exec:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \

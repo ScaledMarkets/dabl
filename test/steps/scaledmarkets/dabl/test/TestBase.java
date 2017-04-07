@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Utilities shared by the DABL Cucumber test suite.
+ * Ref for JVM hooks: http://zsoltfabok.com/blog/2012/09/cucumber-jvm-hooks/
  */
 public class TestBase {
 

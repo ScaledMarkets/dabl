@@ -26,6 +26,9 @@ public class SmokeTest extends TestBase {
 	@When("^I compile trivial input$")
 	public void i_compile_trivial_input() throws Exception {
 		
+		System.out.println("LD_LIBRARY_PATH=" + System.getenv("LD_LIBRARY_PATH"));
+
+		
 		Reader reader = new StringReader(
 "\n namespace simple task t123"
 			);
