@@ -1,8 +1,12 @@
 package scaledmarkets.dabl.docker;
 
+import java.net.URI;
+import java.io.StringWriter;
 import javax.ws.rs.core.*;
 import javax.ws.rs.client.*;
-import java.net.URI;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonWriter;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.Registry;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -11,9 +15,11 @@ import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.CommonProperties;
-//import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 /*
+	Docker REST API reference:
+	https://docs.docker.com/engine/api/v1.27/
+	
 	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/UnixConnectionSocketFactory.java
 	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/DockerCmdExecFactoryImpl.java
 	https://github.com/kohlschutter/junixsocket
@@ -93,34 +99,57 @@ public class Docker {
 	 */
 	public String ping() throws Exception {
 		
-		WebTarget target = this.endpoint.path("_ping");
+		Response response = makeRequest("_ping");
 		
-		Invocation.Builder invocationBuilder =
-			target.request(MediaType.TEXT_PLAIN_TYPE);
-		
-		Response response = invocationBuilder.get();
-
 		System.out.println(response.getStatus());
 		return String.valueOf(response.getStatus());
 	}
 	
-	public DockerContainer createContainer(String imageName) throws Exception {
+	/**
+	 * 
+	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
+	 */
+	public DockerContainer createContainer(String imageId) throws Exception {
+		
+		JsonObject model = Json.createObjectBuilder()
+			.add("Hostname", "")
+			.add("Domainname", )
+			.add("User", )
+			.add("AttachStdin", )
+			.add("AttachStdout", )
+			.add("AttachStderr", )
+			.add("Tty", false)
+			.add("OpenStdin", false)
+			.add("StdinOnce", false)
+			.add("Env", Json.createArrayBuilder()
+				
+				)
+			.add("Cmd", )
+			.add("Entrypoint", )
+			.add("Image", )
+			.add("Labels", )
+			.add("Volumes", )
+			.add("WorkingDir", )
+			.add("NetworkDisabled", false)
+			.add("MacAddress", )
+			.add("ExposedPorts", )
+			.add("StopSignal", "SIGTERM")
+			.add("StopTimeout", )
+			.add("HostConfig", )
+			.add("NetworkingConfig", )
+			.build();
+		
+		
+		StringWriter stWriter = new StringWriter();
+		JsonWriter jsonWriter = Json.createWriter(stWriter);
+		jsonWriter.writeObject(model);
+		jsonWriter.close();
+		
+		String jsonPayload = stWriter.toString();	
 		
 		// Tell docker to create container, and get resulting container Id.
-		WebTarget target = this.endpoint.path("_ping");
-		
-		WebTarget targetWithQueryParam =
-			target.queryParam("greeting", "Hi World!");
-		
-		Invocation.Builder invocationBuilder =
-			targetWithQueryParam.request(MediaType.TEXT_PLAIN_TYPE);
-		
-		invocationBuilder.header("some-header", "true");
-		
-		Response response =
-			target.request(MediaType.TEXT_PLAIN_TYPE)
-				.post(Entity.entity("A string entity to be POSTed", MediaType.TEXT_PLAIN));
-		//....
+		Response response = makePostRequest("v1.24/containers/" + imageId + "/start",
+			jsonPayload);
 		
 		String containerId = null; //....parse response
 		
@@ -157,5 +186,19 @@ public class Docker {
 	public DockerContainer[] getContainers() throws Exception {
 		
 		return null;
+	}
+	
+	protected Response makeGetRequest(String path) {
+		
+		WebTarget target = this.endpoint.path(path);
+		
+		Invocation.Builder invocationBuilder =
+			target.request(MediaType.TEXT_PLAIN_TYPE);
+		
+		return invocationBuilder.get();
+	}
+	
+	protected Response makePostRequest(String path) {
+		
 	}
 }
