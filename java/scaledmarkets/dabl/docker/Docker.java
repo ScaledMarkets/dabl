@@ -30,6 +30,12 @@ import org.glassfish.jersey.CommonProperties;
 	Docker REST API reference:
 	https://docs.docker.com/engine/api/v1.27/
 	
+	JSON API guide:
+	http://docs.oracle.com/javaee/7/tutorial/jsonp003.htm
+	
+	Jersey API reference:
+	https://jersey.java.net/apidocs/latest/jersey/index.html
+	
 	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/UnixConnectionSocketFactory.java
 	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/DockerCmdExecFactoryImpl.java
 	https://github.com/kohlschutter/junixsocket
