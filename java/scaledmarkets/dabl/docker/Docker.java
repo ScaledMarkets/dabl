@@ -2,11 +2,21 @@ package scaledmarkets.dabl.docker;
 
 import java.net.URI;
 import java.io.StringWriter;
+import java.io.StringReader;
 import javax.ws.rs.core.*;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.client.*;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonWriter;
+import javax.json.JsonReader;
+import javax.json.JsonStructure;
+import javax.json.JsonValue;
+import javax.json.JsonArray;
+import javax.json.JsonNumber;
+import javax.json.JsonString;
+
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.Registry;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -140,10 +150,9 @@ public class Docker {
 			.build();
 		
 		StringWriter stWriter = new StringWriter();
-		JsonWriter jsonWriter = Json.createWriter(stWriter);
-		jsonWriter.writeObject(model);
-		jsonWriter.close();
-		
+		try (JsonWriter jsonWriter = Json.createWriter(stWriter)) {
+			jsonWriter.writeObject(model);
+		}
 		String jsonPayload = stWriter.toString();	
 		
 		// Tell docker to create container, and get resulting container Id.
@@ -152,12 +161,12 @@ public class Docker {
 			jsonPayload);
 		
 		// Verify success and obtain container Id.
+		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
 		
-		
-		
-		
-		
-		String containerId = null; //....parse response
+		String responseBody = response.readEntity(String.class);
+		JsonReader reader = Json.createReader(new StringReader(responseBody));
+		JsonStructure json = reader.read();
+		String containerId = json.get("Id");
 		
 		// Wrap the container Id in an object that we can return.
 		DockerContainer container = new DockerContainer(this, containerId);
