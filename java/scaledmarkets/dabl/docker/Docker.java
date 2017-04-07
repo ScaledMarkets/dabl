@@ -109,7 +109,7 @@ public class Docker {
 	 * 
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
-	public DockerContainer createContainer(String imageId) throws Exception {
+	public DockerContainer createContainer(String imageId, String containerName) throws Exception {
 		
 		JsonObject model = Json.createObjectBuilder()
 			.add("Hostname", "")
@@ -139,7 +139,6 @@ public class Docker {
 			.add("NetworkingConfig", )
 			.build();
 		
-		
 		StringWriter stWriter = new StringWriter();
 		JsonWriter jsonWriter = Json.createWriter(stWriter);
 		jsonWriter.writeObject(model);
@@ -148,8 +147,15 @@ public class Docker {
 		String jsonPayload = stWriter.toString();	
 		
 		// Tell docker to create container, and get resulting container Id.
-		Response response = makePostRequest("v1.24/containers/" + imageId + "/start",
+		Response response = makePostRequest(
+			"v1.24/containers/" + imageId + "/create?name=" + containerName,
 			jsonPayload);
+		
+		// Verify success and obtain container Id.
+		
+		
+		
+		
 		
 		String containerId = null; //....parse response
 		
@@ -198,7 +204,7 @@ public class Docker {
 		return invocationBuilder.get();
 	}
 	
-	protected Response makePostRequest(String path) {
+	protected Response makePostRequest(String path, String body) {
 		
 	}
 }
