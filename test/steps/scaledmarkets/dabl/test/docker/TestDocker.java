@@ -22,6 +22,7 @@ public class TestDocker extends TestBase {
 		
 		Docker docker = Docker.connect();
 		String response = docker.ping();
+		docker.close();
 	}
 	
 	@Then("^the response is a success$")

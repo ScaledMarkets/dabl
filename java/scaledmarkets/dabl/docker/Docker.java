@@ -30,8 +30,9 @@ import org.glassfish.jersey.CommonProperties;
 	Docker REST API reference:
 	https://docs.docker.com/engine/api/v1.27/
 	
-	JSON API guide:
+	JSON API:
 	http://docs.oracle.com/javaee/7/tutorial/jsonp003.htm
+	https://docs.oracle.com/javaee/7/api/toc.htm
 	
 	Jersey API reference:
 	https://jersey.java.net/apidocs/latest/jersey/index.html
@@ -50,11 +51,14 @@ import org.glassfish.jersey.CommonProperties;
 public class Docker {
 	
 	public static String DefaultDockerURL = "unix:///var/run/docker.sock";
+	public static int Port = 22;
 
 	private String dockerURL;
 	private URI uri;
 	private WebTarget endpoint;
 	private Client client;
+	private static String portStr = String.valueOf(Port);
+	private static String hostPortStr = "22";
 	
 	public static Docker connect(String dockerURL) throws Exception {
 		
@@ -95,6 +99,10 @@ public class Docker {
 		return connect(DefaultDockerURL);
 	}
 	
+	public void close() throws Exception {
+		this.client.close();
+	}
+	
 	protected Docker(Client client, WebTarget endpoint) {
 		this.client = client;
 		this.endpoint = endpoint;
@@ -117,42 +125,60 @@ public class Docker {
 		
 		Response response = makeRequest("_ping");
 		
-		System.out.println(response.getStatus());
-		return String.valueOf(response.getStatus());
+		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		return response.getMessage();
 	}
 	
 	/**
 	 * 
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
-	public DockerContainer createContainer(String imageId, String containerName) throws Exception {
+	public DockerContainer createContainer(String imageIdOrName, String containerName,
+		String[] hostPathsToMap, String[] containerPathsToMap) throws Exception {
 		
+		assertThat(hostPathsToMap.length == containerPathsToMap.length,
+			"Number of host filesystem paths must equal number of container filesystem paths");
+		
+		JsonObject ports = Json.createObjectBuilder()
+			.add(portStr + "/tcp", Json.createObjectBuilder());
+		
+		filesystemMap = Json.createArrayBuilder();
+		int i = 0;
+		for (String hostPath : hostPathsToMap) {
+			filesystemMap.add(hostPath + ":" + containerPathsToMap[i++]);
+		}
+		
+		JsonObject hostPortBindings = Json.createObjectBuilder()
+			.add(portStr + "/tcp", Json.createArrayBuilder()
+				.add(Json.createObjectBuilder()
+					.add("HostPort", hostPortStr)));
+		
+		
+		JsonObject hostConfig = Json.createObjectBuilder()
+			.add("Binds", filesystemMap)
+			.add("PortBindings", hostPortBindings)
+			.add("NetworkMode", "bridge");
+		
+		JsonObject netConfig = Json.createObjectBuilder();
+	
 		JsonObject model = Json.createObjectBuilder()
-			.add("Hostname", "")
-			.add("Domainname", )
-			.add("User", )
-			.add("AttachStdin", )
-			.add("AttachStdout", )
-			.add("AttachStderr", )
+			.add("AttachStdin", false)
+			.add("AttachStdout", false)
+			.add("AttachStderr", false)
 			.add("Tty", false)
 			.add("OpenStdin", false)
 			.add("StdinOnce", false)
-			.add("Env", Json.createArrayBuilder()
-				
-				)
-			.add("Cmd", )
-			.add("Entrypoint", )
-			.add("Image", )
-			.add("Labels", )
-			.add("Volumes", )
-			.add("WorkingDir", )
+			.add("Env", Json.createArrayBuilder())
+			.add("Cmd", Json.createArrayBuilder())
+			.add("Entrypoint", "")
+			.add("Image", imageIdOrName)
+			.add("Labels", Json.createObjectBuilder())
+			.add("Volumes", Json.createObjectBuilder()
 			.add("NetworkDisabled", false)
-			.add("MacAddress", )
-			.add("ExposedPorts", )
+			.add("ExposedPorts", ports)
 			.add("StopSignal", "SIGTERM")
-			.add("StopTimeout", )
-			.add("HostConfig", )
-			.add("NetworkingConfig", )
+			.add("HostConfig", hostConfig)
+			.add("NetworkingConfig", netConfig)
 			.build();
 		
 		StringWriter stWriter = new StringWriter();
@@ -169,6 +195,7 @@ public class Docker {
 		// Verify success and obtain container Id.
 		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
 		
+		// Parse response and obtain the Id of the new container.
 		String responseBody = response.readEntity(String.class);
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
 		JsonStructure json = reader.read();
@@ -180,33 +207,59 @@ public class Docker {
 		return container;
 	}
 	
-	public void startContainer(String containerId, String[] pathsToMap) throws Exception {
+	/**
+	 * Tell docker to start container.
+	 */
+	public void startContainer(String containerId) throws Exception {
 		
-		// Perform a docker 'run'.
+		Response response = makePostRequest(
+			"v1.24/containers/" + containerId + "/start", null);
 		
-		
-		//....
-		
+		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
 	}
 	
+	/**
+	 * Tell docker to stop container.
+	 */
 	public void stopContainer(String containerId) throws Exception {
 
-		// Perform a docker 'stop'.
-		//....
+		Response response = makePostRequest(
+			"v1.24/containers/" + containerId + "/stop", null);
 		
-		
+		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
 	}
 	
+	/**
+	 * Tell docker to remove container.
+	 */
 	public void destroyContainer(String containerId) throws Exception {
 		
-		// Perform a docker 'rm'.
-		
-		//....
+		Response response = makeDeleteRequest("v1.24/containers/" + containerId);
+		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
 	}
 	
 	public DockerContainer[] getContainers() throws Exception {
 		
-		return null;
+		Response response = makeGetRequest("v1.24/containers/json?all=true");
+		
+		// Verify success and obtain container Id.
+		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		
+		// Parse response.
+		String responseBody = response.readEntity(String.class);
+		JsonReader reader = Json.createReader(new StringReader(responseBody));
+		JsonStructure json = reader.read();
+		
+		JsonArray jsonArray = (JsonArray)json;
+		DockerContainer[] containers = new DockerContainer[jsonArray.size()];
+		int i = 0;
+		for (JsonValue value : jsonArray) {
+			JsonStructure containerDesc = (JsonStructure)value;
+			String id = containerDesc.get("Id");
+			containers[i++] = new DockerContainer(this, id);
+		}
+		
+		return containers;
 	}
 	
 	protected Response makeGetRequest(String path) {
@@ -219,7 +272,18 @@ public class Docker {
 		return invocationBuilder.get();
 	}
 	
+	/**
+	 * body may be null.
+	 */
 	protected Response makePostRequest(String path, String body) {
+		
+		
+		if (body != null) ....
+		
+	}
+
+	protected Response makeDeleteRequest(String path) {
+		
 		
 	}
 }
