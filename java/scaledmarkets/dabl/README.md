@@ -188,14 +188,17 @@ If t is not downstream from a task that has not been visited yet,
 				</li>
 		</ol>
 		</li>
-	<li>Determine task dependency graph:
+	<li>Determine task dependency graph:<br>
 	For each Artifact,
-	Add a Producer and Consumer relation between each input task and each output task.
+	<ol>
+	<li>Add a Producer and Consumer relation between each input task and each output task.</li>
+	</ol>
 	</li>
-	<li>Identify root tasks:
+	<li>Identify root tasks:<br>
 	For each task,
-	If that has no producer, then
-	Add it to the set of root tasks.
+	<ol>
+	<li>If that has no producer, then add it to the set of root tasks.</li>
+	</ol>
 	</li>
 </ol>
 
