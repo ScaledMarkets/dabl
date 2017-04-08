@@ -160,7 +160,6 @@ public class Docker {
 				.add(Json.createObjectBuilder()
 					.add("HostPort", hostPortStr)));
 		
-		
 		JsonObject hostConfig = Json.createObjectBuilder()
 			.add("Binds", filesystemMap)
 			.add("PortBindings", hostPortBindings)

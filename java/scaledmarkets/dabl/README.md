@@ -7,6 +7,8 @@ TBD
 
 ## Compiler Top Level Structure
 
+![Figure 1: Main Program Top Level Structure](MainProgram.png "Figure 1: Main Program Top Level Structure")
+
 The <code>scaledmarkets.dabl.parser.Parser</code> class parses input and builds an
 Abstract Syntax Tree (AST). The language grammar and the AST structure are
 both defined in the DABL language grammar spec,
@@ -19,7 +21,7 @@ The `LanguageAnalyzer` extends a base class that builds an Abstract Syntax Tree 
 as defined by the `dabl.sablecc` grammar spec. This AST construction constitutes the
 Parse phase.
 
-![Figure 1: Compiler Top Level Structure](Compiler_Design_Fig1.png "Figure 1: Compiler Top Level Structure")
+![Figure 2: Compiler Top Level Structure](Compiler_Design_Fig1.png "Figure 1: Compiler Top Level Structure")
 
 ## Key Dynamic Structures
 
@@ -31,7 +33,7 @@ it when constructing a `LanguageAnalyzer`.
 The dynamic structures are shown in the following Figure. The `CompilerState`
 object is returned by the compiler.
 
-![Figure 2: Dynamic Structures](Compiler_Design_Fig2.png "Figure 2: Dynamic Structures")
+![Figure 3: Dynamic Structures](Compiler_Design_Fig2.png "Figure 2: Dynamic Structures")
 
 ## Language Analyzer
 
@@ -51,7 +53,7 @@ the AST, since for any `Node`, one can look up its `Annotation` (if any).
 The Analysis phase also produces a symbol table tree, with one table corresponding
 to each nested scope within the source input.
 
-![Figure 3: Language Analyzer Structure](Compiler_Design_Fig3.png "Figure 3: Language Analyzer Structure")
+![Figure 4: Language Analyzer Structure](Compiler_Design_Fig3.png "Figure 3: Language Analyzer Structure")
 
 ## AST Annotations
 
@@ -69,7 +71,7 @@ by `out`*Node-Type*() methods.
 
 The structure of annotations is shown in the figure.
 
-![Figure 4: AST Annotations](Compiler_Design_Fig4.png "Figure 4: AST Annotations")
+![Figure 5: AST Annotations](Compiler_Design_Fig4.png "Figure 4: AST Annotations")
 
 ## Symbol Table Structure
 
@@ -78,7 +80,7 @@ declarative region (within which symbols can be defined). `NameScopes` form a
 hierarchy. Each `NameScope` owns one `SymbolTable`, which contains the symbols
 that are declared by that declarative region. This is depicted in the figure.
 
-![Figure 5: Symbol Table Structure](Compiler_Design_Fig5.png "Figure 5: Symbol Table Structure")
+![Figure 6: Symbol Table Structure](Compiler_Design_Fig5.png "Figure 5: Symbol Table Structure")
 
 ## Compiler Output
 
@@ -105,3 +107,84 @@ The linkage between the AST and the `NameScope` hierarchy is as follows:
 `SymbolEntries` that are [`DeclaredEntries`](analysis/DeclaredEntry.java)
 provide a `getDefiningNode()` method, which provides a reference to
 the AST `Node` that declares the symbol that the `SymbolEntry` defines.
+
+## Dependency Graph
+
+A Dependency Graph is a non-persistent structure that is created by the Controller
+in order to decide which tasks to execute in response to an external event.
+
+The purpose of the dependency graph is to determine the order of task execution:
+task A must be executed before task B if task B is “downstream” from A - that is,
+if A produces outputs that eventually affect inputs to B. Also, if neither A or B
+are downstream from the other, then they exist in distinct dependency graphs.
+Distinct graphs can be executed in parallel.
+
+A dependency graph can be constructed by simply removing the artifacts from the
+graph of tasks and their input and output artifacts. The key algorithms are as follows.
+
+
+![Figure 7: Logical Dependency Graphs](LogicalDependencyGraph.png "Figure 6: Logical Dependency Graphs")
+
+<b>genDependencies()</b>
+<ol>
+<li>Create a graph of the artifact/task flow relationships.</li>
+<li>Determine the task dependency graph.</li>
+<li>Identify the root tasks - those not dependent on any other task.</li>
+</ol>
+
+<b>executeAll(set S of task dependency graphs)</b>
+For each root task tr,
+<ol>
+<li>executeTaskTree(tr)</li>
+</ol>
+
+<b>executeTaskTree(Task t)</b>
+<ol>
+If t is not downstream from a task that has not been visited yet,
+	<ol>
+    <li>If t’s ‘when’ condition is true, then execute(t).</li>
+    <li>For each task t_o that is immediately downstream of t,
+    	<ol>
+        <li>executeTaskTree(t_o)</li>
+        </ol>
+        </li>
+</ol>
+
+<b>genDependencies()</b>
+<ol>
+<li>Create a graph of the artifact/task flow relationships:
+<ol>
+<li>For each task,
+<ol>
+<li>Add a new Task to the set of tasks.</li>
+<li>For each of the task’s inputs,
+<ol>
+<li>If the input Artifact does not exist, then create a new Artifact.</li>
+<li>Add the task to the input Artifact’s list of “IsReadBy”.</li>
+<li>Add the input Artifact to the task’s list of inputs.</li>
+</ol>
+</li>
+<li>For each of the task’s outputs,
+<ol>
+<li>If the output Artifact does not exist, then create a new Artifact.</li>
+<li>Add the task to the output Artifact’s list of “IsWrittenBy”.</li>
+<li>Add the output Artifact to the task’s list of outputs.</li>
+</ol>
+</li>
+</li>
+</ol>
+</li>
+
+<li>Determine task dependency graph:
+For each Artifact,
+Add a Producer and Consumer relation between each input task and each output task.
+</li>
+
+<li>Identify root tasks:
+For each task,
+If that has no producer, then
+Add it to the set of root tasks.
+</li>
+</ol>
+
+![Figure 8: Actual Dependency Graphs](ActualGraph.png "Figure 7: Actual Dependency Graphs")
