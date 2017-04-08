@@ -3,6 +3,7 @@ package scaledmarkets.dabl.docker;
 import java.net.URI;
 import java.io.StringWriter;
 import java.io.StringReader;
+import java.util.regex.Pattern;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.client.*;
@@ -205,7 +206,7 @@ public class Docker {
 		String responseBody = response.readEntity(String.class);
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
 		JsonStructure json = reader.read();
-		String containerId = json.get("Id");
+		String containerId = ((JsonObject)json).get("Id");
 		
 		// Wrap the container Id in an object that we can return.
 		DockerContainer container = new DockerContainer(this, containerId);
@@ -251,7 +252,10 @@ public class Docker {
 	 */
 	public void destroyContainers(String namePattern, String label) throws Exception {
 		
-		....
+		DockerContainer[] containers = getContainers(namePattern, label);
+		for (DockerContainer container : containers) {
+			destroyContainer(container.getContainerId());
+		}
 	}
 	
 	public boolean containerIsRunning(String containerId) throws Exception {
@@ -266,7 +270,8 @@ public class Docker {
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
 		JsonStructure json = reader.read();
 		
-		JsonStructure state = json.get("State");
+		JsonStructure jsonStruct = json.get("State");
+		JsonObject state = (JsonObject)jsonStruct;
 		boolean running = state.get("Running");
 		return running;
 	}
@@ -282,9 +287,13 @@ public class Docker {
 		return true;
 	}
 	
-	public DockerContainer[] getContainers() throws Exception {
+	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
-		Response response = makeGetRequest("v1.24/containers/json?all=true");
+		String labelFilter = "";
+		if (label != null) labelFilter = "&filters={\"label\": [" + label + "]}";
+		
+		Response response = makeGetRequest(
+			"v1.24/containers/json?all=true" + labelFilter);
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
@@ -295,15 +304,32 @@ public class Docker {
 		JsonStructure json = reader.read();
 		
 		JsonArray jsonArray = (JsonArray)json;
-		DockerContainer[] containers = new DockerContainer[jsonArray.size()];
-		int i = 0;
+		List<DockerContainer> containers = new LinkedList<DockerContainer>();
 		for (JsonValue value : jsonArray) {
-			JsonStructure containerDesc = (JsonStructure)value;
-			String id = containerDesc.get("Id");
-			containers[i++] = new DockerContainer(this, id);
+			JsonObject containerDesc = (JsonObject)value;
+			
+			JsonStructure s = containerDesc.get("Names");
+			JsonArray names = (JsonArray)s;
+			
+			if (namePattern != null) {
+				for (String name : names) {
+					if (Pattern.matches(namePattern, name)) {
+						String id = containerDesc.get("Id");
+						containers.add(new DockerContainer(this, id));
+						break;
+					}
+				}
+			} else {
+				String id = containerDesc.get("Id");
+				containers.add(new DockerContainer(this, id));
+			}
 		}
 		
-		return containers;
+		return containers.toArray(new DockerContainer[containers.size()]);
+	}
+	
+	public DockerContainer[] getContainers() throws Exception {
+		return getContainers(null, null);
 	}
 	
 	protected Response makeGetRequest(String path) {
