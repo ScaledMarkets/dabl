@@ -172,39 +172,40 @@ If t is not downstream from a task that has not been visited yet,
 
 <b>genDependencies()</b>
 <ol>
-<li>Create a graph of the artifact/task flow relationships:
-<ol>
-<li>For each task,
-<ol>
-<li>Add a new Task to the set of tasks.</li>
-<li>For each of the task’s inputs,
-<ol>
-<li>If the input Artifact does not exist, then create a new Artifact.</li>
-<li>Add the task to the input Artifact’s list of “IsReadBy”.</li>
-<li>Add the input Artifact to the task’s list of inputs.</li>
-</ol>
-</li>
-<li>For each of the task’s outputs,
-<ol>
-<li>If the output Artifact does not exist, then create a new Artifact.</li>
-<li>Add the task to the output Artifact’s list of “IsWrittenBy”.</li>
-<li>Add the output Artifact to the task’s list of outputs.</li>
-</ol>
-</li>
-</li>
-</ol>
-</li>
-
-<li>Determine task dependency graph:
-For each Artifact,
-Add a Producer and Consumer relation between each input task and each output task.
-</li>
-</ol>
-<li>Identify root tasks:
-For each task,
-If that has no producer, then
-Add it to the set of root tasks.
-</li>
+	<li>Create a graph of the artifact/task flow relationships:
+	<ol>
+		<li>For each task,
+		<ol>
+			<li>Add a new Task to the set of tasks.</li>
+			<li>For each of the task’s inputs,
+			<ol>
+				<li>If the input Artifact does not exist, then create a new Artifact.</li>
+				<li>Add the task to the input Artifact’s list of “IsReadBy”.</li>
+				<li>Add the input Artifact to the task’s list of inputs.</li>
+			</ol>
+			</li>
+			<li>For each of the task’s outputs,
+			<ol>
+				<li>If the output Artifact does not exist, then create a new Artifact.</li>
+				<li>Add the task to the output Artifact’s list of “IsWrittenBy”.</li>
+				<li>Add the output Artifact to the task’s list of outputs.</li>
+			</ol>
+			</li>
+			</li>
+		</ol>
+		</li>
+	</ol>
+	
+	<li>Determine task dependency graph:
+	For each Artifact,
+	Add a Producer and Consumer relation between each input task and each output task.
+	</li>
+	
+	<li>Identify root tasks:
+	For each task,
+	If that has no producer, then
+	Add it to the set of root tasks.
+	</li>
 </ol>
 
 ![Figure 8: Actual Dependency Graphs](ActualGraph.png "Figure 7: Actual Dependency Graphs")
