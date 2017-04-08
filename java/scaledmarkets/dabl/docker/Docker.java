@@ -74,8 +74,7 @@ public class Docker {
 		
 		ClientConfig clientConfig = new ClientConfig();
 		clientConfig.connectorProvider(new ApacheConnectorProvider());
-		clientConfig.property(CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE,
-				true);
+		clientConfig.property(CommonProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true);
 
 		PoolingHttpClientConnectionManager connManager =
 			new PoolingHttpClientConnectionManager(socketFactoryRegistry);
@@ -245,14 +244,42 @@ public class Docker {
 		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
 	}
 	
-	public boolean containerIsRunning(String containerId) throws Exception {
+	/**
+	 * Remove all of the containers that match either the specified regular
+	 * expression for the container name, or match (exactly) the specified
+	 * label, or both.
+	 */
+	public void destroyContainers(String namePattern, String label) throws Exception {
 		
 		....
 	}
 	
+	public boolean containerIsRunning(String containerId) throws Exception {
+		
+		Response response = makeGetRequest(
+			"v1.24/containers/" + containerId + "/json", null);
+		
+		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		
+		// Parse response.
+		String responseBody = response.readEntity(String.class);
+		JsonReader reader = Json.createReader(new StringReader(responseBody));
+		JsonStructure json = reader.read();
+		
+		JsonStructure state = json.get("State");
+		boolean running = state.get("Running");
+		return running;
+	}
+	
 	public boolean containerExists(String containerId) throws Exception {
 		
-		....
+		Response response = makeGetRequest(
+			"v1.24/containers/" + containerId + "/json", null);
+		
+		if (response.getStatus() >= 500) throw new Exception(response.getMessage());
+		if (response.getStatus() >= 400) return false;
+		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		return true;
 	}
 	
 	public DockerContainer[] getContainers() throws Exception {
@@ -279,16 +306,6 @@ public class Docker {
 		return containers;
 	}
 	
-	/**
-	 * Remove all of the containers that match either the specified regular
-	 * expression for the container name, or match (exactly) the specified
-	 * label, or both.
-	 */
-	public void destroyContainers(String namePattern, String label) throws Exception {
-		
-		....
-	}
-	
 	protected Response makeGetRequest(String path) {
 		
 		WebTarget target = this.endpoint.path(path);
@@ -311,6 +328,6 @@ public class Docker {
 
 	protected Response makeDeleteRequest(String path) {
 		
-		
+		....
 	}
 }

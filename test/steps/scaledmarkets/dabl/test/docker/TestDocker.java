@@ -18,10 +18,10 @@ import java.util.LinkedList;
 
 public class TestDocker extends TestBase {
 	
-	Docker docker;
-	DockerContainer container1;
-	DockerContainer container2;
-	DockerContainer[] containers;
+	private Docker docker;
+	private DockerContainer container1;
+	private DockerContainer container2;
+	private DockerContainer[] containers;
 	
 	@Background
 	public void init_docker_tests() throws Exception {
