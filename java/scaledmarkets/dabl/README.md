@@ -142,32 +142,26 @@ Distinct graphs can be executed in parallel.
 A dependency graph can be constructed by simply removing the artifacts from the
 graph of tasks and their input and output artifacts. The key algorithms are as follows.
 
-<b>genDependencies()</b>
+<b>genDependencies()</b><br>
 <ol>
-<li>Create a graph of the artifact/task flow relationships.</li>
-<li>Determine the task dependency graph.</li>
-<li>Identify the root tasks - those not dependent on any other task.</li>
+	<li>Create a graph of the artifact/task flow relationships.</li>
+	<li>Determine the task dependency graph.</li>
+	<li>Identify the root tasks - those not dependent on any other task.</li>
 </ol>
 
-<b>executeAll(set S of task dependency graphs)</b>
+<b>executeAll(set S of task dependency graphs)</b><br>
+For each root task tr,
 <ol>
-<li>For each root task tr,
-<ol>
-<li>executeTaskTree(tr)</li>
-</ol>
-</li>
+	<li>executeTaskTree(tr)</li>
 </ol>
 
-<b>executeTaskTree(Task t)</b>
+<b>executeTaskTree(Task t)</b><br>
+If t is not downstream from a task that has not been visited yet,
 <ol>
-	<li>If t is not downstream from a task that has not been visited yet,
+	<li>If t’s ‘when’ condition is true, then execute(t).</li>
+	<li>For each task t_o that is immediately downstream of t,
 		<ol>
-			<li>If t’s ‘when’ condition is true, then execute(t).</li>
-			<li>For each task t_o that is immediately downstream of t,
-				<ol>
-					<li>executeTaskTree(t_o)</li>
-				</ol>
-				</li>
+			<li>executeTaskTree(t_o)</li>
 		</ol>
 		</li>
 </ol>
