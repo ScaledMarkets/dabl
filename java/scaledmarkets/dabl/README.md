@@ -166,7 +166,7 @@ If t is not downstream from a task that has not been visited yet,
 		</li>
 </ol>
 
-<b>genDependencies()</b>
+<b>genDependencies()</b> (in detail):
 <ol>
 	<li>Create a graph of the artifact/task flow relationships:<br>
 		For each task,
@@ -188,7 +188,6 @@ If t is not downstream from a task that has not been visited yet,
 				</li>
 		</ol>
 		</li>
-	
 	<li>Determine task dependency graph:
 	For each Artifact,
 	Add a Producer and Consumer relation between each input task and each output task.
