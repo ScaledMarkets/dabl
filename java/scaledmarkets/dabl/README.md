@@ -192,7 +192,6 @@ If t is not downstream from a task that has not been visited yet,
 	For each Artifact,
 	Add a Producer and Consumer relation between each input task and each output task.
 	</li>
-	
 	<li>Identify root tasks:
 	For each task,
 	If that has no producer, then
