@@ -206,3 +206,7 @@ If t is not downstream from a task that has not been visited yet,
 The actual dependency graph structures that are created are illustrated below.
 
 ![Figure 8: Actual Dependency Graphs](ActualGraph.png "Figure 7: Actual Dependency Graphs")
+
+## Docker Daemon Interface
+
+TBD
