@@ -191,7 +191,6 @@ If t is not downstream from a task that has not been visited yet,
 				<li>Add the output Artifact to the task’s list of outputs.</li>
 			</ol>
 			</li>
-			</li>
 		</ol>
 		</li>
 	</ol>
