@@ -5,7 +5,7 @@
 TBD
 
 
-## Compiler Top Level Structure
+## Main Program Top Level Structure
 
 ![Figure 1: Main Program Top Level Structure](MainProgram.png "Figure 1: Main Program Top Level Structure")
 
