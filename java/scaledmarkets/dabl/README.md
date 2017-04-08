@@ -160,14 +160,16 @@ graph of tasks and their input and output artifacts. The key algorithms are as f
 
 <b>executeTaskTree(Task t)</b>
 <ol>
-If t is not downstream from a task that has not been visited yet,
+	<li>If t is not downstream from a task that has not been visited yet,
 	<ol>
-    <li>If t’s ‘when’ condition is true, then execute(t).</li>
-    <li>For each task t_o that is immediately downstream of t,
-    	<ol>
-        <li>executeTaskTree(t_o)</li>
-        </ol>
-        </li>
+		<li>If t’s ‘when’ condition is true, then execute(t).</li>
+		<li>For each task t_o that is immediately downstream of t,
+		<ol>
+			<li>executeTaskTree(t_o)</li>
+		</ol>
+		</li>
+	</ol>
+	</li>
 </ol>
 
 <b>genDependencies()</b>
