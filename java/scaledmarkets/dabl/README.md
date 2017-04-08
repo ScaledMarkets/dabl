@@ -7,6 +7,19 @@ TBD
 
 ## Main Program Top Level Structure
 
+The DABL compiler consists of two main parts: an Analyzer and an Executor. The
+Analyzer parses the input, builds an abstract syntax tree (AST) according to the
+AST model defined in the language grammar, and then annotates the AST in order
+to perform name resolution and link things up as well as check against language
+semantic rules. The Executor acts on the resulting annotated and validated AST.
+
+The Analyzer is embodied by the Dabl module. If embedding the compiler, one can
+provide one's own Executor. The default Executor that is provided,
+`DefaultExecutor`, implements the actions defined by DABL: that is, it performs
+dependency analysis on the tasks based on their `when` expressions and inputs and
+outputs, and then executes the tasks in the proper sequence by creating a docker
+container for each task.
+
 ![Figure 1: Main Program Top Level Structure](MainProgram.png "Figure 1: Main Program Top Level Structure")
 
 The <code>scaledmarkets.dabl.parser.Parser</code> class parses input and builds an
