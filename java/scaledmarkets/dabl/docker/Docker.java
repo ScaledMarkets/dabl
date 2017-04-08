@@ -136,16 +136,23 @@ public class Docker {
 	public DockerContainer createContainer(String imageIdOrName, String containerName,
 		String[] hostPathsToMap, String[] containerPathsToMap) throws Exception {
 		
-		assertThat(hostPathsToMap.length == containerPathsToMap.length,
-			"Number of host filesystem paths must equal number of container filesystem paths");
+		if ((hostPathsToMap == null) || (containerPathsToMap == null))
+			assertThat(hostPathsToMap == containerPathsToMap,
+				"Only one of host path and container path arguments is null");
 		
 		JsonObject ports = Json.createObjectBuilder()
 			.add(portStr + "/tcp", Json.createObjectBuilder());
 		
 		filesystemMap = Json.createArrayBuilder();
-		int i = 0;
-		for (String hostPath : hostPathsToMap) {
-			filesystemMap.add(hostPath + ":" + containerPathsToMap[i++]);
+		
+		if (hostPathsToMap != null) {
+			assertThat(hostPathsToMap.length == containerPathsToMap.length,
+				"Number of host filesystem paths must equal number of container filesystem paths");
+		
+			int i = 0;
+			for (String hostPath : hostPathsToMap) {
+				filesystemMap.add(hostPath + ":" + containerPathsToMap[i++]);
+			}
 		}
 		
 		JsonObject hostPortBindings = Json.createObjectBuilder()
@@ -238,6 +245,16 @@ public class Docker {
 		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
 	}
 	
+	public boolean containerIsRunning(String containerId) throws Exception {
+		
+		....
+	}
+	
+	public boolean containerExists(String containerId) throws Exception {
+		
+		....
+	}
+	
 	public DockerContainer[] getContainers() throws Exception {
 		
 		Response response = makeGetRequest("v1.24/containers/json?all=true");
@@ -260,6 +277,16 @@ public class Docker {
 		}
 		
 		return containers;
+	}
+	
+	/**
+	 * Remove all of the containers that match either the specified regular
+	 * expression for the container name, or match (exactly) the specified
+	 * label, or both.
+	 */
+	public void destroyContainers(String namePattern, String label) throws Exception {
+		
+		....
 	}
 	
 	protected Response makeGetRequest(String path) {
