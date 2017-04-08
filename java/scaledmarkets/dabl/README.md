@@ -174,28 +174,24 @@ graph of tasks and their input and output artifacts. The key algorithms are as f
 
 <b>genDependencies()</b>
 <ol>
-	<li>Create a graph of the artifact/task flow relationships:
+	<li>Create a graph of the artifact/task flow relationships:<br>
+		For each task,
 		<ol>
-			<li>For each task,
+			<li>Add a new Task to the set of tasks.</li>
+			<li>For each of the task’s inputs,
 				<ol>
-					<li>Add a new Task to the set of tasks.</li>
-					<li>For each of the task’s inputs,
-						<ol>
-							<li>If the input Artifact does not exist, then create a new Artifact.</li>
-							<li>Add the task to the input Artifact’s list of “IsReadBy”.</li>
-							<li>Add the input Artifact to the task’s list of inputs.</li>
-						</ol>
-						</li>
-					<li>For each of the task’s outputs,
-						<ol>
-							<li>If the output Artifact does not exist, then create a new Artifact.</li>
-							<li>Add the task to the output Artifact’s list of “IsWrittenBy”.</li>
-							<li>Add the output Artifact to the task’s list of outputs.</li>
-						</ol>
-						</li>
+					<li>If the input Artifact does not exist, then create a new Artifact.</li>
+					<li>Add the task to the input Artifact’s list of “IsReadBy”.</li>
+					<li>Add the input Artifact to the task’s list of inputs.</li>
 				</ol>
 				</li>
-				
+			<li>For each of the task’s outputs,
+				<ol>
+					<li>If the output Artifact does not exist, then create a new Artifact.</li>
+					<li>Add the task to the output Artifact’s list of “IsWrittenBy”.</li>
+					<li>Add the output Artifact to the task’s list of outputs.</li>
+				</ol>
+				</li>
 		</ol>
 		</li>
 	
