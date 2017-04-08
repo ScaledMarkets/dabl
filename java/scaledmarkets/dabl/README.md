@@ -161,42 +161,43 @@ graph of tasks and their input and output artifacts. The key algorithms are as f
 <b>executeTaskTree(Task t)</b>
 <ol>
 	<li>If t is not downstream from a task that has not been visited yet,
-	<ol>
-		<li>If t’s ‘when’ condition is true, then execute(t).</li>
-		<li>For each task t_o that is immediately downstream of t,
 		<ol>
-			<li>executeTaskTree(t_o)</li>
+			<li>If t’s ‘when’ condition is true, then execute(t).</li>
+			<li>For each task t_o that is immediately downstream of t,
+				<ol>
+					<li>executeTaskTree(t_o)</li>
+				</ol>
+				</li>
 		</ol>
 		</li>
-	</ol>
-	</li>
 </ol>
 
 <b>genDependencies()</b>
 <ol>
 	<li>Create a graph of the artifact/task flow relationships:
-	<ol>
-		<li>For each task,
 		<ol>
-			<li>Add a new Task to the set of tasks.</li>
-			<li>For each of the task’s inputs,
-			<ol>
-				<li>If the input Artifact does not exist, then create a new Artifact.</li>
-				<li>Add the task to the input Artifact’s list of “IsReadBy”.</li>
-				<li>Add the input Artifact to the task’s list of inputs.</li>
-			</ol>
-			</li>
-			<li>For each of the task’s outputs,
-			<ol>
-				<li>If the output Artifact does not exist, then create a new Artifact.</li>
-				<li>Add the task to the output Artifact’s list of “IsWrittenBy”.</li>
-				<li>Add the output Artifact to the task’s list of outputs.</li>
-			</ol>
-			</li>
+			<li>For each task,
+				<ol>
+					<li>Add a new Task to the set of tasks.</li>
+					<li>For each of the task’s inputs,
+						<ol>
+							<li>If the input Artifact does not exist, then create a new Artifact.</li>
+							<li>Add the task to the input Artifact’s list of “IsReadBy”.</li>
+							<li>Add the input Artifact to the task’s list of inputs.</li>
+						</ol>
+						</li>
+					<li>For each of the task’s outputs,
+						<ol>
+							<li>If the output Artifact does not exist, then create a new Artifact.</li>
+							<li>Add the task to the output Artifact’s list of “IsWrittenBy”.</li>
+							<li>Add the output Artifact to the task’s list of outputs.</li>
+						</ol>
+						</li>
+				</ol>
+				</li>
+				
 		</ol>
 		</li>
-	</ol>
-	</li>
 	
 	<li>Determine task dependency graph:
 	For each Artifact,
