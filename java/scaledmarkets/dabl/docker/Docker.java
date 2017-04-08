@@ -346,13 +346,27 @@ public class Docker {
 	 */
 	protected Response makePostRequest(String path, String body) {
 		
+		WebTarget target = this.endpoint.path(path);
 		
-		if (body != null) ....
+		Invocation.Builder invocationBuilder =
+			target.request(MediaType.TEXT_PLAIN_TYPE);
 		
+		if (body == null) {
+			return invocationBuilder.post();
+		} else {
+			Entity<String> entity = Entity.json(body);
+			Invocation invocation = invocationBuilder.buildPost(entity);
+			return invocation.invoke();
+		}
 	}
 
 	protected Response makeDeleteRequest(String path) {
 		
-		....
+		WebTarget target = this.endpoint.path(path);
+		
+		Invocation.Builder invocationBuilder =
+			target.request(MediaType.TEXT_PLAIN_TYPE);
+		
+		return invocationBuilder.delete();
 	}
 }
