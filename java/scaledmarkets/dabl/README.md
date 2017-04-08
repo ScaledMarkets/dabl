@@ -194,6 +194,7 @@ If t is not downstream from a task that has not been visited yet,
 		</ol>
 		</li>
 	</ol>
+	</li>
 	
 	<li>Determine task dependency graph:
 	For each Artifact,
