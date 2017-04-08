@@ -135,7 +135,8 @@ The purpose of the dependency graph is to determine the order of task execution:
 task A must be executed before task B if task B is “downstream” from A - that is,
 if A produces outputs that eventually affect inputs to B. Also, if neither A or B
 are downstream from the other, then they exist in distinct dependency graphs.
-Distinct graphs can be executed in parallel.
+Distinct graphs can be executed in parallel. Logical dependencies are illustrated
+in the figures below.
 
 ![Figure 7: Logical Dependency Graphs](LogicalDependencyGraph.png "Figure 6: Logical Dependency Graphs")
 
@@ -201,5 +202,7 @@ If t is not downstream from a task that has not been visited yet,
 	</ol>
 	</li>
 </ol>
+
+The actual dependency graph structures that are created are illustrated below.
 
 ![Figure 8: Actual Dependency Graphs](ActualGraph.png "Figure 7: Actual Dependency Graphs")
