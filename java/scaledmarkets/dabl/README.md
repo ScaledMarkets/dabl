@@ -150,9 +150,12 @@ graph of tasks and their input and output artifacts. The key algorithms are as f
 </ol>
 
 <b>executeAll(set S of task dependency graphs)</b>
-For each root task tr,
+<ol>
+<li>For each root task tr,
 <ol>
 <li>executeTaskTree(tr)</li>
+</ol>
+</li>
 </ol>
 
 <b>executeTaskTree(Task t)</b>
