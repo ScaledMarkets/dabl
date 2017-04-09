@@ -129,7 +129,7 @@ the AST `Node` that declares the symbol that the `SymbolEntry` defines.
 ## Dependency Graph
 
 The [`DefaultExecutor`](exec/DefaultExecutor.java) creates a dependency graph,
-by calling the 
+by calling 
 [`DependencyGraph`](exec/DependencyGraph.java)'s `genDependencySet` method.
 The dependency graph is a non-persistent structure that is created
 in order to decide which tasks to execute in response to an external event.
@@ -180,14 +180,14 @@ If t is not downstream from a task that has not been visited yet,
 			<li>Add a new Task to the set of tasks.</li>
 			<li>For each of the task’s inputs,
 				<ol>
-					<li>If the input Artifact does not exist, then create a new Artifact.</li>
+					<li>If the input Artifact does not exist in the graph, then create a new Artifact.</li>
 					<li>Add the task to the input Artifact’s list of “IsReadBy”.</li>
 					<li>Add the input Artifact to the task’s list of inputs.</li>
 				</ol>
 				</li>
 			<li>For each of the task’s outputs,
 				<ol>
-					<li>If the output Artifact does not exist, then create a new Artifact.</li>
+					<li>If the output Artifact does not exist in the graph, then create a new Artifact.</li>
 					<li>Add the task to the output Artifact’s list of “IsWrittenBy”.</li>
 					<li>Add the output Artifact to the task’s list of outputs.</li>
 				</ol>
