@@ -38,7 +38,7 @@ For robust infrastructure code, a better model than current practice is needed, 
 * **True language**: The build language is defined as a **true language**, with a normative language definition and
 	well specified syntax and semantics (see [Language Reference](langref)),
 	thereby avoiding ambiguity in the language itself.
-	Ambiguity is the enemy of reliability.
+	*Ambiguity is the enemy of reliability*.
 * **Strongly typed**: The build language is **strongly typed**, in order to promote maintainability and reliability.
 * **Composable**: The build language uses **information hiding**, **encapsulation**, and true **modularity** 
 	in order to promote reuse, *extensibility, composability, and idempotency*.
