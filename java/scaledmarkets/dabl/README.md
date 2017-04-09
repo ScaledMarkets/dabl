@@ -215,9 +215,9 @@ The actual dependency graph structures that are created are illustrated below.
 ## Docker Daemon Interface
 
 Docker is used to create a distinct and therefore isolated container for each task.
-The only inputs that can reach a task's container are those that are specified
+The only inputs from the host system that can reach a task's container are those that are specified
 in the task's input set, and similarly the only outputs that can leave the container
-are those specified in the task's output set. This makes is possible to control
+and remain on the host system are those specified in the task's output set. This makes is possible to control
 the side effects that a task has on the build environment.
 
 Docker runs as a daemon on its host system. The normal configuration is that the
