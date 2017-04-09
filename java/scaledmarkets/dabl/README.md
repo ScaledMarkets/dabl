@@ -226,7 +226,8 @@ libraries for accessing unix sockets, so native code is necessary. We slightly
 adapted the code from the [junixsocket](https://github.com/kohlschutter/junixsocket)
 project. (The only modifications were to the static code in the `NativeUnixSocket`
 class, to use standard JNI library loading instead of `NarSystem` used by
-`junixsocket`.) We then create a [`Jersey`](https://jersey.java.net) compatible
+`junixsocket`, and to replace the use of maven with make.)
+We then create a [`Jersey`](https://jersey.java.net) compatible
 socket factory, and use `Jersey` to connect to the docker daemon socket via HTTP/REST.
 
 Note that an alternative would have been to use the Docker Java API library that
