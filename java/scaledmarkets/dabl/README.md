@@ -128,7 +128,7 @@ the AST `Node` that declares the symbol that the `SymbolEntry` defines.
 
 ## Dependency Graph
 
-The [`DefaultExecutor`](exec/DefaultExecutor.java] creates a dependency graph, by calling
+The [`DefaultExecutor`](exec/DefaultExecutor.java) creates a dependency graph, by calling
 [`DependencyGraph.genDependencySet`](exec/DependencyGraph.java).
 The dependency graph is a non-persistent structure that is created
 in order to decide which tasks to execute in response to an external event.
