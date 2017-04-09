@@ -35,22 +35,22 @@ purpose language as many so-called "domain-specific languages" are.
 
 For robust infrastructure code, a better model than current practice is needed, whereby,
 
-* The build language is defined as a **true language**, with a normative language definition and
+* **True language**: The build language is defined as a **true language**, with a normative language definition and
 	well specified syntax and semantics (see [Language Reference](langref)),
 	thereby avoiding ambiguity in the language itself.
 	Ambiguity is the enemy of reliability.
-* The build language is **strongly typed**, in order to promote maintainability and reliability.
+* **Strongly typed**: The build language is **strongly typed**, in order to promote maintainability and reliability.
 * The build language uses **information hiding**, **encapsulation**, and true **modularity** 
 	in order to promote reuse, *extensibility, composability, and idempotency*.
-* In particular, the build language defines **isolation for tasks**, with **clearly defined inputs
+* **Provides isolation**: The build language defines **isolation for tasks**, with **clearly defined inputs
 	and outputs** and **no side effects**.
-* The build language is **concise but not cryptic**, and encourages the definition of
+* **Unambiguous**: The build language is **concise but not cryptic**, and encourages the definition of
 	**builds that are easy to read and understand**, and that are **unambiguous**.
 	Again, *ambiguity is the enemy of reliability*.
-* The build language **lends itself well to static analysis**, for—say—security analysis.
+* **Static analysis**: The build language **lends itself well to static analysis**, for—say—security analysis.
 	(For that to be possible, it is essential that the language is *not merely an
 	extension of a general purpose language*.)
-* The maintainers of the build language have a high regard for **backward
+* **Backward compatible**: The maintainers of the build language have a high regard for **backward
 	compatibility**, so that language changes do not contribute to the instability
 	of build systems. We (Scaled Markets) plan to use a deprecation approach when
 	breaking changes are necessary, which we hope will be extremely infrequent; in
