@@ -128,8 +128,12 @@ the AST `Node` that declares the symbol that the `SymbolEntry` defines.
 
 ## Dependency Graph
 
-A Dependency Graph is a non-persistent structure that is created
+The [`DefaultExecutor`](exec/DefaultExecutor.java] creates a dependency graph, by calling
+[`DependencyGraph.genDependencySet`](exec/DependencyGraph.java).
+The dependency graph is a non-persistent structure that is created
 in order to decide which tasks to execute in response to an external event.
+Once the dependency graph has been created, the `DefaultExecutor` executes it by
+calling the `executeAll` method, supplying the dependency graph as a parameter.
 
 The purpose of the dependency graph is to determine the order of task execution:
 task A must be executed before task B if task B is “downstream” from A - that is,
