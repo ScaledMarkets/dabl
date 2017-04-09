@@ -214,4 +214,28 @@ The actual dependency graph structures that are created are illustrated below.
 
 ## Docker Daemon Interface
 
-TBD
+Docker is used to create a distinct and therefore isolated container for each task.
+The only inputs that can reach a task's container are those that are specified
+in the task's input set, and similarly the only outputs that can leave the container
+are those specified in the task's output set. This makes is possible to control
+the side effects that a task has on the build environment.
+
+Docker runs as a daemon on its host system. The normal configuration is that the
+daemon listens on a unix socket, unix:///var/run/docker.sock. There are no Java
+libraries for accessing unix sockets, so native code is necessary. We slightly
+adapted the code from the [junixsocket](https://github.com/kohlschutter/junixsocket)
+project. (The only modifications were to the static code in the `NativeUnixSocket`
+class, to use standard JNI library loading instead of `NarSystem` used by
+`junixsocket`.) We then create a [`Jersey`](https://jersey.java.net) compatible
+socket factory, and use `Jersey` to connect to the docker daemon socket via HTTP/REST.
+
+Note that an alternative would have been to use the Docker Java API library that
+has been developed by Docker, but we found that it is - at this time - completely
+undocumented, and examination of the test suite left many questions unanswered.
+We found it easier to access the Docker REST API directly, which is fully
+documented [here](https://docs.docker.com/engine/api/v1.27/). Hopefully future
+versions of the API will not break our interface - Docker is not known for
+maintaining backward compatibility.
+
+The result is a package `scaledmarkets.dabl.docker` which does exactly what we
+need for this project.
