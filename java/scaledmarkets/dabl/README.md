@@ -221,7 +221,7 @@ and remain on the host system are those specified in the task's output set. This
 the side effects that a task has on the build environment.
 
 Docker runs as a daemon on its host system. The normal configuration is that the
-daemon listens on a unix socket, unix:///var/run/docker.sock. There are no Java
+daemon listens on a unix socket, `unix:///var/run/docker.sock`. There are no Java
 libraries for accessing unix sockets, so native code is necessary. We slightly
 adapted the code from the [junixsocket](https://github.com/kohlschutter/junixsocket)
 project. (The only modifications were to the static code in the `NativeUnixSocket`
