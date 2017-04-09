@@ -3,6 +3,8 @@ package scaledmarkets.dabl.docker;
 import java.net.URI;
 import java.io.StringWriter;
 import java.io.StringReader;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.regex.Pattern;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response;
@@ -10,6 +12,8 @@ import javax.ws.rs.client.*;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonWriter;
 import javax.json.JsonReader;
 import javax.json.JsonStructure;
@@ -123,30 +127,31 @@ public class Docker {
 	 */
 	public String ping() throws Exception {
 		
-		Response response = makeRequest("_ping");
+		Response response = makeGetRequest("_ping");
 		
-		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
-		return response.getMessage();
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
+		return response.getStatusInfo().getReasonPhrase();
 	}
 	
 	/**
 	 * 
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
-	public DockerContainer createContainer(String imageIdOrName, String containerName,
+	public DockerContainer createContainer(String imageId, String containerName,
 		String[] hostPathsToMap, String[] containerPathsToMap) throws Exception {
 		
 		if ((hostPathsToMap == null) || (containerPathsToMap == null))
-			assertThat(hostPathsToMap == containerPathsToMap,
+			if (hostPathsToMap != containerPathsToMap) throw new Exception(
 				"Only one of host path and container path arguments is null");
 		
-		JsonObject ports = Json.createObjectBuilder()
+		JsonObjectBuilder ports = Json.createObjectBuilder()
 			.add(portStr + "/tcp", Json.createObjectBuilder());
 		
-		filesystemMap = Json.createArrayBuilder();
+		JsonArrayBuilder filesystemMap = Json.createArrayBuilder();
 		
 		if (hostPathsToMap != null) {
-			assertThat(hostPathsToMap.length == containerPathsToMap.length,
+			if (hostPathsToMap.length != containerPathsToMap.length) throw new Exception(
 				"Number of host filesystem paths must equal number of container filesystem paths");
 		
 			int i = 0;
@@ -155,17 +160,17 @@ public class Docker {
 			}
 		}
 		
-		JsonObject hostPortBindings = Json.createObjectBuilder()
+		JsonObjectBuilder hostPortBindings = Json.createObjectBuilder()
 			.add(portStr + "/tcp", Json.createArrayBuilder()
 				.add(Json.createObjectBuilder()
 					.add("HostPort", hostPortStr)));
 		
-		JsonObject hostConfig = Json.createObjectBuilder()
+		JsonObjectBuilder hostConfig = Json.createObjectBuilder()
 			.add("Binds", filesystemMap)
 			.add("PortBindings", hostPortBindings)
 			.add("NetworkMode", "bridge");
 		
-		JsonObject netConfig = Json.createObjectBuilder();
+		JsonObjectBuilder netConfig = Json.createObjectBuilder();
 	
 		JsonObject model = Json.createObjectBuilder()
 			.add("AttachStdin", false)
@@ -177,9 +182,9 @@ public class Docker {
 			.add("Env", Json.createArrayBuilder())
 			.add("Cmd", Json.createArrayBuilder())
 			.add("Entrypoint", "")
-			.add("Image", imageIdOrName)
+			.add("Image", imageId)
 			.add("Labels", Json.createObjectBuilder())
-			.add("Volumes", Json.createObjectBuilder()
+			.add("Volumes", Json.createObjectBuilder())
 			.add("NetworkDisabled", false)
 			.add("ExposedPorts", ports)
 			.add("StopSignal", "SIGTERM")
@@ -199,13 +204,14 @@ public class Docker {
 			jsonPayload);
 		
 		// Verify success and obtain container Id.
-		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
 		
 		// Parse response and obtain the Id of the new container.
 		String responseBody = response.readEntity(String.class);
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
 		JsonStructure json = reader.read();
-		String containerId = ((JsonObject)json).get("Id");
+		String containerId = ((JsonObject)json).getString("Id");
 		
 		// Wrap the container Id in an object that we can return.
 		DockerContainer container = new DockerContainer(this, containerId);
@@ -221,7 +227,8 @@ public class Docker {
 		Response response = makePostRequest(
 			"v1.24/containers/" + containerId + "/start", null);
 		
-		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
 	}
 	
 	/**
@@ -232,7 +239,8 @@ public class Docker {
 		Response response = makePostRequest(
 			"v1.24/containers/" + containerId + "/stop", null);
 		
-		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
 	}
 	
 	/**
@@ -241,7 +249,8 @@ public class Docker {
 	public void destroyContainer(String containerId) throws Exception {
 		
 		Response response = makeDeleteRequest("v1.24/containers/" + containerId);
-		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
 	}
 	
 	/**
@@ -260,29 +269,33 @@ public class Docker {
 	public boolean containerIsRunning(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.24/containers/" + containerId + "/json", null);
+			"v1.24/containers/" + containerId + "/json");
 		
-		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
 		
 		// Parse response.
 		String responseBody = response.readEntity(String.class);
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
-		JsonStructure json = reader.read();
+		JsonObject json = (JsonObject)(reader.read());
 		
-		JsonStructure jsonStruct = json.get("State");
-		JsonObject state = (JsonObject)jsonStruct;
-		boolean running = state.get("Running");
+		JsonObject state = json.getJsonObject("State");
+		boolean running = state.getBoolean("Running");
 		return running;
 	}
 	
 	public boolean containerExists(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.24/containers/" + containerId + "/json", null);
+			"v1.24/containers/" + containerId + "/json");
 		
-		if (response.getStatus() >= 500) throw new Exception(response.getMessage());
+		if (response.getStatus() >= 500) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
+		
 		if (response.getStatus() >= 400) return false;
-		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
 		return true;
 	}
 	
@@ -295,7 +308,8 @@ public class Docker {
 			"v1.24/containers/json?all=true" + labelFilter);
 		
 		// Verify success and obtain container Id.
-		if (response.getStatus() >= 300) throw new Exception(response.getMessage());
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
 		
 		// Parse response.
 		String responseBody = response.readEntity(String.class);
@@ -307,11 +321,10 @@ public class Docker {
 		for (JsonValue value : jsonArray) {
 			JsonObject containerDesc = (JsonObject)value;
 			
-			JsonStructure s = containerDesc.get("Names");
-			JsonArray names = (JsonArray)s;
-			
+			JsonArray names = containerDesc.getJsonArray("Names");
 			if (namePattern != null) {
-				for (String name : names) {
+				for (JsonValue v : names) {
+					String name = ((JsonString)v).getString();
 					if (Pattern.matches(namePattern, name)) {
 						String id = containerDesc.get("Id");
 						containers.add(new DockerContainer(this, id));
