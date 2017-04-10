@@ -24,19 +24,19 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	public TaskContainer createTaskContainer(Task task, List<File> inputs,
 		List<File> outputs) throws Exception {
 		
-		// Copy the inputs to a temp directory.
+		// Create a new private temp directory.
 		....
 		
-		// Map the input and output locations to a temp dir such that the container
+		
+		// Map the input and output locations to the temp dir such that the container
 		// sees the temp directory contents as existing in their orignal host locations.
 		....
 		
 	
-	
 		// Create a container for performing a task. (Do not start the container.)
 		DockerContainer dockerContainer = this.docker.createContainer(
 			this.dockerImageName, task.getName(),
-			hostPathsToMap, hostPathsToMap); 
+			....host paths to map, ....corresponding container paths); 
 		
 		// Return an object that can be used to control the container.
 		TaskContainer taskContainer;

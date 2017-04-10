@@ -78,8 +78,7 @@ public class DefaultExecutor implements Executor {
 				
 				// Create a container.
 				TaskContainer taskContainer =
-					this.taskContainerFactory.createTaskContainer(task,
-						inputs, outputs);
+					this.taskContainerFactory.createTaskContainer(task, inputs, outputs);
 				
 				// Execute the task in the container.
 				taskContainer.execute();

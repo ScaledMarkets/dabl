@@ -25,6 +25,10 @@ public class DockerTaskContainer extends TaskContainer {
 	 */
 	public void execute() throws Exception {
 		
+		// Copy the inputs to the temp directory.
+		....
+		
+	
 		// Start the container.
 		this.dockerContainer.start();
 		
