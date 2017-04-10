@@ -138,7 +138,7 @@ public class Docker {
 	 * 
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
-	public DockerContainer createContainer(String imageId, String containerName,
+	public DockerContainer createContainer(String imageIdOrName, String containerName,
 		String[] hostPathsToMap, String[] containerPathsToMap) throws Exception {
 		
 		if ((hostPathsToMap == null) || (containerPathsToMap == null))
@@ -182,7 +182,7 @@ public class Docker {
 			.add("Env", Json.createArrayBuilder())
 			.add("Cmd", Json.createArrayBuilder())
 			.add("Entrypoint", "")
-			.add("Image", imageId)
+			.add("Image", imageIdOrName)
 			.add("Labels", Json.createObjectBuilder())
 			.add("Volumes", Json.createObjectBuilder())
 			.add("NetworkDisabled", false)
@@ -200,7 +200,7 @@ public class Docker {
 		
 		// Tell docker to create container, and get resulting container Id.
 		Response response = makePostRequest(
-			"v1.24/containers/" + imageId + "/create?name=" + containerName,
+			"v1.24/containers/create?name=" + containerName,
 			jsonPayload);
 		
 		// Verify success and obtain container Id.
@@ -299,6 +299,9 @@ public class Docker {
 		return true;
 	}
 	
+	/**
+	 * Label may be a key name, or a key=value string.
+	 */
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
 		String labelFilter = "";

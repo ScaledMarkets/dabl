@@ -5,7 +5,13 @@ package scaledmarkets.dabl.exec;
  */
 public class PretendTaskContainer extends TaskContainer {
 	
-	public void executeTask(Task task) throws Exception {
-		System.out.println(">> Simulator: Task " + task.getName() + " would be executed");
+	private Task task;
+	
+	public PretendTaskContainer(Task task) {
+		this.task = task;
+	}
+	
+	public void execute() throws Exception {
+		System.out.println(">> Simulator: Task " + this.task.getName() + " would be executed");
 	}
 }

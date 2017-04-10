@@ -6,9 +6,11 @@ public abstract class TaskContainerFactory {
 	
 	/**
 	 * Create a container, containing the task interpreter. Return an object
-	 * that enables one to control the container.
+	 * that enables one to control the container. Inputs and/or outputs
+	 * may be null, and may overlap.
 	 */
-	public abstract TaskContainer createTaskContainer(String[] pathsToMap) throws Exception;
+	public abstract TaskContainer createTaskContainer(Task task,  List<File> inputs,
+		List<File> outputs) throws Exception;
 	
 	/**
 	 * Callback: notify this factory that the underlying container was destroyed,

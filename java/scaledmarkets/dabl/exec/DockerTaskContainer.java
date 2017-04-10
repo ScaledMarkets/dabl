@@ -8,11 +8,14 @@ import scaledmarkets.dabl.docker.*;
 public class DockerTaskContainer extends TaskContainer {
 	
 	private TaskContainerFactory taskContainerFactory;
+	private Task task;
 	private DockerContainer dockerContainer;
 	
-	public DockerTaskContainer(TaskContainerFactory factory, DockerContainer dockerContainer) {
+	public DockerTaskContainer(TaskContainerFactory factory, Task task,
+		DockerContainer dockerContainer) {
 		
 		this.taskContainerFactory = factory;
+		this.task = task;
 		this.dockerContainer = dockerContainer;
 	}
 	
@@ -20,13 +23,16 @@ public class DockerTaskContainer extends TaskContainer {
 	 * Perform a task's procedural statements.
 	 * The container is contacted and instructed to perform the task.
 	 */
-	public void executeTask(Task task) throws Exception {
+	public void execute() throws Exception {
 		
 		// Start the container.
 		this.dockerContainer.start();
 		
 		// Execute the task in the container.
-		//....
+		....
+		
+		// Write the outputs from the temp directory to the output directories.
+		....
 		
 		// Terminate the container.
 		this.dockerContainer.destroy();

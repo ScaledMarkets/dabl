@@ -9,5 +9,5 @@ public abstract class TaskContainer {
 	 * Perform a task's procedural statements.
 	 * The container is contacted and instructed to perform the task.
 	 */
-	public abstract void executeTask(Task task) throws Exception;
+	public abstract void execute() throws Exception;
 }

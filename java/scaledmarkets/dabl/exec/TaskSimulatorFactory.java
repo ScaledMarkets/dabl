@@ -11,8 +11,9 @@ public class TaskSimulatorFactory extends TaskContainerFactory {
 	/**
 	 * Create a pretend-container.
 	 */
-	public TaskContainer createTaskContainer(String[] pathsToMap) throws Exception {
-		return new PretendTaskContainer();
+	public TaskContainer createTaskContainer(Task task, List<File> inputs,
+		List<File> outputs) throws Exception {
+		return new PretendTaskContainer(task);
 	}
 	
 	public void containerWasDestroyed(TaskContainer container) {
