@@ -326,13 +326,13 @@ public class Docker {
 				for (JsonValue v : names) {
 					String name = ((JsonString)v).getString();
 					if (Pattern.matches(namePattern, name)) {
-						String id = containerDesc.get("Id");
+						String id = containerDesc.getString("Id");
 						containers.add(new DockerContainer(this, id));
 						break;
 					}
 				}
 			} else {
-				String id = containerDesc.get("Id");
+				String id = containerDesc.getString("Id");
 				containers.add(new DockerContainer(this, id));
 			}
 		}
@@ -365,7 +365,7 @@ public class Docker {
 			target.request(MediaType.TEXT_PLAIN_TYPE);
 		
 		if (body == null) {
-			return invocationBuilder.post();
+			return invocationBuilder.post(null);
 		} else {
 			Entity<String> entity = Entity.json(body);
 			Invocation invocation = invocationBuilder.buildPost(entity);

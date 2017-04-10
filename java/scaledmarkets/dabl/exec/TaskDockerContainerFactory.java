@@ -29,7 +29,7 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 		// Return an object that can be used to control the container.
 		TaskContainer taskContainer;
 		synchronized (this) {
-			taskContainer = new DockerTaskContainer(this, dockerContainer, pathsToMap);
+			taskContainer = new DockerTaskContainer(this, dockerContainer);
 			taskContainers.put(taskContainer, taskContainer);
 		}
 		return taskContainer;

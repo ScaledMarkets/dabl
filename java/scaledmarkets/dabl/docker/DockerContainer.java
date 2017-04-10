@@ -18,7 +18,7 @@ public class DockerContainer {
 	
 	public void start() throws Exception {
 		
-		this.docker.startContainer(this.containerId, pathsToMap);
+		this.docker.startContainer(this.containerId);
 	}
 	
 	public void stop() throws Exception {

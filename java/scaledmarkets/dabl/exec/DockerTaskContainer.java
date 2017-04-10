@@ -9,14 +9,11 @@ public class DockerTaskContainer extends TaskContainer {
 	
 	private TaskContainerFactory taskContainerFactory;
 	private DockerContainer dockerContainer;
-	private String[] pathsToMap;
 	
-	public DockerTaskContainer(TaskContainerFactory factory, DockerContainer dockerContainer,
-		String[] pathsToMap) {
+	public DockerTaskContainer(TaskContainerFactory factory, DockerContainer dockerContainer) {
 		
 		this.taskContainerFactory = factory;
 		this.dockerContainer = dockerContainer;
-		this.pathsToMap = pathsToMap;
 	}
 	
 	/**
@@ -26,7 +23,7 @@ public class DockerTaskContainer extends TaskContainer {
 	public void executeTask(Task task) throws Exception {
 		
 		// Start the container.
-		this.dockerContainer.start(this.pathsToMap);
+		this.dockerContainer.start();
 		
 		// Execute the task in the container.
 		//....
