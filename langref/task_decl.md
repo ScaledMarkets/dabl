@@ -13,11 +13,16 @@ If there is no when clause, then the following when clause is assumed:
 ```
 when inputs are newer than outputs
 ```
+
+If the task is declared to be `open`, then the task is able to access the networks
+that the host user account can access. Otherwise, the task cannot access any
+networks. By default, a task is not open.
+
 ## Syntax
 
 A task declaration has the following syntax:
 
-  [`public`] `task` *name* [ [when_clause](when_clause.md) ]
+  [`public`] [`open`] `task` *name* [ [when_clause](when_clause.md) ]
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
   	[ [procedural_stmts](procedural_stmt.md)...]
 
