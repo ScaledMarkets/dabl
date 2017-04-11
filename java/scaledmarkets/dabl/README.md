@@ -243,7 +243,7 @@ need for this project.
 
 ## Exchange Data With a Task Container
 
-When the [`DefaultExecutor](exec/DefaultExecutor.java) prepares to execute a
+When the [`DefaultExecutor`](exec/DefaultExecutor.java) prepares to execute a
 task, it creates a temporary directory for the task, to serve as the task's
 workspace. The `DefaultExecutor` then creates an isolated container for the task.
 The `DefaultExecutor` then copies the task's inputs to the workspace. When the
