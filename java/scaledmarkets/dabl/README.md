@@ -210,7 +210,7 @@ If t is not downstream from a task that has not been visited yet,
 
 The actual dependency graph structures that are created are illustrated below.
 
-![Figure 8: Actual Dependency Graphs](ActualGraph.png "Figure 7: Actual Dependency Graphs")
+![Figure 8: Actual Dependency Graphs](ActualGraph.png "Figure 8: Actual Dependency Graphs")
 
 ## Docker Daemon Interface
 
@@ -250,3 +250,4 @@ The `DefaultExecutor` then copies the task's inputs to the workspace. When the
 task completes, the `DefaultExecutor` copies the task's outputs (and only the
 outputs) to the output locations.
 
+![Figure 9: Container Inputs and Outputs](ContainerInputsAndOutputs.png "Figure 9: Container inputs and outputs")
