@@ -234,8 +234,13 @@ Productions
       | {unspecified}                       {-> New oscope.private()}
       ;
     
+    open_decl {-> oopen} =
+        {open} open                         {-> New oopen.open()}
+      | {unspecified}                       {-> New oopen.closed()}
+      ;
+    
     task_decl {-> otask_declaration} =
-        scope_decl task id when_clause_opt input_sets_opt output_sets_opt
+        scope_decl open_decl task id when_clause_opt input_sets_opt output_sets_opt
             procedural_stmts_opt            {-> New otask_declaration(scope_decl.oscope,
                                                 id, [when_clause_opt.oexpr],
                                                 [input_sets_opt.onamed_artifact_set],
@@ -793,6 +798,11 @@ Abstract Syntax Tree
     oscope =
         {public}
       | {private}
+      ;
+    
+    oopen =
+        {open}
+      | {closed}
       ;
     
     onamed_artifact_set =

@@ -119,10 +119,18 @@ task compileit
   outputs B ./**.class, ./**.txt
 ```
 can read from A and XYZ, and write to B. When the task starts, the inputs are copied
-into the temporary filesystem of the container, with a separate root level directory
-for each input or output. On successful task completion, the outputs are copied to the
-file system of the DABL process context. The directory structure of the inputs
-and outputs is preserved, as are file attributes.
+into the temporary filesystem of the container. On successful task completion,
+the outputs are copied to the file system of the DABL process context.
+The directory structure of the inputs and outputs is preserved, as are file attributes.
+
+This copying and the use of a container for task execution provides a very high
+level of isolation and idempotency for each task. However, it is not impermeable.
+By default, a task container has no network access; however, a task may be declared
+to be `open`, which means that it has the same network access as the host in
+which the task container executes. It is strongly recommended that a task should
+be declared to be `open` only if it performs functions that are known to be
+idempotent. In particular, tasks that access network based provisioning tools
+are usually idempotent, and require network access.
 
 ### Task Lifecycle Model
 
