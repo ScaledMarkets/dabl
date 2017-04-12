@@ -76,12 +76,18 @@ public class DefaultExecutor implements Executor {
 				
 				List<File> outputs = ....
 				
+				// Create a new private temp directory.
+				File workspace = ....
+		
 				// Create a container.
 				TaskContainer taskContainer =
 					this.taskContainerFactory.createTaskContainer(task, inputs, outputs);
 				
 				// Execute the task in the container.
 				taskContainer.execute();
+				
+				// Clean up.
+				....remove the workspace, if desired
 			}
 			
 			for (Task t_o : task.getConsumers()) {

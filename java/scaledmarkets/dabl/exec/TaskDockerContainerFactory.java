@@ -22,26 +22,17 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	 * that enables one to control the container.
 	 */
 	public TaskContainer createTaskContainer(Task task, List<File> inputs,
-		List<File> outputs) throws Exception {
+		List<File> outputs, File workspace) throws Exception {
 		
-		// Create a new private temp directory.
-		....
-		
-		
-		// Map the input and output locations to the temp dir such that the container
-		// sees the temp directory contents as existing in their orignal host locations.
-		....
-		
-	
 		// Create a container for performing a task. (Do not start the container.)
+		// The container maps the temp directory.
 		DockerContainer dockerContainer = this.docker.createContainer(
-			this.dockerImageName, task.getName(),
-			....host paths to map, ....corresponding container paths); 
+			this.dockerImageName, task.getName(), workspace, workspace); 
 		
 		// Return an object that can be used to control the container.
 		TaskContainer taskContainer;
 		synchronized (this) {
-			taskContainer = new DockerTaskContainer(this, task, dockerContainer);
+			taskContainer = new DockerTaskContainer(this, task, dockerContainer, workspace);
 			taskContainers.put(taskContainer, taskContainer);
 		}
 		return taskContainer;
