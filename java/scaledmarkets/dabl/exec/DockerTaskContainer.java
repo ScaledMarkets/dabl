@@ -8,15 +8,12 @@ import java.io.File;
  */
 public class DockerTaskContainer extends TaskContainer {
 	
-	private TaskContainerFactory taskContainerFactory;
 	private Task task;
 	private DockerContainer dockerContainer;
 	private File workspace;
 	
-	public DockerTaskContainer(TaskContainerFactory factory, Task task,
-		DockerContainer dockerContainer, File workspace) {
+	public DockerTaskContainer(Task task, DockerContainer dockerContainer, File workspace) {
 		
-		this.taskContainerFactory = factory;
 		this.task = task;
 		this.dockerContainer = dockerContainer;
 		this.workspace = workspace;
@@ -28,21 +25,12 @@ public class DockerTaskContainer extends TaskContainer {
 	 */
 	public void execute() throws Exception {
 		
-		// Obtain inputs and copy them into the workspace.
-		....
-		
-		
 		// Start the container.
 		this.dockerContainer.start();
 		
 		// Execute the task in the container.
 		....
 		
-		// Write the outputs from the workspace to the output directories.
-		....
 		
-		// Terminate the container.
-		this.dockerContainer.destroy();
-		this.taskContainerFactory.containerWasDestroyed(this);
 	}
 }

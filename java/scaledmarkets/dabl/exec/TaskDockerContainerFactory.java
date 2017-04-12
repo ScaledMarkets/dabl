@@ -4,6 +4,7 @@ import scaledmarkets.dabl.docker.*;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.io.File;
 
 public class TaskDockerContainerFactory extends TaskContainerFactory {
 	
@@ -21,8 +22,7 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	 * Create a container, containing the task interpreter. Return an object
 	 * that enables one to control the container.
 	 */
-	public TaskContainer createTaskContainer(Task task, List<File> inputs,
-		List<File> outputs, File workspace) throws Exception {
+	public TaskContainer createTaskContainer(Task task, File workspace) throws Exception {
 		
 		// Create a container for performing a task. (Do not start the container.)
 		// The container maps the temp directory.
@@ -32,7 +32,7 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 		// Return an object that can be used to control the container.
 		TaskContainer taskContainer;
 		synchronized (this) {
-			taskContainer = new DockerTaskContainer(this, task, dockerContainer, workspace);
+			taskContainer = new DockerTaskContainer(task, dockerContainer, workspace);
 			taskContainers.put(taskContainer, taskContainer);
 		}
 		return taskContainer;

@@ -1,6 +1,7 @@
 package scaledmarkets.dabl.exec;
 
 import java.util.Set;
+import java.io.File;
 
 /**
  * For creating task containers in simulation mode, whereby containers are not
@@ -11,8 +12,7 @@ public class TaskSimulatorFactory extends TaskContainerFactory {
 	/**
 	 * Create a pretend-container.
 	 */
-	public TaskContainer createTaskContainer(Task task, List<File> inputs,
-		List<File> outputs) throws Exception {
+	public TaskContainer createTaskContainer(Task task, File workspace) throws Exception {
 		return new PretendTaskContainer(task);
 	}
 	

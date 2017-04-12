@@ -78,15 +78,27 @@ public class DefaultExecutor implements Executor {
 				
 				// Create a new private temp directory.
 				File workspace = ....
+				
+				// Obtain inputs and copy them into the workspace.
+				....
+				
+				
 		
 				// Create a container.
 				TaskContainer taskContainer =
-					this.taskContainerFactory.createTaskContainer(task, inputs, outputs);
+					this.taskContainerFactory.createTaskContainer(task, workspace);
 				
 				// Execute the task in the container.
 				taskContainer.execute();
 				
-				// Clean up.
+				// Write the outputs from the workspace to the output directories.
+				....
+				
+				// Destroy the container, if desired.
+				this.dockerContainer.destroy();
+				this.taskContainerFactory.containerWasDestroyed(this);
+				
+				// Clean up files.
 				....remove the workspace, if desired
 			}
 			
