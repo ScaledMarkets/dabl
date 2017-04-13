@@ -17,6 +17,10 @@ public class Artifact {
 		this.artifactSet = artifactSet;
 	}
 	
+	public AOartifactSet getArtifactSet() {
+		return artifactSet;
+	}
+	
 	void addProducer(Task t) {
 		producers.add(t);
 	}

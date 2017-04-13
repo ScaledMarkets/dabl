@@ -46,6 +46,14 @@ public class Task {
 		isProducerFor.add(t);
 	}
 	
+	public Set<Artifact> getInputs() {
+		return inputs;
+	}
+	
+	public Set<Artifact> getOutputs() {
+		return outputs;
+	}
+	
 	public Set<Task> getProducers() {
 		return isConsumerOf;
 	}

@@ -1,6 +1,12 @@
 package scaledmarkets.dabl.exec;
 
+import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.analysis.CompilerState;
+import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 
 /**
  * Determine which tasks should be executed, based on their 'when' conditions,
@@ -71,18 +77,17 @@ public class DefaultExecutor implements Executor {
 				if (verbose) System.out.println("\ttask 'when' condition is true");
 				
 				// Identify the input and output paths.
-				
-				List<File> inputs = ....
-				
-				List<File> outputs = ....
+				Set<Artifact> inputs = task.getInputs();
+				Set<Artifact> outputs = task.getOutputs();
 				
 				// Create a new private temp directory.
-				File workspace = ....
+				Set<PosixFilePermission> permSet = PosixFilePermissions.fromString("rwx------");
+				FileAttribute<PosixFilePermission>[] attrs = 
+					permSet.toArray(new PosixFilePermission[permSet.size()]);
+				File workspace = Files.createTempDirectory("dabl", attrs).toFile();
 				
 				// Obtain inputs and copy them into the workspace.
-				....
-				
-				
+				copyArtifactsTo(inputs, workspace);
 		
 				// Create a container.
 				TaskContainer taskContainer =
@@ -92,7 +97,7 @@ public class DefaultExecutor implements Executor {
 				taskContainer.execute();
 				
 				// Write the outputs from the workspace to the output directories.
-				....
+				copyToArtifacts(workspace, outputs);
 				
 				// Destroy the container, if desired.
 				this.dockerContainer.destroy();
@@ -134,5 +139,51 @@ public class DefaultExecutor implements Executor {
 			if (isDownstreamFromOutputtingTask(p)) return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Obtain the specified artifacts from their repositories, and copy them
+	 * into the specified host directory.
+	 */
+	protected copyArtifactsTo(Set<Artifact> artifacts, File dir) throws Exception {
+		
+		String repoType = ....
+		Repo repo = Repo.getRepo(repoType, scheme, path, userid, password);
+		for (Artifact artifact : artifacts) {
+			AOartifactSet artifactSet = artifact.getArtifactSet();
+			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
+			
+			for (POfilesetOperation op : filesetOps) {
+				
+				AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
+				AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
+				
+				
+				repo.getFiles(filePattern);
+			}
+		}
+		
+		....
+		
+	orepo_declaration =
+        oscope [name]:id [type]:ostring_literal [scheme]:ostring_value_opt [path]:ostring_literal
+            [userid]:ostring_value_opt [password]:ostring_value_opt;
+		
+		
+	}
+	
+	/**
+	 * Push the specified artifacts - and only those artifacts - from the host
+	 * directory into the repository for each artifact.
+	 */
+	protected copyToArtifacts(File dir, Set<Artifact> artifacts) throws Exception {
+		
+		
+		for () {
+			repo.putFiles(filePattern);
+		}
+		
+		
+		....
 	}
 }
