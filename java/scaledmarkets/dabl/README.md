@@ -241,7 +241,7 @@ maintaining backward compatibility.
 The result is a package `scaledmarkets.dabl.docker` which does exactly what we
 need for this project.
 
-## Exchange Data With a Task Container
+## How Data Is Exchanged With a Task Container
 
 When the [`DefaultExecutor`](exec/DefaultExecutor.java) prepares to execute a
 task, it creates a temporary directory for the task, to serve as the task's
