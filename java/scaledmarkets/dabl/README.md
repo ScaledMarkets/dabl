@@ -245,9 +245,10 @@ need for this project.
 
 When the [`DefaultExecutor`](exec/DefaultExecutor.java) prepares to execute a
 task, it creates a temporary directory for the task, to serve as the task's
-workspace. The `DefaultExecutor` then creates an isolated container for the task.
+workspace. The `DefaultExecutor` then creates an isolated container for the task,
+mapping the workspace directory into the container's file system.
 The `DefaultExecutor` then copies the task's inputs to the workspace. When the
 task completes, the `DefaultExecutor` copies the task's outputs (and only the
-outputs) to the output locations.
+outputs) to the task output locations.
 
 ![Figure 9: Container Inputs and Outputs](ContainerInputsAndOutputs.png "Figure 9: Container inputs and outputs")
