@@ -70,6 +70,22 @@ For robust infrastructure code, a better model than current practice is needed, 
 	(Java API docs can be found [here](https://scaledmarkets.github.io/dabl/).)
 * A sample DABL file, [example.dabl](example.dabl).
 
+# Using the DABL Compiler
+
+Command line usage is as follows:
+
+<code>java -jar dabl.jar</code> [options] <i>filename</i>
+
+where options can be
+
+<dl>
+<dd><code>-p or --print</code> (print the AST)</dd>
+<dd><code>-t or --trace</code> (print stack trace instead of just error msg)</dd>
+<dd><code>-a or --analysis</code> (analysis only - do not perform any actions)</dd>
+<dd><code>-s or --simulate</code> (simulate only - print tasks instead of executing them)</dd>
+<dd><code>-h or --help</code></dd>
+</dl>
+
 # Embedding the Compiler In an Application
 
 The DABL compiler is designed as a self-contained embeddable component that can be
