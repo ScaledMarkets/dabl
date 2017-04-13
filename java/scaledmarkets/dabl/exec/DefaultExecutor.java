@@ -2,6 +2,7 @@ package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.analysis.CompilerState;
+import scaledmarkets.dabl.analysis.Utilities;
 import java.util.Set;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
@@ -18,6 +19,7 @@ public class DefaultExecutor implements Executor {
 	private TaskContainerFactory taskContainerFactory;
 	private DablContext dablContext = new DablContext();
 	private boolean verbose;
+	private Helper helper;
 
 	/**
 	 * If 'verbose' is true, then print the actions
@@ -28,6 +30,7 @@ public class DefaultExecutor implements Executor {
 		this.state = state;
 		this.taskContainerFactory = taskContainerFactory;
 		this.verbose = verbose;
+		this.helper = new Helper(state);
 	}
 	
 	public void execute() throws Exception {
@@ -104,7 +107,7 @@ public class DefaultExecutor implements Executor {
 				this.taskContainerFactory.containerWasDestroyed(this);
 				
 				// Clean up files.
-				....remove the workspace, if desired
+				Utilities.deleteDirectoryTree(workspace);
 			}
 			
 			for (Task t_o : task.getConsumers()) {
@@ -147,29 +150,42 @@ public class DefaultExecutor implements Executor {
 	 */
 	protected copyArtifactsTo(Set<Artifact> artifacts, File dir) throws Exception {
 		
-		String repoType = ....
-		Repo repo = Repo.getRepo(repoType, scheme, path, userid, password);
 		for (Artifact artifact : artifacts) {
 			AOartifactSet artifactSet = artifact.getArtifactSet();
-			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
+			POidRef q = artifactSet.getRepositoryId();
+			....get repo declaration
+			String repoType = ....
+			String scheme = ....
+			String path = ....
+			String userid = ....
+			String password = ....
 			
+			Repo repo = Repo.getRepo(repoType, scheme, path, userid, password);
+
+			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
+			List<String> includePatterns = new LinkedList<String>();
+			List<String> excludePatterns = new LinkedList<String>();
 			for (POfilesetOperation op : filesetOps) {
 				
-				AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
-				AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
-				
-				
-				repo.getFiles(filePattern);
+				if (op instanceof AIncludeOfilesetOperation) {
+					AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
+					POstringLiteral lit = includeOp.getOstringLiteral();
+					String pattern = this.helper.getStringLiteralValue(lit);
+					includePatterns.add(pattern);
+				} else if (op instanceof AExcludeOfilesetOperation) {
+					AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
+					POstringLiteral lit = excludeOp.getOstringLiteral();
+					String pattern = this.helper.getStringLiteralValue(lit);
+					excludePatterns.add(pattern);
+				} else throw new RuntimeException(
+					"Unexpected POfilesetOperation type: " + op.getClass().getName());
 			}
+
+			POstringLiteral p = artifactSet.getProject();
+			String project = ....
+			
+			repo.getFiles(project, includePatterns, excludePatterns);
 		}
-		
-		....
-		
-	orepo_declaration =
-        oscope [name]:id [type]:ostring_literal [scheme]:ostring_value_opt [path]:ostring_literal
-            [userid]:ostring_value_opt [password]:ostring_value_opt;
-		
-		
 	}
 	
 	/**
@@ -180,7 +196,7 @@ public class DefaultExecutor implements Executor {
 		
 		
 		for () {
-			repo.putFiles(filePattern);
+			repo.putFiles(project, includePatterns, excludePatterns);
 		}
 		
 		

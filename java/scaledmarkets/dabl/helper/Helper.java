@@ -315,7 +315,7 @@ public class Helper {
 	
 	/**
 	 * Return the value of the specified String literal symbol.
-	 *
+	 */
 	public String getStringLiteralValue(POstringLiteral literal) throws Exception {
 		
 		Object obj = state.getOut(literal);
@@ -325,7 +325,7 @@ public class Helper {
 		Utilities.assertThat(value instanceof String);
 		String stringValue = (String)value;
 		return stringValue;
-	}*/
+	}
 	
 	/**
 	 * If expr is false, throw an Exception.

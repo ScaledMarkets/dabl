@@ -2,6 +2,9 @@ package scaledmarkets.dabl.analysis;
 
 import scaledmarkets.dabl.node.*;
 import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.io.IOException;
 
 public class Utilities {
 	
@@ -41,5 +44,31 @@ public class Utilities {
 			action.run();
 			throw new RuntimeException("Assertion violation");
 		}
+	}
+	
+	/**
+	 * Recursively delete the specified directory and all contents.
+	 */
+	public static void deleteDirectoryTree(Path root) throws Exception {
+		
+		Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
+			
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+			throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
+			
+			public FileVisitResult postVisitDirectory(Path dir, IOException e)
+			throws IOException {
+				if (e == null) {
+					Files.delete(dir);
+					return FileVisitResult.CONTINUE;
+				} else {
+					// directory iteration failed
+					throw e;
+				}
+			}
+		});
 	}
 }
