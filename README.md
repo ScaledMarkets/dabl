@@ -66,10 +66,7 @@ For robust infrastructure code, a better model than current practice is needed, 
 	The compiler is a Java package, which has a main method—and so it
 	can be called form a command line—but it can also
 	be called via its API, so that the compiler can be embedded in other
-	Java applications. If called from the command line, the compiler merely
-	parses the input file. However, if a Java program instantiates a
-	`scaledmarkets.dabl.main.Dabl` object and calls the `process` method, an object
-	model is returned that can be used by a tool to act on the compiled input.
+	Java applications.
 	(Java API docs can be found [here](https://scaledmarkets.github.io/dabl/).)
 * A sample DABL file, [example.dabl](example.dabl).
 
