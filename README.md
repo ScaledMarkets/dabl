@@ -79,11 +79,11 @@ Command line usage is as follows:
 where options can be
 
 <dl>
-<dd><code>-p or --print</code> (print the AST)</dd>
-<dd><code>-t or --trace</code> (print stack trace instead of just error msg)</dd>
-<dd><code>-a or --analysis</code> (analysis only - do not perform any actions)</dd>
-<dd><code>-s or --simulate</code> (simulate only - print tasks instead of executing them)</dd>
-<dd><code>-h or --help</code></dd>
+<dd><code>-p</code> or <code>--print</code> (print the AST)</dd>
+<dd><code>-t</code> or <code>--trace</code> (print stack trace instead of just error msg)</dd>
+<dd><code>-a</code> or <code>--analysis</code> (analysis only - do not perform any actions)</dd>
+<dd><code>-s</code> or <code>--simulate</code> (simulate only - print tasks instead of executing them)</dd>
+<dd><code>-h</code> or <code>--help</code></dd>
 </dl>
 
 # Embedding the Compiler In an Application
