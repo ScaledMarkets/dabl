@@ -70,6 +70,16 @@ For robust infrastructure code, a better model than current practice is needed, 
 	(Java API docs can be found [here](https://scaledmarkets.github.io/dabl/).)
 * A sample DABL file, [example.dabl](example.dabl).
 
+# Installing the DABL Compiler
+
+Installation consists of,
+
+* Making sure that the docker daemon is running on the host that will be executing
+	the compiler.
+* Pulling the required base container image so that it is resident in the host's
+	local docker image repository. [TBD: put the image in dockerhub]
+* Placing the DABL jar file (dabl.jar) on the host system.
+
 # Using the DABL Compiler
 
 Command line usage is as follows:
