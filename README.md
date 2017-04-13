@@ -78,7 +78,10 @@ Installation consists of,
 	the compiler.
 * Pulling the required base container image so that it is resident in the host's
 	local docker image repository. [TBD: put the image in dockerhub]
-* Placing the DABL jar file (dabl.jar) on the host system.
+* Placing the DABL jar file (`dabl.jar`) on the host system.
+* Obtaining the unix socket native library for the host's architecture, and adding
+	it to the LD_LIBRARY_PATH environment variable. We currently provide compiled
+	binaries for Mac and Linux. [TBD: provide instructions.]
 
 # Using the DABL Compiler
 
