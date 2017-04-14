@@ -314,6 +314,29 @@ public class Helper {
 	}
 	
 	/**
+	 * 
+	 */
+	public AOrepoDeclaration getRepoDeclFromRepoRef(AOidRef reposIdRef) {
+		
+		Annotation a = state.getOut(reposIdRef);
+		if (a == null) throw new RuntimeException(
+			"Unable to identify " + Utilities.createNameFromPath(reposIdRef.getId()));
+		IdRefAnnotation reposIdRefAnnotation = null;
+		if (a instanceof IdRefAnnotation) {
+			reposIdRefAnnotation = (IdRefAnnotation)a;
+		} else throw new RuntimeException("Unexpected annotation type: " + a.getClass().getName());
+		SymbolEntry e = reposIdRefAnnotation.getDefiningSymbolEntry();
+		if (! (e instanceof DeclaredEntry) throw new RuntimeException(
+			"Expected a DeclaredEntry, but found a " + e.getClass().getName());
+		DeclaredEntry de = (DeclaredEntry)e;
+		Node n = de.getDefiningNode();
+		if (! (n instanceof AOrepoDeclaration) throw new RuntimeException(
+			"Expected a AOrepoDeclaration, but found a " + e.getClass().getName());
+		AOrepoDeclaration repoDecl = (AOrepoDeclaration)n;
+		return repoDecl;
+	}
+	
+	/**
 	 * Return the value of the specified String literal symbol.
 	 */
 	public String getStringLiteralValue(POstringLiteral literal) throws Exception {
@@ -325,6 +348,20 @@ public class Helper {
 		Utilities.assertThat(value instanceof String);
 		String stringValue = (String)value;
 		return stringValue;
+	}
+	
+	/**
+	 * Return either the string value, or null.
+	 */
+	public String getStringValueOpt(POstringValueOpt n) throws Exception {
+		
+		if (n instanceof ASpecifiedOstringValueOpt) {
+			POstringLiteral lit = ((ASpecifiedOstringValueOpt)n).getOstringLiteral();
+			return getStringLiteralValue(lit);
+		} else if (n instanceof AUnspecifiedOstringValueOpt) {
+			return null;
+		} else throw new RuntimeException(
+			"Unexpected Node type: " + n.getClass().getName());
 	}
 	
 	/**

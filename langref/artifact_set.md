@@ -48,7 +48,7 @@ where *preference* is one of,
 <dd><i><a href="version_spec.md">version-spec</a></i></dd>
 </dl>
 
-and version-criteria is one of,
+and *version-criteria* is one of,
 
 <dl>
 <dd><code>compatible with</code></dd>

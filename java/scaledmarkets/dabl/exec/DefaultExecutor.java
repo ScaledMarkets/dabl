@@ -152,16 +152,19 @@ public class DefaultExecutor implements Executor {
 		
 		for (Artifact artifact : artifacts) {
 			AOartifactSet artifactSet = artifact.getArtifactSet();
-			POidRef q = artifactSet.getRepositoryId();
-			....get repo declaration
-			String repoType = ....
-			String scheme = ....
-			String path = ....
-			String userid = ....
-			String password = ....
+			AOidRef reposIdRef = (AOidRef)(artifactSet.getRepositoryId());
 			
-			Repo repo = Repo.getRepo(repoType, scheme, path, userid, password);
-
+			// Identify the repo declaration.
+			AOrepoDeclaration repoDecl = this.helper.getRepoDeclFromRepoRef(reposIdRef);
+			
+			// Obtain the repo information.
+			String scheme = this.helper.getStringValueOpt(repoDecl.getScheme());
+			String userid = this.helper.getStringValueOpt(repoDecl.getUserid());
+			String password = this.helper.getStringValueOpt(repoDecl.getPassword());
+			String repoType = this.helper.getStringLiteralValue(repoDecl.getType());
+			String path = this.helper.getStringLiteralValue(repoDecl.getPath());
+			
+			// 
 			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
 			List<String> includePatterns = new LinkedList<String>();
 			List<String> excludePatterns = new LinkedList<String>();
@@ -184,6 +187,10 @@ public class DefaultExecutor implements Executor {
 			POstringLiteral p = artifactSet.getProject();
 			String project = ....
 			
+			// Use the repo info to construct a Repo object.
+			Repo repo = Repo.getRepo(repoType, scheme, path, userid, password);
+
+			// Use the Repo object to pull the files from the repo.
 			repo.getFiles(project, includePatterns, excludePatterns);
 		}
 	}
