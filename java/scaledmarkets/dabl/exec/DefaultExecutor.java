@@ -144,12 +144,38 @@ public class DefaultExecutor implements Executor {
 		return false;
 	}
 	
+	private interface ArtifactOperator {
+		void operation(String project, List<String> includePatterns, List<String> excludePatterns);
+	}
+	
 	/**
 	 * Obtain the specified artifacts from their repositories, and copy them
 	 * into the specified host directory.
 	 */
 	protected copyArtifactsTo(Set<Artifact> artifacts, File dir) throws Exception {
 		
+		operateOnArtifacts(artifacts, dir,
+			(String project, List<String> includePatterns, List<String> excludePatterns) ->
+				repo.getFiles(project, includePatterns, excludePatterns));
+	}
+	
+	/**
+	 * Push the specified artifacts - and only those artifacts - from the host
+	 * directory into the repository for each artifact.
+	 */
+	protected copyToArtifacts(File dir, Set<Artifact> artifacts) throws Exception {
+		
+		operateOnArtifacts(artifacts, dir,
+			(String project, List<String> includePatterns, List<String> excludePatterns) ->
+				repo.putFiles(project, includePatterns, excludePatterns));
+	}
+	
+	protected void operateOnArtifacts(File dir, Set<Artifact> artifacts,
+		ArtifactOperator operator) throws Exception {
+		
+		List<String> includePatterns = new LinkedList<String>();
+		List<String> excludePatterns = new LinkedList<String>();
+
 		for (Artifact artifact : artifacts) {
 			AOartifactSet artifactSet = artifact.getArtifactSet();
 			AOidRef reposIdRef = (AOidRef)(artifactSet.getRepositoryId());
@@ -164,49 +190,37 @@ public class DefaultExecutor implements Executor {
 			String repoType = this.helper.getStringLiteralValue(repoDecl.getType());
 			String path = this.helper.getStringLiteralValue(repoDecl.getPath());
 			
-			// 
-			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
-			List<String> includePatterns = new LinkedList<String>();
-			List<String> excludePatterns = new LinkedList<String>();
-			for (POfilesetOperation op : filesetOps) {
-				
-				if (op instanceof AIncludeOfilesetOperation) {
-					AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
-					POstringLiteral lit = includeOp.getOstringLiteral();
-					String pattern = this.helper.getStringLiteralValue(lit);
-					includePatterns.add(pattern);
-				} else if (op instanceof AExcludeOfilesetOperation) {
-					AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
-					POstringLiteral lit = excludeOp.getOstringLiteral();
-					String pattern = this.helper.getStringLiteralValue(lit);
-					excludePatterns.add(pattern);
-				} else throw new RuntimeException(
-					"Unexpected POfilesetOperation type: " + op.getClass().getName());
-			}
-
-			POstringLiteral p = artifactSet.getProject();
-			String project = ....
-			
 			// Use the repo info to construct a Repo object.
 			Repo repo = Repo.getRepo(repoType, scheme, path, userid, password);
 
+			// Construct a set of include patterns and a set of exclude patterns.
+			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
+			assembleIncludesAndExcludes(filesetOps, includePatterns, excludePatterns);
+			
 			// Use the Repo object to pull the files from the repo.
-			repo.getFiles(project, includePatterns, excludePatterns);
+			String project = this.helper.getStringLiteralValue(artifactSet.getProject());
 		}
+		
+		operator(project, includePatterns, excludePatterns);
 	}
 	
-	/**
-	 * Push the specified artifacts - and only those artifacts - from the host
-	 * directory into the repository for each artifact.
-	 */
-	protected copyToArtifacts(File dir, Set<Artifact> artifacts) throws Exception {
-		
-		
-		for () {
-			repo.putFiles(project, includePatterns, excludePatterns);
+	protected void assembleIncludesAndExcludes(List<POfilesetOperation>filesetOps,
+		List<String> includePatterns, List<String> excludePatterns) {
+	
+		for (POfilesetOperation op : filesetOps) {
+			
+			if (op instanceof AIncludeOfilesetOperation) {
+				AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
+				POstringLiteral lit = includeOp.getOstringLiteral();
+				String pattern = this.helper.getStringLiteralValue(lit);
+				includePatterns.add(pattern);
+			} else if (op instanceof AExcludeOfilesetOperation) {
+				AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
+				POstringLiteral lit = excludeOp.getOstringLiteral();
+				String pattern = this.helper.getStringLiteralValue(lit);
+				excludePatterns.add(pattern);
+			} else throw new RuntimeException(
+				"Unexpected POfilesetOperation type: " + op.getClass().getName());
 		}
-		
-		
-		....
 	}
 }
