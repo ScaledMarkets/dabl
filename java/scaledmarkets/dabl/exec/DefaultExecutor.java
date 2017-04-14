@@ -173,13 +173,17 @@ public class DefaultExecutor implements Executor {
 	protected void operateOnArtifacts(File dir, Set<Artifact> artifacts,
 		ArtifactOperator operator) throws Exception {
 		
-		Set<PatternSets> patternSetsSet = new TreeSet<PatternSets>() {
+		Map<PatternSets> patternSetsMap = new HashMap<PatternSets>() {
 			/**
 			 * Return the PatternSets for the specified path and project. If it does
 			 * not exist, create it.
 			 */
 			protected PatternSets getPatternSets(String path, String project) {
-				....
+				PatternSets p = get(PatternSets.getKey(path, project));
+				if (p == null) {
+					p = new PatternSets(path, project);
+				}
+				return p;
 			}
 		};
 		
@@ -194,7 +198,7 @@ public class DefaultExecutor implements Executor {
 			AOrepoDeclaration repoDecl = this.helper.getRepoDeclFromRepoRef(reposIdRef);
 			String path = this.helper.getStringLiteralValue(repoDecl.getPath());
 			
-			PatternSets patternSets = patternSetsSet.getPatternSets(path, project);
+			PatternSets patternSets = patternSetsMap.getPatternSets(path, project);
 			
 			// Obtain the repo information.
 			String scheme = this.helper.getStringValueOpt(repoDecl.getScheme());
@@ -210,12 +214,12 @@ public class DefaultExecutor implements Executor {
 			assembleIncludesAndExcludes(filesetOps, patternSets);
 		}
 		
-		for (PatternSets patternSets : patternSetsSet) {
+		for (PatternSets patternSets : patternSetsMap.values()) {
 			operator(repo, project, patternSets);
 		}
 	}
 	
-	class PatternSets implements Comparable {
+	class PatternSets implements Comparable<PatternSets> {
 		
 		PatternSets(String path, String project) {
 			this.path = path;
@@ -246,7 +250,14 @@ public class DefaultExecutor implements Executor {
 			}
 		}
 		
-		public int compareTo(....) {
-			....match if path and project match
+		public static String getKey(String path, String project) {
+			return path + ":" + project;
+		}
+		
+		public String getKey() { return getKey(path, project); }
+		
+		public int compareTo(PatternSets other) {
+			return getKey().compareTo(other.getKey());
+		}
 	}
 }
