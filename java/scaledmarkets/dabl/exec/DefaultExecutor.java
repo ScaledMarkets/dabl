@@ -145,7 +145,8 @@ public class DefaultExecutor implements Executor {
 	}
 	
 	private interface ArtifactOperator {
-		void operation(String project, List<String> includePatterns, List<String> excludePatterns);
+		void operation(String project, List<String> includePatterns,
+			List<String> excludePatterns) throws Exception;
 	}
 	
 	/**

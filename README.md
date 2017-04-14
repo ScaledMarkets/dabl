@@ -3,7 +3,24 @@
 DABL stands for "Dependent Artifact Build Language". It is a language for defining
 software dependencies.
 
-# Motivation
+# Business Motivation
+
+Organizations seek greater flexibility by embracing “DevOps” methods, so that
+they can release software capabilities more frequently and more reliably.
+To achieve this, they automate every aspect of the software build, test,
+and deployment process.
+
+Unfortunately, automation does not equate to reliability or maintainability:
+if the automation code is not robust, then automated processes can be as
+unreliable as manual processes. In fact, software build and test processes are
+notorious for being low quality, difficult to read or understand—and therefore
+difficult to maintain and potentially unreliable.
+
+If build, test, and deployment code is as important as application code, then
+build, test, and deployment code needs a robust language, akin to the robust
+application programming languages that are available.
+
+# Technical Motivation
 
 Existing “build” languages (e.g., make, ant, maven, gradle, Jenkins “pipeline”)
 leave much to be desired. They tend to be non-[composable](https://en.wikipedia.org/wiki/Composability),
