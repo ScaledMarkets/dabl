@@ -145,8 +145,7 @@ public class DefaultExecutor implements Executor {
 	}
 	
 	private interface ArtifactOperator {
-		void operation(String project, List<String> includePatterns,
-			List<String> excludePatterns) throws Exception;
+		void operation(Repo repo, String project, PatternSets patternSets) throws Exception;
 	}
 	
 	/**
@@ -156,8 +155,8 @@ public class DefaultExecutor implements Executor {
 	protected copyArtifactsTo(Set<Artifact> artifacts, File dir) throws Exception {
 		
 		operateOnArtifacts(artifacts, dir,
-			(String project, List<String> includePatterns, List<String> excludePatterns) ->
-				repo.getFiles(project, includePatterns, excludePatterns));
+			(Repo repo, String project, PatternSets patternSets) ->
+				repo.getFiles(project, patternSets));
 	}
 	
 	/**
@@ -167,61 +166,87 @@ public class DefaultExecutor implements Executor {
 	protected copyToArtifacts(File dir, Set<Artifact> artifacts) throws Exception {
 		
 		operateOnArtifacts(artifacts, dir,
-			(String project, List<String> includePatterns, List<String> excludePatterns) ->
-				repo.putFiles(project, includePatterns, excludePatterns));
+			(Repo repo, String project, PatternSets patternSets) ->
+				repo.putFiles(project, patternSets));
 	}
 	
 	protected void operateOnArtifacts(File dir, Set<Artifact> artifacts,
 		ArtifactOperator operator) throws Exception {
 		
-		List<String> includePatterns = new LinkedList<String>();
-		List<String> excludePatterns = new LinkedList<String>();
-
+		Set<PatternSets> patternSetsSet = new TreeSet<PatternSets>() {
+			/**
+			 * Return the PatternSets for the specified path and project. If it does
+			 * not exist, create it.
+			 */
+			protected PatternSets getPatternSets(String path, String project) {
+				....
+			}
+		};
+		
 		for (Artifact artifact : artifacts) {
 			AOartifactSet artifactSet = artifact.getArtifactSet();
 			AOidRef reposIdRef = (AOidRef)(artifactSet.getRepositoryId());
 			
+			// Use the Repo object to pull the files from the repo.
+			String project = this.helper.getStringLiteralValue(artifactSet.getProject());
+			
 			// Identify the repo declaration.
 			AOrepoDeclaration repoDecl = this.helper.getRepoDeclFromRepoRef(reposIdRef);
+			String path = this.helper.getStringLiteralValue(repoDecl.getPath());
+			
+			PatternSets patternSets = patternSetsSet.getPatternSets(path, project);
 			
 			// Obtain the repo information.
 			String scheme = this.helper.getStringValueOpt(repoDecl.getScheme());
 			String userid = this.helper.getStringValueOpt(repoDecl.getUserid());
 			String password = this.helper.getStringValueOpt(repoDecl.getPassword());
 			String repoType = this.helper.getStringLiteralValue(repoDecl.getType());
-			String path = this.helper.getStringLiteralValue(repoDecl.getPath());
 			
 			// Use the repo info to construct a Repo object.
 			Repo repo = Repo.getRepo(repoType, scheme, path, userid, password);
 
 			// Construct a set of include patterns and a set of exclude patterns.
 			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
-			assembleIncludesAndExcludes(filesetOps, includePatterns, excludePatterns);
-			
-			// Use the Repo object to pull the files from the repo.
-			String project = this.helper.getStringLiteralValue(artifactSet.getProject());
+			assembleIncludesAndExcludes(filesetOps, patternSets);
 		}
 		
-		operator(project, includePatterns, excludePatterns);
+		for (PatternSets patternSets : patternSetsSet) {
+			operator(repo, project, patternSets);
+		}
 	}
 	
-	protected void assembleIncludesAndExcludes(List<POfilesetOperation>filesetOps,
-		List<String> includePatterns, List<String> excludePatterns) {
-	
-		for (POfilesetOperation op : filesetOps) {
-			
-			if (op instanceof AIncludeOfilesetOperation) {
-				AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
-				POstringLiteral lit = includeOp.getOstringLiteral();
-				String pattern = this.helper.getStringLiteralValue(lit);
-				includePatterns.add(pattern);
-			} else if (op instanceof AExcludeOfilesetOperation) {
-				AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
-				POstringLiteral lit = excludeOp.getOstringLiteral();
-				String pattern = this.helper.getStringLiteralValue(lit);
-				excludePatterns.add(pattern);
-			} else throw new RuntimeException(
-				"Unexpected POfilesetOperation type: " + op.getClass().getName());
+	class PatternSets implements Comparable {
+		
+		PatternSets(String path, String project) {
+			this.path = path;
+			this.project = project;
 		}
+		
+		private String path;
+		private String project;
+		private List<String> includePatterns = new LinkedList<String>();
+		private List<String> excludePatterns = new LinkedList<String>();
+		
+		protected void assembleIncludesAndExcludes(List<POfilesetOperation>filesetOps) {
+		
+			for (POfilesetOperation op : filesetOps) {
+				
+				if (op instanceof AIncludeOfilesetOperation) {
+					AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
+					POstringLiteral lit = includeOp.getOstringLiteral();
+					String pattern = this.helper.getStringLiteralValue(lit);
+					includePatterns.add(pattern);
+				} else if (op instanceof AExcludeOfilesetOperation) {
+					AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
+					POstringLiteral lit = excludeOp.getOstringLiteral();
+					String pattern = this.helper.getStringLiteralValue(lit);
+					excludePatterns.add(pattern);
+				} else throw new RuntimeException(
+					"Unexpected POfilesetOperation type: " + op.getClass().getName());
+			}
+		}
+		
+		public int compareTo(....) {
+			....match if path and project match
 	}
 }
