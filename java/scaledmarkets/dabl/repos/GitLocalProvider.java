@@ -3,6 +3,7 @@ package scaledmarkets.dabl.repos;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.client.*;
+import java.io.File;
 
 public class GitLocalProvider implements RepoProvider {
 	
@@ -15,8 +16,12 @@ public class GitLocalProvider implements RepoProvider {
 		
 		// References:
 		
-		public void getFiles(String project, List<String> includePatterns,
-			List<String> excludePatterns) throws Exception {
+		public void getFiles(String project, PatternSets patternSets, File dir) throws Exception {
+			
+			// Synchronize the local repo/branch.
+			....
+			
+			
 			
 			for () {
 				
@@ -26,8 +31,7 @@ public class GitLocalProvider implements RepoProvider {
 			
 		}
 		
-		public void putFiles(String project, List<String> includePatterns,
-			List<String> excludePatterns) throws Exception {
+		public void putFiles(File dir, String project, PatternSets patternSets) throws Exception {
 			
 			....
 		}

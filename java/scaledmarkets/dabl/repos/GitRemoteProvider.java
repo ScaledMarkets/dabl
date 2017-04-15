@@ -3,6 +3,7 @@ package scaledmarkets.dabl.repos;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.client.*;
+import java.io.File;
 
 public class GitRemoteProvider implements RepoProvider {
 	
@@ -17,19 +18,34 @@ public class GitRemoteProvider implements RepoProvider {
 		// https://developer.github.com/v3/repos/
 		// https://developer.github.com/v3/repos/contents/
 		
-		public void getFiles(String project, List<String> includePatterns,
-			List<String> excludePatterns) throws Exception {
+		public void getFiles(String project, PatternSets patternSets, File dir) throws Exception {
 			
+			
+			// Get list of files in the repo project/branch.
 			....
-			ClientBuilder clientBuilder = ClientBuilder.newBuilder().withConfig(clientConfig);
 			
+			// Retrieve the files that match the include/exclude patterns.
+			for (....each file in the project/branch) {
+				
+				if (....file matches the include patterns) {
+					if (....file does not match the exclude patterns) {
+						
+						....Add the file to the list of files to retrieve.
+					}
+				}
+			}
+			
+			// Prepare a REST client.
+			ClientBuilder clientBuilder = ClientBuilder.newBuilder().withConfig(clientConfig);
 			Client client = clientBuilder.build();
 			
-			....client.target(uri)
+			// Use the REST client to retrieve the files in the list.
+			for (....each file in the retrieve list) {
+				....client.target(uri)
+			}
 		}
 		
-		public void putFiles(String project, List<String> includePatterns,
-			List<String> excludePatterns) throws Exception {
+		public void putFiles(File dir, String project, PatternSets patternSets) throws Exception {
 			
 			....
 		}

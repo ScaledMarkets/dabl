@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Properties;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.File;
 
 public class Repo {
 	
@@ -45,19 +46,17 @@ public class Repo {
 	/**
 	 * Retrieve the specified files from the specified project in the repository.
 	 */
-	public void getFiles(String project, List<String> includePatterns,
-		List<String> excludePatterns) throws Exception {
+	public void getFiles(String project, PatternSets patternSets, File dir) throws Exception {
 		
-		....
+		getRepoProvider().getFiles(project, patternSets, dir);
 	}
 	
 	/**
 	 * Store ("push") the specified files to the specified project of the repository.
 	 */
-	public void putFiles(String project, List<String> includePatterns,
-		List<String> excludePatterns) throws Exception {
+	public void putFiles(File dir, String project, PatternSets patternSets) throws Exception {
 		
-		....
+		getRepoProvider().putFiles(dir, project, patternSets);
 	}
 	
 	public String getRepoType() { return repoType; }

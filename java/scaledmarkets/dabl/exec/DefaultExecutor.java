@@ -156,7 +156,7 @@ public class DefaultExecutor implements Executor {
 		
 		operateOnArtifacts(artifacts, dir,
 			(Repo repo, String project, PatternSets patternSets) ->
-				repo.getFiles(project, patternSets));
+				repo.getFiles(project, patternSets, dir));
 	}
 	
 	/**
@@ -167,7 +167,7 @@ public class DefaultExecutor implements Executor {
 		
 		operateOnArtifacts(artifacts, dir,
 			(Repo repo, String project, PatternSets patternSets) ->
-				repo.putFiles(project, patternSets));
+				repo.putFiles(dir, project, patternSets));
 	}
 	
 	protected void operateOnArtifacts(File dir, Set<Artifact> artifacts,
@@ -216,48 +216,6 @@ public class DefaultExecutor implements Executor {
 		
 		for (PatternSets patternSets : patternSetsMap.values()) {
 			operator(repo, project, patternSets);
-		}
-	}
-	
-	class PatternSets implements Comparable<PatternSets> {
-		
-		PatternSets(String path, String project) {
-			this.path = path;
-			this.project = project;
-		}
-		
-		private String path;
-		private String project;
-		private List<String> includePatterns = new LinkedList<String>();
-		private List<String> excludePatterns = new LinkedList<String>();
-		
-		protected void assembleIncludesAndExcludes(List<POfilesetOperation>filesetOps) {
-		
-			for (POfilesetOperation op : filesetOps) {
-				
-				if (op instanceof AIncludeOfilesetOperation) {
-					AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
-					POstringLiteral lit = includeOp.getOstringLiteral();
-					String pattern = this.helper.getStringLiteralValue(lit);
-					includePatterns.add(pattern);
-				} else if (op instanceof AExcludeOfilesetOperation) {
-					AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
-					POstringLiteral lit = excludeOp.getOstringLiteral();
-					String pattern = this.helper.getStringLiteralValue(lit);
-					excludePatterns.add(pattern);
-				} else throw new RuntimeException(
-					"Unexpected POfilesetOperation type: " + op.getClass().getName());
-			}
-		}
-		
-		public static String getKey(String path, String project) {
-			return path + ":" + project;
-		}
-		
-		public String getKey() { return getKey(path, project); }
-		
-		public int compareTo(PatternSets other) {
-			return getKey().compareTo(other.getKey());
 		}
 	}
 }
