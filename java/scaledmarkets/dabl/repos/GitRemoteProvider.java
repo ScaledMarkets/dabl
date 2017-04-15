@@ -9,7 +9,7 @@ public class GitRemoteProvider implements RepoProvider {
 	
 	public Repo getRepo(String scheme, path, userid, password) throws Exception {
 		
-		return new GitRemoteRepo(....);
+		return new GitRemoteRepo();
 	}
 	
 	class GitRemoteRepo extends Repo {
@@ -18,9 +18,9 @@ public class GitRemoteProvider implements RepoProvider {
 		// https://developer.github.com/v3/repos/
 		// https://developer.github.com/v3/repos/contents/
 		
-		public void getFiles(String project, PatternSets patternSets, File dir) throws Exception {
+		public void getFiles(PatternSets patternSets, File dir) throws Exception {
 			
-			
+			/*
 			// Get list of files in the repo project/branch.
 			....
 			
@@ -43,11 +43,15 @@ public class GitRemoteProvider implements RepoProvider {
 			for (....each file in the retrieve list) {
 				....client.target(uri)
 			}
+			
+			*/
+			
+			
 		}
 		
-		public void putFiles(File dir, String project, PatternSets patternSets) throws Exception {
+		public void putFiles(File dir, PatternSets patternSets) throws Exception {
 			
-			....
+			//....
 		}
 		
 		protected RepoProvider getRepoProvider() { return GitRemoteProvider.this; }

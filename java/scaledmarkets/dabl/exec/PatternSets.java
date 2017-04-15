@@ -1,46 +1,36 @@
 package scaledmarkets.dabl.exec;
 
+import scaledmarkets.dabl.node.*;
 import java.util.List;
 import java.util.LinkedList;
 
 public class PatternSets implements Comparable<PatternSets> {
 	
-	public PatternSets(String path, String project) {
-		this.path = path;
+	public PatternSets(Repo repo, String project) {
+		this.repo = repo;
 		this.project = project;
 	}
 	
-	private String path;
+	private Repo repo;
 	private String project;
 	private List<String> includePatterns = new LinkedList<String>();
 	private List<String> excludePatterns = new LinkedList<String>();
 	
-	protected void assembleIncludesAndExcludes(List<POfilesetOperation>filesetOps) {
-	
-		for (POfilesetOperation op : filesetOps) {
-			
-			if (op instanceof AIncludeOfilesetOperation) {
-				AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
-				POstringLiteral lit = includeOp.getOstringLiteral();
-				String pattern = this.helper.getStringLiteralValue(lit);
-				includePatterns.add(pattern);
-			} else if (op instanceof AExcludeOfilesetOperation) {
-				AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
-				POstringLiteral lit = excludeOp.getOstringLiteral();
-				String pattern = this.helper.getStringLiteralValue(lit);
-				excludePatterns.add(pattern);
-			} else throw new RuntimeException(
-				"Unexpected POfilesetOperation type: " + op.getClass().getName());
-		}
+	public static String getKey(Repo repo, String project) {
+		return repo.hashCode() + ":" + project;
 	}
 	
-	public static String getKey(String path, String project) {
-		return path + ":" + project;
-	}
+	public String getKey() { return getKey(repo, project); }
 	
-	public String getKey() { return getKey(path, project); }
+	public Repo getRepo() { return this.repo; }
+	
+	public String getProject() { return this.project; }
 	
 	public int compareTo(PatternSets other) {
 		return getKey().compareTo(other.getKey());
 	}
+	
+	public List<String> getIncludePatterns() { return this.includePatterns; }
+	
+	public List<String> getExcludePatterns() { return this.excludePatterns; }
 }

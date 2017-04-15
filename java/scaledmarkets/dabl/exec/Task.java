@@ -88,6 +88,6 @@ public class Task {
 	 */
 	public void executeTask(TaskContainer container) throws Exception {
 		System.out.println("Performing task " + this.getName());
-		container.executeTask(this);
+		container.execute();
 	}
 }

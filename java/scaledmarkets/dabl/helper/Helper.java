@@ -326,11 +326,11 @@ public class Helper {
 			reposIdRefAnnotation = (IdRefAnnotation)a;
 		} else throw new RuntimeException("Unexpected annotation type: " + a.getClass().getName());
 		SymbolEntry e = reposIdRefAnnotation.getDefiningSymbolEntry();
-		if (! (e instanceof DeclaredEntry) throw new RuntimeException(
+		if (! (e instanceof DeclaredEntry)) throw new RuntimeException(
 			"Expected a DeclaredEntry, but found a " + e.getClass().getName());
 		DeclaredEntry de = (DeclaredEntry)e;
 		Node n = de.getDefiningNode();
-		if (! (n instanceof AOrepoDeclaration) throw new RuntimeException(
+		if (! (n instanceof AOrepoDeclaration)) throw new RuntimeException(
 			"Expected a AOrepoDeclaration, but found a " + e.getClass().getName());
 		AOrepoDeclaration repoDecl = (AOrepoDeclaration)n;
 		return repoDecl;

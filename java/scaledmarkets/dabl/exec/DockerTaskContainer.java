@@ -29,8 +29,13 @@ public class DockerTaskContainer extends TaskContainer {
 		this.dockerContainer.start();
 		
 		// Execute the task in the container.
-		....
+		//....
 		
 		
+	}
+	
+	public void destroy() throws Exception {
+		
+		dockerContainer.destroy();
 	}
 }

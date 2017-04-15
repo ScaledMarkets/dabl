@@ -5,8 +5,9 @@ import java.util.Properties;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 
-public class Repo {
+public abstract class Repo {
 	
 	private String repoType, scheme, path, userid, password;
 	
@@ -19,13 +20,13 @@ public class Repo {
 		Properties properties = new Properties();
 		String propertyFileName = PropertyFileName;
 		ClassLoader classLoader = Repo.class.getClassLoader();
-		InputStream inputStream = classLoader.getResourceAsStream(propertyFileName):
+		InputStream inputStream = classLoader.getResourceAsStream(propertyFileName);
 		if (inputStream == null) throw new FileNotFoundException(
 			"property file " + PropertyFileName + " not found");
 		String repoProviderName = properties.getProperty("repo.providers." + repoType);
 		if (repoProviderName == null) throw new Exception(
 			"Provider for repo type " + repoType + " not found");
-		Class repoProviderClass = classLoader.loadClass(repoProviderName, true);
+		Class repoProviderClass = Class.forName(repoProviderName);
 		Object obj = repoProviderClass.newInstance();
 		if (! (obj instanceof RepoProvider)) throw new Exception(
 			"Class " + repoProviderClass.getName() + " is not a RepoProvider");
@@ -46,17 +47,17 @@ public class Repo {
 	/**
 	 * Retrieve the specified files from the specified project in the repository.
 	 */
-	public void getFiles(String project, PatternSets patternSets, File dir) throws Exception {
+	public void getFiles(PatternSets patternSets, File dir) throws Exception {
 		
-		getRepoProvider().getFiles(project, patternSets, dir);
+		getRepoProvider().getFiles(patternSets, dir);
 	}
 	
 	/**
 	 * Store ("push") the specified files to the specified project of the repository.
 	 */
-	public void putFiles(File dir, String project, PatternSets patternSets) throws Exception {
+	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
-		getRepoProvider().putFiles(dir, project, patternSets);
+		getRepoProvider().putFiles(dir, patternSets);
 	}
 	
 	public String getRepoType() { return repoType; }

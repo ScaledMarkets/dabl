@@ -139,6 +139,17 @@ public class Docker {
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
 	public DockerContainer createContainer(String imageIdOrName, String containerName,
+		String hostPathToMap, String containerPathToMap) throws Exception {
+		
+		return createContainer(imageIdOrName, containerName, new String[] {hostPathToMap},
+			new String[] {containerPathToMap});
+	}
+	
+	/**
+	 * 
+	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
+	 */
+	public DockerContainer createContainer(String imageIdOrName, String containerName,
 		String[] hostPathsToMap, String[] containerPathsToMap) throws Exception {
 		
 		if ((hostPathsToMap == null) || (containerPathsToMap == null))

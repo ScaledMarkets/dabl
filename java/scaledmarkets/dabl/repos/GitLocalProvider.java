@@ -9,15 +9,16 @@ public class GitLocalProvider implements RepoProvider {
 	
 	public Repo getRepo(String scheme, path, userid, password) throws Exception {
 		
-		return new GitLocalRepo(....);
+		return new GitLocalRepo();
 	}
 	
 	class GitLocalRepo extends Repo {
 		
 		// References:
 		
-		public void getFiles(String project, PatternSets patternSets, File dir) throws Exception {
+		public void getFiles(PatternSets patternSets, File dir) throws Exception {
 			
+			/*
 			// Synchronize the local repo/branch.
 			....
 			
@@ -28,12 +29,12 @@ public class GitLocalProvider implements RepoProvider {
 				
 				
 			}
-			
+			*/
 		}
 		
-		public void putFiles(File dir, String project, PatternSets patternSets) throws Exception {
+		public void putFiles(File dir, PatternSets patternSets) throws Exception {
 			
-			....
+			//....
 		}
 		
 		protected RepoProvider getRepoProvider() { return GitLocalProvider.this; }

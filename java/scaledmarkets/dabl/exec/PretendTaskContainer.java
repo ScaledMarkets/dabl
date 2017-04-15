@@ -14,4 +14,7 @@ public class PretendTaskContainer extends TaskContainer {
 	public void execute() throws Exception {
 		System.out.println(">> Simulator: Task " + this.task.getName() + " would be executed");
 	}
+	
+	public void destroy() throws Exception {
+	}
 }

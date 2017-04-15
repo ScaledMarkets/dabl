@@ -273,4 +273,16 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		this.setOut(idRef, annotation);
 		return annotation;
 	}
+	
+	protected ExprAnnotation setExprAnnotation(Node node, Object value)
+	{
+		ExprAnnotation annotation = new ExprAnnotation(node, value);
+		this.setOut(node, annotation);
+		return annotation;
+	}
+	
+	protected ExprAnnotation getExprAnnotation(Node node)
+	{
+		return this.getOut(node);
+	}
 }

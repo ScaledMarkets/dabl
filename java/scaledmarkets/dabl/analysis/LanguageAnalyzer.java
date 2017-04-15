@@ -308,6 +308,11 @@ public class LanguageAnalyzer extends DablBaseAdapter
 
 	public void inAStringOstringLiteral(AStringOstringLiteral node)
 	{
+		super.inAStringOstringLiteral(node);
+	}
+
+	public void outAStringOstringLiteral(AStringOstringLiteral node)
+	{
 		TString s = node.getString();
 		String value = s.getText();
 		
@@ -317,15 +322,15 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		}
 		
 		// Set attribute value.
-		//setExprAnnotation(node, value);
-	}
-
-	public void outAStringOstringLiteral(AStringOstringLiteral node)
-	{
-		super.outAStringOstringLiteral(node);
+		setExprAnnotation(node, value);
 	}
 
 	public void inAString2OstringLiteral(AString2OstringLiteral node)
+	{
+		super.inAString2OstringLiteral(node);
+	}
+
+	public void outAString2OstringLiteral(AString2OstringLiteral node)
 	{
 		TString2 s = node.getString2();
 		String value = s.getText();
@@ -336,12 +341,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		}
 		
 		// Set attribute value.
-		//setExprAnnotation(node, value);
-	}
-
-	public void outAString2OstringLiteral(AString2OstringLiteral node)
-	{
-		super.outAString2OstringLiteral(node);
+		setExprAnnotation(node, value);
 	}
 	
 	/* Evaluate string expressions.
@@ -357,7 +357,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 
 	public void outAStaticStringExprOstringLiteral(AStaticStringExprOstringLiteral node)
 	{
-		/*
 		POstringLiteral left = node.getLeft();
 		POstringLiteral right = node.getRight();
 		
@@ -386,6 +385,5 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		String result = leftString + rightString;
 		
 		setExprAnnotation(node, result);
-		*/
 	}
 }
