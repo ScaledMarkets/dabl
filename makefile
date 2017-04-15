@@ -30,6 +30,7 @@ classfiles := \
 	$(build_dir)/$(package)/analysis/*.class \
 	$(build_dir)/$(package)/lexer/*.class \
 	$(build_dir)/$(package)/node/*.class \
+	$(build_dir)/$(package)/repos/*.class \
 	$(build_dir)/$(package)/parser/*.class
 
 # Command aliases:
@@ -129,6 +130,7 @@ compile: config
 		$(src_dir)/$(package)/docker/*.java \
 		$(src_dir)/$(package)/analysis/*.java \
 		$(src_dir)/$(package)/exec/*.java \
+		$(src_dir)/$(package)/repos/*.java \
 		$(src_dir)/$(package)/helper/*.java
 
 compile_clean:
