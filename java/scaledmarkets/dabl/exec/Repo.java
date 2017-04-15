@@ -29,7 +29,7 @@ public class Repo {
 		if (! (obj instanceof RepoProvider)) throw new Exception(
 			"Class " + repoProviderClass.getName() + " is not a RepoProvider");
 		RepoProvider repoProvider = (RepoProvider)obj;
-		return repoProvider.getRepo(repoType, scheme, path, userid, password);
+		return repoProvider.getRepo(scheme, path, userid, password);
 	}
 	
 	protected Repo(String repoType, String scheme, String path,
@@ -43,7 +43,7 @@ public class Repo {
 	}
 
 	/**
-	 * Retrieve the specified files 
+	 * Retrieve the specified files from the specified project in the repository.
 	 */
 	public void getFiles(String project, List<String> includePatterns,
 		List<String> excludePatterns) throws Exception {
@@ -52,7 +52,7 @@ public class Repo {
 	}
 	
 	/**
-	 * 
+	 * Store ("push") the specified files to the specified project of the repository.
 	 */
 	public void putFiles(String project, List<String> includePatterns,
 		List<String> excludePatterns) throws Exception {
@@ -67,4 +67,8 @@ public class Repo {
 	public String getPath() { return path; }
 	
 	public String getUserId() { return userid; }
+	
+	protected String getPassword() { return password; }
+	
+	protected abstract RepoProvider getRepoProvider();
 }
