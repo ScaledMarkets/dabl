@@ -366,12 +366,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		Object leftValue;
 		Object rightValue;
 		
-		try {
-			leftValue = leftAnnot.getValue();
-			rightValue = rightAnnot.getValue();
-		} catch (ExprAnnotation.DynamicEvaluation ex) {
-			throw new RuntimeException(ex);
-		}
+		leftValue = leftAnnot.getValue();
+		rightValue = rightAnnot.getValue();
 		
 		if (leftValue == null) throw new RuntimeException("No left operand in concatenation");
 		if (rightValue == null) throw new RuntimeException("No right operand in concatenation");

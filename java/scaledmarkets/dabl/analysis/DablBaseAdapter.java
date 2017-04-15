@@ -283,6 +283,6 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	protected ExprAnnotation getExprAnnotation(Node node)
 	{
-		return this.getOut(node);
+		return (ExprAnnotation)(this.getOut(node));
 	}
 }

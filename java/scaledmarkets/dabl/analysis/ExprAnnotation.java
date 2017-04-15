@@ -1,6 +1,8 @@
 package scaledmarkets.dabl.analysis;
 
-public abstract class ExprAnnotation implements Annotation
+import scaledmarkets.dabl.node.*;
+
+public class ExprAnnotation implements Annotation
 {
 	private Node node;
 	private Object value;
@@ -9,4 +11,8 @@ public abstract class ExprAnnotation implements Annotation
 		this.node = node;
 		this.value = value;
 	}
+	
+	public Node getNode() { return node; }
+	
+	public Object getValue() { return value; }
 }

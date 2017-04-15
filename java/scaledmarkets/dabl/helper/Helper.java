@@ -320,7 +320,7 @@ public class Helper {
 		
 		Annotation a = state.getOut(reposIdRef);
 		if (a == null) throw new RuntimeException(
-			"Unable to identify " + Utilities.createNameFromPath(reposIdRef.getId()));
+			"Unable to identify " + reposIdRef.getId());
 		IdRefAnnotation reposIdRefAnnotation = null;
 		if (a instanceof IdRefAnnotation) {
 			reposIdRefAnnotation = (IdRefAnnotation)a;
