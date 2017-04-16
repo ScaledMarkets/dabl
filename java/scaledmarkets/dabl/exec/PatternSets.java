@@ -4,6 +4,10 @@ import scaledmarkets.dabl.node.*;
 import java.util.List;
 import java.util.LinkedList;
 
+/**
+ * A collection of file patterns specifying files to include and exclude from
+ * a repository project.
+ */
 public class PatternSets implements Comparable<PatternSets> {
 	
 	public PatternSets(Repo repo, String project) {
@@ -16,6 +20,10 @@ public class PatternSets implements Comparable<PatternSets> {
 	private List<String> includePatterns = new LinkedList<String>();
 	private List<String> excludePatterns = new LinkedList<String>();
 	
+	/**
+	 * Create a key that uniquely identifies the repository/project combination.
+	 * The key is not required to be externalizable.
+	 */
 	public static String getKey(Repo repo, String project) {
 		return repo.hashCode() + ":" + project;
 	}
