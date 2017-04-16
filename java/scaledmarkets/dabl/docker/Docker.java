@@ -55,16 +55,29 @@ import org.glassfish.jersey.CommonProperties;
  */
 public class Docker {
 	
+	/** Normally, this is a unix socket URL. */
 	public static String DefaultDockerURL = "unix:///var/run/docker.sock";
-	public static int Port = 22;
+	
+	/** Port to map to the containers that are created. */
+	public static int ContainerPort = 22;
 
 	private String dockerURL;
 	private URI uri;
 	private WebTarget endpoint;
 	private Client client;
-	private static String portStr = String.valueOf(Port);
+	private static String containerPortStr = String.valueOf(ContainerPort);
 	private static String hostPortStr = "22";
 	
+	protected Docker(Client client, WebTarget endpoint) {
+		this.client = client;
+		this.endpoint = endpoint;
+	}
+	
+	/**
+	 * Create a Docker object for communicating with to a Docker daemon.
+	 * This method does not actually communicate with the daemon. To test the
+	 * connection, use the ping method.
+	 */
 	public static Docker connect(String dockerURL) throws Exception {
 		
 		URI originalUri = new URI(dockerURL);
@@ -99,21 +112,22 @@ public class Docker {
 		return docker;
 	}
 	
+	/**
+	 * Create a connection, but using the default unix URL.
+	 */
 	public static Docker connect() throws Exception {
 		return connect(DefaultDockerURL);
 	}
 	
+	/**
+	 * Release all connection resources.
+	 */
 	public void close() throws Exception {
 		this.client.close();
 	}
 	
-	protected Docker(Client client, WebTarget endpoint) {
-		this.client = client;
-		this.endpoint = endpoint;
-	}
-	
 	/**
-	 * 
+	 * TBD: move this out of this package.
 	 */
 	public void validateRequiredConfiguration() throws Exception {
 		// Verify that the required base image is present.
@@ -157,7 +171,7 @@ public class Docker {
 				"Only one of host path and container path arguments is null");
 		
 		JsonObjectBuilder ports = Json.createObjectBuilder()
-			.add(portStr + "/tcp", Json.createObjectBuilder());
+			.add(containerPortStr + "/tcp", Json.createObjectBuilder());
 		
 		JsonArrayBuilder filesystemMap = Json.createArrayBuilder();
 		
@@ -172,7 +186,7 @@ public class Docker {
 		}
 		
 		JsonObjectBuilder hostPortBindings = Json.createObjectBuilder()
-			.add(portStr + "/tcp", Json.createArrayBuilder()
+			.add(containerPortStr + "/tcp", Json.createArrayBuilder()
 				.add(Json.createObjectBuilder()
 					.add("HostPort", hostPortStr)));
 		
@@ -277,6 +291,9 @@ public class Docker {
 		}
 	}
 	
+	/**
+	 * Return true if the daemon reports that the specified container is running.
+	 */
 	public boolean containerIsRunning(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
@@ -295,6 +312,9 @@ public class Docker {
 		return running;
 	}
 	
+	/**
+	 * Return true if the daemon reports that the specified container exists.
+	 */
 	public boolean containerExists(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
@@ -311,6 +331,8 @@ public class Docker {
 	}
 	
 	/**
+	 * Obtain the containers with the specified name pattern or label. Pattern
+	 * matching is done using the Java regex Pattern methods.
 	 * Label may be a key name, or a key=value string.
 	 */
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
@@ -354,10 +376,16 @@ public class Docker {
 		return containers.toArray(new DockerContainer[containers.size()]);
 	}
 	
+	/**
+	 * Return the containers known to the daemon.
+	 */
 	public DockerContainer[] getContainers() throws Exception {
 		return getContainers(null, null);
 	}
 	
+	/**
+	 * Perform a GET request to the docker daemon.
+	 */
 	protected Response makeGetRequest(String path) {
 		
 		WebTarget target = this.endpoint.path(path);
@@ -369,6 +397,7 @@ public class Docker {
 	}
 	
 	/**
+	 * Perform a POST request to the docker daemon.
 	 * body may be null.
 	 */
 	protected Response makePostRequest(String path, String body) {
@@ -387,6 +416,9 @@ public class Docker {
 		}
 	}
 
+	/**
+	 * Perform a DELETE request to the docker daemon.
+	 */
 	protected Response makeDeleteRequest(String path) {
 		
 		WebTarget target = this.endpoint.path(path);
