@@ -221,7 +221,7 @@ and remain on the host system are those specified in the task's output set. This
 the side effects that a task has on the build environment.
 
 Docker runs as a daemon on its host system. The normal configuration is that the
-daemon listens on a unix socket, `unix:///var/run/docker.sock`. There are no Java
+daemon listens on a unix socket, `unix:///var/run/docker.sock`. There are no pure Java
 libraries for accessing unix sockets, so native code is necessary. We slightly
 adapted the code from the [junixsocket](https://github.com/kohlschutter/junixsocket)
 project. (The only modifications were to the static code in the `NativeUnixSocket`
@@ -235,7 +235,7 @@ has been developed by Docker, but we found that it is - at this time - completel
 undocumented, and examination of the test suite left many questions unanswered.
 We found it easier to access the Docker REST API directly, which is fully
 documented [here](https://docs.docker.com/engine/api/v1.27/). Hopefully future
-versions of the API will not break our interface - Docker is not known for
+versions of the Docker REST API will not break our interface - Docker is not known for
 maintaining backward compatibility.
 
 The result is a package `scaledmarkets.dabl.docker` which does exactly what we
