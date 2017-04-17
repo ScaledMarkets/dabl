@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.node.*;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.HashMap;
 
 /**
  * A collection of file patterns specifying files to include and exclude from
@@ -41,4 +42,27 @@ public class PatternSets implements Comparable<PatternSets> {
 	public List<String> getIncludePatterns() { return this.includePatterns; }
 	
 	public List<String> getExcludePatterns() { return this.excludePatterns; }
+	
+	/**
+	 * A map of PatternSets, indexed by repo/project. This can be used to
+	 * assemble a map of the include/exclude pattern sets for pulling or pushing
+	 * files to/from the project.
+	 */
+	public static class Map extends HashMap<String, PatternSets> {
+		
+		/**
+		 * Return the PatternSets for the specified path and project. If it does
+		 * not exist, create it.
+		 */
+		public PatternSets getPatternSets(Repo repo, String project) {
+			String key = PatternSets.getKey(repo, project);
+			PatternSets p = get(key);
+			if (p == null) {
+				p = new PatternSets(repo, project);
+				put(key, p);
+			}
+			return p;
+		}
+	}
+	
 }
