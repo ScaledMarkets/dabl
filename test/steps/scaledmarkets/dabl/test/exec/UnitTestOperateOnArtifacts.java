@@ -19,8 +19,9 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 
 
 		(new ArtifactOperator(this.helper) {
-			void operation(PatternSets patternSets) throws Exception;
-				patternSets.getRepo().getFiles(patternSets, dir));
+			void operation(PatternSets patternSets) throws Exception {
+				
+				patternSets.getRepo().getFiles(patternSets, dir);
 			}
 		}).operateOnArtifacts();
 }
