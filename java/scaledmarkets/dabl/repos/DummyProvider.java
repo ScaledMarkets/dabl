@@ -3,48 +3,32 @@ package scaledmarkets.dabl.repos;
 import scaledmarkets.dabl.exec.Repo;
 import scaledmarkets.dabl.exec.RepoProvider;
 import scaledmarkets.dabl.exec.PatternSets;
-import javax.ws.rs.core.*;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.client.*;
 import java.io.File;
 
 public class DummyProvider implements RepoProvider {
 	
-	public static String RepoType = "gitlocal";
+	public static String RepoType = "dummy";
 	
 	public Repo getRepo(String scheme, String path, String userid, String password) throws Exception {
-		return new GitLocalRepo(scheme, path, userid, password);
+		return new DummyRepo(scheme, path, userid, password);
 	}
-	
-	// References:
 	
 	public void getFiles(PatternSets patternSets, File dir) throws Exception {
 		
-		/*
-		// Synchronize the local repo/branch.
-		....
-		
-		
-		
-		for () {
-			
-			
-			
-		}
-		*/
+		....print the files that we would get.
 	}
 	
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
-		//....
+		....print the files that we would put.
 	}
 		
-	class GitLocalRepo extends Repo {
+	class DummyRepo extends Repo {
 		
-		GitLocalRepo(String scheme, String path, String userid, String password) {
+		DummyRepo(String scheme, String path, String userid, String password) {
 			super(RepoType, scheme, path, userid, password);
 		}
 		
-		protected RepoProvider getRepoProvider() { return GitLocalProvider.this; }
+		protected RepoProvider getRepoProvider() { return DummyProvider.this; }
 	}
 }

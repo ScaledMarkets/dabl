@@ -94,11 +94,11 @@ public class DefaultExecutor implements Executor {
 				// Obtain inputs and copy them into the workspace.
 				(new ArtifactOperator(this.helper) {
 					void operation(PatternSets patternSets) throws Exception {
-						patternSets.getRepo().getFiles(patternSets, dir);
+						patternSets.getRepo().getFiles(patternSets, workspace);
 					}
-				}).operateOnArtifacts();
+				}).operateOnArtifacts(inputs);
 				
-				copyArtifactsTo(inputs, workspace);
+				//copyArtifactsTo(inputs, workspace);
 		
 				// Create a container.
 				TaskContainer taskContainer =
@@ -110,11 +110,11 @@ public class DefaultExecutor implements Executor {
 				// Write the outputs from the workspace to the output directories.
 				(new ArtifactOperator(this.helper) {
 					void operation(PatternSets patternSets) throws Exception {
-						patternSets.getRepo().putFiles(dir, patternSets);
+						patternSets.getRepo().putFiles(workspace, patternSets);
 					}
-				}).operateOnArtifacts();
+				}).operateOnArtifacts(outputs);
 				
-				copyToArtifacts(workspace, outputs);
+				//copyToArtifacts(workspace, outputs);
 				
 				// Destroy the container, if desired.
 				taskContainer.destroy();

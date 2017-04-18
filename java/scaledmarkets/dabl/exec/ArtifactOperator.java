@@ -27,7 +27,7 @@ public abstract class ArtifactOperator {
 	 * Perform the specified operation on the specified set of artifacts, using
 	 * the specified directory as a local work directory.
 	 */
-	protected void operateOnArtifacts(Set<Artifact> artifacts, File dir) throws Exception {
+	protected void operateOnArtifacts(Set<Artifact> artifacts) throws Exception {
 		
 		PatternSetsMap patternSetsMap = new PatternSets.Map();
 		
