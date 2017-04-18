@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 /**
  * Perform an operation (specified by a derived class) on a collection of artifacts
- * which are specified via pattern sets.
+ * which are specified via include/exclude pattern sets.
  */
 public abstract class ArtifactOperator {
 	

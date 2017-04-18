@@ -45,6 +45,14 @@ public class DependencyGraph {
 		return tasks.get(taskDecl);
 	}
 	
+	public Set<Task> getAllTasks() {
+		return new HashSet<Task>(this.tasks.values());
+	}
+	
+	public Set<Artifact> getAllArtifacts() {
+		return new HashSet<Task>(this.artifacts.values());
+	}
+	
 	public Artifact getArtifactForSet(AOartifactSet a) {
 		return artifacts.get(a);
 	}

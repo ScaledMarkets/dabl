@@ -26,6 +26,10 @@ public class TestBase {
 		return this.helper;
 	}
 	
+	protected CompilerState getState() {
+		return this.helper.getState();
+	}
+	
 	public void assertThat(boolean expr) throws Exception {
 		this.helper.assertThat(expr);
 	}

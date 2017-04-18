@@ -65,4 +65,13 @@ public class PatternSets implements Comparable<PatternSets> {
 		}
 	}
 	
+	public String toString() {
+		String result = "";
+		for (String pattern : includePatterns) {
+			result = result + "+" + pattern + ";";
+		}
+		for (String pattern : excludePatterns) {
+			result = result + "-" + pattern + ";";
+		}
+	}
 }
