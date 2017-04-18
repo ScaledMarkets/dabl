@@ -2,7 +2,7 @@
 
 Feature: TestTask
 	
-	@done
+	@done @exec
 	Scenario: Simple
 		When I compile a simple task
 		Then I can retrieve the the task by its name
@@ -20,14 +20,17 @@ Feature: TestTask
 		Then the bash commands are executed
 	
 	@done @exec
-	Scenario: Basic pushing inputs
+	Scenario: Basic pushing inputs and retrieving outputs
+		Given a task containing bash commands that compute the sum of values in an input file
+		When I compile the task
+		Then the outputs contains a file with the correct sum value
 	
 	@done @exec
-	Scenario: Basic retrieving outputs
-
-	@done @exec
-	Scenario: Complex pushing inputs
-	
-	@done @exec
-	Scenario: Complex retrieving outputs
+	Scenario: Complex pushing inputs and retrieving outputs
+		Given a task containing bash commands that read three files that are named
+			in the inputs and two other files that are referenced via a wildcard
+		  And the task writes two files by name and two more by wildcard
+		  And the task modifies one of the input files
+		When I compile the task
+		Then the outputs contain the output files, and the input files are unmodified
 	

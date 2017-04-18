@@ -6,6 +6,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.en.And;
 
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.exec.*;
@@ -22,6 +23,8 @@ public class TestTask extends TestBase {
 	private String repoType;
 	private static String TaskName = "t123";
 
+	// Scenario: Simple
+	
 	@When("^I compile a simple task$")
 	public void i_compile_a_simple_task() throws Exception {
 		
@@ -54,6 +57,9 @@ public class TestTask extends TestBase {
 		SymbolEntry taskEntry = namespaceScope.getEntry(TaskName);
 		assertThat(taskEntry != null);
 	}
+	
+	
+	// Scenario: Two tasks
 
 	@Given("^I have two tasks and one has an output that is an input to the other$")
 	public void i_have_two_tasks_and_one_has_an_output_that_is_an_input_to_the_other() throws Throwable {
@@ -66,6 +72,9 @@ public class TestTask extends TestBase {
 		// Write code here that turns the phrase above into concrete actions
 		throw new Exception();
 	}
+	
+	
+	// Scenario: Execute bash
 	
 	@Given("^I have a task containing bash commands$")
 	public void i_have_a_task_containing_bash_commands() throws Throwable {
@@ -90,5 +99,45 @@ public class TestTask extends TestBase {
 	
 	@Then("^the bash commands are executed$")
 	public void the_bash_commands_are_executed() throws Throwable {
+	}
+	
+	
+	// Scenario: Basic pushing inputs and retrieving outputs
+	@Given("^a task containing bash commands that compute the sum of values in an input file$")
+	public void a_task_containing_bash_commands_that_compute_the_sum_of_values_in_an_input_file() throws Throwable {
+		
+		throw new Exception();
+	}
+	
+	@Then("^the outputs contains a file with the correct sum value$")
+	public void the_outputs_contains_a_file_with_the_correct_sum_value() throws Throwable {
+		
+		throw new Exception();
+	}
+	
+	
+	// Scenario: Complex pushing inputs and retrieving outputs
+	@Given("^a task containing bash commands that read three files that are named in the inputs and two other files that are referenced via a wildcard$")
+	public void complex_scenario() throws Throwable {
+		
+		throw new Exception();
+	}
+
+	@And("^the task writes two files by name and two more by wildcard$")
+	public void the_task_writes_two_files_by_name_and_two_more_by_wildcard() throws Throwable {
+		
+		throw new Exception();
+	}
+	
+	@And("^the task modifies one of the input files$")
+	public void the_task_modifies_one_of_the_input_files() throws Throwable {
+		
+		throw new Exception();
+	}
+	
+	@Then("^the outputs contain the output files, and the input files are unmodified$")
+	public void the_outputs_contain_the_output_files_and_the_input_files_are_unmodified() throws Throwable {
+		
+		throw new Exception();
 	}
 }
