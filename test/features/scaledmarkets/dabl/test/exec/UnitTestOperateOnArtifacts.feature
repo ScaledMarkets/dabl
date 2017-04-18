@@ -1,5 +1,6 @@
 # language: en
 
+@unit @exec
 Feature: UnitTestOperateOnArtifacts
 
 	Scenario: Basic

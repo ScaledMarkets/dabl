@@ -19,3 +19,15 @@ Feature: TestTask
 		When I compile the task
 		Then the bash commands are executed
 	
+	@done @exec
+	Scenario: Basic pushing inputs
+	
+	@done @exec
+	Scenario: Basic retrieving outputs
+
+	@done @exec
+	Scenario: Complex pushing inputs
+	
+	@done @exec
+	Scenario: Complex retrieving outputs
+	

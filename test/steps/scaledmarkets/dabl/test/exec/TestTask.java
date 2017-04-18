@@ -19,12 +19,18 @@ import java.util.LinkedList;
 
 public class TestTask extends TestBase {
 	
+	private String repoType;
+	private static String TaskName = "t123";
+
 	@When("^I compile a simple task$")
 	public void i_compile_a_simple_task() throws Exception {
 		
+		this.repoType = GitLocalProvider.RepoType;
 		Reader reader = new StringReader(
 "namespace simple \n" +
-"task t123\n" +
+"repo my_repository type \"" + this.repoType + "\" scheme \"https\" path \"github.com/myteam\"\n" +
+"  userid \"GitUserId\" password \"GitPassword\" \n" +
+"task " + TaskName + "\n" +
 "  when true\n" +
 "  inputs of \"repo1\" in my_git \"x\"\n" +
 "  outputs of \"repo2\" in my_git \"y\"\n" +
@@ -45,7 +51,7 @@ public class TestTask extends TestBase {
 		NameScopeEntry nse = (NameScopeEntry)entry;
 		
 		NameScope namespaceScope = nse.getOwnedScope();
-		SymbolEntry taskEntry = namespaceScope.getEntry("t123");
+		SymbolEntry taskEntry = namespaceScope.getEntry(TaskName);
 		assertThat(taskEntry != null);
 	}
 
@@ -65,7 +71,7 @@ public class TestTask extends TestBase {
 	public void i_have_a_task_containing_bash_commands() throws Throwable {
 		Reader reader = new StringReader(
 "namespace simple \n" +
-"task t123\n" +
+"task " + TaskName + "\n" +
 "  when true\n" +
 "  bash echo hello\n"
 			);
