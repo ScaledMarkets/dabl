@@ -51,7 +51,7 @@ public class PatternSets implements Comparable<PatternSets> {
 	public static class Map extends HashMap<String, PatternSets> {
 		
 		/**
-		 * Return the PatternSets for the specified path and project. If it does
+		 * Return the PatternSets for the specified repo and project. If it does
 		 * not exist, create it.
 		 */
 		public PatternSets getPatternSets(Repo repo, String project) {
