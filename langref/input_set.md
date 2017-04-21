@@ -27,6 +27,4 @@ When a local repository is specifed by a task input, the
 repository can be accessed from task [procedural statements](procedural_stmt.md)
 by the path,
 
-```
-/task-output-Id
-```
+<code>/</code><i>task-output-Id</i>
