@@ -14,9 +14,19 @@ or
 
 The first form is just like a <code><a href="files_decl.md">files</a></code>
 declaration, except that the artifacts that are declared are treated as inputs
-to the task.
+to the task. If an Id is specified, it is visible outside the task, as if it had been declared
+in a <code>files</code> declaration.
 
 The second form specifies an output that is declared elsewhere inside of a task.
+A repository created in this way is considered to be an intermediate build artifact,
+and is potentially disposable. However, it normally continues to exist from one
+DABL run to the next. It is not guaranteed to be completely unmodifiable by
+processes outside of DABL, but doing so would be considered a bad practice.
 
-If an Id is specified, it is visible outside the task, as if it had been declared
-in a <code>files</code> declaration.
+When a local repository is specifed by a task input, the
+repository can be accessed from task [procedural statements](procedural_stmt.md)
+by the path,
+
+```
+/task-output-Id
+```
