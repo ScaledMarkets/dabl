@@ -24,7 +24,7 @@ DABL run to the next. It is not guaranteed to be completely unmodifiable by
 processes outside of DABL, but doing so would be considered a bad practice.
 
 When a local repository is specifed by a task input, the
-repository can be accessed from task [procedural statements](procedural_stmt.md)
+repository files can be accessed from task [procedural statements](procedural_stmt.md)
 by the path,
 
 <code>/</code><i>task-output-Id</i>
