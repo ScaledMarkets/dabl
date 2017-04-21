@@ -312,13 +312,15 @@ Productions
                                                 artifact_set.oartifact_set)}
       | {files} outputs id                  {-> New onamed_artifact_set.files(
                                                 New oid_ref(id))}
+      | {local} outputs id new local files_stmts_opt
+                                            {-> ....}
         ;
       
-    artifact_sets {-> oartifact_set*} =
-        {multiple} artifact_set comma_char artifact_sets
-                                            {-> [artifact_set.oartifact_set, artifact_sets.oartifact_set]}
-      | {one} artifact_set                  {-> [artifact_set.oartifact_set]}
-      ;
+    //artifact_sets {-> oartifact_set*} =
+    //    {multiple} artifact_set comma_char artifact_sets
+    //                                        {-> [artifact_set.oartifact_set, artifact_sets.oartifact_set]}
+    //  | {one} artifact_set                  {-> [artifact_set.oartifact_set]}
+    //  ;
     
     artifact_set {-> oartifact_set} =
         of [project]:string_literal in [repository_id]:id prefer_stmt_opt files_stmts_opt

@@ -7,6 +7,10 @@
 <dl>
 <dd><code>inputs [</code> <i>Id</i> <code>]</code> <i><a href="artifact_set.md">artifact_set</a></i></dd>
 </dl>
+or
+<dl>
+<dd><code>inputs </code> <i>Id . Id</i></dd>
+</dl>
 
 If an input_set is specified, it must have at least one input.
 

@@ -12,6 +12,7 @@ import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.test.TestBase;
+import scaledmarkets.dabl.repos.DummyProvider;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -28,15 +29,15 @@ public class TestTask extends TestBase {
 	@When("^I compile a simple task$")
 	public void i_compile_a_simple_task() throws Exception {
 		
-		this.repoType = GitLocalProvider.RepoType;
+		this.repoType = DummyProvider.RepoType;
 		Reader reader = new StringReader(
 "namespace simple \n" +
 "repo my_repository type \"" + this.repoType + "\" scheme \"https\" path \"github.com/myteam\"\n" +
 "  userid \"GitUserId\" password \"GitPassword\" \n" +
 "task " + TaskName + "\n" +
 "  when true\n" +
-"  inputs of \"repo1\" in my_git \"x\"\n" +
-"  outputs of \"repo2\" in my_git \"y\"\n" +
+"  inputs of \"project1\" in my_git \"x\"\n" +
+"  outputs of \"project2\" in my_git \"y\"\n" +
 "  abc = ff true"
 			);
 		
@@ -63,13 +64,31 @@ public class TestTask extends TestBase {
 
 	@Given("^I have two tasks and one has an output that is an input to the other$")
 	public void i_have_two_tasks_and_one_has_an_output_that_is_an_input_to_the_other() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
+		this.repoType = DummyProvider.RepoType;
+		Reader reader = new StringReader(
+"namespace simple \n" +
+"repo my_repository type \"" + this.repoType + "\" scheme \"https\" path \"github.com/myteam\"\n" +
+"  userid \"GitUserId\" password \"GitPassword\" \n" +
+"task " + TaskName + "A \n" +
+"  when true\n" +
+"  outputs of \"project1\" in my_git \"y\"\n" +
+"task " + TaskName + "B \n" +
+"  when true\n" +
+"  inputs of \"project2\" in my_git \"x\""
+			);
+		
+		Dabl dabl = new Dabl(false, true, reader);
+		createHelper(dabl.process());
+		assertThat(getHelper().getState().getGlobalScope() != null);
+		
 		throw new Exception();
 	}
 	
 	@Then("^I can verify the task dependency$")
 	public void i_can_verify_the_task_dependency() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
+		
 		throw new Exception();
 	}
 	
@@ -103,6 +122,7 @@ public class TestTask extends TestBase {
 	
 	
 	// Scenario: Basic pushing inputs and retrieving outputs
+	
 	@Given("^a task containing bash commands that compute the sum of values in an input file$")
 	public void a_task_containing_bash_commands_that_compute_the_sum_of_values_in_an_input_file() throws Throwable {
 		
@@ -117,6 +137,7 @@ public class TestTask extends TestBase {
 	
 	
 	// Scenario: Complex pushing inputs and retrieving outputs
+	
 	@Given("^a task containing bash commands that read three files that are named in the inputs and two other files that are referenced via a wildcard$")
 	public void complex_scenario() throws Throwable {
 		
