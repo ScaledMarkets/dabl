@@ -116,6 +116,15 @@ where options can be
 <dd><code>-h</code> or <code>--help</code></dd>
 </dl>
 
+When running DABL, the following environment variables can be set:
+
+<dl>
+<dd><code>local_repository_dir</code> - The host directory into which to store
+	intermediate build output.</dd>
+<dd><code>repo.providers.</code><i>repo-provider</i> - The Java class name of
+	the repository provider identified by <i>repo-provider</i>.</dd>
+</dl>
+
 # Embedding the Compiler In an Application
 
 The DABL compiler is designed as a self-contained embeddable component that can be
