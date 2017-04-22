@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 
 public class Utilities {
 	
-	public static String PropertyFileName = "dabl.properties";
+	public static String PropertyFileName = ".dabl.properties";
 	
 	public static String createNameFromPath(List<TId> path) {
 		String name = "";

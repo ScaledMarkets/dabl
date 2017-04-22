@@ -125,6 +125,9 @@ When running DABL, the following environment variables can be set:
 	the repository provider identified by <i>repo-provider</i>.</dd>
 </dl>
 
+These values can also be set in a <code>.dabl.properties</code> file in the user's
+home directory.
+
 # Embedding the Compiler In an Application
 
 The DABL compiler is designed as a self-contained embeddable component that can be
