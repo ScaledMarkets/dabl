@@ -1,5 +1,6 @@
 package scaledmarkets.dabl.exec;
 
+import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
 
 public abstract class RemoteRepo implements Repo {
@@ -10,7 +11,7 @@ public abstract class RemoteRepo implements Repo {
 		String userid, String password) throws Exception {
 		
 		// Find the provider for the specified repo type.
-		String repoProviderName = Utilities.getSetting("repo.providers." + repoType);
+		String repoProviderName = Utilities.getSetting("dabl.repo.providers." + repoType);
 		if (repoProviderName == null) throw new Exception(
 			"Provider for repo type " + repoType + " not found");
 		Class repoProviderClass = Class.forName(repoProviderName);

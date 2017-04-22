@@ -119,9 +119,9 @@ where options can be
 When running DABL, the following environment variables can be set:
 
 <dl>
-<dd><code>local_repository_dir</code> - The host directory into which to store
+<dd><code>dabl.local_repository_dir</code> - The host directory into which to store
 	intermediate build output.</dd>
-<dd><code>repo.providers.</code><i>repo-provider</i> - The Java class name of
+<dd><code>dabl.repo.providers.</code><i>repo-provider</i> - The Java class name of
 	the repository provider identified by <i>repo-provider</i>.</dd>
 </dl>
 

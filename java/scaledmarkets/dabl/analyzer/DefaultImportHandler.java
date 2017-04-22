@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.analysis;
+package scaledmarkets.dabl.analyzer;
 
 import java.io.File;
 import java.io.Reader;

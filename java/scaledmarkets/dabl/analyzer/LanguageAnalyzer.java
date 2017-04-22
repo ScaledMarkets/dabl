@@ -1,9 +1,7 @@
-package scaledmarkets.dabl.analysis;
+package scaledmarkets.dabl.analyzer;
 
-//import scaledmarkets.dabl.analysis.*;
-//import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
-//import scaledmarkets.dabl.parser.*;
+import scaledmarkets.dabl.util.Utilities;
 
 import java.util.List;
 import java.util.LinkedList;

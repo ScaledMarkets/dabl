@@ -4,7 +4,7 @@ import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
-
+import scaledmarkets.dabl.util.Utilities;
 import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analysis.*;
 
@@ -56,6 +56,15 @@ public class Helper {
 		Utilities.assertThat(n instanceof AOnamespace);
 		AOnamespace namespace = (AOnamespace)n;
 		return namespace;
+	}
+	
+	/**
+	 * Return the fully qualified name (i.e., all parts of the path) of the
+	 * specified namespace.
+	 */
+	public String getPrimaryNamespaceFullName() {
+		Start start = state.getASTs().get(0);
+		return getNamespaceFullName(getNamespace(start));
 	}
 	
 	/**

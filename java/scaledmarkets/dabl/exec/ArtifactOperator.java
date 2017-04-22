@@ -27,7 +27,8 @@ public abstract class ArtifactOperator {
 	 * Perform the specified operation on the specified set of artifacts, using
 	 * the specified directory as a local work directory.
 	 */
-	protected void operateOnArtifacts(Set<Artifact> artifacts) throws Exception {
+	protected void operateOnArtifacts(String namespaceName, String taskName,
+		Set<Artifact> artifacts) throws Exception {
 		
 		PatternSetsMap patternSetsMap = new PatternSets.Map();
 		
@@ -41,7 +42,8 @@ public abstract class ArtifactOperator {
 				
 				// Find the NamedArtifactSet that owns the artifactSet.
 				String outputName = getName((ALocalOartifactSet)artifactSet);
-				repo = LocalRepo.createRepo(outputName, ALocalOartifactSet)artifactSet);
+				repo = LocalRepo.createRepo(namespaceName, taskName, outputName,
+					ALocalOartifactSet)artifactSet);
 				
 			} else if (artifactSet instanceof ARemoteOartifactSet) {
 				// Use the Repo object to pull the files from the repo.

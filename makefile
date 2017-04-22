@@ -28,6 +28,8 @@ classfiles := \
 	$(build_dir)/$(package)/exec/*.class \
 	$(build_dir)/$(package)/helper/*.class \
 	$(build_dir)/$(package)/analysis/*.class \
+	$(build_dir)/$(package)/analyzer/*.class \
+	$(build_dir)/$(package)/util/*.class \
 	$(build_dir)/$(package)/lexer/*.class \
 	$(build_dir)/$(package)/node/*.class \
 	$(build_dir)/$(package)/repos/*.class \
@@ -131,8 +133,9 @@ compile: config
 		$(src_dir)/sablecc/*.java \
 		$(src_dir)/$(package)/*.java \
 		$(src_dir)/$(package)/docker/*.java \
-		$(src_dir)/$(package)/analysis/*.java \
+		$(src_dir)/$(package)/analyzer/*.java \
 		$(src_dir)/$(package)/exec/*.java \
+		$(src_dir)/$(package)/util/*.java \
 		$(src_dir)/$(package)/repos/*.java \
 		$(src_dir)/$(package)/helper/*.java
 
