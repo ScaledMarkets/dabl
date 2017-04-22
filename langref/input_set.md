@@ -25,5 +25,5 @@ by the path,
 
 <code>/</code><i>task-output-Id</i>
 
-See [Outputs Clause](output_set.md#local-repositories) for more information on the
-creation and lifecycle of local repositories.
+See [Outputs Clause, Local Repositories](output_set.md#local-repositories) for more
+information on the creation and lifecycle of local repositories.
