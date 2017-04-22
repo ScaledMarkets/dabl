@@ -39,9 +39,8 @@ public abstract class ArtifactOperator {
 			if (artifactSet instanceof ALocalOartifactSet) {
 				// Create a local repository, managed by DABL.
 				
-				// Find the AInputOtaskDeclaration that owns the artifactSet.
-				
-				
+				// Find the NamedArtifactSet that owns the artifactSet.
+				String outputName = getName((ALocalOartifactSet)artifactSet);
 				repo = LocalRepo.createRepo(outputName, ALocalOartifactSet)artifactSet);
 				
 			} else if (artifactSet instanceof ARemoteOartifactSet) {
@@ -99,5 +98,24 @@ public abstract class ArtifactOperator {
 			} else throw new RuntimeException(
 				"Unexpected POfilesetOperation type: " + op.getClass().getName());
 		}
+	}
+	
+	protected String getName(ALocalOartifactSet artifactSet) throws Exception {
+		
+		Node parent = artifactSet.parent();
+		if (parent instanceof AOfilesDeclaration) {
+			AOfilesDeclaration filesDecl = (AOfilesDeclaration)parent;
+			TId id = filesDecl.getName();
+			return id.getText();
+		} else if (parent instanceof POnamedArtifactSet) {
+			if (parent instanceof ANamedOnamedArtifactSet) {
+				ANamedOnamedArtifactSet namedArtifactSet = (ANamedOnamedArtifactSet)parent;
+				TId id = namedArtifactSet.getId();
+				return id.getText();
+			} else {
+				throw new Exception("Artifact set must have a name");
+			}
+		} else throw new RuntimeException(
+			"Unexpected Node kind: " + parent.getClass().getName());
 	}
 }

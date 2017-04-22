@@ -8,8 +8,13 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.FileVisitResult;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.io.IOException;
+import java.util.Properties;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
 
 public class Utilities {
+	
+	public static String PropertyFileName = "dabl.properties";
 	
 	public static String createNameFromPath(List<TId> path) {
 		String name = "";
@@ -73,5 +78,19 @@ public class Utilities {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Obtain a DABL configuration property.
+	 */
+	public static String getProperty(String name) {
+		
+		Properties properties = new Properties();
+		String propertyFileName = PropertyFileName;
+		ClassLoader classLoader = Utilities.class.getClassLoader();
+		InputStream inputStream = classLoader.getResourceAsStream(propertyFileName);
+		if (inputStream == null) throw new FileNotFoundException(
+			"property file " + PropertyFileName + " not found");
+		return properties.getProperty(name);
 	}
 }

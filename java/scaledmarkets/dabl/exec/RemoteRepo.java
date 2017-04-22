@@ -1,29 +1,16 @@
 package scaledmarkets.dabl.exec;
 
-import java.util.List;
-import java.util.Properties;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 public abstract class RemoteRepo implements Repo {
 	
 	private String repoType, scheme, path, userid, password;
 	
-	public static String PropertyFileName = "dabl.properties";
-	
 	public static RemoteRepo getRepo(String repoType, String scheme, String path,
 		String userid, String password) throws Exception {
 		
 		// Find the provider for the specified repo type.
-		Properties properties = new Properties();
-		String propertyFileName = PropertyFileName;
-		ClassLoader classLoader = Repo.class.getClassLoader();
-		InputStream inputStream = classLoader.getResourceAsStream(propertyFileName);
-		if (inputStream == null) throw new FileNotFoundException(
-			"property file " + PropertyFileName + " not found");
-		String repoProviderName = properties.getProperty("repo.providers." + repoType);
+		String repoProviderName = Utilities.getProperty("repo.providers." + repoType);
 		if (repoProviderName == null) throw new Exception(
 			"Provider for repo type " + repoType + " not found");
 		Class repoProviderClass = Class.forName(repoProviderName);
