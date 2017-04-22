@@ -5,13 +5,15 @@ import java.io.File;
 
 public class LocalRepo implements Repo {
 	
-	public static LocalRepo createRepo(ALocalOartifactSet artifactSet) throws Exception {
+	public static LocalRepo createRepo(String outputName, ALocalOartifactSet artifactSet) throws Exception {
 		
-		LocalRepo repo = new LocalRepo(artifactSet);
+		LocalRepo repo = new LocalRepo(outputName, artifactSet);
 		....create directory
 		
 		return repo;
 	}
+	
+	public String getOutputName() { return outputName; }
 	
 	public ALocalOartifactSet getArtifactSet() { return artifactSet; }
 
@@ -31,10 +33,12 @@ public class LocalRepo implements Repo {
 		....
 	}
 
+	private String outputName;
 	private ALocalOartifactSet artifactSet;
 	private File directory;
 	
-	protected LocalRepo(ALocalOartifactSet artifactSet) {
+	protected LocalRepo(String outputName, ALocalOartifactSet artifactSet) {
+		this.outputName = outputName;
 		this.artifactSet = artifactSet;
 	}
 }

@@ -98,8 +98,6 @@ public class DefaultExecutor implements Executor {
 					}
 				}).operateOnArtifacts(inputs);
 				
-				//copyArtifactsTo(inputs, workspace);
-		
 				// Create a container.
 				TaskContainer taskContainer =
 					this.taskContainerFactory.createTaskContainer(task, workspace);
@@ -113,8 +111,6 @@ public class DefaultExecutor implements Executor {
 						patternSets.getRepo().putFiles(workspace, patternSets);
 					}
 				}).operateOnArtifacts(outputs);
-				
-				//copyToArtifacts(workspace, outputs);
 				
 				// Destroy the container, if desired.
 				taskContainer.destroy();

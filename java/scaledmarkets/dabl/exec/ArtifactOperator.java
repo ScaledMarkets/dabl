@@ -38,7 +38,11 @@ public abstract class ArtifactOperator {
 			Repo repo;
 			if (artifactSet instanceof ALocalOartifactSet) {
 				// Create a local repository, managed by DABL.
-				repo = LocalRepo.createRepo((ALocalOartifactSet)artifactSet);
+				
+				// Find the AInputOtaskDeclaration that owns the artifactSet.
+				
+				
+				repo = LocalRepo.createRepo(outputName, ALocalOartifactSet)artifactSet);
 				
 			} else if (artifactSet instanceof ARemoteOartifactSet) {
 				// Use the Repo object to pull the files from the repo.
