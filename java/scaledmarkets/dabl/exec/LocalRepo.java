@@ -14,7 +14,7 @@ public class LocalRepo implements Repo {
 		if (outputName == null) throw new Exception("Output name is null");
 		if (outputName.equals("")) throw new Exception("Empty output name");
 		
-		String workingDirPath = Utilities.getProperty("local_repository_dir");
+		String workingDirPath = Utilities.getSetting("local_repository_dir");
 		File workingDir = new File(workingDirPath);
 		if (! workingDir.exists()) throw new RuntimeException(
 			"Directory " + workingDir.toString() + " not found");

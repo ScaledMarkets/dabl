@@ -10,7 +10,7 @@ public abstract class RemoteRepo implements Repo {
 		String userid, String password) throws Exception {
 		
 		// Find the provider for the specified repo type.
-		String repoProviderName = Utilities.getProperty("repo.providers." + repoType);
+		String repoProviderName = Utilities.getSetting("repo.providers." + repoType);
 		if (repoProviderName == null) throw new Exception(
 			"Provider for repo type " + repoType + " not found");
 		Class repoProviderClass = Class.forName(repoProviderName);

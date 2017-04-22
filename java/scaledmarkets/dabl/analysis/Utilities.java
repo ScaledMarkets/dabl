@@ -81,16 +81,23 @@ public class Utilities {
 	}
 	
 	/**
-	 * Obtain a DABL configuration property.
+	 * Obtain a DABL configuration setting. Obtain it first from the environment;
+	 * if not found, then look for a .dabl.properties file in the user's home directory.
 	 */
-	public static String getProperty(String name) {
+	public static String getSetting(String name) throws IOException {
+		
+		String value = System.getenv(name);
+		if (value != null) return value;
+		
+		String homestr = System.getProperty("user.home");
+		if (homestr == null) throw new RuntimeException("No user home");
+		File home = new File(homestr);
+		if (! home.exists()) throw new RuntimeException("User home directory not found");
 		
 		Properties properties = new Properties();
-		String propertyFileName = PropertyFileName;
-		ClassLoader classLoader = Utilities.class.getClassLoader();
-		InputStream inputStream = classLoader.getResourceAsStream(propertyFileName);
-		if (inputStream == null) throw new FileNotFoundException(
-			"property file " + PropertyFileName + " not found");
+		File propertyFile = new File(home, PropertyFileName);
+		properties.load(new FileReader(propertyFile));
+		
 		return properties.getProperty(name);
 	}
 }
