@@ -20,3 +20,9 @@ in a <code>files</code> declaration.
 The second form specifies that a new local repository should be created for the task.
 This is really just a directory on the host system.
 
+## Local Repositories
+
+A repository created via the `new local` syntax is considered to be an intermediate
+build artifact, and is potentially disposable. However, it normally continues to
+exist from one DABL run to the next. It is not guaranteed to be completely unmodifiable
+by processes outside of DABL, but doing so would be considered a bad practice.

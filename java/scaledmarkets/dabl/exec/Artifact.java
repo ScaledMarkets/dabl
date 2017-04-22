@@ -9,15 +9,15 @@ import java.util.HashSet;
 
 public class Artifact {
 	
-	private AOartifactSet artifactSet;
+	private POartifactSet artifactSet;
 	private Set<Task> consumers = new HashSet<Task>();
 	private Set<Task> producers = new HashSet<Task>();
 	
-	Artifact(AOartifactSet artifactSet) {
+	Artifact(POartifactSet artifactSet) {
 		this.artifactSet = artifactSet;
 	}
 	
-	public AOartifactSet getArtifactSet() {
+	public POartifactSet getArtifactSet() {
 		return artifactSet;
 	}
 	

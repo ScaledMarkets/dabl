@@ -32,24 +32,34 @@ public abstract class ArtifactOperator {
 		PatternSetsMap patternSetsMap = new PatternSets.Map();
 		
 		for (Artifact artifact : artifacts) {
-			AOartifactSet artifactSet = artifact.getArtifactSet();
+			POartifactSet artifactSet = artifact.getArtifactSet();
 			AOidRef reposIdRef = (AOidRef)(artifactSet.getRepositoryId());
 			
-			// Use the Repo object to pull the files from the repo.
-			String project = this.helper.getStringLiteralValue(artifactSet.getProject());
-			
-			// Identify the repo declaration.
-			AOrepoDeclaration repoDecl = this.helper.getRepoDeclFromRepoRef(reposIdRef);
-			String path = this.helper.getStringLiteralValue(repoDecl.getPath());
-			
-			// Obtain the repo information.
-			String scheme = this.helper.getStringValueOpt(repoDecl.getScheme());
-			String userid = this.helper.getStringValueOpt(repoDecl.getUserid());
-			String password = this.helper.getStringValueOpt(repoDecl.getPassword());
-			String repoType = this.helper.getStringLiteralValue(repoDecl.getType());
-			
-			// Use the repo info to construct a Repo object.
-			Repo repo = Repo.getRepo(repoType, scheme, path, userid, password);
+			Repo repo;
+			if (artifactSet instanceof ALocalOartifactSet) {
+				// Create a local repository, managed by DABL.
+				repo = LocalRepo.createRepo((ALocalOartifactSet)artifactSet);
+				
+			} else if (artifactSet instanceof ARemoteOartifactSet) {
+				// Use the Repo object to pull the files from the repo.
+				String project = this.helper.getStringLiteralValue(artifactSet.getProject());
+				
+				// Identify the repo declaration.
+				AOrepoDeclaration repoDecl = this.helper.getRepoDeclFromRepoRef(reposIdRef);
+				String path = this.helper.getStringLiteralValue(repoDecl.getPath());
+				
+				// Obtain the repo information.
+				String scheme = this.helper.getStringValueOpt(repoDecl.getScheme());
+				String userid = this.helper.getStringValueOpt(repoDecl.getUserid());
+				String password = this.helper.getStringValueOpt(repoDecl.getPassword());
+				String repoType = this.helper.getStringLiteralValue(repoDecl.getType());
+				
+				// Use the repo info to construct a Repo object.
+				repo = RemoteRepo.getRepo(repoType, scheme, path, userid, password);
+				
+			} else
+				throw new RuntimeException(
+					"Unexpected artifactSet type: " + artifactSet.getClass().getName());
 
 			PatternSets patternSets = patternSetsMap.getPatternSets(repo, project);
 			

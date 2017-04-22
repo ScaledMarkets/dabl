@@ -182,6 +182,25 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		super.outANamedOnamedArtifactSet(node);
 	}
 	
+	public void inALocalOnamedArtifactSet(ALocalOnamedArtifactSet node)
+	{
+		// Declares a local repository.
+		// Create a symbol entry identifying the node as a local repository.
+		TId id = node.getId();
+		LocalRepoEntry entry = new LocalRepoEntry(id.getText(), getCurrentNameScope(), node);
+		try {
+			addSymbolEntry(entry, id);
+		} catch (SymbolEntryPresent ex) {
+			throw new RuntimeException(ex);
+		}
+		resolveForwardReferences(entry);
+	}
+	
+	public void outALocalOnamedArtifactSet(ALocalOnamedArtifactSet node)
+	{
+		super.outALocalOnamedArtifactSet(node);
+	}
+	
 	
 	/* Artifact declaration. */
 	

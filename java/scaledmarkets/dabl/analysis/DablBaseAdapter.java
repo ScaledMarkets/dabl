@@ -75,6 +75,9 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		return state.scopeStack.get(0);
 	}
 	
+	/**
+	 * 
+	 */
     protected void outRefNode(Node node, List<TId> path, VisibilityChecker checker)
     {
 		// Find the declaration of the id. If it exists, annotate it.

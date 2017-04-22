@@ -99,6 +99,9 @@ compile_parser: gen_parser
 # Generate and compile the parser classs.
 parser: compile_parser
 
+clean_parser:
+	rm -r -f $(sable_out_dir)/*
+
 # Create the directory into which the generated parser source files will be placed.
 $(sable_out_dir):
 	mkdir $(sable_out_dir)
@@ -211,8 +214,7 @@ cukever:
 cukehelp:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help
 
-clean: compile_clean test_clean
-	rm -r -f $(sable_out_dir)/*
+clean: compile_clean test_clean clean_parser
 	rm -f Manifest
 	rm -r -f $(javadoc_dir)/*
 

@@ -125,6 +125,9 @@ Tokens
     false_keyword = 'false';
     userid = 'userid';
     password = 'password';
+    new = 'new';
+    local = 'local';
+    open = 'open';
 
     // Variable Length Sequences:
     whole_number = digit+;
@@ -312,8 +315,6 @@ Productions
                                                 artifact_set.oartifact_set)}
       | {files} outputs id                  {-> New onamed_artifact_set.files(
                                                 New oid_ref(id))}
-      | {local} outputs id new local files_stmts_opt
-                                            {-> ....}
         ;
       
     //artifact_sets {-> oartifact_set*} =
@@ -323,10 +324,12 @@ Productions
     //  ;
     
     artifact_set {-> oartifact_set} =
-        of [project]:string_literal in [repository_id]:id prefer_stmt_opt files_stmts_opt
-                                            {-> New oartifact_set(
+        {remote} of [project]:string_literal in [repository_id]:id prefer_stmt_opt files_stmts_opt
+                                            {-> New oartifact_set.remote(
                                                 [files_stmts_opt.ofileset_operation],
                                                 project.ostring_literal, New oid_ref(repository_id))}
+      | {local} new local files_stmts_opt   {-> New oartifact_set.local(
+                                                [files_stmts_opt.ofileset_operation])}
         ;
     
     fileset_spec {-> ostring_literal} =
@@ -815,7 +818,9 @@ Abstract Syntax Tree
       ;
     
     oartifact_set =
-        ofileset_operation* [project]:ostring_literal [repository_id]:oid_ref;
+        {remote} ofileset_operation* [project]:ostring_literal [repository_id]:oid_ref
+      | {local} ofileset_operation*
+      ;
     
     oproc_stmt =
         {func_call} oid_ref oexpr* otarget_opt

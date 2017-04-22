@@ -25,7 +25,7 @@ public class DependencyGraph {
 
 	private CompilerState state;
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
-	private Map<AOartifactSet, Artifact> artifacts = new HashMap<AOartifactSet, Artifact>();
+	private Map<POartifactSet, Artifact> artifacts = new HashMap<POartifactSet, Artifact>();
 	private Set<Task> rootTasks = new HashSet<Task>();
 	
 	/**
@@ -95,7 +95,6 @@ public class DependencyGraph {
 					"Unexpected Node type: " + p.getClass().getName());
 				
 				// 1. If the input Artifact does not exist, then create a new Artifact.
-				AOartifactSet artifactSet = (AOartifactSet)pas;
 				Artifact artifact = artifacts.get(artifactSet);
 				if (artifact == null) artifact = createArtifact(artifactSet);
 				

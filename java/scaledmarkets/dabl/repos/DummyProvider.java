@@ -18,7 +18,7 @@ public class DummyProvider implements RepoProvider {
 	private List<String> pulledFiles = new LinkedList<String>();
 	private List<String> pushedFiles = new LinkedList<String>();
 	
-	public Repo getRepo(String scheme, String path, String userid, String password) throws Exception {
+	public RemoteRepo getRepo(String scheme, String path, String userid, String password) throws Exception {
 		return new DummyRepo(scheme, path, userid, password);
 	}
 	
@@ -32,7 +32,7 @@ public class DummyProvider implements RepoProvider {
 		pushedFiles.add(patternSets.toString());
 	}
 		
-	class DummyRepo extends Repo {
+	class DummyRepo extends RemoteRepo {
 		
 		DummyRepo(String scheme, String path, String userid, String password) {
 			super(RepoType, scheme, path, userid, password);
