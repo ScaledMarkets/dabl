@@ -127,7 +127,7 @@ When running DABL, the following environment variables can be set:
 </dl>
 
 These values can also be set in a <code>.dabl.properties</code> file in the user's
-home directory.
+home directory. Enviornment settings take precedence.
 
 # Embedding the Compiler In an Application
 
