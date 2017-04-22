@@ -17,6 +17,8 @@ public class LocalRepo implements Repo {
 		if (outputName.equals("")) throw new Exception("Empty output name");
 		
 		String workingDirPath = Utilities.getSetting("dabl.local_repository_dir");
+		if (workingDirPath == null) workingPath = System.getProperty("user.dir");
+		
 		File workingDir = new File(workingDirPath);
 		if (! workingDir.exists()) throw new RuntimeException(
 			"Directory " + workingDir.toString() + " not found");
