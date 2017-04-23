@@ -5,12 +5,13 @@ import java.io.File;
 public interface Repo {
 	
 	/**
-	 * Retrieve the specified files from the repository.
+	 * Copy the specified files from the repository into the specified directory.
 	 */
 	void getFiles(PatternSets patternSets, File dir) throws Exception;
 	
 	/**
-	 * Store ("push") the specified files to the specified repository.
+	 * Store ("push") the specified files from 'dir' to the specified repository.
+	 * 'dir' is treated as the filesystem root, for the purpose of pattern set matching.
 	 */
 	void putFiles(File dir, PatternSets patternSets) throws Exception;
 }

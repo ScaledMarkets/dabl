@@ -70,7 +70,7 @@ public abstract class ArtifactOperator {
 			
 			// Construct a set of include patterns and a set of exclude patterns.
 			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
-			assembleIncludesAndExcludes(patternSets, filesetOps);
+			patternSets.assembleIncludesAndExcludes(this.helper, filesetOps);
 		}
 		
 		for (PatternSets patternSets : patternSetsMap.values()) {
@@ -78,30 +78,6 @@ public abstract class ArtifactOperator {
 		}
 	}
 
-	/**
-	 * Add all of the include/exclude fileset operations to the include/exclude
-	 * lists of the PatternSets.
-	 */
-	protected void assembleIncludesAndExcludes(PatternSets patternSets,
-		List<POfilesetOperation> filesetOps) throws Exception {
-	
-		for (POfilesetOperation op : filesetOps) {
-			
-			if (op instanceof AIncludeOfilesetOperation) {
-				AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
-				POstringLiteral lit = includeOp.getOstringLiteral();
-				String pattern = this.helper.getStringLiteralValue(lit);
-				patternSets.getIncludePatterns().add(pattern);
-			} else if (op instanceof AExcludeOfilesetOperation) {
-				AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
-				POstringLiteral lit = excludeOp.getOstringLiteral();
-				String pattern = this.helper.getStringLiteralValue(lit);
-				patternSets.getExcludePatterns().add(pattern);
-			} else throw new RuntimeException(
-				"Unexpected POfilesetOperation type: " + op.getClass().getName());
-		}
-	}
-	
 	protected String getName(ALocalOartifactSet artifactSet) throws Exception {
 		
 		Node parent = artifactSet.parent();

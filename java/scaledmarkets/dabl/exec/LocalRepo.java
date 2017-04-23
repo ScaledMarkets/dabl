@@ -3,7 +3,15 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
+import java.nio.files.Files;
+import java.nio.files.Path;
 
+/**
+ * A DABL "local repository" is a file storage area (e.g., directory) available
+ * on the host system that is running the DABL processor. Its purpose is to
+ * store intermediate build artifacts. A local repository is isolated from other
+ * local repositories.
+ */
 public class LocalRepo implements Repo {
 	
 	/**
@@ -51,19 +59,33 @@ public class LocalRepo implements Repo {
 	public ALocalOartifactSet getArtifactSet() { return artifactSet; }
 
 	/**
-	 * Retrieve the specified files from the repository.
+	 * Retrieve the specified files from this repository and copy them to 'dir'.
 	 */
 	public void getFiles(PatternSets patternSets, File dir) throws Exception {
 		
-		....
+		patternSets.operateOnFiles(new FileOperator() {
+			public void op(File root, String pathRelativeToRoot) {
+				// Get the file
+				File origin = new File(LocalRepo.this.directory, pathRelativeToRoot);
+				File dest = new File(dir, pathRelativeToRoot);
+				Files.copy(origin.toPath(), dest.toPath());
+			}
+		}
 	}
 	
 	/**
-	 * Store ("push") the specified files to the specified repository.
+	 * Store ("push") the specified files from 'dir' to this specified repository.
 	 */
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
-		....
+		patternSets.operateOnFiles(new FileOperator() {
+			public void op(File root, String pathRelativeToRoot) {
+				// Put the file
+				File origin = new File(dir, pathRelativeToRoot);
+				File dest = new File(LocalRepo.this.directory, pathRelativeToRoot);
+				Files.copy(origin.toPath(), dest.toPath());
+			}
+		}
 	}
 
 	private String outputName;

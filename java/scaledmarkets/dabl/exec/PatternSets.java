@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 /**
  * A collection of file patterns specifying files to include and exclude from
- * a repository project.
+ * a repository project or directory.
  */
 public class PatternSets implements Comparable<PatternSets> {
 	
@@ -39,10 +39,6 @@ public class PatternSets implements Comparable<PatternSets> {
 		return getKey().compareTo(other.getKey());
 	}
 	
-	public List<String> getIncludePatterns() { return this.includePatterns; }
-	
-	public List<String> getExcludePatterns() { return this.excludePatterns; }
-	
 	/**
 	 * A map of PatternSets, indexed by repo/project. This can be used to
 	 * assemble a map of the include/exclude pattern sets for pulling or pushing
@@ -62,6 +58,55 @@ public class PatternSets implements Comparable<PatternSets> {
 				put(key, p);
 			}
 			return p;
+		}
+	}
+	
+	/**
+	 * Add all of the include/exclude fileset operations to the include/exclude
+	 * lists of this PatternSets.
+	 */
+	public void assembleIncludesAndExcludes(Helper helper,
+		List<POfilesetOperation> filesetOps) throws Exception {
+	
+		for (POfilesetOperation op : filesetOps) {
+			
+			if (op instanceof AIncludeOfilesetOperation) {
+				AIncludeOfilesetOperation includeOp = (AIncludeOfilesetOperation)op;
+				POstringLiteral lit = includeOp.getOstringLiteral();
+				String pattern = helper.getStringLiteralValue(lit);
+				this.includePatterns.add(pattern);
+			} else if (op instanceof AExcludeOfilesetOperation) {
+				AExcludeOfilesetOperation excludeOp = (AExcludeOfilesetOperation)op;
+				POstringLiteral lit = excludeOp.getOstringLiteral();
+				String pattern = helper.getStringLiteralValue(lit);
+				this.excludePatterns.add(pattern);
+			} else throw new RuntimeException(
+				"Unexpected POfilesetOperation type: " + op.getClass().getName());
+		}
+	}
+	
+	public interface FileOperator {
+		op(File root, String pathRelativeToRoot) throws Exception;
+	}
+	
+	/**
+	 * Retrieve the specified files from the repository and copy them to 'dir'.
+	 * 'root' is treated as the file system root, for the purpose of pattern
+	 * matching.
+	 */
+	public void operateOnFiles(File root, FileOperator fileOperator) throws Exception {
+		
+		incl: for (String includePattern : this.includePatterns) {
+			match: for ....each file that matches the include pattern {
+				if () // the file has been visited
+					continue match; // then skip it.
+				excl: for (String excludePattern : this.excludePatterns) {
+					if ....the file matches the exclude pattern {
+						continue match; // skip the file.
+					}
+				}
+				fileOperator.op(root, ....file path relative to root);
+			}
 		}
 	}
 	

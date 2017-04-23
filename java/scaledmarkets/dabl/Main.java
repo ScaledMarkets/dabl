@@ -20,7 +20,8 @@ import java.io.FileReader;
 public class Main
 {
 	/**
-	 Command line program.
+	 * Command line program.
+	 * To do: Convert to use http://commons.apache.org/proper/commons-cli/
 	 */
 	public static void main(String[] args) throws Exception {
 		

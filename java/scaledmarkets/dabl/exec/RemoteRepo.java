@@ -33,7 +33,8 @@ public abstract class RemoteRepo implements Repo {
 	}
 
 	/**
-	 * Retrieve the specified files from the specified project in the repository.
+	 * Retrieve the specified files from the specified project in the repository,
+	 * and store them in 'dir'.
 	 */
 	public void getFiles(PatternSets patternSets, File dir) throws Exception {
 		
@@ -41,7 +42,8 @@ public abstract class RemoteRepo implements Repo {
 	}
 	
 	/**
-	 * Store ("push") the specified files to the specified project of the repository.
+	 * Store ("push") the specified files from 'dir' to the specified project of
+	 * the repository.
 	 */
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
