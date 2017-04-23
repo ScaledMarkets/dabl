@@ -104,15 +104,14 @@ public class PatternSets implements Comparable<PatternSets> {
 	 */
 	public void operateOnFiles(File patternRoot, File curDir, FileOperator fileOperator) throws Exception {
 		
+		// Verify that curDir is within the tree of patternRoot.
+		patternRoot.toPath().relativize(curDir.toPath());
+		
 		Set<File> visited = new HashSet<File>();
 		
 		FileSystem fileSystem = FileSystem.getDefault();
 		
 		for (String pi : this.includePatterns) {
-			
-			// Translate pi to curDir, as qi.
-			String qi = ....
-			
 			
 			// Get the files F of curDir matching qi.
 			DirectoryStream<Path> F = Files.newDirectoryStream(curDir, qi);
@@ -127,7 +126,15 @@ public class PatternSets implements Comparable<PatternSets> {
 				visited.add(matchingFile);
 				
 				// Translate f to patternRoot, as relative path g.
-				Path g = ....
+				// I.e., remove patternRoot from front of f
+				Path g = patternRoot.toPath().relativize(f.toPath());
+				
+				// If g does not match pi, continue to next file of F.
+				PathMatcher includeMatcher = fileSystem.getPathMatcher(
+						"glob:" + pi);
+				if (! includeMatcher.matches(g)) {
+					continue match;
+				}
 				
 				for (String pe : this.excludePatterns) {
 					
@@ -149,6 +156,9 @@ public class PatternSets implements Comparable<PatternSets> {
 		}
 	}
 	
+	/**
+	 * Provide a value that can be used to map pattern sets.
+	 */
 	public String toString() {
 		String result = "";
 		for (String pattern : includePatterns) {
