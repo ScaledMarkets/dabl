@@ -108,45 +108,42 @@ public class PatternSets implements Comparable<PatternSets> {
 		
 		FileSystem fileSystem = FileSystem.getDefault();
 		
-		incl: for (String includePattern : this.includePatterns) {
+		for (String pi : this.includePatterns) {
 			
-			// Make the include pattern relative to curDir.
-			// It is assumed that curDir is 0 or more levels below patternRoot.
-			// Thus, we merely remove directory names until we reach curDir.
-			String[] parts = includePattern.split(File.pathSeparator);
+			// Translate pi to curDir, as qi.
+			String qi = ....
 			
-			String patternRelativeToCurDir = ....
 			
-			// Create a stream of immediate members of curDir.
-			DirectoryStream<Path> stream =
-				Files.newDirectoryStream(curDir, patternRelativeToCurDir);
+			// Get the files F of curDir matching qi.
+			DirectoryStream<Path> F = Files.newDirectoryStream(curDir, qi);
 			
-			match: for (Path matchingPath : stream) {
+			match: for (Path f : F) {
 			
-				File matchingFile = new File(curDir, matchingPath.getFileName());
+				// 
+				File matchingFile = new File(curDir, f.getFileName());
 				if (visited.contains(matchingFile)) // the file has been visited
 					continue match; // then skip it.
 				
 				visited.add(matchingFile);
 				
-				// Compute path relative to pattern room.
-				Path pathRelativeToPatternRoot = ....
+				// Translate f to patternRoot, as relative path g.
+				Path g = ....
 				
-				excl: for (String excludePattern : this.excludePatterns) {
+				for (String pe : this.excludePatterns) {
 					
 					PathMatcher excludeMatcher = fileSystem.getPathMatcher(
-						"glob:" + excludePattern);
+						"glob:" + pe);
 					
-					if (excludeMatcher.matches(pathRelativeToPatternRoot)) {
+					if (excludeMatcher.matches(g)) {
 						continue match; // skip the file.
 					}
 				}
 				
-				if (matchingFile.isDirectory()) {
+				if (f.isDirectory()) {
 					// Call recursively for matchingFile.
-					operateOnFiles(patternRoot, matchingFile, fileOperator);
+					operateOnFiles(patternRoot, f, fileOperator);
 				} else {
-					fileOperator.op(patternRoot, pathRelativeToPatternRoot);
+					fileOperator.op(patternRoot, g);
 				}
 			}
 		}
