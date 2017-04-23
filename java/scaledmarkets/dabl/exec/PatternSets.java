@@ -1,9 +1,18 @@
 package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.util.Utilities;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.FileSystem;
+import java.nio.file.PathMatcher;
+import java.nio.file.DirectoryStream;
 
 /**
  * A collection of file patterns specifying files to include and exclude from
@@ -90,22 +99,55 @@ public class PatternSets implements Comparable<PatternSets> {
 	}
 	
 	/**
-	 * Retrieve the specified files from the repository and copy them to 'dir'.
-	 * 'root' is treated as the file system root, for the purpose of pattern
-	 * matching.
+	 * Retrieve the specified files from the repository and perform the specified
+	 * operation on them.
 	 */
-	public void operateOnFiles(File root, FileOperator fileOperator) throws Exception {
+	public void operateOnFiles(File patternRoot, File curDir, FileOperator fileOperator) throws Exception {
+		
+		Set<File> visited = new HashSet<File>();
+		
+		FileSystem fileSystem = FileSystem.getDefault();
 		
 		incl: for (String includePattern : this.includePatterns) {
-			match: for ....each file that matches the include pattern {
-				if () // the file has been visited
+			
+			// Make the include pattern relative to curDir.
+			// It is assumed that curDir is 0 or more levels below patternRoot.
+			// Thus, we merely remove directory names until we reach curDir.
+			String[] parts = includePattern.split(File.pathSeparator);
+			
+			String patternRelativeToCurDir = ....
+			
+			// Create a stream of immediate members of curDir.
+			DirectoryStream<Path> stream =
+				Files.newDirectoryStream(curDir, patternRelativeToCurDir);
+			
+			match: for (Path matchingPath : stream) {
+			
+				File matchingFile = new File(curDir, matchingPath.getFileName());
+				if (visited.contains(matchingFile)) // the file has been visited
 					continue match; // then skip it.
+				
+				visited.add(matchingFile);
+				
+				// Compute path relative to pattern room.
+				Path pathRelativeToPatternRoot = ....
+				
 				excl: for (String excludePattern : this.excludePatterns) {
-					if ....the file matches the exclude pattern {
+					
+					PathMatcher excludeMatcher = fileSystem.getPathMatcher(
+						"glob:" + excludePattern);
+					
+					if (excludeMatcher.matches(pathRelativeToPatternRoot)) {
 						continue match; // skip the file.
 					}
 				}
-				fileOperator.op(root, ....file path relative to root);
+				
+				if (matchingFile.isDirectory()) {
+					// Call recursively for matchingFile.
+					operateOnFiles(patternRoot, matchingFile, fileOperator);
+				} else {
+					fileOperator.op(patternRoot, pathRelativeToPatternRoot);
+				}
 			}
 		}
 	}
