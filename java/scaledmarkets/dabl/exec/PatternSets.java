@@ -23,50 +23,46 @@ import java.nio.file.DirectoryStream;
  */
 public class PatternSets implements Comparable<PatternSets> {
 	
-	public PatternSets(Repo repo, String project) {
+	public PatternSets(Repo repo) {
 		this.repo = repo;
-		this.project = project;
 	}
 	
 	private Repo repo;
-	private String project;  // may be null
 	private List<String> includePatterns = new LinkedList<String>();
 	private List<String> excludePatterns = new LinkedList<String>();
 	
 	/**
-	 * Create a key that uniquely identifies the repository/project combination.
+	 * Create a key that uniquely identifies the repo.
 	 * The key is not required to be externalizable.
 	 */
-	public static String getKey(Repo repo, String project) {
-		return String.valueOf(repo.hashCode()) + (project == null ? "" : (":" + project));
+	public static String getKey(Repo repo) {
+		return String.valueOf(repo.hashCode());
 	}
 	
-	public String getKey() { return getKey(repo, project); }
+	public String getKey() { return getKey(repo); }
 	
 	public Repo getRepo() { return this.repo; }
-	
-	public String getProject() { return this.project; }
 	
 	public int compareTo(PatternSets other) {
 		return getKey().compareTo(other.getKey());
 	}
 	
 	/**
-	 * A map of PatternSets, indexed by repo/project. This can be used to
+	 * A map of PatternSets, indexed by repo. This can be used to
 	 * assemble a map of the include/exclude pattern sets for pulling or pushing
-	 * files to/from the project.
+	 * files to/from the repo.
 	 */
 	public static class Map extends HashMap<String, PatternSets> {
 		
 		/**
-		 * Return the PatternSets for the specified repo and project. If it does
+		 * Return the PatternSets for the specified repo. If it does
 		 * not exist, create it.
 		 */
-		public PatternSets getPatternSets(Repo repo, String project) {
-			String key = PatternSets.getKey(repo, project);
+		public PatternSets getPatternSets(Repo repo) {
+			String key = PatternSets.getKey(repo);
 			PatternSets p = get(key);
 			if (p == null) {
-				p = new PatternSets(repo, project);
+				p = new PatternSets(repo);
 				put(key, p);
 			}
 			return p;

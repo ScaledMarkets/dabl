@@ -12,8 +12,9 @@ public class GitLocalProvider implements RepoProvider {
 	
 	public static String RepoType = "gitlocal";
 	
-	public RemoteRepo getRepo(String scheme, String path, String userid, String password) throws Exception {
-		return new GitLocalRepo(scheme, path, userid, password);
+	public RemoteRepo getRepo(String scheme, String path, String project,
+		String userid, String password) throws Exception {
+		return new GitLocalRepo(scheme, path, project, userid, password);
 	}
 	
 	// References:
@@ -41,8 +42,9 @@ public class GitLocalProvider implements RepoProvider {
 		
 	class GitLocalRepo extends RemoteRepo {
 		
-		GitLocalRepo(String scheme, String path, String userid, String password) {
-			super(RepoType, scheme, path, userid, password);
+		GitLocalRepo(String scheme, String path, String project,
+			String userid, String password) {
+			super(RepoType, scheme, path, project, userid, password);
 		}
 		
 		protected RepoProvider getRepoProvider() { return GitLocalProvider.this; }

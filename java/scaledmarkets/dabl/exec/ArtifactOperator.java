@@ -36,7 +36,6 @@ public abstract class ArtifactOperator {
 			POartifactSet artifactSet = artifact.getArtifactSet();
 			
 			Repo repo;
-			String project = null;
 			LinkedList<POfilesetOperation> filesetOps;
 			if (artifactSet instanceof ALocalOartifactSet) {
 				// Create a local repository, managed by DABL.
@@ -54,7 +53,7 @@ public abstract class ArtifactOperator {
 				AOidRef reposIdRef = (AOidRef)(remoteArtifactSet.getRepositoryId());
 				
 				// Use the Repo object to pull the files from the repo.
-				project = this.helper.getStringLiteralValue(remoteArtifactSet.getProject());
+				String project = this.helper.getStringLiteralValue(remoteArtifactSet.getProject());
 				
 				// Identify the repo declaration.
 				AOrepoDeclaration repoDecl = this.helper.getRepoDeclFromRepoRef(reposIdRef);
@@ -67,7 +66,7 @@ public abstract class ArtifactOperator {
 				String repoType = this.helper.getStringLiteralValue(repoDecl.getType());
 				
 				// Use the repo info to construct a Repo object.
-				repo = RemoteRepo.getRepo(repoType, scheme, path, userid, password);
+				repo = RemoteRepo.getRepo(repoType, scheme, path, project, userid, password);
 				
 				filesetOps = remoteArtifactSet.getOfilesetOperation();
 				
@@ -75,7 +74,7 @@ public abstract class ArtifactOperator {
 				throw new RuntimeException(
 					"Unexpected artifactSet type: " + artifactSet.getClass().getName());
 
-			PatternSets patternSets = patternSetsMap.getPatternSets(repo, project);
+			PatternSets patternSets = patternSetsMap.getPatternSets(repo);
 			
 			// Construct a set of include patterns and a set of exclude patterns.
 			patternSets.assembleIncludesAndExcludes(this.helper, filesetOps);

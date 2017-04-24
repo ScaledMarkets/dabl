@@ -3,12 +3,16 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
 
+/**
+ * A remote container for a set of files. By 'remote', we mean that the repo is
+ * accessed via a URL.
+ */
 public abstract class RemoteRepo implements Repo {
 	
-	private String repoType, scheme, path, userid, password;
+	private String repoType, scheme, path, project, userid, password;
 	
 	public static RemoteRepo getRepo(String repoType, String scheme, String path,
-		String userid, String password) throws Exception {
+		String project, String userid, String password) throws Exception {
 		
 		// Find the provider for the specified repo type.
 		String repoProviderName = Utilities.getSetting("dabl.repo.providers." + repoType);
@@ -19,15 +23,16 @@ public abstract class RemoteRepo implements Repo {
 		if (! (obj instanceof RepoProvider)) throw new Exception(
 			"Class " + repoProviderClass.getName() + " is not a RepoProvider");
 		RepoProvider repoProvider = (RepoProvider)obj;
-		return repoProvider.getRepo(scheme, path, userid, password);
+		return repoProvider.getRepo(scheme, path, project, userid, password);
 	}
 	
-	protected RemoteRepo(String repoType, String scheme, String path,
+	protected RemoteRepo(String repoType, String scheme, String path, String project,
 		String userid, String password) {
 	
 		this.repoType = repoType;
 		this.scheme = scheme;
 		this.path = path;
+		this.project = project;
 		this.userid = userid;
 		this.password = password;
 	}
@@ -55,6 +60,8 @@ public abstract class RemoteRepo implements Repo {
 	public String getScheme() { return scheme; }
 	
 	public String getPath() { return path; }
+	
+	public String getProject() { return project; }
 	
 	public String getUserId() { return userid; }
 	

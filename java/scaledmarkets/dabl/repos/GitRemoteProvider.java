@@ -12,8 +12,9 @@ public class GitRemoteProvider implements RepoProvider {
 	
 	public static String RepoType = "gitremote";
 
-	public RemoteRepo getRepo(String scheme, String path, String userid, String password) throws Exception {
-		return new GitRemoteRepo(scheme, path, userid, password);
+	public RemoteRepo getRepo(String scheme, String path, String project,
+		String userid, String password) throws Exception {
+		return new GitRemoteRepo(scheme, path, project, userid, password);
 	}
 	
 	// References:
@@ -58,8 +59,9 @@ public class GitRemoteProvider implements RepoProvider {
 		
 	class GitRemoteRepo extends RemoteRepo {
 		
-		GitRemoteRepo(String scheme, String path, String userid, String password) {
-			super(RepoType, scheme, path, userid, password);
+		GitRemoteRepo(String scheme, String path, String project,
+			String userid, String password) {
+			super(RepoType, scheme, path, project, userid, password);
 		}
 		
 		protected RepoProvider getRepoProvider() { return GitRemoteProvider.this; }

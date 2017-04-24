@@ -18,8 +18,9 @@ public class DummyProvider implements RepoProvider {
 	private List<String> pulledFiles = new LinkedList<String>();
 	private List<String> pushedFiles = new LinkedList<String>();
 	
-	public RemoteRepo getRepo(String scheme, String path, String userid, String password) throws Exception {
-		return new DummyRepo(scheme, path, userid, password);
+	public RemoteRepo getRepo(String scheme, String path, String project,
+		String userid, String password) throws Exception {
+		return new DummyRepo(scheme, path, project, userid, password);
 	}
 	
 	public void getFiles(PatternSets patternSets, File dir) throws Exception {
@@ -34,8 +35,8 @@ public class DummyProvider implements RepoProvider {
 		
 	class DummyRepo extends RemoteRepo {
 		
-		DummyRepo(String scheme, String path, String userid, String password) {
-			super(RepoType, scheme, path, userid, password);
+		DummyRepo(String scheme, String path, String project, String userid, String password) {
+			super(RepoType, scheme, path, project, userid, password);
 		}
 		
 		protected RepoProvider getRepoProvider() { return DummyProvider.this; }

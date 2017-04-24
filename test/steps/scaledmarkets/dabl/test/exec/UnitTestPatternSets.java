@@ -13,6 +13,8 @@ import scaledmarkets.dabl.repos.DummyProvider;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.test.TestBase;
 
+import scaledmarkets.dabl.exec.PatternSets;
+
 public class UnitTestPatternSets extends TestBase {
 
 	
@@ -21,5 +23,29 @@ public class UnitTestPatternSets extends TestBase {
 	
 	@Given("^$")
 	public void () throws Exception {
+		
 	}
+	
+	@When("^$")
+	public void () throws Exception {
+		
+		PatternSets patternSets = ....
+		
+		
+		patternSets.operateOnFiles(....File patternRoot, ....File curDir, new PatternSets.FileOperator {
+			void op(File root, String pathRelativeToRoot) throws Exception {
+				....
+			}
+		});
+	}
+	
+	@Then("^$")
+	public void () throws Exception {
+		
+	}
+	
+	
+	
+	
+	
 }
