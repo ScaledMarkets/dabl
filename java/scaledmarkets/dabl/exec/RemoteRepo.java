@@ -12,8 +12,8 @@ public abstract class RemoteRepo implements Repo {
 		
 		// Find the provider for the specified repo type.
 		String repoProviderName = Utilities.getSetting("dabl.repo.providers." + repoType);
-		if (repoProviderName == null) throw new Exception(
-			"Provider for repo type " + repoType + " not found");
+		if ((repoProviderName == null) || (repoProviderName.equals("")))
+			throw new Exception("Provider for repo type " + repoType + " not found");
 		Class repoProviderClass = Class.forName(repoProviderName);
 		Object obj = repoProviderClass.newInstance();
 		if (! (obj instanceof RepoProvider)) throw new Exception(

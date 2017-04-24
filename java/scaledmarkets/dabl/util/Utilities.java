@@ -82,22 +82,42 @@ public class Utilities {
 	
 	/**
 	 * Obtain a DABL configuration setting. Obtain it first from the environment;
-	 * if not found, then look for a .dabl.properties file in the user's home directory.
+	 * if not found, then look for a .dabl.properties file in the current directory
+	 * and then in the user's home directory.
 	 */
 	public static String getSetting(String name) throws IOException {
 		
+		// Check environment.
 		String value = System.getenv(name);
 		if (value != null) return value;
 		
+		// Check current directory for a properties file.
+		String dirstr = System.getProperty("user.dir");
+		if (dirstr == null) throw new RuntimeException("No current working directory");
+		File curdir = new File(dirstr);
+		if (! curdir.exists()) throw new RuntimeException("Current directory not found");
+		File curdirPropertyFile = new File(curdir, PropertyFileName);
+		if (curdirPropertyFile.exists()) {
+			Properties properties = new Properties();
+			properties.load(new FileReader(curdirPropertyFile));
+			String value = properties.getProperty(name);
+			if ((value != null) && (value.equals(""))) return value;
+		}
+		
+		// Check user's home directory for a properties file.
 		String homestr = System.getProperty("user.home");
 		if (homestr == null) throw new RuntimeException("No user home");
 		File home = new File(homestr);
 		if (! home.exists()) throw new RuntimeException("User home directory not found");
+		File homePropertyFile = new File(home, PropertyFileName);
+		if (homePropertyFile.exists()) {
+			Properties properties = new Properties();
+			properties.load(new FileReader(homePropertyFile));
+			String value = properties.getProperty(name);
+			if ((value != null) && (value.equals(""))) return value;
+		}
 		
-		Properties properties = new Properties();
-		File propertyFile = new File(home, PropertyFileName);
-		properties.load(new FileReader(propertyFile));
-		
-		return properties.getProperty(name);
+		// Setting was not found.
+		return null;
 	}
 }

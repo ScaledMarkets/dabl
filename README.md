@@ -126,8 +126,9 @@ When running DABL, the following environment variables can be set:
 	(See <i>repo_type</i> <a href="langref/repo_decl.md#syntax">here</a>.)</dd>
 </dl>
 
-These values can also be set in a <code>.dabl.properties</code> file in the user's
-home directory. Enviornment settings take precedence.
+These values can also be set in a <code>.dabl.properties</code> file in the current
+directory or the user's home directory. Enviornment settings take precedence;
+after that, the current directory, and then the user's home directory.
 
 Note: At present, the required third-party jars are not included in the DABL
 jar file, `dabl.jar`.
