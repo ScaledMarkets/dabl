@@ -1,6 +1,6 @@
 package scaledmarkets.dabl.repos;
 
-import scaledmarkets.dabl.exec.Repo;
+import scaledmarkets.dabl.exec.RemoteRepo;
 import scaledmarkets.dabl.exec.RepoProvider;
 import scaledmarkets.dabl.exec.PatternSets;
 import java.io.File;

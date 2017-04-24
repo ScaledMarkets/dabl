@@ -43,7 +43,7 @@ public abstract class ArtifactOperator {
 				// Find the NamedArtifactSet that owns the artifactSet.
 				String outputName = getName((ALocalOartifactSet)artifactSet);
 				repo = LocalRepo.createRepo(namespaceName, taskName, outputName,
-					ALocalOartifactSet)artifactSet);
+					(ALocalOartifactSet)artifactSet);
 				
 			} else if (artifactSet instanceof ARemoteOartifactSet) {
 				// Use the Repo object to pull the files from the repo.

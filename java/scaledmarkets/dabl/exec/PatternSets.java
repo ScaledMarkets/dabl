@@ -1,6 +1,7 @@
 package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.helper.Helper;
 import scaledmarkets.dabl.util.Utilities;
 import java.util.List;
 import java.util.LinkedList;
@@ -95,7 +96,7 @@ public class PatternSets implements Comparable<PatternSets> {
 	}
 	
 	public interface FileOperator {
-		op(File root, String pathRelativeToRoot) throws Exception;
+		void op(File root, String pathRelativeToRoot) throws Exception;
 	}
 	
 	/**

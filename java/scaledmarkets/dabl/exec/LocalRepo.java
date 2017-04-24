@@ -3,8 +3,8 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
-import java.nio.files.Files;
-import java.nio.files.Path;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * A DABL "local repository" is a file storage area (e.g., directory) available
@@ -70,7 +70,7 @@ public class LocalRepo implements Repo {
 				File dest = new File(dir, pathRelativeToRoot);
 				Files.copy(origin.toPath(), dest.toPath());
 			}
-		}
+		});
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class LocalRepo implements Repo {
 				File dest = new File(LocalRepo.this.directory, pathRelativeToRoot);
 				Files.copy(origin.toPath(), dest.toPath());
 			}
-		}
+		});
 	}
 
 	private String outputName;
