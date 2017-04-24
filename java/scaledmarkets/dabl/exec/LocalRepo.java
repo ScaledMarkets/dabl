@@ -63,7 +63,7 @@ public class LocalRepo implements Repo {
 	 */
 	public void getFiles(PatternSets patternSets, File dir) throws Exception {
 		
-		patternSets.operateOnFiles(...., ...., new PatternSets.FileOperator() {
+		patternSets.operateOnFiles(this.directory, new PatternSets.FileOperator() {
 			public void op(File root, String pathRelativeToRoot) {
 				// Get the file
 				File origin = new File(LocalRepo.this.directory, pathRelativeToRoot);
@@ -78,7 +78,7 @@ public class LocalRepo implements Repo {
 	 */
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
-		patternSets.operateOnFiles(...., ...., new PatternSets.FileOperator() {
+		patternSets.operateOnFiles(this.directory, new PatternSets.FileOperator() {
 			public void op(File root, String pathRelativeToRoot) {
 				// Put the file
 				File origin = new File(dir, pathRelativeToRoot);

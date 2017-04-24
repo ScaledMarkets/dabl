@@ -99,10 +99,21 @@ public class PatternSets implements Comparable<PatternSets> {
 	}
 	
 	/**
-	 * Retrieve the specified files from the repository and perform the specified
-	 * operation on them.
+	 * Perform an operation on the files specified by this PatternSets.
+	 * @param patternRoot - The directory in which the files are rooted.
+	 * @param fileOperator - Operation to perform on each matching file.
 	 */
-	public void operateOnFiles(File patternRoot, File curDir, FileOperator fileOperator) throws Exception {
+	public void operateOnFiles(File patternRoot, FileOperator fileOperator) throws Exception {
+		operateOnFiles(patternRoot, patternRoot, fileOperator);
+	}
+	
+	/**
+	 * Perform an operation on the files specified by this PatternSets. Recursive.
+	 * @param patternRoot - The directory in which the files are rooted.
+	 * @param curDir - Directory from which search begins.
+	 * @param fileOperator - Operation to perform on each matching file.
+	 */
+	protected void operateOnFiles(File patternRoot, File curDir, FileOperator fileOperator) throws Exception {
 		
 		// Verify that curDir is within the tree of patternRoot.
 		patternRoot.toPath().relativize(curDir.toPath());
