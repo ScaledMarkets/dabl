@@ -129,8 +129,9 @@ When running DABL, the following environment variables can be set:
 These values can also be set in a <code>.dabl.properties</code> file in the user's
 home directory. Enviornment settings take precedence.
 
-Note: At present, the required third-party jars are not included in the dabl.jar.
-However, in the future, they will be, making dabl.jar an "omnibus" (i.e.,
+Note: At present, the required third-party jars are not included in the DABL
+jar file, `dabl.jar`.
+However, in the future, they will be, making `dabl.jar` an "omnibus" (i.e.,
 self-contained) jar. At present,
 you need to add these to the classpath when running DABL. For the required
 third party jars, see the variable `third_party_cp` in
