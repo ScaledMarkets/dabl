@@ -8,8 +8,8 @@ import scaledmarkets.dabl.node.*;
  */
 public class LocalRepoEntry extends DeclaredEntry
 {
-	public LocalRepoEntry(String name, NameScope enclosingScope, ALocalOnamedArtifactSet node)
+	public LocalRepoEntry(String name, NameScope enclosingScope, Node definingNode)
 	{
-		super(name, enclosingScope, ownedScope.getNodeThatDefinesScope(), node);
+		super(name, enclosingScope, definingNode);
 	}
 }

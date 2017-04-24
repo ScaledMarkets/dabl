@@ -1,16 +1,18 @@
 package scaledmarkets.dabl.util;
 
 import scaledmarkets.dabl.node.*;
-import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.FileVisitResult;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
 import java.io.InputStream;
 import java.io.FileNotFoundException;
+import java.util.Properties;
+import java.util.List;
 
 public class Utilities {
 	
@@ -100,7 +102,7 @@ public class Utilities {
 		if (curdirPropertyFile.exists()) {
 			Properties properties = new Properties();
 			properties.load(new FileReader(curdirPropertyFile));
-			String value = properties.getProperty(name);
+			value = properties.getProperty(name);
 			if ((value != null) && (value.equals(""))) return value;
 		}
 		
@@ -113,7 +115,7 @@ public class Utilities {
 		if (homePropertyFile.exists()) {
 			Properties properties = new Properties();
 			properties.load(new FileReader(homePropertyFile));
-			String value = properties.getProperty(name);
+			value = properties.getProperty(name);
 			if ((value != null) && (value.equals(""))) return value;
 		}
 		

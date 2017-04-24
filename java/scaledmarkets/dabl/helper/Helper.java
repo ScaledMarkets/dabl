@@ -62,7 +62,7 @@ public class Helper {
 	 * Return the fully qualified name (i.e., all parts of the path) of the
 	 * specified namespace.
 	 */
-	public String getPrimaryNamespaceFullName() {
+	public String getPrimaryNamespaceFullName() throws Exception {
 		Start start = state.getASTs().get(0);
 		return getNamespaceFullName(getNamespace(start));
 	}

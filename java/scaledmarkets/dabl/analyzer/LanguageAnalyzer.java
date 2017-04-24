@@ -166,7 +166,16 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void inANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
 	{
 		TId id = node.getId();
-		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+		
+		DeclaredEntry entry;
+		POartifactSet p = node.getOartifactSet();
+		if (p instanceof ALocalOartifactSet) {
+			entry = new LocalRepoEntry(id.getText(), getCurrentNameScope(), node);
+		} else if (p instanceof ARemoteOartifactSet) {
+			entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+		} else throw new RuntimeException(
+			"Unexpected Node kind: " + node.getClass().getName());
+		
 		try {
 			addSymbolEntry(entry, id);
 		} catch (SymbolEntryPresent ex) {
@@ -178,25 +187,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	public void outANamedOnamedArtifactSet(ANamedOnamedArtifactSet node)
 	{
 		super.outANamedOnamedArtifactSet(node);
-	}
-	
-	public void inALocalOnamedArtifactSet(ALocalOnamedArtifactSet node)
-	{
-		// Declares a local repository.
-		// Create a symbol entry identifying the node as a local repository.
-		TId id = node.getId();
-		LocalRepoEntry entry = new LocalRepoEntry(id.getText(), getCurrentNameScope(), node);
-		try {
-			addSymbolEntry(entry, id);
-		} catch (SymbolEntryPresent ex) {
-			throw new RuntimeException(ex);
-		}
-		resolveForwardReferences(entry);
-	}
-	
-	public void outALocalOnamedArtifactSet(ALocalOnamedArtifactSet node)
-	{
-		super.outALocalOnamedArtifactSet(node);
 	}
 	
 	

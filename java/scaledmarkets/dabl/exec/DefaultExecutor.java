@@ -93,7 +93,7 @@ public class DefaultExecutor implements Executor {
 				
 				// Obtain inputs and copy them into the workspace.
 				(new ArtifactOperator(this.helper) {
-					void operation(PatternSets patternSets) throws Exception {
+					protected void operation(PatternSets patternSets) throws Exception {
 						patternSets.getRepo().getFiles(patternSets, workspace);
 					}
 				}).operateOnArtifacts(helper.getPrimaryNamespaceFullName(), task.getName(), inputs);
@@ -107,7 +107,7 @@ public class DefaultExecutor implements Executor {
 				
 				// Write the outputs from the workspace to the output directories.
 				(new ArtifactOperator(this.helper) {
-					void operation(PatternSets patternSets) throws Exception {
+					protected void operation(PatternSets patternSets) throws Exception {
 						patternSets.getRepo().putFiles(workspace, patternSets);
 					}
 				}).operateOnArtifacts(helper.getPrimaryNamespaceFullName(), task.getName(), outputs);

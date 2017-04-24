@@ -50,7 +50,7 @@ public class DependencyGraph {
 	}
 	
 	public Set<Artifact> getAllArtifacts() {
-		return new HashSet<Task>(this.artifacts.values());
+		return new HashSet<Artifact>(this.artifacts.values());
 	}
 	
 	public Artifact getArtifactForSet(AOartifactSet a) {
@@ -95,8 +95,8 @@ public class DependencyGraph {
 					"Unexpected Node type: " + p.getClass().getName());
 				
 				// 1. If the input Artifact does not exist, then create a new Artifact.
-				Artifact artifact = artifacts.get(artifactSet);
-				if (artifact == null) artifact = createArtifact(artifactSet);
+				Artifact artifact = artifacts.get(pas);
+				if (artifact == null) artifact = createArtifact(pas);
 				
 				// 2. Add the task to the input Artifact’s list of “IsReadBy”.
 				artifact.addConsumer(task);
@@ -167,7 +167,7 @@ public class DependencyGraph {
 	/**
 	 * 
 	 */
-	protected Artifact createArtifact(AOartifactSet aset) {
+	protected Artifact createArtifact(POartifactSet aset) {
 		Artifact a = artifacts.get(aset);
 		if (a != null) throw new RuntimeException("Artifact exists");
 		Artifact artifact = new Artifact(aset);

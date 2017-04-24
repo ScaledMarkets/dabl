@@ -26,7 +26,7 @@ public class LocalRepo implements Repo {
 		
 		String workingDirPath = Utilities.getSetting("dabl.local_repository_dir");
 		if ((workingDirPath == null) || (workingDirPath.equals("")))
-			workingPath = System.getProperty("user.dir");
+			workingDirPath = System.getProperty("user.dir");
 		
 		File workingDir = new File(workingDirPath);
 		if (! workingDir.exists()) throw new RuntimeException(
@@ -65,7 +65,7 @@ public class LocalRepo implements Repo {
 	public void getFiles(PatternSets patternSets, File dir) throws Exception {
 		
 		patternSets.operateOnFiles(this.directory, new PatternSets.FileOperator() {
-			public void op(File root, String pathRelativeToRoot) {
+			public void op(File root, String pathRelativeToRoot) throws Exception {
 				// Get the file
 				File origin = new File(LocalRepo.this.directory, pathRelativeToRoot);
 				File dest = new File(dir, pathRelativeToRoot);
@@ -80,7 +80,7 @@ public class LocalRepo implements Repo {
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
 		patternSets.operateOnFiles(this.directory, new PatternSets.FileOperator() {
-			public void op(File root, String pathRelativeToRoot) {
+			public void op(File root, String pathRelativeToRoot) throws Exception {
 				// Put the file
 				File origin = new File(dir, pathRelativeToRoot);
 				File dest = new File(LocalRepo.this.directory, pathRelativeToRoot);

@@ -11,7 +11,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.PathMatcher;
 import java.nio.file.DirectoryStream;
 
@@ -27,7 +29,7 @@ public class PatternSets implements Comparable<PatternSets> {
 	}
 	
 	private Repo repo;
-	private String project;
+	private String project;  // may be null
 	private List<String> includePatterns = new LinkedList<String>();
 	private List<String> excludePatterns = new LinkedList<String>();
 	
@@ -36,7 +38,7 @@ public class PatternSets implements Comparable<PatternSets> {
 	 * The key is not required to be externalizable.
 	 */
 	public static String getKey(Repo repo, String project) {
-		return repo.hashCode() + ":" + project;
+		return String.valueOf(repo.hashCode()) + (project == null ? "" : (":" + project));
 	}
 	
 	public String getKey() { return getKey(repo, project); }
@@ -121,17 +123,17 @@ public class PatternSets implements Comparable<PatternSets> {
 		
 		Set<File> visited = new HashSet<File>();
 		
-		FileSystem fileSystem = FileSystem.getDefault();
+		FileSystem fileSystem = FileSystems.getDefault();
 		
 		for (String pi : this.includePatterns) {
 			
-			// Get the files F of curDir matching qi.
-			DirectoryStream<Path> F = Files.newDirectoryStream(curDir, qi);
+			// Get the files F of curDir.
+			DirectoryStream<Path> F = Files.newDirectoryStream(curDir.toPath());
 			
 			match: for (Path f : F) {
 			
 				// 
-				File matchingFile = new File(curDir, f.getFileName());
+				File matchingFile = new File(curDir, f.getFileName().toString());
 				if (visited.contains(matchingFile)) // the file has been visited
 					continue match; // then skip it.
 				
@@ -139,7 +141,7 @@ public class PatternSets implements Comparable<PatternSets> {
 				
 				// Translate f to patternRoot, as relative path g.
 				// I.e., remove patternRoot from front of f
-				Path g = patternRoot.toPath().relativize(f.toPath());
+				Path g = patternRoot.toPath().relativize(f);
 				
 				// If g does not match pi, continue to next file of F.
 				PathMatcher includeMatcher = fileSystem.getPathMatcher(
@@ -158,11 +160,12 @@ public class PatternSets implements Comparable<PatternSets> {
 					}
 				}
 				
-				if (f.isDirectory()) {
+				File ff = f.toFile();
+				if (ff.isDirectory()) {
 					// Call recursively for matchingFile.
-					operateOnFiles(patternRoot, f, fileOperator);
+					operateOnFiles(patternRoot, ff, fileOperator);
 				} else {
-					fileOperator.op(patternRoot, g);
+					fileOperator.op(patternRoot, g.toString());
 				}
 			}
 		}
@@ -179,5 +182,6 @@ public class PatternSets implements Comparable<PatternSets> {
 		for (String pattern : excludePatterns) {
 			result = result + "-" + pattern + ";";
 		}
+		return result;
 	}
 }

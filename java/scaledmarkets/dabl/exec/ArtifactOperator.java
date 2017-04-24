@@ -30,24 +30,31 @@ public abstract class ArtifactOperator {
 	protected void operateOnArtifacts(String namespaceName, String taskName,
 		Set<Artifact> artifacts) throws Exception {
 		
-		PatternSetsMap patternSetsMap = new PatternSets.Map();
+		PatternSets.Map patternSetsMap = new PatternSets.Map();
 		
 		for (Artifact artifact : artifacts) {
 			POartifactSet artifactSet = artifact.getArtifactSet();
-			AOidRef reposIdRef = (AOidRef)(artifactSet.getRepositoryId());
 			
 			Repo repo;
+			String project = null;
+			LinkedList<POfilesetOperation> filesetOps;
 			if (artifactSet instanceof ALocalOartifactSet) {
 				// Create a local repository, managed by DABL.
 				
 				// Find the NamedArtifactSet that owns the artifactSet.
-				String outputName = getName((ALocalOartifactSet)artifactSet);
+				ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)artifactSet;
+				String outputName = getName(localArtifactSet);
 				repo = LocalRepo.createRepo(namespaceName, taskName, outputName,
-					(ALocalOartifactSet)artifactSet);
+					localArtifactSet);
+				
+				filesetOps = localArtifactSet.getOfilesetOperation();
 				
 			} else if (artifactSet instanceof ARemoteOartifactSet) {
+				ARemoteOartifactSet remoteArtifactSet = (ARemoteOartifactSet)artifactSet;
+				AOidRef reposIdRef = (AOidRef)(remoteArtifactSet.getRepositoryId());
+				
 				// Use the Repo object to pull the files from the repo.
-				String project = this.helper.getStringLiteralValue(artifactSet.getProject());
+				project = this.helper.getStringLiteralValue(remoteArtifactSet.getProject());
 				
 				// Identify the repo declaration.
 				AOrepoDeclaration repoDecl = this.helper.getRepoDeclFromRepoRef(reposIdRef);
@@ -62,6 +69,8 @@ public abstract class ArtifactOperator {
 				// Use the repo info to construct a Repo object.
 				repo = RemoteRepo.getRepo(repoType, scheme, path, userid, password);
 				
+				filesetOps = remoteArtifactSet.getOfilesetOperation();
+				
 			} else
 				throw new RuntimeException(
 					"Unexpected artifactSet type: " + artifactSet.getClass().getName());
@@ -69,7 +78,6 @@ public abstract class ArtifactOperator {
 			PatternSets patternSets = patternSetsMap.getPatternSets(repo, project);
 			
 			// Construct a set of include patterns and a set of exclude patterns.
-			LinkedList<POfilesetOperation> filesetOps = artifactSet.getOfilesetOperation();
 			patternSets.assembleIncludesAndExcludes(this.helper, filesetOps);
 		}
 		
