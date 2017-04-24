@@ -2,7 +2,7 @@ package scaledmarkets.dabl.test.exec;
 
 import scaledmarkets.dabl.exec.LocalRepo;
 
-public class UnitTestLocalRepo extends TestBase {
+public class UnitTestPushLocalRepo extends TestBase {
 
 	private LocalRepo repo;
 	
