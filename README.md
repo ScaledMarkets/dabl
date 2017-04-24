@@ -157,6 +157,10 @@ To build the project, set the environment-specific tool locations in
 The third party components that are required for running DABL are,
 
 * [Jersey](https://jersey.java.net/)
+* JaxRS-RI (part of Jersey 2.0)
+* A modified version of JUnixSocket, obtainable from here (TBD)
+* [Apache HTTP](https://hc.apache.org/)
+* [JavaxJSON](https://jsonp.java.net/)
 
 The third party tools that are required for building or testing DABL are,
 
