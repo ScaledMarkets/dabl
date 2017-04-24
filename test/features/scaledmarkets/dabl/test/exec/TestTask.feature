@@ -28,8 +28,7 @@ Feature: TestTask
 	
 	@done
 	Scenario: Complex pushing inputs and retrieving outputs
-		Given a task containing bash commands that read three files that are named
-			in the inputs and two other files that are referenced via a wildcard
+		Given a task containing bash commands that read three files that are named in the inputs and two other files that are referenced via a wildcard
 		  And the task writes two files by name and two more by wildcard
 		  And the task modifies one of the input files
 		When I compile the task

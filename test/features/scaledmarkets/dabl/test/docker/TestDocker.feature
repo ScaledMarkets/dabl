@@ -18,13 +18,13 @@ Feature: TestDocker
 		Then the response is a success
 		And the container that I started is running
 	
-	Sceanrio: Stop container
+	Scenario: Stop container
 		Given that I have created two containers and both are running
 		When I request to stop a container
 		Then the response is a success
 		And the container that I stopped is no longer running
 	
-	Sceanrio: Destroy containers
+	Scenario: Destroy containers
 		Given that I have created two containers and one is running
 		When I request to destroy the stopped container
 		Then the response is a success
