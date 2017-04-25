@@ -185,9 +185,11 @@ before one tests. The Java-centric nature of `maven` is also an issue, because
 this project requires some native (platform-specific) code.
 Gradle also is not a good fit because there is no
 `gradle` task for compiler generation, and so we would have had to write one, and
-writing a new `gradle` task is not that simple. We decided that `make` is actually
-the best tool for this project, although at some point we will make it build
-itself - i.e., we will create a DABL build file for the `dabl` project.
+writing a new `gradle` task is not that simple. Indeed, these considerations are
+part of the motivation for creating DABL. We decided that `make` is actually
+the best tool for this project, because its core model is artifact-centric
+rather than task-centric, and it is also language-neutral. At some point we will
+make DABL build itself - i.e., we will create a DABL build file for the `dabl` project.
 
 # Binary Download
 
