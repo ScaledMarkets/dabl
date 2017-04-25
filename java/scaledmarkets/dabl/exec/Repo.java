@@ -3,7 +3,7 @@ package scaledmarkets.dabl.exec;
 import java.io.File;
 
 /**
- * A container for a set of files.
+ * A container for a set of files, such as a repository project, or a directory.
  */
 public interface Repo {
 	
