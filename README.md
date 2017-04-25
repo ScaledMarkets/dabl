@@ -96,7 +96,8 @@ Installation consists of,
 * Pulling the required base container image so that it is resident in the host's
 	local docker image repository. [TBD: put the image in dockerhub]
 * Placing the DABL jar file (`dabl.jar`) on the host system.
-* Obtaining the third party components. See [Third Party Components](#third-party-components).
+* Obtaining the third party components and adding them to the classpath used
+	to run DABL. See [Third Party Components](#third-party-components).
 * Obtaining the unix socket native library for the host's architecture, and adding
 	it to the LD_LIBRARY_PATH environment variable. We currently provide compiled
 	binaries for Mac and Linux. [TBD: provide instructions.]
