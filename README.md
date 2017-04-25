@@ -181,7 +181,9 @@ Building this project entails more than compilation and packaging in a JAR:
 we need to run a compiler generation tool. In addition, the test suite is not
 a unit test suite, but instead is a behavioral test suite, which does not fit
 well with `maven`'s phases, because for behavioral tests, one has to deploy
-before one tests. Gradle also is not a good fit because there is no
+before one tests. The Java-centric nature of `maven` is also an issue, because
+this project requires some native (platform-specific) code.
+Gradle also is not a good fit because there is no
 `gradle` task for compiler generation, and so we would have had to write one, and
 writing a new `gradle` task is not that simple. We decided that `make` is actually
 the best tool for this project, although at some point we will make it build
