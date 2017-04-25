@@ -162,7 +162,7 @@ The third party components that are required for running DABL are,
 * [Apache HTTP client library](https://hc.apache.org/)
 * [JavaxJSON](https://jsonp.java.net/)
 
-The third party tools that are required for building or testing DABL are,
+The additional third party tools that are required for building or testing DABL are,
 
 * [SableCC](http://www.sablecc.org/)
 * [Cucumber-JVM](https://github.com/cucumber/cucumber-jvm)
