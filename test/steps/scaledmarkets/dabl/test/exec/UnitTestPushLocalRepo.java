@@ -5,7 +5,6 @@ import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.test.TestBase;
-import scaledmarkets.dabl.repos.DummyProvider;
 
 import cucumber.api.Format;
 import cucumber.api.java.Before;
@@ -18,6 +17,8 @@ import cucumber.api.java.en.And;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.File;
+import java.util.List;
+import java.util.LinkedList;
 
 public class UnitTestPushLocalRepo extends TestBase {
 
@@ -68,12 +69,27 @@ public class UnitTestPushLocalRepo extends TestBase {
 		String includePattern = "b.txt";
 		createDabl(includePattern);
 		
-		this.repo = LocalRepo.createRepo(NamespaceName, TaskName,
-			OutputsName, ....ALocalOartifactSet artifactSet);
+		AOtaskDeclaration taskDecl = getHelper().getTaskDeclaration(TaskName);
+		assertThat(taskDecl != null, "Could not find task");
+		NameScope taskNameScope = getHelper().getState().getNameScope(taskDecl);
+		SymbolEntry entry = taskNameScope.getEntry(OutputsName);
+		assertThat(entry != null, "Could not find entry for " + OutputsName);
+		assertThat(entry instanceof DeclaredEntry, "entry is a " + entry.getClass().getName());
+		DeclaredEntry dentry = (DeclaredEntry)entry;
+		Node n = dentry.getDefiningNode();
+		assertThat(n instanceof ANamedOnamedArtifactSet, "Node is a " + n.getClass().getName());
+		ANamedOnamedArtifactSet namedArtifactSet = (ANamedOnamedArtifactSet)n;
+		POartifactSet p = namedArtifactSet.getOartifactSet();
+		assertThat(p instanceof ALocalOartifactSet, "p is a " + p.getClass().getName());
+		ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)p;
+		
+		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,
+			localArtifactSet);
+		
+		LinkedList<POfilesetOperation> filesetOps = localArtifactSet.getOfilesetOperation();
 		
 		PatternSets patternSets = new PatternSets(repo);
-		patternSets.assembleIncludesAndExcludes(getHelper(),
-			....List<POfilesetOperation> filesetOps);
+		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
 		
 		repo.putFiles(this.given1dir, patternSets);
 

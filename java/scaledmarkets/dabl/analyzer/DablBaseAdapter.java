@@ -224,7 +224,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	protected SymbolEntry getIdBinding(TId id)
 	{
-		return (SymbolEntry)(getIn(id));
+		return this.state.getIdBinding(id);
 	}
 	
 	/**
@@ -262,10 +262,10 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		catch (SymbolEntryPresent ex) { throw new RuntimeException(ex); }
 		return newNameScope;
 	}
-	
+
 	protected NameScope getNameScope(Node node)
 	{
-		return (NameScope)(this.getIn(node));
+		return this.state.getNameScope(node);
 	}
 	
 	/**
@@ -287,6 +287,6 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	protected ExprAnnotation getExprAnnotation(Node node)
 	{
-		return (ExprAnnotation)(this.getOut(node));
+		return this.state.getExprAnnotation(node);
 	}
 }

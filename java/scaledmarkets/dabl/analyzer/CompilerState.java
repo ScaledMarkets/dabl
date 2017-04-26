@@ -23,6 +23,17 @@ public class CompilerState
     
     public NameScopeEntry getPrimaryNamespaceSymbolEntry() { return primaryNamespaceSymbolEntry; }
 	
+	public SymbolEntry getIdBinding(TId id) {
+		return (SymbolEntry)(this.getIn(id));
+	}
+
+	public NameScope getNameScope(Node node) {
+		return (NameScope)(this.getIn(node));
+	}
+
+	public ExprAnnotation getExprAnnotation(Node node) {
+		return (ExprAnnotation)(this.getOut(node));
+	}
     
 	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
 
