@@ -97,8 +97,13 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@Then("^only file b\\.txt is pushed$")
 	public void only_file_b_txt_is_pushed() throws Throwable {
 		
-		// Verify that b.txt - and only b.txt - is in the repo.
-		....
+		// Get b.txt
+		assertThat(this.repo.containsFile("b.txt"), "b.txt not found");
+		
+		// Count all files - should only be one.
+		long n = this.repo.countAllFiles();
+		assertThat(n == 1, "Found " + n + " files");
+		
 		throw new Exception();
 	}
 	
