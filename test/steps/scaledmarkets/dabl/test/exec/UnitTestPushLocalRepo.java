@@ -92,13 +92,13 @@ public class UnitTestPushLocalRepo extends TestBase {
 		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
 		
 		repo.putFiles(this.given1dir, patternSets);
-
-		throw new Exception();
 	}
 	
 	@Then("^only file b\\.txt is pushed$")
 	public void only_file_b_txt_is_pushed() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
+		
+		// Verify that b.txt - and only b.txt - is in the repo.
+		....
 		throw new Exception();
 	}
 	
