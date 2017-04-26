@@ -7,6 +7,10 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.LinkedList;
 
+/**
+ * Add methods for name resolution, symbol table creation and management, and
+ * Node annotation.
+ */
 public abstract class DablBaseAdapter extends DepthFirstAdapter
 {
 	private CompilerState state;

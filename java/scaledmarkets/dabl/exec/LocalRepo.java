@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
+import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -87,6 +88,30 @@ public class LocalRepo implements Repo {
 				Files.copy(origin.toPath(), dest.toPath());
 			}
 		});
+	}
+
+	public List<String> listFiles(String dirpath) throws Exception {
+		....
+	}
+	
+	public List<String> listFilesRecursively(String dirpath) throws Exception {
+		....
+	}
+	
+	public List<String> listFiles() throws Exception {
+		....
+	}
+	
+	public List<String> listFilesRecursively() throws Exception {
+		....
+	}
+	
+	public boolean containsFile(String filepath) throws Exception {
+		....
+	}
+	
+	public int countFiles() throws Exception {
+		....
 	}
 
 	private String outputName;

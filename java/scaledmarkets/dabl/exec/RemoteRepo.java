@@ -2,6 +2,7 @@ package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
+import java.util.List;
 
 /**
  * A remote container for a set of files. By 'remote', we mean that the repo is
@@ -68,4 +69,28 @@ public abstract class RemoteRepo implements Repo {
 	protected String getPassword() { return password; }
 	
 	protected abstract RepoProvider getRepoProvider();
+
+	public List<String> listFiles(String dirpath) throws Exception {
+		return getRepoProvider().listFiles(this, dirpath);
+	}
+	
+	public List<String> listFilesRecursively(String dirpath) throws Exception {
+		return getRepoProvider().listFilesRecursively(this, dirpath);
+	}
+	
+	public List<String> listFiles() throws Exception {
+		return getRepoProvider().listFiles(this);
+	}
+	
+	public List<String> listFilesRecursively() throws Exception {
+		return getRepoProvider().listFilesRecursively(this);
+	}
+	
+	public boolean containsFile(String filepath) throws Exception {
+		return getRepoProvider().containsFile(this, filepath);
+	}
+	
+	public int countFiles() throws Exception {
+		return getRepoProvider().countFiles(this);
+	}
 }

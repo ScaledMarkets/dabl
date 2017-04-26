@@ -40,6 +40,30 @@ public class GitLocalProvider implements RepoProvider {
 		//....
 	}
 		
+	public List<String> listFiles(RemoteRepo repo, String dirpath) throws Exception {
+		....
+	}
+	
+	public List<String> listFilesRecursively(RemoteRepo repo, String dirpath) throws Exception {
+		....
+	}
+	
+	public List<String> listFiles(RemoteRepo repo) throws Exception {
+		....
+	}
+	
+	public List<String> listFilesRecursively(RemoteRepo repo) throws Exception {
+		....
+	}
+	
+	public boolean containsFile(RemoteRepo repo, String filepath) throws Exception {
+		....
+	}
+	
+	public int countFiles(RemoteRepo repo) throws Exception {
+		....
+	}
+
 	class GitLocalRepo extends RemoteRepo {
 		
 		GitLocalRepo(String scheme, String path, String project,
