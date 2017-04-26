@@ -4,6 +4,7 @@ import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
 import java.util.List;
+import java.util.Arrays;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -91,27 +92,44 @@ public class LocalRepo implements Repo {
 	}
 
 	public List<String> listFiles(String dirpath) throws Exception {
-		....
+		File dir = new File(this.directory, dirpath);
+		if (! dir.exists()) throw new Exception(dirpath + " not found");
+		if (! dir.isDirectory()) throw new Exception(dirpath + " is not a directory");
+		return Arrays.asList(dir.list());
 	}
 	
-	public List<String> listFilesRecursively(String dirpath) throws Exception {
-		....
+	public void listFilesRecursively(List<String> files, String dirpath) throws Exception {
+		File dir = new File(this.directory, dirpath);
+		if (! dir.exists()) throw new Exception(dirpath + " not found");
+		if (! dir.isDirectory()) throw new Exception(dirpath + " is not a directory");
+		
+		DirectoryStream<Path> paths = Files.newDirectoryStream(dir.asPath());
+		for (Path path : paths) {
+			String filename = path.getFileName().toString();
+			String newDirpath = dirpath + "/" + filename;
+			files.add(newDirpath);
+			if (path.isDirectory()) {
+				listFilesRecursively(files, newDirpath);
+			}
+		}
+		stream.close();
 	}
 	
 	public List<String> listFiles() throws Exception {
-		....
+		return listFiles(this.directory.getAbsolutePath());
 	}
 	
-	public List<String> listFilesRecursively() throws Exception {
-		....
+	public void listFilesRecursively(List<String> files) throws Exception {
+		listFilesRecursively(files, "/");
 	}
 	
 	public boolean containsFile(String filepath) throws Exception {
-		....
+		File file = new File(this.directory, filepath);
+		return file.exists();
 	}
 	
-	public int countFiles() throws Exception {
-		....
+	public long countAllFiles() throws Exception {
+		return Files.walk((new Path(this.directory), FOLLOW_LINKS).count();
 	}
 
 	private String outputName;

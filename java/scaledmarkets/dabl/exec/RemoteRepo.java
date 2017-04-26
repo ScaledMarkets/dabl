@@ -74,23 +74,23 @@ public abstract class RemoteRepo implements Repo {
 		return getRepoProvider().listFiles(this, dirpath);
 	}
 	
-	public List<String> listFilesRecursively(String dirpath) throws Exception {
-		return getRepoProvider().listFilesRecursively(this, dirpath);
+	public void listFilesRecursively(List<String> files, String dirpath) throws Exception {
+		getRepoProvider().listFilesRecursively(this, files, dirpath);
 	}
 	
 	public List<String> listFiles() throws Exception {
 		return getRepoProvider().listFiles(this);
 	}
 	
-	public List<String> listFilesRecursively() throws Exception {
-		return getRepoProvider().listFilesRecursively(this);
+	public void listFilesRecursively(List<String> files) throws Exception {
+		return getRepoProvider().listFilesRecursively(this, List<String> files);
 	}
 	
 	public boolean containsFile(String filepath) throws Exception {
 		return getRepoProvider().containsFile(this, filepath);
 	}
 	
-	public int countFiles() throws Exception {
+	public long countAllFiles() throws Exception {
 		return getRepoProvider().countFiles(this);
 	}
 }

@@ -24,6 +24,7 @@ public interface Repo {
 	 * The directory may be a path of directories.
 	 * The file path separator is a forward slash, and the root ("/") is the top
 	 * of the Repo.
+	 * The file names returned are relative to dirpath.
 	 */
 	List<String> listFiles(String dirpath) throws Exception;
 	
@@ -31,7 +32,7 @@ public interface Repo {
 	 * List the files that exist in the specified directory and all child
 	 * directories in this repo.
 	 */
-	List<String> listFilesRecursively(String dirpath) throws Exception;
+	void listFilesRecursively(List<String> files, String dirpath) throws Exception;
 	
 	/**
 	 * List the files that exist at the top level in this repo.
@@ -41,7 +42,7 @@ public interface Repo {
 	/**
 	 * List all of the files in this repo - including those in subdirectories.
 	 */
-	List<String> listFilesRecursively() throws Exception;
+	void listFilesRecursively(List<String>) throws Exception;
 	
 	/**
 	 * Return true if this Repo contains the specified file. The file is fully
@@ -53,5 +54,5 @@ public interface Repo {
 	/**
 	 * Return the total number of non-directory files in all directories of this Repo.
 	 */
-	int countFiles() throws Exception;
+	long countAllFiles() throws Exception;
 }
