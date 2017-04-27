@@ -68,17 +68,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 
 		String includePattern = "b.txt";
 		createDabl(includePattern);
-		
-		// Find the task's local artifact set.
-		ALocalOartifactSet localArtifactSet = findLocalArtifactSetForTask(
-			TaskName, OutputsName);
-		
-		// Create a local repo.
-		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,
-			localArtifactSet);
-		
-		// Push the task's outputs to the local repo.
-		pushOutputsToRepo(localArtifactSet, repo);
+		pushPatternsToRepo(includePattern, this.repo);
 	}
 	
 	@Then("^only file b\\.txt is pushed$")
@@ -102,17 +92,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String excludePattern = "exclude b.txt";
 		createDabl(excludePattern);
-		
-		// Find the task's local artifact set.
-		ALocalOartifactSet localArtifactSet = findLocalArtifactSetForTask(
-			TaskName, OutputsName);
-		
-		// Create a local repo.
-		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,
-			localArtifactSet);
-		
-		// Push the task's outputs to the local repo.
-		pushOutputsToRepo(localArtifactSet, repo);
+		pushPatternsToRepo(excludePattern, this.repo);
 	}
 	
 	@Then("^no files are pushed$")
@@ -126,14 +106,17 @@ public class UnitTestPushLocalRepo extends TestBase {
 
 	@When("^the include pattern specifies a\\.txt and b\\.txt, and the exclude pattern specifies b\\.txt$")
 	public void the_include_pattern_specifies_a_txt_and_b_txt_and_the_exclude_pattern_specifies_b_txt() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		String pattern = "include a.txt, b.txt exclude b.txt";
+		createDabl(pattern);
+		pushPatternsToRepo(pattern, this.repo);
 	}
 	
 	@Then("^only file a\\.txt is pushed$")
 	public void only_file_a_txt_is_pushed() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		assertThat(this.repo.containsFile("a.txt"), "a.txt not found");
+		long n = this.repo.countAllFiles();
+		assertThat(n == 1, "Found " + n + " files");
 	}
 	
 	
@@ -153,14 +136,18 @@ public class UnitTestPushLocalRepo extends TestBase {
 	
 	@When("^the include pattern specifies a\\.\\* and the exclude pattern specifies \\*\\.txt$")
 	public void the_include_pattern_specifies_a_and_the_exclude_pattern_specifies_txt() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		String pattern = "a.*, exclude *.txt";
+		createDabl(pattern);
+		pushPatternsToRepo(pattern, this.repo);
 	}
 	
 	@Then("^only the files a\\.html and a\\.rtf are pushed$")
 	public void only_the_files_a_html_and_a_rtf_are_pushed() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		assertThat(this.repo.containsFile("a.html"), "a.html not found");
+		assertThat(this.repo.containsFile("a.rtf"), "a.rtf not found");
+		long n = this.repo.countAllFiles();
+		assertThat(n == 2, "Found " + n + " files");
 	}
 	
 	
@@ -178,14 +165,19 @@ public class UnitTestPushLocalRepo extends TestBase {
 	
 	@When("^the include pattern specifies \\*\\*/a\\.txt$")
 	public void the_include_pattern_specifies_a_txt() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		String pattern = "**/a.txt";
+		createDabl(pattern);
+		pushPatternsToRepo(pattern, this.repo);
 	}
 	
 	@Then("^the files a\\.txt, d/a\\.txt, and d/dd/a\\.txt are pushed$")
 	public void the_files_a_txt_d_a_txt_and_d_dd_a_txt_are_pushed() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		assertThat(this.repo.containsFile("a.txt"), "a.txt not found");
+		assertThat(this.repo.containsFile("d/a.txt"), "d/a.txt not found");
+		assertThat(this.repo.containsFile("d/dd/a.txt"), "d/dd/a.txt not found");
+		long n = this.repo.countAllFiles();
+		assertThat(n == 3, "Found " + n + " files");
 	}
 	
 	
@@ -202,22 +194,30 @@ public class UnitTestPushLocalRepo extends TestBase {
 	
 	@When("^the include pattern specifies \\*\\*/\\*\\.txt and the exclude pattern specifies e$")
 	public void the_include_pattern_specifies_txt_and_the_exclude_pattern_specifies_e() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		String pattern = "**/*.txt exclude e";
+		createDabl(pattern);
+		pushPatternsToRepo(pattern, this.repo);
 	}
 	
 	
 	// Scenario: Two include patterns, and exclude files that match a specified extension to push
 	@When("^the include pattern specifies \\* and \\*\\* and the exclude pattern specifies \\*\\*/\\*\\.txt$")
 	public void the_include_pattern_specifies_and_and_the_exclude_pattern_specifies_txt() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		String pattern = "*, ** exclude **/*.txt";
+		createDabl(pattern);
+		pushPatternsToRepo(pattern, this.repo);
 	}
 	
 	@Then("^the files a\\.rtf, d/a\\.rtf, d/dd/a\\.rtf, e/a\\.rtf are pushed$")
 	public void the_files_a_rtf_d_a_rtf_d_dd_a_rtf_e_a_rtf_are_pushed() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		assertThat(this.repo.containsFile("a.rtf"), "a.rtf not found");
+		assertThat(this.repo.containsFile("d/a.rtf"), "d/a.rtf not found");
+		assertThat(this.repo.containsFile("d/dd/a.rtf"), "d/dd/a.rtf not found");
+		assertThat(this.repo.containsFile("e/a.rtf"), "e/a.rtf not found");
+		long n = this.repo.countAllFiles();
+		assertThat(n == 4, "Found " + n + " files");
 	}
 	
 	protected void createDabl(String fileset) {
@@ -243,5 +243,19 @@ public class UnitTestPushLocalRepo extends TestBase {
 		PatternSets patternSets = new PatternSets(repo);
 		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
 		repo.putFiles(this.given1dir, patternSets);
+	}
+
+	protected void pushPatternsToRepo(String pattern) throws Exception {
+		
+		// Find the task's local artifact set.
+		ALocalOartifactSet localArtifactSet = findLocalArtifactSetForTask(
+			TaskName, OutputsName);
+		
+		// Create a local repo.
+		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,
+			localArtifactSet);
+		
+		// Push the task's outputs to the local repo.
+		pushOutputsToRepo(localArtifactSet, repo);
 	}
 }
