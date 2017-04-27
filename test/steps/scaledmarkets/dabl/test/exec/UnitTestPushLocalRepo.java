@@ -69,29 +69,16 @@ public class UnitTestPushLocalRepo extends TestBase {
 		String includePattern = "b.txt";
 		createDabl(includePattern);
 		
-		AOtaskDeclaration taskDecl = getHelper().getTaskDeclaration(TaskName);
-		assertThat(taskDecl != null, "Could not find task");
-		NameScope taskNameScope = getHelper().getState().getNameScope(taskDecl);
-		SymbolEntry entry = taskNameScope.getEntry(OutputsName);
-		assertThat(entry != null, "Could not find entry for " + OutputsName);
-		assertThat(entry instanceof DeclaredEntry, "entry is a " + entry.getClass().getName());
-		DeclaredEntry dentry = (DeclaredEntry)entry;
-		Node n = dentry.getDefiningNode();
-		assertThat(n instanceof ANamedOnamedArtifactSet, "Node is a " + n.getClass().getName());
-		ANamedOnamedArtifactSet namedArtifactSet = (ANamedOnamedArtifactSet)n;
-		POartifactSet p = namedArtifactSet.getOartifactSet();
-		assertThat(p instanceof ALocalOartifactSet, "p is a " + p.getClass().getName());
-		ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)p;
+		// Find the task's local artifact set.
+		ALocalOartifactSet localArtifactSet = findLocalArtifactSetForTask(
+			TaskName, OutputsName);
 		
+		// Create a local repo.
 		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,
 			localArtifactSet);
 		
-		LinkedList<POfilesetOperation> filesetOps = localArtifactSet.getOfilesetOperation();
-		
-		PatternSets patternSets = new PatternSets(repo);
-		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
-		
-		repo.putFiles(this.given1dir, patternSets);
+		// Push the task's outputs to the local repo.
+		pushOutputsToRepo(localArtifactSet, repo);
 	}
 	
 	@Then("^only file b\\.txt is pushed$")
@@ -112,14 +99,26 @@ public class UnitTestPushLocalRepo extends TestBase {
 
 	@When("^the exclude pattern specifies b\\.txt$")
 	public void the_exclude_pattern_specifies_b_txt() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		
+		String excludePattern = "exclude b.txt";
+		createDabl(excludePattern);
+		
+		// Find the task's local artifact set.
+		ALocalOartifactSet localArtifactSet = findLocalArtifactSetForTask(
+			TaskName, OutputsName);
+		
+		// Create a local repo.
+		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,
+			localArtifactSet);
+		
+		// Push the task's outputs to the local repo.
+		pushOutputsToRepo(localArtifactSet, repo);
 	}
 	
 	@Then("^no files are pushed$")
 	public void no_files_are_pushed() throws Throwable {
-		// Write code here that turns the phrase above into concrete actions
-		throw new Exception();
+		long n = this.repo.countAllFiles();
+		assertThat(n == 0, "Found " + n + " files");
 	}
 	
 	
@@ -226,5 +225,23 @@ public class UnitTestPushLocalRepo extends TestBase {
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
 		assertThat(getHelper().getState().getGlobalScope() != null);
+	}
+
+	protected ALocalOartifactSet findLocalArtifactSetForTask(String taskName,
+		String outputsName) throws Exception {
+		ANamedOnamedArtifactSet namedArtifactSet = getHelper().getNamedOutput(
+			taskName, outputsName);
+		POartifactSet p = namedArtifactSet.getOartifactSet();
+		assertThat(p instanceof ALocalOartifactSet, "p is a " + p.getClass().getName());
+		ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)p;
+		return localArtifactSet;
+	}
+	
+	protected void pushOutputsToRepo(ALocalOartifactSet localArtifactSet,
+		LocalRepo repo) throws Exception {
+		LinkedList<POfilesetOperation> filesetOps = localArtifactSet.getOfilesetOperation();
+		PatternSets patternSets = new PatternSets(repo);
+		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
+		repo.putFiles(this.given1dir, patternSets);
 	}
 }

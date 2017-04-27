@@ -250,6 +250,24 @@ public class Helper {
 	}
 	
 	/**
+	 * Find the named artifact set node for the specified task and inputs or outputs clause.
+	 */
+	public ANamedOnamedArtifactSet getNamedOutput(String taskName, String inputsOrOutputsName)
+	throws Exception {
+		AOtaskDeclaration taskDecl = this.getTaskDeclaration(taskName);
+		assertThat(taskDecl != null, "Could not find task " + taskName);
+		NameScope taskNameScope = this.state.getNameScope(taskDecl);
+		SymbolEntry entry = taskNameScope.getEntry(inputsOrOutputsName);
+		assertThat(entry != null, "Could not find entry for " + inputsOrOutputsName);
+		assertThat(entry instanceof DeclaredEntry, "entry is a " + entry.getClass().getName());
+		DeclaredEntry dentry = (DeclaredEntry)entry;
+		Node n = dentry.getDefiningNode();
+		assertThat(n instanceof ANamedOnamedArtifactSet, "Node is a " + n.getClass().getName());
+		ANamedOnamedArtifactSet namedArtifactSet = (ANamedOnamedArtifactSet)n;
+		return namedArtifactSet;
+	}
+	
+	/**
 	 * Return the symbol table entry for the primary namespace. The entry is
 	 * in the global symbol table.
 	 */
