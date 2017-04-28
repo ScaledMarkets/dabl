@@ -59,8 +59,6 @@ public class UnitTestPushLocalRepo extends TestBase {
 		File fileb = new File(given1dir, "b.txt");
 		filea.createNewFile();
 		fileb.createNewFile();
-		
-		throw new Exception();
 	}
 	
 	@When("^the include pattern specifies b\\.txt$")
@@ -80,8 +78,6 @@ public class UnitTestPushLocalRepo extends TestBase {
 		// Count all files - should only be one.
 		long n = this.repo.countAllFiles();
 		assertThat(n == 1, "Found " + n + " files");
-		
-		throw new Exception();
 	}
 	
 	
@@ -126,12 +122,25 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@Given("^a directory contains files a\\.txt, b\\.txt, a\\.html, b\\.html, a\\.rtf, b\\.rtf$")
 	public void a_directory_contains_files_a_txt_b_txt_a_html_b_html_a_rtf_b_rtf() throws Throwable {
 		
-
-
 		this.given2dir.mkdir();
 		this.given2dir.deleteOnExit();
 
-		throw new Exception();
+		File filea = new File(given2dir, "a.txt");
+		File fileb = new File(given2dir, "b.txt");
+		File filec = new File(given2dir, "a.html");
+		File filed = new File(given2dir, "b.html");
+		File filee = new File(given2dir, "a.rtf");
+		File filef = new File(given2dir, "b.rtf");
+		filea.createNewFile();
+		fileb.createNewFile();
+		filec.createNewFile();
+		filed.createNewFile();
+		filee.createNewFile();
+		filef.createNewFile();
+		
+		....continue here: complete the @Given methods.
+		Also, make sure that the directories can be deleted at end of test, given
+		that they are not empty.
 	}
 	
 	@When("^the include pattern specifies a\\.\\* and the exclude pattern specifies \\*\\.txt$")
@@ -159,8 +168,6 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		this.given3dir.mkdir();
 		this.given3dir.deleteOnExit();
-
-		throw new Exception();
 	}
 	
 	@When("^the include pattern specifies \\*\\*/a\\.txt$")
@@ -189,7 +196,6 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		this.given4dir.mkdir();
 		this.given4dir.deleteOnExit();
-		throw new Exception();
 	}
 	
 	@When("^the include pattern specifies \\*\\*/\\*\\.txt and the exclude pattern specifies e$")
