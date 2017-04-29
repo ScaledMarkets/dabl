@@ -137,20 +137,12 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		setup(dirNum);
 
-		File filea = new File(givendir, "a.txt");
-		File fileb = new File(givendir, "b.txt");
-		File filec = new File(givendir, "a.html");
-		File filed = new File(givendir, "b.html");
-		File filee = new File(givendir, "a.rtf");
-		File filef = new File(givendir, "b.rtf");
-		filea.createNewFile();
-		fileb.createNewFile();
-		filec.createNewFile();
-		filed.createNewFile();
-		filee.createNewFile();
-		filef.createNewFile();
-		
-		....continue here: complete the @Given methods.
+		(new File(givendir, "a.txt")).createNewFile();
+		(new File(givendir, "b.txt")).createNewFile();
+		(new File(givendir, "a.html")).createNewFile();
+		(new File(givendir, "b.html")).createNewFile();
+		(new File(givendir, "a.rtf")).createNewFile();
+		(new File(givendir, "b.rtf")).createNewFile();
 	}
 	
 	@When("^the include pattern specifies a\\.\\* and the exclude pattern specifies \\*\\.txt$")
@@ -177,7 +169,17 @@ public class UnitTestPushLocalRepo extends TestBase {
 	public void a_directory_with_files_a_txt_b_txt_d_a_txt_d_b_txt_d_dd_a_txt_d_dd_b_txt(int dirNum) throws Throwable {
 		
 		setup(dirNum);
-		....
+		
+		(new File(givendir, "a.txt")).createNewFile();
+		(new File(givendir, "b.txt")).createNewFile();
+		File d = new File(givendir, "d");
+		d.mkdir();
+		(new File(d, "a.txt")).createNewFile();
+		(new File(d, "b.txt")).createNewFile();
+		File dd = new File(d, "dd");
+		dd.mkdir();
+		(new File(dd, "a.txt")).createNewFile();
+		(new File(dd, "b.txt")).createNewFile();
 	}
 	
 	@When("^the include pattern specifies \\*\\*/a\\.txt$")
@@ -205,7 +207,24 @@ public class UnitTestPushLocalRepo extends TestBase {
 	public void a_directory_with_filex_a_txt_a_rtf_d_a_txt_d_a_rtf_e_a_txt_e_a_rtf_d_dd_a_txt_d_dd_a_rtf(int dirNum) throws Throwable {
 		
 		setup(dirNum);
-		....
+
+		(new File(givendir, "a.txt")).createNewFile();
+		(new File(givendir, "a.rtf")).createNewFile();
+		File d = new File(givendir, "d");
+		d.mkdir();
+		(new File(d, "a.txt")).createNewFile();
+		(new File(d, "a.rtf")).createNewFile();
+		File e = new File(givendir, "e");
+		e.mkdir();
+		(new File(e, "a.txt")).createNewFile();
+		(new File(e, "a.rtf")).createNewFile();
+		
+		File d = new File(givendir, "d");
+		d.mkdir();
+		File dd = new File(d, "dd");
+		dd.mkdir();
+		(new File(dd, "a.txt")).createNewFile();
+		(new File(dd, "a.rtf")).createNewFile();
 	}
 	
 	@When("^the include pattern specifies \\*\\*/\\*\\.txt and the exclude pattern specifies e$")
