@@ -1,6 +1,6 @@
 package scaledmarkets.dabl.exec;
 
-import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
@@ -53,7 +53,7 @@ public class DependencyGraph {
 		return new HashSet<Artifact>(this.artifacts.values());
 	}
 	
-	public Artifact getArtifactForSet(AOartifactSet a) {
+	public Artifact getArtifactForSet(POartifactSet a) {
 		return artifacts.get(a);
 	}
 	
@@ -120,9 +120,8 @@ public class DependencyGraph {
 					"Unexpected Node type: " + p.getClass().getName());
 				
 				// 1. If the output Artifact does not exist, then create a new Artifact.
-				AOartifactSet artifactSet = (AOartifactSet)pas;
-				Artifact artifact = artifacts.get(artifactSet);
-				if (artifact == null) artifact = createArtifact(artifactSet);
+				Artifact artifact = artifacts.get(pas);
+				if (artifact == null) artifact = createArtifact(pas);
 				
 				// 2. Add the task to the output Artifact’s list of “IsWrittenBy”.
 				artifact.addProducer(task);
@@ -179,7 +178,7 @@ public class DependencyGraph {
 	/**
 	 * Retrieve the artifact set referenced by the oid_ref.
 	 */
-	protected AOartifactSet getArtifactSet(AFilesOnamedArtifactSet node) {
+	protected POartifactSet getArtifactSet(AFilesOnamedArtifactSet node) {
 		
 		POidRef p = node.getOidRef();
 		AOidRef oidRef = (AOidRef)p;
@@ -202,16 +201,13 @@ public class DependencyGraph {
 			id.getText() + " was expected to refer to a files declaration");
 		
 		POartifactSet b = filesDecl.getOartifactSet();
-		Utilities.assertThat(b instanceof AOartifactSet,
-			"Unexpected Node type: " + b.getClass().getName());
-		
-		return (AOartifactSet)b;
+		return b;
 	}
 	
 	/**
 	 * Retrieve the artifact set referenced by the qualified name.
 	 */
-	protected AOartifactSet getArtifactSet(ATaskOnamedArtifactSet node) {
+	protected POartifactSet getArtifactSet(ATaskOnamedArtifactSet node) {
 		
 		POqualifiedNameRef p = node.getOqualifiedNameRef();
 		Utilities.assertThat(p instanceof AOqualifiedNameRef,
@@ -243,9 +239,6 @@ public class DependencyGraph {
 			" was expected to refer to an output in a task declaration");
 		
 		POartifactSet b = namedArtifactSet.getOartifactSet();
-		Utilities.assertThat(b instanceof AOartifactSet,
-			"Unexpected Node type: " + b.getClass().getName());
-		
-		return (AOartifactSet)b;
+		return b;
 	}
 }

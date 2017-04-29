@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Arrays;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.FileVisitOption;
+import java.nio.file.DirectoryStream;
 
 /**
  * A DABL "local repository" is a file storage area (e.g., directory) available
@@ -103,16 +105,16 @@ public class LocalRepo implements Repo {
 		if (! dir.exists()) throw new Exception(dirpath + " not found");
 		if (! dir.isDirectory()) throw new Exception(dirpath + " is not a directory");
 		
-		DirectoryStream<Path> paths = Files.newDirectoryStream(dir.asPath());
+		DirectoryStream<Path> paths = Files.newDirectoryStream(dir.toPath());
 		for (Path path : paths) {
 			String filename = path.getFileName().toString();
 			String newDirpath = dirpath + "/" + filename;
 			files.add(newDirpath);
-			if (path.isDirectory()) {
+			if (path.toFile().isDirectory()) {
 				listFilesRecursively(files, newDirpath);
 			}
 		}
-		stream.close();
+		paths.close();
 	}
 	
 	public List<String> listFiles() throws Exception {
@@ -129,7 +131,7 @@ public class LocalRepo implements Repo {
 	}
 	
 	public long countAllFiles() throws Exception {
-		return Files.walk((new Path(this.directory), FOLLOW_LINKS).count();
+		return Files.walk(this.directory.toPath(), FileVisitOption.FOLLOW_LINKS).count();
 	}
 
 	private String outputName;

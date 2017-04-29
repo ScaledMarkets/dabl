@@ -7,6 +7,7 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.client.*;
 import java.io.File;
+import java.util.List;
 
 public class GitRemoteProvider implements RepoProvider {
 	
@@ -55,13 +56,13 @@ public class GitRemoteProvider implements RepoProvider {
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		//....
 	}
-		
+	
 	public List<String> listFiles(RemoteRepo repo, String dirpath) throws Exception {
 		return null; //....
 	}
 	
 	public void listFilesRecursively(RemoteRepo repo, List<String> files, String dirpath) throws Exception {
-		return null; //....
+		//....
 	}
 	
 	public List<String> listFiles(RemoteRepo repo) throws Exception {
@@ -69,7 +70,7 @@ public class GitRemoteProvider implements RepoProvider {
 	}
 	
 	public void listFilesRecursively(RemoteRepo repo, List<String> files) throws Exception {
-		return null; //....
+		//....
 	}
 	
 	public boolean containsFile(RemoteRepo repo, String filepath) throws Exception {

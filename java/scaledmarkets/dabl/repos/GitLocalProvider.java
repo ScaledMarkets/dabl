@@ -7,6 +7,7 @@ import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.client.*;
 import java.io.File;
+import java.util.List;
 
 public class GitLocalProvider implements RepoProvider {
 	

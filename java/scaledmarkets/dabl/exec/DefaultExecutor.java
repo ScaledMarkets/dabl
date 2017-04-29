@@ -2,7 +2,7 @@ package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.helper.Helper;
 import scaledmarkets.dabl.node.*;
-import scaledmarkets.dabl.analysis.CompilerState;
+import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.util.Utilities;
 import java.util.Set;
 import java.io.File;

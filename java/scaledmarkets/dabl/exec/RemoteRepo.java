@@ -83,7 +83,7 @@ public abstract class RemoteRepo implements Repo {
 	}
 	
 	public void listFilesRecursively(List<String> files) throws Exception {
-		return getRepoProvider().listFilesRecursively(this, List<String> files);
+		getRepoProvider().listFilesRecursively(this, files);
 	}
 	
 	public boolean containsFile(String filepath) throws Exception {
@@ -91,6 +91,6 @@ public abstract class RemoteRepo implements Repo {
 	}
 	
 	public long countAllFiles() throws Exception {
-		return getRepoProvider().countFiles(this);
+		return getRepoProvider().countAllFiles(this);
 	}
 }

@@ -42,7 +42,7 @@ public interface Repo {
 	/**
 	 * List all of the files in this repo - including those in subdirectories.
 	 */
-	void listFilesRecursively(List<String>) throws Exception;
+	void listFilesRecursively(List<String> files) throws Exception;
 	
 	/**
 	 * Return true if this Repo contains the specified file. The file is fully

@@ -58,10 +58,6 @@ public class DummyProvider implements RepoProvider {
 		this.pushedFiles.clear();
 	}
 
-	public void putFiles(File dir, PatternSets patternSets) throws Exception {
-		//....
-	}
-		
 	public List<String> listFiles(RemoteRepo repo, String dirpath) throws Exception {
 		return null; //....
 	}

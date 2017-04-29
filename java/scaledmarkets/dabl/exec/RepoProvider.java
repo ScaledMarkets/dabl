@@ -12,11 +12,11 @@ public interface RepoProvider {
 
 	List<String> listFiles(RemoteRepo repo, String dirpath) throws Exception;
 	
-	void listFilesRecursively(List<String> files, RemoteRepo repo, String dirpath) throws Exception;
+	void listFilesRecursively(RemoteRepo repo, List<String> files, String dirpath) throws Exception;
 	
 	List<String> listFiles(RemoteRepo repo) throws Exception;
 	
-	void listFilesRecursively(List<String> files, RemoteRepo repo) throws Exception;
+	void listFilesRecursively(RemoteRepo repo, List<String> files) throws Exception;
 	
 	boolean containsFile(RemoteRepo repo, String filepath) throws Exception;
 	
