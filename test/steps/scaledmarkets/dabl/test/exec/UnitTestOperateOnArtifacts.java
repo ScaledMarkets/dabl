@@ -26,7 +26,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 	}
 
 	@When("^a single outputs specifies a single file$")
-	public void () throws Exception {
+	public void a_single_outputs_specifies_a_single_file() throws Exception {
 
 		Reader reader = new StringReader(
 "namespace simple \n" +
@@ -42,7 +42,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 	}
 
 	@Then("^the result specifies that file$")
-	public void () throws Throwable {
+	public void the_result_specifies_that_file() throws Throwable {
 		
 		DummyProvider dummy = process();
 		List<String> files = dummy.getPushedFiles();
