@@ -112,7 +112,7 @@ public class PatternSets implements Comparable<PatternSets> {
 	 * @param curDir - Directory from which search begins.
 	 * @param fileOperator - Operation to perform on each matching file.
 	 */
-	protected void operateOnFiles(File patternRoot, File curDir, FileOperator fileOperator) throws Exception {
+	public void operateOnFiles(File patternRoot, File curDir, FileOperator fileOperator) throws Exception {
 		
 		// Verify that curDir is within the tree of patternRoot.
 		patternRoot.toPath().relativize(curDir.toPath());

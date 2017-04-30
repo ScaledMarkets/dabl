@@ -116,7 +116,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the include pattern specifies a\\.txt and b\\.txt, and the exclude pattern specifies b\\.txt$")
 	public void the_include_pattern_specifies_a_txt_and_b_txt_and_the_exclude_pattern_specifies_b_txt() throws Throwable {
 		
-		String pattern = "include a.txt, b.txt exclude b.txt";
+		String pattern = "a.txt, b.txt exclude b.txt";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern, this.repo);
 	}
@@ -255,6 +255,9 @@ public class UnitTestPushLocalRepo extends TestBase {
 		assertThat(n == 4, "Found " + n + " files");
 	}
 	
+	
+	/* Shared methods */
+	
 	protected void setup(int dirNum) throws Exception {
 		
 		this.givendir = new File(basedir, "given" + String.valueOf(dirNum));
@@ -274,18 +277,8 @@ public class UnitTestPushLocalRepo extends TestBase {
 		assertThat(getHelper().getState().getGlobalScope() != null);
 	}
 
-	protected ALocalOartifactSet findLocalArtifactSetForTask(String taskName,
-		String outputsName) throws Exception {
-		ANamedOnamedArtifactSet namedArtifactSet = getHelper().getNamedOutput(
-			taskName, outputsName);
-		POartifactSet p = namedArtifactSet.getOartifactSet();
-		assertThat(p instanceof ALocalOartifactSet, "p is a " + p.getClass().getName());
-		ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)p;
-		return localArtifactSet;
-	}
-	
 	protected void pushOutputsToRepo(ALocalOartifactSet localArtifactSet,
-		LocalRepo repo) throws Exception {
+			LocalRepo repo) throws Exception {
 		LinkedList<POfilesetOperation> filesetOps = localArtifactSet.getOfilesetOperation();
 		PatternSets patternSets = new PatternSets(repo);
 		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
@@ -295,7 +288,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	protected void pushPatternsToRepo(String pattern) throws Exception {
 		
 		// Find the task's local artifact set.
-		ALocalOartifactSet localArtifactSet = findLocalArtifactSetForTask(
+		ALocalOartifactSet localArtifactSet = getHelper().findLocalArtifactSetForTask(
 			TaskName, OutputsName);
 		
 		// Create a local repo.
@@ -304,27 +297,5 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		// Push the task's outputs to the local repo.
 		pushOutputsToRepo(localArtifactSet, repo);
-	}
-	
-	/**
-	 * Delete all of the files and subdirectories in the specified directory.
-	 */
-	protected void deleteDirContents(File dir) throws Exception {
-		if (! file.isDirectory()) throw new Exception("File " + dir.toString() + " is not a direcrtory");
-		Stream<Path> paths = Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path> () {
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				Files.delete(file);
-				return FileVisitResult.CONTINUE;
-			}
-			
-			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-				if (e == null) {
-					Files.delete(dir);
-					return FileVisitResult.CONTINUE;
-				} else {
-					throw e; // directory iteration failed
-				}
-			}
-		}
 	}
 }

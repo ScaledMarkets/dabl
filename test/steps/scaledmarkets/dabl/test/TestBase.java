@@ -49,4 +49,26 @@ public class TestBase {
 	public void printAST(String title) {
 		this.helper.printAST(title);
 	}
+	
+	/**
+	 * Delete all of the files and subdirectories in the specified directory.
+	 */
+	protected void deleteDirContents(File dir) throws Exception {
+		if (! file.isDirectory()) throw new Exception("File " + dir.toString() + " is not a direcrtory");
+		Stream<Path> paths = Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path> () {
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
+			
+			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+				if (e == null) {
+					Files.delete(dir);
+					return FileVisitResult.CONTINUE;
+				} else {
+					throw e; // directory iteration failed
+				}
+			}
+		}
+	}
 }
