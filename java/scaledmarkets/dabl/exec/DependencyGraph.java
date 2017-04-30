@@ -5,9 +5,6 @@ import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.util.Utilities;
-import scaledmarkets.dabl.Config;
-
-import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.helper.*;
 
 import java.util.Set;

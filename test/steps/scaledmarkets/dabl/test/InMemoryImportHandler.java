@@ -1,6 +1,6 @@
 package scaledmarkets.dabl.test;
 
-import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.analyzer.*;
 
 import java.util.Map;
 import java.util.HashMap;

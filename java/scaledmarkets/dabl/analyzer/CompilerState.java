@@ -1,7 +1,6 @@
 package scaledmarkets.dabl.analyzer;
 
 import scaledmarkets.dabl.node.*;
-import scaledmarkets.dabl.analysis.*;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.LinkedList;

@@ -5,7 +5,7 @@ Feature: UnitTestPatternSets
 
 	@done
 	Scenario: Test operateOnFiles
-		Given
-		When
-		Then
+		Given a working directory
+		When I specify two include files and one exclude file
+		Then one file path is processed
 	

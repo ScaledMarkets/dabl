@@ -1,7 +1,7 @@
 package scaledmarkets.dabl.test.exec;
 
 import scaledmarkets.dabl.exec.LocalRepo;
-import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.test.TestBase;
@@ -18,13 +18,13 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path
-import java.nio.file.SimpleFileVisitor
-import java.nio.file.FileVisitResult
-import java.nio.file.attribute.BasicFileAttributes
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.FileVisitResult;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.LinkedList;
-import java.util.Stream
+import java.util.stream.Stream;
 
 public class UnitTestPushLocalRepo extends TestBase {
 
@@ -39,7 +39,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 "namespace " + NamespaceName + " \n" +
 "repo my_repo new local\n" +
 "task " + TaskName + "\n" +
-"  outputs " + OutputsName + " of \"project1\" in my_repo "
+"  outputs " + OutputsName + " of \"project1\" in my_repo ";
 	
 	public UnitTestPushLocalRepo() {
 		

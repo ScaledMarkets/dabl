@@ -1,9 +1,6 @@
 package scaledmarkets.dabl.helper;
 
-import scaledmarkets.dabl.analysis.*;
-import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
-import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.util.Utilities;
 import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analyzer.*;
@@ -273,7 +270,7 @@ public class Helper {
 	 */
 	public ALocalOartifactSet findLocalArtifactSetForTask(String taskName,
 			String outputsName) throws Exception {
-		ANamedOnamedArtifactSet namedArtifactSet = getHelper().getNamedOutput(
+		ANamedOnamedArtifactSet namedArtifactSet = getNamedOutput(
 			taskName, outputsName);
 		POartifactSet p = namedArtifactSet.getOartifactSet();
 		assertThat(p instanceof ALocalOartifactSet, "p is a " + p.getClass().getName());

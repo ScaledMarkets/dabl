@@ -7,7 +7,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import scaledmarkets.dabl.analysis.Dabl;
+import scaledmarkets.dabl.analyzer.Dabl;
 import scaledmarkets.dabl.test.TestBase;
 
 import java.io.Reader;

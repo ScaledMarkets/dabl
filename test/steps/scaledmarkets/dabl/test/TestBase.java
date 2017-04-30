@@ -1,10 +1,18 @@
 package scaledmarkets.dabl.test;
 
-import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.helper.*;
 import scaledmarkets.dabl.node.*;
 
 import java.util.List;
+import java.util.stream.Stream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Files;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.FileVisitResult;
+import java.nio.file.attribute.BasicFileAttributes;
 
 /**
  * Utilities shared by the DABL Cucumber test suite.
@@ -54,21 +62,21 @@ public class TestBase {
 	 * Delete all of the files and subdirectories in the specified directory.
 	 */
 	protected void deleteDirContents(File dir) throws Exception {
-		if (! file.isDirectory()) throw new Exception("File " + dir.toString() + " is not a direcrtory");
-		Stream<Path> paths = Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path> () {
+		if (! dir.isDirectory()) throw new Exception("File " + dir.toString() + " is not a direcrtory");
+		Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path> () {
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 				Files.delete(file);
 				return FileVisitResult.CONTINUE;
 			}
 			
 			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-				if (e == null) {
+				if (exc == null) {
 					Files.delete(dir);
 					return FileVisitResult.CONTINUE;
 				} else {
-					throw e; // directory iteration failed
+					throw exc; // directory iteration failed
 				}
 			}
-		}
+		});
 	}
 }

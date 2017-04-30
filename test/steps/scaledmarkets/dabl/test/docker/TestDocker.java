@@ -3,6 +3,7 @@ package scaledmarkets.dabl.test.docker;
 import cucumber.api.Format;
 import cucumber.api.java.Before;
 import cucumber.api.java.After;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -23,8 +24,7 @@ public class TestDocker extends TestBase {
 	private DockerContainer container2;
 	private DockerContainer[] containers;
 	
-	@Background
-	public void init_docker_tests() throws Exception {
+	public TestDocker() throws Exception {
 		Docker docker = Docker.connect();
 		docker.destroyContainers("*", null);
 		docker.close();

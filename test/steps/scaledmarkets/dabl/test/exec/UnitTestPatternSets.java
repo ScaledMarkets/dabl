@@ -7,7 +7,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.repos.DummyProvider;
 import scaledmarkets.dabl.node.*;
@@ -15,6 +15,7 @@ import scaledmarkets.dabl.test.TestBase;
 import scaledmarkets.dabl.exec.PatternSets;
 
 import java.util.List;
+import java.io.File;
 
 public class UnitTestPatternSets extends TestBase {
 
@@ -36,7 +37,7 @@ public class UnitTestPatternSets extends TestBase {
 "namespace " + NamespaceName + " \n" +
 "repo my_repo new local\n" +
 "task " + TaskName + "\n" +
-"  outputs " + OutputsName + " of \"project1\" in my_repo "
+"  outputs " + OutputsName + " of \"project1\" in my_repo ";
 	
 	public UnitTestPatternSets() {
 		
@@ -47,11 +48,18 @@ public class UnitTestPatternSets extends TestBase {
 	
 	// Scenario: Basic
 	
-	@Given("^$")
-	public void () throws Exception {
+	@Given("^a working directory$")
+	public void a_working_directory() throws Exception {
 		
 		setup(1);
+	}
+	
+	@When("^I specify two include files and one exclude file$")
+	public void i_specify_two_include_files_and_one_exclude_file() throws Exception {
 		
+		String pattern = "a.txt, b.txt exclude b.txt";
+		createDabl(pattern);
+
 		// Find the task's local artifact set.
 		ALocalOartifactSet localArtifactSet = findLocalArtifactSetForTask(
 			TaskName, OutputsName);
@@ -69,22 +77,16 @@ public class UnitTestPatternSets extends TestBase {
 		
 		this.patternSets = new PatternSets(repo);
 		this.patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
-	}
-	
-	@When("^$")
-	public void () throws Exception {
-		
-		String pattern = "a.txt, b.txt exclude b.txt";
-		createDabl(pattern);
-		this.patternSets.operateOnFiles(this.patternRoot, this.curDir, new PatternSets.FileOperator {
+
+		this.patternSets.operateOnFiles(this.patternRoot, this.curDir, new PatternSets.FileOperator() {
 			void op(File root, String pathRelativeToRoot) throws Exception {
 				UnitTestPatternSets.this.results.add(pathRelativeToRoot);
 			}
 		});
 	}
 	
-	@Then("^$")
-	public void () throws Exception {
+	@Then("^one file path is processed$")
+	public void one_file_path_is_processed() throws Exception {
 		assertThat(results.size() == 1, "There are " + results.size() + " results");
 		teardown(this.givendir);
 	}
