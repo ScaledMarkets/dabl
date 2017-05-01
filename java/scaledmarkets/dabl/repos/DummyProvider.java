@@ -39,7 +39,7 @@ public class DummyProvider implements RepoProvider {
 			super(RepoType, scheme, path, project, userid, password);
 		}
 		
-		protected RepoProvider getRepoProvider() { return DummyProvider.this; }
+		public RepoProvider getRepoProvider() { return DummyProvider.this; }
 	}
 	
 	public List<String> getPulledFiles() {

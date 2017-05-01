@@ -53,7 +53,8 @@ public class TestImport extends TestBase {
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
 		
 		POartifactSet pas = filesDecl.getOartifactSet();
-		AOartifactSet as = (AOartifactSet)pas;
+		assertThat(pas instanceof ARemoteOartifactSet, "pas is a " + pas.getClass().getName());
+		ARemoteOartifactSet as = (ARemoteOartifactSet)pas;
 		POidRef p = as.getRepositoryId();
 		assertThat(p instanceof AOidRef);
 		AOidRef reposRef = (AOidRef)p;

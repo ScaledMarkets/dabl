@@ -48,7 +48,8 @@ public class TestForwardReferences extends TestBase {
 		
 		//POidRef p = filesDecl.getRepository();
 		POartifactSet pas = filesDecl.getOartifactSet();
-		AOartifactSet as = (AOartifactSet)pas;
+		assertThat(pas instanceof ARemoteOartifactSet, "pas is a " + pas.getClass().getName());
+		ARemoteOartifactSet as = (ARemoteOartifactSet)pas;
 		POidRef p = as.getRepositoryId();
 		assertThat(p instanceof AOidRef);
 		AOidRef idRef = (AOidRef)p;

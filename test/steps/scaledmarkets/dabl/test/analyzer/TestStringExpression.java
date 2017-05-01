@@ -85,7 +85,7 @@ public class TestStringExpression extends TestBase {
 		assertThat(value.equals("\"MyPassword\""));
 	}
 	
-	protected String getRepoPassword(String namespace, String repoName) {
+	protected String getRepoPassword(String namespace, String repoName) throws Exception {
 		
 		NameScopeEntry namespaceEntry = getHelper().getNamespaceSymbolEntry("simple");
 		DeclaredEntry repoEntry = getHelper().getDeclaredEntry(namespaceEntry, "my_git");

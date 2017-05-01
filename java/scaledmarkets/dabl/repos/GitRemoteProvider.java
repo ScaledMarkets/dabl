@@ -88,6 +88,6 @@ public class GitRemoteProvider implements RepoProvider {
 			super(RepoType, scheme, path, project, userid, password);
 		}
 		
-		protected RepoProvider getRepoProvider() { return GitRemoteProvider.this; }
+		public RepoProvider getRepoProvider() { return GitRemoteProvider.this; }
 	}
 }

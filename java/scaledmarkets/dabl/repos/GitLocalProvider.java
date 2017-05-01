@@ -71,6 +71,6 @@ public class GitLocalProvider implements RepoProvider {
 			super(RepoType, scheme, path, project, userid, password);
 		}
 		
-		protected RepoProvider getRepoProvider() { return GitLocalProvider.this; }
+		public RepoProvider getRepoProvider() { return GitLocalProvider.this; }
 	}
 }

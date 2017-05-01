@@ -11,6 +11,7 @@ import sablecc.*;
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.test.*;
+import scaledmarkets.dabl.util.Utilities;
 
 import java.io.Reader;
 import java.io.StringReader;

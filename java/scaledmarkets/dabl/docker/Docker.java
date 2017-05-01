@@ -152,7 +152,7 @@ public class Docker {
 	 * 
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
-	public DockerContainer createContainer(String imageIdOrName, String containerName,
+	public DockerContainer createContainer2(String imageIdOrName, String containerName,
 		String hostPathToMap, String containerPathToMap) throws Exception {
 		
 		return createContainer(imageIdOrName, containerName, new String[] {hostPathToMap},

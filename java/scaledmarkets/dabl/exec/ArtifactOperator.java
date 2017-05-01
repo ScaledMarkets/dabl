@@ -27,7 +27,7 @@ public abstract class ArtifactOperator {
 	 * Perform the specified operation on the specified set of artifacts, using
 	 * the specified directory as a local work directory.
 	 */
-	protected void operateOnArtifacts(String namespaceName, String taskName,
+	public void operateOnArtifacts(String namespaceName, String taskName,
 		Set<Artifact> artifacts) throws Exception {
 		
 		PatternSets.Map patternSetsMap = new PatternSets.Map();

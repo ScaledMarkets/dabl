@@ -7,6 +7,16 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import java.io.File;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.repos.DummyProvider;
@@ -112,7 +122,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		assertThat(pattern.equals("/xyz/qrs"), "Mismatch in expected pattern: " + pattern);
 	}
 	
-	protected DummyProvider process() {
+	protected DummyProvider process() throws Exception {
 		
 		// Identify the task.
 		DependencyGraph graph = DependencyGraph.genDependencySet(getState());
@@ -128,22 +138,29 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		
 		// Prepare to invoke an artifact operator.
 		Set<Artifact> outputs = task.getOutputs();
+		Set<PosixFilePermission> permSet = PosixFilePermissions.fromString("rwx------");
+		FileAttribute<Set<PosixFilePermission>> attr =
+			PosixFilePermissions.asFileAttribute(permSet);
 		File workspace = Files.createTempDirectory("dabl", attr).toFile();
 		workspace.deleteOnExit();
 
 		// Invoke an artifact operator.
-		DummyProvider dummy;
+		DummyProvider[] dummies = new DummyProvider[1];
 		(new ArtifactOperator(this.helper) {
-			void operation(PatternSets patternSets) throws Exception {
+			protected void operation(PatternSets patternSets) throws Exception {
 				
-				Repo repo = patternSets.getRepo();
+				Repo r = patternSets.getRepo();
+				assertThat(r instanceof RemoteRepo, "r is a " + r.getClass().getName());
+				RemoteRepo repo = (RemoteRepo)r;
 				repo.getFiles(patternSets, workspace);
 				RepoProvider provider = repo.getRepoProvider();
 				assertThat(provider instanceof DummyProvider);
-				dummy = (DummyProvider)provider;
+				dummies[0] = (DummyProvider)provider;
 			}
-		}).operateOnArtifacts(outputs);
+		}).operateOnArtifacts(getHelper().getPrimaryNamespaceFullName(),
+			task.getName(), outputs);
 		
-		return dummy;
+		assertThat(dummies[0] != null);
+		return dummies[0];
 	}
 }

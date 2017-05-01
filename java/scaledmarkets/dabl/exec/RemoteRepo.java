@@ -68,7 +68,7 @@ public abstract class RemoteRepo implements Repo {
 	
 	protected String getPassword() { return password; }
 	
-	protected abstract RepoProvider getRepoProvider();
+	public abstract RepoProvider getRepoProvider();
 
 	public List<String> listFiles(String dirpath) throws Exception {
 		return getRepoProvider().listFiles(this, dirpath);
