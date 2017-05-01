@@ -61,7 +61,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 
 	// Given 1:
 	@Given("^there are two files in directory (\\d+), a\\.txt and b\\.txt$")
-	public void there_are_two_files_in_a_directory_a_txt_and_b_txt(String dirNum) throws Throwable {
+	public void there_are_two_files_in_a_directory_a_txt_and_b_txt(int dirNum) throws Throwable {
 		
 		setup(dirNum);
 		
@@ -77,7 +77,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 
 		String includePattern = "b.txt";
 		createDabl(includePattern);
-		pushPatternsToRepo(includePattern, this.repo);
+		pushPatternsToRepo(includePattern);
 	}
 	
 	@Then("^only file b\\.txt is pushed$")
@@ -99,7 +99,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String excludePattern = "exclude b.txt";
 		createDabl(excludePattern);
-		pushPatternsToRepo(excludePattern, this.repo);
+		pushPatternsToRepo(excludePattern);
 	}
 	
 	@Then("^no files are pushed$")
@@ -117,7 +117,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "a.txt, b.txt exclude b.txt";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern, this.repo);
+		pushPatternsToRepo(pattern);
 	}
 	
 	@Then("^only file a\\.txt is pushed$")
@@ -149,7 +149,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "a.*, exclude *.txt";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern, this.repo);
+		pushPatternsToRepo(pattern);
 	}
 	
 	@Then("^only the files a\\.html and a\\.rtf are pushed$")
@@ -186,7 +186,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "**/a.txt";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern, this.repo);
+		pushPatternsToRepo(pattern);
 	}
 	
 	@Then("^the files a\\.txt, d/a\\.txt, and d/dd/a\\.txt are pushed$")
@@ -217,9 +217,6 @@ public class UnitTestPushLocalRepo extends TestBase {
 		e.mkdir();
 		(new File(e, "a.txt")).createNewFile();
 		(new File(e, "a.rtf")).createNewFile();
-		
-		File d = new File(givendir, "d");
-		d.mkdir();
 		File dd = new File(d, "dd");
 		dd.mkdir();
 		(new File(dd, "a.txt")).createNewFile();
@@ -231,7 +228,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "**/*.txt exclude e";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern, this.repo);
+		pushPatternsToRepo(pattern);
 	}
 	
 	
@@ -241,7 +238,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "*, ** exclude **/*.txt";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern, this.repo);
+		pushPatternsToRepo(pattern);
 	}
 	
 	@Then("^the files a\\.rtf, d/a\\.rtf, d/dd/a\\.rtf, e/a\\.rtf are pushed$")
@@ -269,7 +266,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		givendir.delete();
 	}
 	
-	protected void createDabl(String fileset) {
+	protected void createDabl(String fileset) throws Exception {
 		Reader reader = new StringReader(base_dabl + fileset);
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());

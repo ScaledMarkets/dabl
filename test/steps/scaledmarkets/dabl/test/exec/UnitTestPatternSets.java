@@ -15,13 +15,16 @@ import scaledmarkets.dabl.test.TestBase;
 import scaledmarkets.dabl.exec.PatternSets;
 
 import java.util.List;
+import java.util.LinkedList;
 import java.io.File;
+import java.io.Reader;
+import java.io.StringReader;
 
 public class UnitTestPatternSets extends TestBase {
 
 	private LocalRepo repo;
 	private File basedir = new File("UnitTestPatternSets_scratch");
-	//private File givendir;
+	private File givendir;
 
 	private PatternSets patternSets;
 	private File patternRoot;
@@ -61,15 +64,12 @@ public class UnitTestPatternSets extends TestBase {
 		createDabl(pattern);
 
 		// Find the task's local artifact set.
-		ALocalOartifactSet localArtifactSet = findLocalArtifactSetForTask(
+		ALocalOartifactSet localArtifactSet = getHelper().findLocalArtifactSetForTask(
 			TaskName, OutputsName);
 
 		// Create a local repo.
 		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,
 			localArtifactSet);
-
-		ALocalOartifactSet localArtifactSet = getHelper().findLocalArtifactSetForTask(
-			TaskName, OutputsName);
 
 		List<POfilesetOperation> filesetOps = localArtifactSet.getOfilesetOperation();
 		this.patternRoot = givendir;
@@ -79,7 +79,7 @@ public class UnitTestPatternSets extends TestBase {
 		this.patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
 
 		this.patternSets.operateOnFiles(this.patternRoot, this.curDir, new PatternSets.FileOperator() {
-			void op(File root, String pathRelativeToRoot) throws Exception {
+			public void op(File root, String pathRelativeToRoot) throws Exception {
 				UnitTestPatternSets.this.results.add(pathRelativeToRoot);
 			}
 		});
@@ -106,7 +106,7 @@ public class UnitTestPatternSets extends TestBase {
 		//givendir.delete(); // merely returns false if directory does not exist.
 	}
 
-	protected void createDabl(String fileset) {
+	protected void createDabl(String fileset) throws Exception {
 		Reader reader = new StringReader(base_dabl + fileset);
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
