@@ -175,8 +175,8 @@ test_exec:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
-		$(test_src_dir)/features \
-		--tags @patternsets
+		--tags @patternsets \
+		$(test_src_dir)/features
 
 test_check:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \

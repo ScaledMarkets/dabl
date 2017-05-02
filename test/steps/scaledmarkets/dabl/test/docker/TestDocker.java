@@ -33,13 +33,14 @@ public class TestDocker extends TestBase {
 		docker.close();
 	}
 	
-	@Before
+	@Before("@docker")
 	public void beforeEachScenario() throws Exception {
+		(new Exception("In TestDocker.beforeEachScenario")).printStackTrace();
 		initOnce();
 		this.docker = Docker.connect();
 	}
 	
-	@After
+	@After("@docker")
 	public void afterEachScenario() throws Exception {
 		docker.destroyContainers("*", null);
 		docker.close();

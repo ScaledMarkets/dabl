@@ -43,7 +43,7 @@ public class UnitTestPatternSets extends TestBase {
 "task " + TaskName + "\n" +
 "  outputs " + OutputsName + " of \"project1\" in my_repo ";
 	
-	@Before
+	@Before("@patternsets")
 	public void beforeEachScenario() throws Exception {
 		initOnce();
 	}

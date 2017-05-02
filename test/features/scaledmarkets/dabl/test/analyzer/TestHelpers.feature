@@ -1,5 +1,6 @@
 # language: en
 
+@helpers
 Feature: TestHelpers
 	
 	@notdone

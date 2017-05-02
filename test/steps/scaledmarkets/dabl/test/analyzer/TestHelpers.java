@@ -24,7 +24,7 @@ public class TestHelpers extends TestBase {
 
 	private boolean initialized = false;
 	
-	@Before
+	@Before("@helpers")
 	public void beforeEachScenario() throws Exception {
 		initOnce();
 	}
