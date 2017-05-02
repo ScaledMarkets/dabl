@@ -41,7 +41,6 @@ public class TestDocker extends TestBase {
 	
 	@After
 	public void afterEachScenario() throws Exception {
-		initOnce();
 		docker.destroyContainers("*", null);
 		docker.close();
 	}
@@ -50,7 +49,6 @@ public class TestDocker extends TestBase {
 	// Scenario: Simple
 	@When("^I make a ping request to docker$")
 	public void i_make_a_ping_request_to_docker() throws Exception {
-		initOnce();
 		String response = docker.ping();
 	}
 	
@@ -62,7 +60,6 @@ public class TestDocker extends TestBase {
 	// Scenario: Create container
 	@When("^I make a create container request to docker$")
 	public void i_make_a_create_container_request_to_docker() throws Exception {
-		initOnce();
 		DockerContainer container = docker.createContainer("alpine", "MyContainer",
 			null, null);
 		docker.destroyContainers("MyContainer", null);
@@ -72,7 +69,6 @@ public class TestDocker extends TestBase {
 	// Scenario: Start container
 	@Given("^that I have created two containers$")
 	public void that_i_have_created_two_containers() throws Exception {
-		initOnce();
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
 			null, null);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
@@ -81,13 +77,11 @@ public class TestDocker extends TestBase {
 	
 	@When("^I request to start a container$")
 	public void i_request_to_start_a_container() throws Exception {
-		initOnce();
 		this.container1.start();
 	}
 	
 	@And("^the container that I started is running$")
 	public void the_container_that_i_started_is_running() throws Exception {
-		initOnce();
 		assertThat(this.container1.isRunning());
 	}
 	
@@ -95,7 +89,6 @@ public class TestDocker extends TestBase {
 	// Sceanrio: Stop container
 	@Given("^that I have created two containers and both are running$")
 	public void that_i_have_created_two_containers_and_both_are_running() throws Exception {
-		initOnce();
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
 			null, null);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
@@ -108,13 +101,11 @@ public class TestDocker extends TestBase {
 	
 	@When("^I request to stop a container$")
 	public void i_request_to_stop_a_container() throws Exception {
-		initOnce();
 		this.container1.stop();
 	}
 	
 	@And("^the container that I stopped is no longer running$")
 	public void the_container_that_i_stopped_is_no_longer_running() throws Exception {
-		initOnce();
 		assertThat(! this.container1.isRunning());
 		assertThat(this.container2.isRunning());
 	}
@@ -123,7 +114,6 @@ public class TestDocker extends TestBase {
 	// Sceanrio: Destroy containers
 	@Given("^that I have created two containers and one is running$")
 	public void that_i_have_created_two_containers_and_one_is_running() throws Exception {
-		initOnce();
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
 			null, null);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
@@ -135,13 +125,11 @@ public class TestDocker extends TestBase {
 	
 	@When("^I request to destroy the stopped container$")
 	public void i_request_to_destroy_the_stopped_container() throws Exception {
-		initOnce();
 		this.container2.destroy();
 	}
 	
 	@And("^the destroyed container no longer exists$")
 	public void the_destroyed_container_no_longer_exists() throws Exception {
-		initOnce();
 		assertThat(container1.exists());
 		assertThat(! container2.exists());
 	}
@@ -150,13 +138,11 @@ public class TestDocker extends TestBase {
 	// Scenario: Get containers
 	@When("^I request a list of the containers$")
 	public void i_request_a_list_of_the_containers() throws Exception {
-		initOnce();
 		this.containers = this.docker.getContainers();
 	}
 	
 	@Then("^the response lists both containers$")
 	public void the_response_lists_both_containers() throws Exception {
-		initOnce();
 		List<String> ids = new LinkedList<String>();
 		for (DockerContainer container : this.containers) {
 			ids.add(container.getContainerId());
