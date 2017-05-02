@@ -22,6 +22,7 @@ import java.io.StringReader;
 
 public class UnitTestPatternSets extends TestBase {
 
+	private boolean initialized = false;
 	private LocalRepo repo;
 	private File basedir = new File("UnitTestPatternSets_scratch");
 	private File givendir;
@@ -42,8 +43,9 @@ public class UnitTestPatternSets extends TestBase {
 "task " + TaskName + "\n" +
 "  outputs " + OutputsName + " of \"project1\" in my_repo ";
 	
-	public UnitTestPatternSets() {
-		
+	protected void initOnce() throws Exception {
+		if (initialized) return;
+		initialized = true;
 		basedir.mkdir();
 		basedir.deleteOnExit();
 	}
@@ -53,13 +55,14 @@ public class UnitTestPatternSets extends TestBase {
 	
 	@Given("^a working directory$")
 	public void a_working_directory() throws Exception {
-		
+		initOnce();
 		setup(1);
 	}
 	
 	@When("^I specify two include files and one exclude file$")
 	public void i_specify_two_include_files_and_one_exclude_file() throws Exception {
 		
+		initOnce();
 		String pattern = "a.txt, b.txt exclude b.txt";
 		createDabl(pattern);
 
@@ -87,6 +90,7 @@ public class UnitTestPatternSets extends TestBase {
 	
 	@Then("^one file path is processed$")
 	public void one_file_path_is_processed() throws Exception {
+		initOnce();
 		assertThat(results.size() == 1, "There are " + results.size() + " results");
 		teardown(this.givendir);
 	}

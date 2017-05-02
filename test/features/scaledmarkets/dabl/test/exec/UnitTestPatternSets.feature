@@ -1,6 +1,6 @@
 # language: en
 
-@unit @exec
+@unit @exec @patternsets
 Feature: UnitTestPatternSets
 
 	@done
