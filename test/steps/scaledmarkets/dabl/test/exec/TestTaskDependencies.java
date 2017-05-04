@@ -32,11 +32,11 @@ public class TestTaskDependencies extends TestBase {
 "files XYZ of \"my_repo\" in my_maven \n" +
 "files QRS of \"qrs\" in my_git \n" +
 "task Atask\n" +
-"  inputs of \"repo1\" in my_git \"x\"\n" +
-"  outputs Aoutput of \"repo2\" in my_git \"y\" \n" +
+"  inputs of \"repo1\" in my_git include \"x\"\n" +
+"  outputs Aoutput of \"repo2\" in my_git include \"y\" \n" +
 "task Btask\n" +
 "  inputs Atask.Aoutput \n" +
-"  outputs of \"repo2\" in my_git \"y\""
+"  outputs of \"repo2\" in my_git include \"y\""
 			);
 		
 		createHelper(Main.compile(false, true, false, true, reader));

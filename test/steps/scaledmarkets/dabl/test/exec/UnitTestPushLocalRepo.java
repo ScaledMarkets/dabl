@@ -81,7 +81,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	public void the_include_pattern_specifies_b_txt() throws Throwable {
 
 		initOnce();
-		String includePattern = "b.txt";
+		String includePattern = "include b.txt";
 		createDabl(includePattern);
 		pushPatternsToRepo(includePattern);
 	}
@@ -126,7 +126,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	public void the_include_pattern_specifies_a_txt_and_b_txt_and_the_exclude_pattern_specifies_b_txt() throws Throwable {
 		
 		initOnce();
-		String pattern = "a.txt, b.txt exclude b.txt";
+		String pattern = "include a.txt, include b.txt, exclude b.txt";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}
@@ -161,7 +161,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	public void the_include_pattern_specifies_a_and_the_exclude_pattern_specifies_txt() throws Throwable {
 		
 		initOnce();
-		String pattern = "a.*, exclude *.txt";
+		String pattern = "include a.*, exclude *.txt";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}
@@ -201,7 +201,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	public void the_include_pattern_specifies_a_txt() throws Throwable {
 		
 		initOnce();
-		String pattern = "**/a.txt";
+		String pattern = "include **/a.txt";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}
@@ -246,7 +246,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	public void the_include_pattern_specifies_txt_and_the_exclude_pattern_specifies_e() throws Throwable {
 		
 		initOnce();
-		String pattern = "**/*.txt exclude e";
+		String pattern = "include **/*.txt., exclude e";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}
@@ -257,7 +257,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	public void the_include_pattern_specifies_and_and_the_exclude_pattern_specifies_txt() throws Throwable {
 		
 		initOnce();
-		String pattern = "*, ** exclude **/*.txt";
+		String pattern = "include *, include **, exclude **/*.txt";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}

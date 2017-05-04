@@ -36,8 +36,8 @@ public class TestTask extends TestBase {
 "  userid \"GitUserId\" password \"GitPassword\" \n" +
 "task " + TaskName + "\n" +
 "  when true\n" +
-"  inputs of \"project1\" in my_git \"x\"\n" +
-"  outputs of \"project2\" in my_git \"y\"\n" +
+"  inputs of \"project1\" in my_git include \"x\"\n" +
+"  outputs of \"project2\" in my_git include \"y\"\n" +
 "  abc = ff true"
 			);
 		

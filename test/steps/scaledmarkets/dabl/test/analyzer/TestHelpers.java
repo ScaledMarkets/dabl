@@ -36,7 +36,7 @@ public class TestHelpers extends TestBase {
 "namespace simple.is.better \n" +
 "  import another.one\n" +
 "  files Stuff of \"myrepo\" in my_maven\n" +
-"    \"*.java\""
+"    include \"*.java\""
 			);
 		
 		Map<String, String> namespaces = new HashMap<String, String>();

@@ -120,6 +120,7 @@ Tokens
     not_keyword = 'not';
     and_keyword = 'and';
     or_keyword = 'or';
+    include = 'include';
     exclude = 'exclude';
     true_keyword = 'true';
     false_keyword = 'false';
@@ -348,7 +349,8 @@ Productions
       ;
     
     files_stmts {-> ofileset_operation*} =
-        {multiple} files_stmt files_stmts   {-> [files_stmt.ofileset_operation,
+        {multiple} files_stmt comma_char files_stmts
+                                            {-> [files_stmt.ofileset_operation,
                                                 files_stmts.ofileset_operation]}
       | {one} files_stmt                    {-> [files_stmt.ofileset_operation]}
       ;
@@ -391,7 +393,7 @@ Productions
       ;
     
     include_stmt {-> ofileset_operation} =
-        fileset_spec                        {-> New ofileset_operation.include(
+        include fileset_spec                {-> New ofileset_operation.include(
                                                 fileset_spec.ostring_literal)}
         ;
     

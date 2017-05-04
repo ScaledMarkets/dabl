@@ -28,7 +28,7 @@ public class TestFilesDeclaration extends TestBase {
 "    path \"mymaven.abc.com\"\n" +
 "    userid \"MavenUserId\" password \"MavenPassword\"\n" +
 "  files Stuff of \"myrepo\" in my_maven\n" +
-"    \"*.java\""
+"    include \"*.java\""
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

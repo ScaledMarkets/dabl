@@ -39,9 +39,8 @@ public class UnitTestPatternSets extends TestBase {
 
 	private String base_dabl =
 "namespace " + NamespaceName + " \n" +
-"repo my_repo new local\n" +
 "task " + TaskName + "\n" +
-"  outputs " + OutputsName + " of \"project1\" in my_repo ";
+"  outputs " + OutputsName + " new local ";
 	
 	@Before("@patternsets")
 	public void beforeEachScenario() throws Exception {
@@ -66,7 +65,7 @@ public class UnitTestPatternSets extends TestBase {
 	@When("^I specify two include files and one exclude file$")
 	public void i_specify_two_include_files_and_one_exclude_file() throws Exception {
 		
-		String pattern = "a.txt, b.txt exclude b.txt";
+		String pattern = "include \"a.txt\", include \"b.txt\", exclude \"b.txt\"";
 		createDabl(pattern);
 
 		// Find the task's local artifact set.

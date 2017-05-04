@@ -43,7 +43,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 "repo my_repository type \"" + this.repoType + "\" scheme \"https\" path \"github.com/myteam\"\n" +
 "  userid \"GitUserId\" password \"GitPassword\" \n" +
 "task " + TaskName + "\n" +
-"  outputs of \"project2\" in my_repository \"y\""
+"  outputs of \"project2\" in my_repository include \"y\""
 			);
 		
 		Dabl dabl = new Dabl(false, true, reader);

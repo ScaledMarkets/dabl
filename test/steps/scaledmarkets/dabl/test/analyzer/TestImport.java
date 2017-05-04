@@ -26,7 +26,7 @@ public class TestImport extends TestBase {
 "namespace simple \n" +
 "  import another\n" +
 "  files Stuff of \"myrepo\" in my_maven\n" +
-"    \"*.java\""
+"    include \"*.java\""
 			);
 		
 		Map<String, String> namespaces = new HashMap<String, String>();
