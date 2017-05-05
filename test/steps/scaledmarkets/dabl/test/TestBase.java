@@ -59,9 +59,11 @@ public class TestBase {
 	}
 	
 	/**
-	 * Delete all of the files and subdirectories in the specified directory.
+	 * Delete all of the files and subdirectories in the specified directory, as
+	 * well as the specified directory.
 	 */
-	protected void deleteDirContents(File dir) throws Exception {
+	protected void deleteDirectoryTree(File dir) throws Exception {
+		if (! dir.exists()) return;
 		if (! dir.isDirectory()) throw new Exception("File " + dir.toString() + " is not a direcrtory");
 		Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path> () {
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -69,9 +71,9 @@ public class TestBase {
 				return FileVisitResult.CONTINUE;
 			}
 			
-			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+			public FileVisitResult postVisitDirectory(Path d, IOException exc) throws IOException {
 				if (exc == null) {
-					Files.delete(dir);
+					Files.delete(d);
 					return FileVisitResult.CONTINUE;
 				} else {
 					throw exc; // directory iteration failed

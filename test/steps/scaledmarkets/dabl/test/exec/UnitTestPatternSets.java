@@ -47,10 +47,15 @@ public class UnitTestPatternSets extends TestBase {
 		initOnce();
 	}
 
+	@After("@patternsets")
+	public void afterEachScenario() throws Exception {
+		teardown(this.givendir);
+	}
+
 	protected void initOnce() throws Exception {
 		if (initialized) return;
 		initialized = true;
-		basedir.mkdir();
+		if (! basedir.mkdir()) System.out.println("Failed to make base dir");
 		basedir.deleteOnExit();
 	}
 
@@ -102,13 +107,13 @@ public class UnitTestPatternSets extends TestBase {
 	protected void setup(int dirNum) throws Exception {
 		
 		this.givendir = new File(basedir, "given" + String.valueOf(dirNum));
-		//this.givendir.mkdir(); // merely returns false if directory already exists.
-		//deleteDirContents(givendir);
+		deleteDirectoryTree(givendir);
+		if (! this.givendir.mkdir()) System.out.println("Failed to make given dir");
+		assertThat(givendir.exists());
 	}
 	
 	protected void teardown(File givendir) throws Exception {
-		//deleteDirContents(givendir);
-		//givendir.delete(); // merely returns false if directory does not exist.
+		deleteDirectoryTree(givendir);
 	}
 
 	protected void createDabl(String fileset) throws Exception {
