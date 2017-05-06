@@ -62,7 +62,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 	@Then("^the result specifies that file$")
 	public void the_result_specifies_that_file() throws Throwable {
 		
-		DummyProvider dummy = process();
+		DummyProvider dummy = process("Basic");
 		List<String> files = dummy.getPushedFiles();
 		assertThat(files.size() == 1, "Wrong number of results: " + files.size());
 		String pattern = files.get(0);
@@ -91,7 +91,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 	@Then("^the result specifies that pattern$")
 	public void the_result_specifies_that_pattern() throws Exception {
 		
-		DummyProvider dummy = process();
+		DummyProvider dummy = process("Wildcard");
 		List<String> files = dummy.getPushedFiles();
 		assertThat(files.size() == 1, "Wrong number of results");
 		String pattern = files.get(0);
@@ -121,7 +121,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 	@Then("^the result specifies both of the patterns$")
 	public void the_result_specifies_both_of_the_patterns() throws Exception {
 		
-		DummyProvider dummy = process();
+		DummyProvider dummy = process("Multiple outputs");
 		List<String> files = dummy.getPushedFiles();
 		assertThat(files.size() == 2, "Wrong number of results");
 		String pattern = files.get(0);
@@ -133,7 +133,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 	
 	/* Shared methods */
 	
-	protected DummyProvider process() throws Exception {
+	protected DummyProvider process(String scenario) throws Exception {
 		
 		// Identify the task.
 		DependencyGraph graph = DependencyGraph.genDependencySet(getState());
@@ -160,13 +160,18 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		(new ArtifactOperator(this.helper) {
 			protected void operation(PatternSets patternSets) throws Exception {
 				
+				System.out.println("Operating on pattern set: " + patternSets.toString());
 				Repo r = patternSets.getRepo();
 				assertThat(r instanceof RemoteRepo, "r is a " + r.getClass().getName());
 				RemoteRepo repo = (RemoteRepo)r;
-				repo.getFiles(patternSets, workspace);
+				//repo.getFiles(patternSets, workspace);
+				repo.putFiles(workspace, patternSets);
 				RepoProvider provider = repo.getRepoProvider();
 				assertThat(provider instanceof DummyProvider);
 				dummies[0] = (DummyProvider)provider;
+				
+				
+				System.out.println("Scenario " + scenario + ": patternSets=" + patternSets.toString());  // debug
 			}
 		}).operateOnArtifacts(getHelper().getPrimaryNamespaceFullName(),
 			task.getName(), outputs);

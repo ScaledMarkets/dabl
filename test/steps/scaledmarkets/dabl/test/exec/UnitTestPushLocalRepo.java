@@ -37,9 +37,8 @@ public class UnitTestPushLocalRepo extends TestBase {
 	
 	private String base_dabl =
 "namespace " + NamespaceName + " \n" +
-"repo my_repo new local\n" +
 "task " + TaskName + "\n" +
-"  outputs " + OutputsName + " of \"project1\" in my_repo ";
+"  outputs " + OutputsName + " new local ";
 	
 	protected void initOnce() throws Exception {
 		
@@ -79,7 +78,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the include pattern specifies b\\.txt$")
 	public void the_include_pattern_specifies_b_txt() throws Throwable {
 
-		String includePattern = "include b.txt";
+		String includePattern = "include \"b.txt\"";
 		createDabl(includePattern);
 		pushPatternsToRepo(includePattern);
 	}
@@ -101,7 +100,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the exclude pattern specifies b\\.txt$")
 	public void the_exclude_pattern_specifies_b_txt() throws Throwable {
 		
-		String excludePattern = "exclude b.txt";
+		String excludePattern = "exclude \"b.txt\"";
 		createDabl(excludePattern);
 		pushPatternsToRepo(excludePattern);
 	}
@@ -118,7 +117,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the include pattern specifies a\\.txt and b\\.txt, and the exclude pattern specifies b\\.txt$")
 	public void the_include_pattern_specifies_a_txt_and_b_txt_and_the_exclude_pattern_specifies_b_txt() throws Throwable {
 		
-		String pattern = "include a.txt, include b.txt, exclude b.txt";
+		String pattern = "include \"a.txt\", include \"b.txt\", exclude \"b.txt\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}
@@ -150,7 +149,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the include pattern specifies a\\.\\* and the exclude pattern specifies \\*\\.txt$")
 	public void the_include_pattern_specifies_a_and_the_exclude_pattern_specifies_txt() throws Throwable {
 		
-		String pattern = "include a.*, exclude *.txt";
+		String pattern = "include \"a.*\", exclude \"*.txt\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}
@@ -187,7 +186,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the include pattern specifies \\*\\*/a\\.txt$")
 	public void the_include_pattern_specifies_a_txt() throws Throwable {
 		
-		String pattern = "include **/a.txt";
+		String pattern = "include \"**/a.txt\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}
@@ -229,7 +228,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the include pattern specifies \\*\\*/\\*\\.txt and the exclude pattern specifies e$")
 	public void the_include_pattern_specifies_txt_and_the_exclude_pattern_specifies_e() throws Throwable {
 		
-		String pattern = "include **/*.txt., exclude e";
+		String pattern = "include \"**/*.txt\", exclude \"e\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}
@@ -239,7 +238,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the include pattern specifies \\* and \\*\\* and the exclude pattern specifies \\*\\*/\\*\\.txt$")
 	public void the_include_pattern_specifies_and_and_the_exclude_pattern_specifies_txt() throws Throwable {
 		
-		String pattern = "include *, include **, exclude **/*.txt";
+		String pattern = "include \"*\", include \"**\", exclude \"**/*.txt\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern);
 	}

@@ -38,11 +38,11 @@ public abstract class ArtifactOperator {
 			Repo repo;
 			LinkedList<POfilesetOperation> filesetOps;
 			if (artifactSet instanceof ALocalOartifactSet) {
-				// Create a local repository, managed by DABL.
-				
 				// Find the NamedArtifactSet that owns the artifactSet.
 				ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)artifactSet;
 				String outputName = getName(localArtifactSet);
+
+				// Create a local repository, managed by DABL.
 				repo = LocalRepo.createRepo(namespaceName, taskName, outputName,
 					localArtifactSet);
 				
