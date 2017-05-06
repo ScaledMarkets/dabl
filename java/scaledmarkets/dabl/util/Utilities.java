@@ -103,7 +103,7 @@ public class Utilities {
 			Properties properties = new Properties();
 			properties.load(new FileReader(curdirPropertyFile));
 			value = properties.getProperty(name);
-			if ((value != null) && (value.equals(""))) return value;
+			if ((value != null) && (! value.equals(""))) return value;
 		}
 		
 		// Check user's home directory for a properties file.
@@ -116,7 +116,18 @@ public class Utilities {
 			Properties properties = new Properties();
 			properties.load(new FileReader(homePropertyFile));
 			value = properties.getProperty(name);
-			if ((value != null) && (value.equals(""))) return value;
+			if ((value != null) && (! value.equals(""))) return value;
+		}
+		
+		// Check classpath for a properties file.
+		try {
+			Properties properties = new Properties();
+			InputStream is = Utilities.class.getResourceAsStream("/" + PropertyFileName);
+			properties.load(is);
+			value = properties.getProperty(name);
+			if ((value != null) && (! value.equals(""))) return value;
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 		}
 		
 		// Setting was not found.

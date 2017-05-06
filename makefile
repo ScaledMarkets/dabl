@@ -124,7 +124,8 @@ $(jar_dir):
 jar: $(jar_dir)/$(JAR_NAME).jar
 
 $(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
-	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest -C $(build_dir) scaledmarkets
+	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest -C $(build_dir) scaledmarkets \
+		-C $(build_dir) .dabl.properties
 	rm Manifest
 
 # Define the 'compile' target so that we can reference it in .DEFAULT_GOAL.
@@ -138,6 +139,7 @@ compile: config
 		$(src_dir)/$(package)/util/*.java \
 		$(src_dir)/$(package)/repos/*.java \
 		$(src_dir)/$(package)/helper/*.java
+	cp $(src_dir)/$(package)/.dabl.properties $(build_dir)
 
 compile_clean:
 	rm -r -f $(build_dir)/*
@@ -175,7 +177,7 @@ test_exec:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
-		--tags @patternsets \
+		--tags @operateonartifacts \
 		$(test_src_dir)/features
 
 test_check:

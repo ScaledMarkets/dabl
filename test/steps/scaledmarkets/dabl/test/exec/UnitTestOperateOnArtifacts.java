@@ -64,7 +64,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		
 		DummyProvider dummy = process();
 		List<String> files = dummy.getPushedFiles();
-		assertThat(files.size() == 1, "Wrong number of results");
+		assertThat(files.size() == 1, "Wrong number of results: " + files.size());
 		String pattern = files.get(0);
 		assertThat(pattern.equals("y"), "Mismatch in expected pattern: " + pattern);
 	}
