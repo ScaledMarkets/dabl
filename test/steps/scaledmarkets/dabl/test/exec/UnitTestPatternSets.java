@@ -49,14 +49,14 @@ public class UnitTestPatternSets extends TestBase {
 
 	@After("@patternsets")
 	public void afterEachScenario() throws Exception {
-		teardown(this.givendir);
+		//teardown(this.givendir);
 	}
 
 	protected void initOnce() throws Exception {
 		if (initialized) return;
 		initialized = true;
 		if (! basedir.mkdir()) System.out.println("Failed to make base dir");
-		basedir.deleteOnExit();
+		//basedir.deleteOnExit();
 	}
 
 	
@@ -65,6 +65,10 @@ public class UnitTestPatternSets extends TestBase {
 	@Given("^a working directory$")
 	public void a_working_directory() throws Exception {
 		setup(1);
+		File filea = new File(givendir, "a.txt");
+		File fileb = new File(givendir, "b.txt");
+		filea.createNewFile();
+		fileb.createNewFile();
 	}
 	
 	@When("^I specify two include files and one exclude file$")
@@ -87,6 +91,10 @@ public class UnitTestPatternSets extends TestBase {
 		
 		this.patternSets = new PatternSets(repo);
 		this.patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
+		
+		System.out.println("patternSets:");
+		System.out.println(this.patternSets.toString());
+		System.out.println();
 
 		this.patternSets.operateOnFiles(this.patternRoot, this.curDir, new PatternSets.FileOperator() {
 			public void op(File root, String pathRelativeToRoot) throws Exception {

@@ -117,18 +117,24 @@ public class PatternSets implements Comparable<PatternSets> {
 		// Verify that curDir is within the tree of patternRoot.
 		patternRoot.toPath().relativize(curDir.toPath());
 		
+		System.out.println("For dir " + patternRoot.toString());  // debug
+		
 		Set<File> visited = new HashSet<File>();
 		
 		FileSystem fileSystem = FileSystems.getDefault();
 		
 		for (String pi : this.includePatterns) {
 			
+			System.out.println("\tConsidering pattern " + pi);  // debug
+			
 			// Get the files F of curDir.
 			DirectoryStream<Path> F = Files.newDirectoryStream(curDir.toPath());
 			
 			match: for (Path f : F) {
+				
+				System.out.println("\t\tConsidering path " + f.toString());  // debug
 			
-				// 
+				// Check if we have already operated on the file.
 				File matchingFile = new File(curDir, f.getFileName().toString());
 				if (visited.contains(matchingFile)) // the file has been visited
 					continue match; // then skip it.
@@ -140,19 +146,20 @@ public class PatternSets implements Comparable<PatternSets> {
 				Path g = patternRoot.toPath().relativize(f);
 				
 				// If g does not match pi, continue to next file of F.
-				PathMatcher includeMatcher = fileSystem.getPathMatcher(
-						"glob:" + pi);
-				if (! includeMatcher.matches(g)) {
+				PathMatcher includeMatcher = fileSystem.getPathMatcher("glob:" + pi);
+				if (! includeMatcher.matches(g)) { // skip the file.
+					
+					System.out.println("\t\tpath does not match include pattern");  // debug
 					continue match;
 				}
 				
 				for (String pe : this.excludePatterns) {
 					
-					PathMatcher excludeMatcher = fileSystem.getPathMatcher(
-						"glob:" + pe);
+					PathMatcher excludeMatcher = fileSystem.getPathMatcher("glob:" + pe);
 					
-					if (excludeMatcher.matches(g)) {
-						continue match; // skip the file.
+					if (excludeMatcher.matches(g)) { // skip the file.
+						System.out.println("\t\tpath matches exclude pattern");  // debug
+						continue match;
 					}
 				}
 				
@@ -161,6 +168,7 @@ public class PatternSets implements Comparable<PatternSets> {
 					// Call recursively for matchingFile.
 					operateOnFiles(patternRoot, ff, fileOperator);
 				} else {
+					System.out.println("\t\toperating on " + patternRoot + ", " + g);  // debug
 					fileOperator.op(patternRoot, g.toString());
 				}
 			}

@@ -1,6 +1,6 @@
 # language: en
 
-@unit @exec
+@unit @exec @operateonartifacts
 Feature: UnitTestOperateOnArtifacts
 
 	@done

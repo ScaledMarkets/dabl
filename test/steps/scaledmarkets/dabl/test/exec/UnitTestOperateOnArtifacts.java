@@ -28,6 +28,14 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 	private String repoType;
 	private static String TaskName = "t123";
 	
+	@Before("@operateonartifacts")
+	public void beforeEachScenario() throws Exception {
+	}
+
+	@After("@operateonartifacts")
+	public void afterEachScenario() throws Exception {
+	}
+	
 	// Scenario: Basic
 	
 	@Given("^a dummy repo$")
@@ -121,6 +129,9 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		pattern = files.get(1);
 		assertThat(pattern.equals("/xyz/qrs"), "Mismatch in expected pattern: " + pattern);
 	}
+	
+	
+	/* Shared methods */
 	
 	protected DummyProvider process() throws Exception {
 		
