@@ -163,10 +163,10 @@ public class PatternSets implements Comparable<PatternSets> {
 					}
 				}
 				
-				File ff = f.toFile();
-				if (ff.isDirectory()) {
+				//File ff = f.toFile();
+				if (matchingFile.isDirectory()) {
 					// Call recursively for matchingFile.
-					operateOnFiles(patternRoot, ff, fileOperator);
+					operateOnFiles(patternRoot, matchingFile, fileOperator);
 				} else {
 					System.out.println("\t\toperating on " + patternRoot + ", " + g);  // debug
 					fileOperator.op(patternRoot, g.toString());
