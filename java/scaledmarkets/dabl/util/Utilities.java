@@ -43,8 +43,13 @@ public class Utilities {
 	 */
 	public static void assertThat(boolean expr, Runnable action) {
 		if (! expr) {
-			System.out.println("Assertion violation");
-			action.run();
+			System.out.println("Assertion violation; performing diagnostic action...");
+			try {
+				action.run();
+			} finally {
+				System.out.println();
+				System.out.println("End of diagnostic action.");
+			}
 			throw new RuntimeException("Assertion violation");
 		}
 	}
