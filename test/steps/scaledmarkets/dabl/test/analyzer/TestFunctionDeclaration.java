@@ -40,7 +40,7 @@ public class TestFunctionDeclaration extends TestBase {
 		NameScopeEntry nameScopeEntry = getHelper().getNamespaceSymbolEntry("simple");
 		DeclaredEntry functionEntry = getHelper().getDeclaredEntry(nameScopeEntry, "f1");
 		Node n = functionEntry.getDefiningNode();
-		assertThat(n instanceof AOfunctionDeclaration);
+		assertThat(n instanceof AOfunctionDeclaration, "n is not a AOfunctionDeclaration");
 		AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)n;
 		
 		TId id = funcDecl.getName();
@@ -49,7 +49,7 @@ public class TestFunctionDeclaration extends TestBase {
 		POstringLiteral targetNameNode = funcDecl.getTargetName();
 		POtypeSpec returnType = funcDecl.getReturnType();
 		
-		assertThat(id.getText().equals("f1"));
+		assertThat(id.getText().equals("f1"), "id is not 'f1'");
 		assertThat(argTypes.size() == 3, () -> { // Note: the second arg is a separator
 			System.out.println("argTypes.size() == " + argTypes.size());
 			for (POtypeSpec t : argTypes) {
@@ -65,9 +65,9 @@ public class TestFunctionDeclaration extends TestBase {
 					System.out.println("\ttypeSpec1 is a " + argTypes.get(1).getClass().getName());
 					System.out.println("\ttypeSpec2 is a " + argTypes.get(2).getClass().getName());
 				}); break;
-				case 1: assertThat(typeSpec instanceof ASeparatorOtypeSpec); break;
-				case 2: assertThat(typeSpec instanceof AStringOtypeSpec); break;
-				default: assertThat(false);
+				case 1: assertThat(typeSpec instanceof ASeparatorOtypeSpec, "typespec is not a ASeparatorOtypeSpec"); break;
+				case 2: assertThat(typeSpec instanceof AStringOtypeSpec, "typespec is not a AStringOtypeSpec"); break;
+				default: assertThat(false, "unidentified typespec");
 			}
 			index++;
 		}

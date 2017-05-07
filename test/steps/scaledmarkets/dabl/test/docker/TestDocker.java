@@ -83,7 +83,7 @@ public class TestDocker extends TestBase {
 	
 	@And("^the container that I started is running$")
 	public void the_container_that_i_started_is_running() throws Exception {
-		assertThat(this.container1.isRunning());
+		assertThat(this.container1.isRunning(), "container1 is not running");
 	}
 	
 	
@@ -96,8 +96,8 @@ public class TestDocker extends TestBase {
 			null, null);
 		this.container1.start();
 		this.container2.start();
-		assertThat(this.container1.isRunning());
-		assertThat(this.container2.isRunning());
+		assertThat(this.container1.isRunning(), "container1 is not running");
+		assertThat(this.container2.isRunning(), "container2 is not running");
 	}
 	
 	@When("^I request to stop a container$")
@@ -107,8 +107,8 @@ public class TestDocker extends TestBase {
 	
 	@And("^the container that I stopped is no longer running$")
 	public void the_container_that_i_stopped_is_no_longer_running() throws Exception {
-		assertThat(! this.container1.isRunning());
-		assertThat(this.container2.isRunning());
+		assertThat(! this.container1.isRunning(), "container1 is running");
+		assertThat(this.container2.isRunning(), "contaienr2 is not running");
 	}
 	
 	
@@ -120,8 +120,8 @@ public class TestDocker extends TestBase {
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
 			null, null);
 		this.container1.start();
-		assertThat(this.container1.isRunning());
-		assertThat(! this.container2.isRunning());
+		assertThat(this.container1.isRunning(), "container1 is not running");
+		assertThat(! this.container2.isRunning(), "container2 is running");
 	}
 	
 	@When("^I request to destroy the stopped container$")
@@ -131,8 +131,8 @@ public class TestDocker extends TestBase {
 	
 	@And("^the destroyed container no longer exists$")
 	public void the_destroyed_container_no_longer_exists() throws Exception {
-		assertThat(container1.exists());
-		assertThat(! container2.exists());
+		assertThat(container1.exists(), "container1 does not exist");
+		assertThat(! container2.exists(), "container2 exists");
 	}
 	
 	
@@ -150,6 +150,7 @@ public class TestDocker extends TestBase {
 		}
 		
 		assertThat(ids.contains(this.container1.getContainerId()) &&
-			ids.contains(this.container2.getContainerId()));
+			ids.contains(this.container2.getContainerId()),
+			"response does not list both containes");
 	}
 }

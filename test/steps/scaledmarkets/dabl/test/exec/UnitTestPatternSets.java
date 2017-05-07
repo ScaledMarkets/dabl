@@ -117,7 +117,7 @@ public class UnitTestPatternSets extends TestBase {
 		this.givendir = new File(basedir, "given" + String.valueOf(dirNum));
 		deleteDirectoryTree(givendir);
 		if (! this.givendir.mkdir()) System.out.println("Failed to make given dir");
-		assertThat(givendir.exists());
+		assertThat(givendir.exists(), givendir + " does not exist");
 	}
 	
 	protected void teardown(File givendir) throws Exception {
@@ -128,6 +128,6 @@ public class UnitTestPatternSets extends TestBase {
 		Reader reader = new StringReader(base_dabl + fileset);
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getHelper().getState().getGlobalScope() != null);
+		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}
 }

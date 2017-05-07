@@ -38,10 +38,6 @@ public class TestBase {
 		return this.helper.getState();
 	}
 	
-	public void assertThat(boolean expr) throws Exception {
-		this.helper.assertThat(expr);
-	}
-	
 	public void assertThat(boolean expr, String msg) throws Exception {
 		this.helper.assertThat(expr, msg);
 	}

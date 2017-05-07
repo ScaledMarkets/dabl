@@ -40,7 +40,7 @@ public class TestTaskDependencies extends TestBase {
 			);
 		
 		createHelper(Main.compile(false, true, false, true, reader));
-		assertThat(getHelper().getState().getGlobalScope() != null);
+		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}
 	
 	@When("^I compile them in simulate mode$")
@@ -53,14 +53,14 @@ public class TestTaskDependencies extends TestBase {
 	public void i_can_verify_that_B_depends_on_A() throws Throwable {
 		
 		AOtaskDeclaration taskADecl = getHelper().getTaskDeclaration("Atask");
-		assertThat(taskADecl != null);
+		assertThat(taskADecl != null, "taskADecl is null");
 		AOtaskDeclaration taskBDecl = getHelper().getTaskDeclaration("Btask");
-		assertThat(taskBDecl != null);
+		assertThat(taskBDecl != null, "taskBDecl is null");
 		Task taskA = this.graph.getTaskForDeclaration(taskADecl);
-		assertThat(taskA != null);
+		assertThat(taskA != null, "taskA is null");
 		Task taskB = this.graph.getTaskForDeclaration(taskBDecl);
-		assertThat(taskB != null);
-		assertThat(taskB.getProducers().contains(taskA));
-		assertThat(taskA.getConsumers().contains(taskB));
+		assertThat(taskB != null, "taskB is null");
+		assertThat(taskB.getProducers().contains(taskA), "taskB producers does not contain taskA");
+		assertThat(taskA.getConsumers().contains(taskB), "taskA consumers does not contain taskB");
 	}
 }

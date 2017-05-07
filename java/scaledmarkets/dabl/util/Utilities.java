@@ -30,13 +30,6 @@ public class Utilities {
 	}
 
 	/**
-	 * If expr is false, throw an Exception.
-	 */
-	public static void assertThat(boolean expr) {
-		if (! expr) throw new RuntimeException("Assertion violation");
-	}
-	
-	/**
 	 * If expr is false, print the message and throw an Exception.
 	 */
 	public static void assertThat(boolean expr, String msg) {

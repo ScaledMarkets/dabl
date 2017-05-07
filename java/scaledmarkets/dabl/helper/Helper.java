@@ -48,9 +48,9 @@ public class Helper {
 	 */
 	public AOnamespace getNamespace(Start start) throws Exception {
 	
-		Utilities.assertThat(start != null);
+		Utilities.assertThat(start != null, "AST start symbol is null");
 		POnamespace n = start.getPOnamespace();
-		Utilities.assertThat(n instanceof AOnamespace);
+		Utilities.assertThat(n instanceof AOnamespace, "namespace symbol is not a AOnamespace");
 		AOnamespace namespace = (AOnamespace)n;
 		return namespace;
 	}
@@ -295,8 +295,9 @@ public class Helper {
 		
 		NameScope globalScope = this.state.getGlobalScope();
 		SymbolEntry entry = globalScope.getEntry(namespaceName);
-		Utilities.assertThat(entry != null);
-		Utilities.assertThat(entry instanceof NameScopeEntry);
+		Utilities.assertThat(entry != null, "No entry found for namespace name in global scope");
+		Utilities.assertThat(entry instanceof NameScopeEntry,
+			"namespace entry is not an instance of NameScopeEntry");
 		return (NameScopeEntry)entry;
 	}
 	
@@ -337,7 +338,7 @@ public class Helper {
 	public AOtaskDeclaration getTaskDeclaration(String taskName) throws Exception {
 		
 		Node n = getDeclaration(taskName);
-		Utilities.assertThat(n instanceof AOtaskDeclaration);
+		Utilities.assertThat(n instanceof AOtaskDeclaration, "Declaration is not a AOtaskDeclaration");
 		return (AOtaskDeclaration)n;
 	}
 	
@@ -347,7 +348,7 @@ public class Helper {
 	public AOartifactDeclaration getArtifactDeclaration(String artifactName) throws Exception {
 		
 		Node n = getDeclaration(artifactName);
-		Utilities.assertThat(n instanceof AOartifactDeclaration);
+		Utilities.assertThat(n instanceof AOartifactDeclaration, "declaration is not a AOartifactDeclaration");
 		return (AOartifactDeclaration)n;
 	}
 	
@@ -380,10 +381,10 @@ public class Helper {
 	public String getStringLiteralValue(POstringLiteral literal) throws Exception {
 		
 		Object obj = state.getOut(literal);
-		Utilities.assertThat(obj instanceof ExprAnnotation);
+		Utilities.assertThat(obj instanceof ExprAnnotation, "Annotation is not a ExprAnnotation");
 		ExprAnnotation annot = (ExprAnnotation)obj;
 		Object value = annot.getValue();
-		Utilities.assertThat(value instanceof String);
+		Utilities.assertThat(value instanceof String, "Expr value is not a string");
 		String stringValue = (String)value;
 		return stringValue;
 	}
@@ -400,13 +401,6 @@ public class Helper {
 			return null;
 		} else throw new RuntimeException(
 			"Unexpected Node type: " + n.getClass().getName());
-	}
-	
-	/**
-	 * If expr is false, throw an Exception.
-	 */
-	public static void assertThat(boolean expr) throws Exception {
-		Utilities.assertThat(expr);
 	}
 	
 	/**

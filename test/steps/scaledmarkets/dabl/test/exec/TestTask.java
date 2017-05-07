@@ -43,7 +43,7 @@ public class TestTask extends TestBase {
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getHelper().getState().getGlobalScope() != null);
+		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}
 	
 	@Then("^I can retrieve the the task by its name$")
@@ -56,7 +56,7 @@ public class TestTask extends TestBase {
 		
 		NameScope namespaceScope = nse.getOwnedScope();
 		SymbolEntry taskEntry = namespaceScope.getEntry(TaskName);
-		assertThat(taskEntry != null);
+		assertThat(taskEntry != null, "task entry is null");
 	}
 	
 	
@@ -80,7 +80,7 @@ public class TestTask extends TestBase {
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getHelper().getState().getGlobalScope() != null);
+		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 		
 		throw new Exception();
 	}
@@ -106,7 +106,7 @@ public class TestTask extends TestBase {
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getHelper().getState().getGlobalScope() != null);
+		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}
 	
 	@When("^I compile the task$")

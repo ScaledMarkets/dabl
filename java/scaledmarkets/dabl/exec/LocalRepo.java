@@ -83,8 +83,17 @@ public class LocalRepo implements Repo {
 	 */
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
+		System.out.println("putFiles: dir=" + dir.toString());  // debug
+		System.out.println("\tpatternSets=" + patternSets.toString());  // debug
+		System.out.println("\tdirectory=" + directory.toString());  // debug
+		
 		patternSets.operateOnFiles(this.directory, new PatternSets.FileOperator() {
 			public void op(File root, String pathRelativeToRoot) throws Exception {
+
+				System.out.println("\top: root=" + root + ", pathRelativeToRoot=" +  // debug
+					pathRelativeToRoot);  // debug
+				
+				
 				// Put the file
 				File origin = new File(dir, pathRelativeToRoot);
 				File dest = new File(LocalRepo.this.directory, pathRelativeToRoot);
@@ -131,7 +140,10 @@ public class LocalRepo implements Repo {
 	}
 	
 	public long countAllFiles() throws Exception {
-		return Files.walk(this.directory.toPath(), FileVisitOption.FOLLOW_LINKS).count();
+		return Files.walk(this.directory.toPath(),
+			FileVisitOption.FOLLOW_LINKS)
+				.filter(path -> ! path.toFile().isDirectory())
+				.count();
 	}
 
 	private String outputName;

@@ -183,8 +183,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	
 	protected SymbolEntry resolveSymbol(String name, NameScope initialScope)
 	{
-		Utilities.assertThat(name != null);
-		Utilities.assertThat(initialScope != null);
+		Utilities.assertThat(name != null, "symbol name is null");
+		Utilities.assertThat(initialScope != null, "initial scope is null");
 		
 		for (NameScope scope = initialScope; scope != null; scope = scope.getParentNameScope())
 		{

@@ -37,7 +37,7 @@ public class TestStringExpression extends TestBase {
 	public void the_expression_value_can_be_retrieved_and_is_correct() throws Exception {
 		
 		String value = getRepoPassword("simple", "my_git");
-		assertThat(value.equals("$MyPassword"));
+		assertThat(value.equals("$MyPassword"), "value is not correct");
 	}
 
 	@When("^a multi-line string is processed$")
@@ -60,7 +60,7 @@ public class TestStringExpression extends TestBase {
 	public void the_full_string_value_is_obtainable_from_the_AST() throws Throwable {
 		
 		String value = getRepoPassword("simple", "my_git");
-		assertThat(value.equals("My\n    Password"));
+		assertThat(value.equals("My\n    Password"), "value is not correct");
 	}
 	
 	@When("^a triple-quote string is used$")
@@ -82,7 +82,7 @@ public class TestStringExpression extends TestBase {
 	public void one_can_obtain_the_full_string_value_from_the_AST() throws Throwable {
 		
 		String value = getRepoPassword("simple", "my_git");
-		assertThat(value.equals("\"MyPassword\""));
+		assertThat(value.equals("\"MyPassword\""), "value is not correct");
 	}
 	
 	protected String getRepoPassword(String namespace, String repoName) throws Exception {
@@ -96,8 +96,8 @@ public class TestStringExpression extends TestBase {
 		AOrepoDeclaration repoDec = (AOrepoDeclaration)n;
 		
 		POstringValueOpt p = repoDec.getPassword();
-		assertThat(p != null);
-		assertThat(p instanceof ASpecifiedOstringValueOpt);
+		assertThat(p != null, "p is null");
+		assertThat(p instanceof ASpecifiedOstringValueOpt, "p is not a ASpecifiedOstringValueOpt");
 		ASpecifiedOstringValueOpt pswd = (ASpecifiedOstringValueOpt)p;
 		String value = getHelper().getStringLiteralValue(pswd.getOstringLiteral());
 		return value;

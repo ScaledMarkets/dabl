@@ -43,7 +43,7 @@ public class TestForwardReferences extends TestBase {
 		// Find the Id that references my_repo from the files declaration.
 		
 		Node n = getHelper().getDeclaration("Stuff");
-		assertThat(n instanceof AOfilesDeclaration);
+		assertThat(n instanceof AOfilesDeclaration, "n is not a AOfilesDeclaration");
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
 		
 		//POidRef p = filesDecl.getRepository();
@@ -51,23 +51,23 @@ public class TestForwardReferences extends TestBase {
 		assertThat(pas instanceof ARemoteOartifactSet, "pas is a " + pas.getClass().getName());
 		ARemoteOartifactSet as = (ARemoteOartifactSet)pas;
 		POidRef p = as.getRepositoryId();
-		assertThat(p instanceof AOidRef);
+		assertThat(p instanceof AOidRef, "p is not a AOidRef");
 		AOidRef idRef = (AOidRef)p;
 		
 		TId id = idRef.getId();
-		assertThat(id.getText().equals("my_maven"));
+		assertThat(id.getText().equals("my_maven"), "id is not 'my_maven'");
 		Annotation annot = getHelper().getState().getOut(idRef);
-		assertThat(annot != null);
-		assertThat(annot instanceof IdRefAnnotation);
+		assertThat(annot != null, "annot is null");
+		assertThat(annot instanceof IdRefAnnotation, "annot is not a IdRefAnnotation");
 		IdRefAnnotation idRefAnnot = (IdRefAnnotation)annot;
 		SymbolEntry entry = idRefAnnot.getDefiningSymbolEntry();
-		assertThat(entry != null);
-		assertThat(entry instanceof DeclaredEntry);
+		assertThat(entry != null, "entry is null");
+		assertThat(entry instanceof DeclaredEntry, "entry is not a DeclaredEntry");
 		DeclaredEntry declEntry = (DeclaredEntry)entry;
 		
 		n = declEntry.getDefiningNode();
-		assertThat(n != null);
-		assertThat(n instanceof AOrepoDeclaration);
+		assertThat(n != null, "n is null");
+		assertThat(n instanceof AOrepoDeclaration, "n is not a AOrepoDeclaration");
 		AOrepoDeclaration repoDeclaration = (AOrepoDeclaration)n;
 	}
 }

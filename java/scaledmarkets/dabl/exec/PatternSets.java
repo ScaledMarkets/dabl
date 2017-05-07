@@ -174,6 +174,10 @@ public class PatternSets implements Comparable<PatternSets> {
 		}
 	}
 	
+	public List<String> getIncludePatterns() { return includePatterns; }
+	
+	public List<String> getExcludePatterns() { return excludePatterns; }
+	
 	/**
 	 * Provide a value that can be used to map pattern sets.
 	 */

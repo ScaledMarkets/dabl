@@ -39,11 +39,11 @@ public class TestInputsAndOutputs extends TestBase {
 		
 		NameScopeEntry namespaceEntry = getHelper().getNamespaceSymbolEntry("simple");
 		DeclaredEntry de = getHelper().getDeclaredEntry(namespaceEntry, "t123");
-		assertThat(de instanceof NameScopeEntry);
+		assertThat(de instanceof NameScopeEntry, "de is not a NameScopeEntry");
 		NameScopeEntry taskEntry = (NameScopeEntry)de;
 		
 		Node n = taskEntry.getDefiningNode();
-		assertThat(n instanceof AOtaskDeclaration);
+		assertThat(n instanceof AOtaskDeclaration, "n is not a AOtaskDeclaration");
 		AOtaskDeclaration taskDecl = (AOtaskDeclaration)n;
 		
 		NameScope taskScope = taskEntry.getOwnedScope();
@@ -51,9 +51,9 @@ public class TestInputsAndOutputs extends TestBase {
 		
 		// Look up inputs and outputs.
 		SymbolEntry inputsSymbolEntry = taskSymbolTable.getEntry("MyInputs");
-		assertThat(inputsSymbolEntry != null);
+		assertThat(inputsSymbolEntry != null, "inputsSymbolEntry is null");
 		
 		SymbolEntry outputsSymbolEntry = taskSymbolTable.getEntry("MyOutputs");
-		assertThat(outputsSymbolEntry != null);
+		assertThat(outputsSymbolEntry != null, "outputsSymbolEntry is null");
 	}
 }

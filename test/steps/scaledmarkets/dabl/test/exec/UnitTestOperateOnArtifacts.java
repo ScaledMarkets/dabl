@@ -56,7 +56,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getState().getGlobalScope() != null);
+		assertThat(getState().getGlobalScope() != null, "global scope is null");
 	}
 
 	@Then("^the result specifies that file$")
@@ -85,7 +85,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getState().getGlobalScope() != null);
+		assertThat(getState().getGlobalScope() != null, "global scope is null");
 	}
 	
 	@Then("^the result specifies that pattern$")
@@ -115,7 +115,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getState().getGlobalScope() != null);
+		assertThat(getState().getGlobalScope() != null, "global scope is null");
 	}
 	
 	@Then("^the result specifies both of the patterns$")
@@ -167,7 +167,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 				//repo.getFiles(patternSets, workspace);
 				repo.putFiles(workspace, patternSets);
 				RepoProvider provider = repo.getRepoProvider();
-				assertThat(provider instanceof DummyProvider);
+				assertThat(provider instanceof DummyProvider, "provider is not DummyProvider");
 				dummies[0] = (DummyProvider)provider;
 				
 				
@@ -176,7 +176,7 @@ public class UnitTestOperateOnArtifacts extends TestBase {
 		}).operateOnArtifacts(getHelper().getPrimaryNamespaceFullName(),
 			task.getName(), outputs);
 		
-		assertThat(dummies[0] != null);
+		assertThat(dummies[0] != null, "dummiers[0] is null");
 		return dummies[0];
 	}
 }

@@ -57,8 +57,8 @@ public class TestArtifacts extends TestBase {
 			createHelper(dabl.process());
 		} catch (Exception ex) {
 			Throwable t = ex.getCause();
-			assertThat(t != null);
-			assertThat(t instanceof SymbolEntryPresent);
+			assertThat(t != null, "Throwable cause is null");
+			assertThat(t instanceof SymbolEntryPresent, "Throwable is not a SymbolEntryPresent");
 			// Success - we expected this error
 			return;
 		}
@@ -109,30 +109,30 @@ public class TestArtifacts extends TestBase {
 	public void a_compatibility_spec_is_generated_for_version_star_dot_3() throws Throwable {
 		
 		Node n = getHelper().getDeclaration("ABC");
-		assertThat(n instanceof AOartifactDeclaration);
+		assertThat(n instanceof AOartifactDeclaration, "Node is not a AOartifactDeclaration");
 		AOartifactDeclaration artDecl = (AOartifactDeclaration)n;
 		
 		LinkedList<POcompatibilitySpec> compatibilities = artDecl.getOcompatibilitySpec();
-		assertThat(compatibilities.size() == 1);
+		assertThat(compatibilities.size() == 1, "Number of compatibilities is not 1");
 		POcompatibilitySpec s = compatibilities.get(0);
-		assertThat(s instanceof AAssumeOcompatibilitySpec);
+		assertThat(s instanceof AAssumeOcompatibilitySpec, "compatibility is not a AAssumeOcompatibilitySpec");
 		AAssumeOcompatibilitySpec assumeSpec = (AAssumeOcompatibilitySpec)s;
 		
 		LinkedList<TId> pathIds = assumeSpec.getId();
 		LinkedList<POrangeSpec> rangeSpecs = assumeSpec.getOrangeSpec();
 		
-		assertThat(pathIds.size() == 1);
-		assertThat(pathIds.get(0).getText().equals("XYZ"));
+		assertThat(pathIds.size() == 1, "path ids size != 1");
+		assertThat(pathIds.get(0).getText().equals("XYZ"), "path ids does not contain XYZ");
 		
-		assertThat(rangeSpecs.size() == 2);
+		assertThat(rangeSpecs.size() == 2, "range specs size != 2");
 		POrangeSpec p = rangeSpecs.get(0);
-		assertThat(p instanceof AAllOrangeSpec);
+		assertThat(p instanceof AAllOrangeSpec, "range spec is not a AAllOrangeSpec");
 		
 		p = rangeSpecs.get(1);
-		assertThat(p instanceof AOneOrangeSpec);
+		assertThat(p instanceof AOneOrangeSpec, "p is not a AOneOrangeSpec");
 		AOneOrangeSpec numSpec = (AOneOrangeSpec)p;
 		TWholeNumber num = numSpec.getWholeNumber();
-		assertThat(num.getText().equals("3"));
+		assertThat(num.getText().equals("3"), "num is not 3");
 	}
 	
 	@When("^an artifact asserts compatibility with minor version XYZ:(\\d+)\\.\\*$")

@@ -49,27 +49,28 @@ public class TestImport extends TestBase {
 		
 		DeclaredEntry stuffEntry = getHelper().getDeclaredEntry(simpleNamespaceEntry, "Stuff");
 		Node n = stuffEntry.getDefiningNode();
-		assertThat(n instanceof AOfilesDeclaration);
+		assertThat(n instanceof AOfilesDeclaration, "n is not a AOfilesDeclaration");
 		AOfilesDeclaration filesDecl = (AOfilesDeclaration)n;
 		
 		POartifactSet pas = filesDecl.getOartifactSet();
 		assertThat(pas instanceof ARemoteOartifactSet, "pas is a " + pas.getClass().getName());
 		ARemoteOartifactSet as = (ARemoteOartifactSet)pas;
 		POidRef p = as.getRepositoryId();
-		assertThat(p instanceof AOidRef);
+		assertThat(p instanceof AOidRef, "p is not a AOidRef");
 		AOidRef reposRef = (AOidRef)p;
 		TId reposId = reposRef.getId();
-		assertThat(reposId.getText().equals("my_maven"));
+		assertThat(reposId.getText().equals("my_maven"), "reposId is not 'my_maven'");
 		
 		Annotation a = getHelper().getState().getOut(reposRef);
 		assertThat(a != null, "It appears that the local reference to my_maven was not resolved");
 		assertThat(a instanceof IdRefAnnotation, "a is a " + a.getClass().getName());
 		IdRefAnnotation idrefan = (IdRefAnnotation)a;
 		SymbolEntry e = idrefan.getDefiningSymbolEntry();
-		assertThat(e instanceof DeclaredEntry);
+		assertThat(e instanceof DeclaredEntry, "e is not a DeclaredEntry");
 		DeclaredEntry reposEntry = (DeclaredEntry)e;
-		assertThat(reposEntry.getName().equals("my_maven"));
-		assertThat(reposEntry.getDefiningNode() instanceof AOrepoDeclaration);
+		assertThat(reposEntry.getName().equals("my_maven"), "repos entry name is not 'my_maven'");
+		assertThat(reposEntry.getDefiningNode() instanceof AOrepoDeclaration,
+			"reposEntry is not a AOrepoDeclaration");
 	}
 
 	@When("^I import a multi-level namespace$")

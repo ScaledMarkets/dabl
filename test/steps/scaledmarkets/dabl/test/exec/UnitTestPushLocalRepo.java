@@ -24,6 +24,7 @@ import java.nio.file.FileVisitResult;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.stream.Stream;
+import java.util.function.Predicate;
 
 public class UnitTestPushLocalRepo extends TestBase {
 
@@ -45,7 +46,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		if (initialized) return;
 		initialized = true;
 		basedir.mkdir();
-		basedir.deleteOnExit();
+		//basedir.deleteOnExit();
 	}
 	
 	
@@ -56,7 +57,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	
 	@After("@pushlocalrepo")
 	public void afterEachScenario() throws Exception {
-		teardown(this.givendir);
+		//teardown(this.givendir);
 	}
 	
 
@@ -80,14 +81,25 @@ public class UnitTestPushLocalRepo extends TestBase {
 
 		String includePattern = "include \"b.txt\"";
 		createDabl(includePattern);
-		pushPatternsToRepo(includePattern);
+		pushPatternsToRepo(includePattern, patternSets -> 
+			patternSets.getIncludePatterns().size() == 1);
 	}
 	
 	@Then("^only file b\\.txt is pushed$")
 	public void only_file_b_txt_is_pushed() throws Throwable {
 		
 		// Get b.txt
-		assertThat(this.repo.containsFile("b.txt"), "b.txt not found");
+		assertThat(this.repo.containsFile("b.txt"), new Runnable() {
+			public void run() {
+				System.out.println("b.txt not found");
+				try {
+					System.out.println("repo contains " + repo.countAllFiles() + " files:");
+					for (String f : repo.listFiles()) {
+						System.out.println("\t" + f);
+					}
+				} catch (Exception ex) { throw new RuntimeException(ex); }
+			}
+		});
 		
 		// Count all files - should only be one.
 		long n = this.repo.countAllFiles();
@@ -102,7 +114,8 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String excludePattern = "exclude \"b.txt\"";
 		createDabl(excludePattern);
-		pushPatternsToRepo(excludePattern);
+		pushPatternsToRepo(excludePattern, patternSets -> 
+			patternSets.getExcludePatterns().size() == 1);
 	}
 	
 	@Then("^no files are pushed$")
@@ -119,7 +132,9 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "include \"a.txt\", include \"b.txt\", exclude \"b.txt\"";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern);
+		pushPatternsToRepo(pattern, patternSets -> 
+			(patternSets.getIncludePatterns().size() == 2) &&
+			(patternSets.getExcludePatterns().size() == 1));
 	}
 	
 	@Then("^only file a\\.txt is pushed$")
@@ -151,7 +166,9 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "include \"a.*\", exclude \"*.txt\"";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern);
+		pushPatternsToRepo(pattern, patternSets -> 
+			(patternSets.getIncludePatterns().size() == 1) &&
+			(patternSets.getExcludePatterns().size() == 1));
 	}
 	
 	@Then("^only the files a\\.html and a\\.rtf are pushed$")
@@ -188,7 +205,8 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "include \"**/a.txt\"";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern);
+		pushPatternsToRepo(pattern, patternSets -> 
+			patternSets.getIncludePatterns().size() == 1);
 	}
 	
 	@Then("^the files a\\.txt, d/a\\.txt, and d/dd/a\\.txt are pushed$")
@@ -230,7 +248,9 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "include \"**/*.txt\", exclude \"e\"";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern);
+		pushPatternsToRepo(pattern, patternSets -> 
+			(patternSets.getIncludePatterns().size() == 1) &&
+			(patternSets.getExcludePatterns().size() == 1));
 	}
 	
 	
@@ -240,7 +260,9 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		String pattern = "include \"*\", include \"**\", exclude \"**/*.txt\"";
 		createDabl(pattern);
-		pushPatternsToRepo(pattern);
+		pushPatternsToRepo(pattern, patternSets -> 
+			(patternSets.getIncludePatterns().size() == 2) &&
+			(patternSets.getExcludePatterns().size() == 1));
 	}
 	
 	@Then("^the files a\\.rtf, d/a\\.rtf, d/dd/a\\.rtf, e/a\\.rtf are pushed$")
@@ -271,18 +293,20 @@ public class UnitTestPushLocalRepo extends TestBase {
 		Reader reader = new StringReader(base_dabl + fileset);
 		Dabl dabl = new Dabl(false, true, reader);
 		createHelper(dabl.process());
-		assertThat(getHelper().getState().getGlobalScope() != null);
+		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}
 
 	protected void pushOutputsToRepo(ALocalOartifactSet localArtifactSet,
-			LocalRepo repo) throws Exception {
+			LocalRepo repo, Predicate<PatternSets> predicate) throws Exception {
 		LinkedList<POfilesetOperation> filesetOps = localArtifactSet.getOfilesetOperation();
 		PatternSets patternSets = new PatternSets(repo);
 		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
+		assertThat(predicate.test(patternSets), "pattern sets predicate failed");
+		
 		repo.putFiles(this.givendir, patternSets);
 	}
 
-	protected void pushPatternsToRepo(String pattern) throws Exception {
+	protected void pushPatternsToRepo(String pattern, Predicate<PatternSets> patternSetsPredicate) throws Exception {
 		
 		// Find the task's local artifact set.
 		ALocalOartifactSet localArtifactSet = getHelper().findLocalArtifactSetForTask(
@@ -293,6 +317,6 @@ public class UnitTestPushLocalRepo extends TestBase {
 			localArtifactSet);
 		
 		// Push the task's outputs to the local repo.
-		pushOutputsToRepo(localArtifactSet, repo);
+		pushOutputsToRepo(localArtifactSet, repo, patternSetsPredicate);
 	}
 }

@@ -41,6 +41,6 @@ public class TestFilesDeclaration extends TestBase {
 		NameScopeEntry nameScopeEntry = getHelper().getNamespaceSymbolEntry("simple");
 		DeclaredEntry filesEntry = getHelper().getDeclaredEntry(nameScopeEntry, "Stuff");
 		Node n = filesEntry.getDefiningNode();
-		assertThat(n instanceof AOfilesDeclaration);
+		assertThat(n instanceof AOfilesDeclaration, "n is not a AOfilesDeclaration");
 	}
 }

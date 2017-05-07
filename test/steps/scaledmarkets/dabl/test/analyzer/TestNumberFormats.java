@@ -54,29 +54,29 @@ public class TestNumberFormats extends TestBase {
 		AOtaskDeclaration taskDecl = (AOtaskDeclaration)n;
 		
 		LinkedList<POexpr> whens = taskDecl.getWhen();
-		assertThat(whens.size() == 1);
+		assertThat(whens.size() == 1, "whens size is not 1");
 		POexpr when = whens.get(0);
-		assertThat(when instanceof ABinaryOexpr);
+		assertThat(when instanceof ABinaryOexpr, "when is not a ABinaryOeexpr");
 		ABinaryOexpr binExpr = (ABinaryOexpr)when;
 		
 		POexpr op1 = binExpr.getOperand1();
-		assertThat(op1 instanceof ALiteralOexpr);
+		assertThat(op1 instanceof ALiteralOexpr, "op1 is not a ALiteralOexpr");
 		ALiteralOexpr lit = (ALiteralOexpr)op1;
 		
 		POliteral o = lit.getOliteral();
-		assertThat(o instanceof ANumericOliteral);
+		assertThat(o instanceof ANumericOliteral, "o is not a ANumericOliteral");
 		ANumericOliteral numlit = (ANumericOliteral)o;
 		
 		POnumericLiteral nl = numlit.getOnumericLiteral();
-		assertThat(nl instanceof AIntOnumericLiteral);
+		assertThat(nl instanceof AIntOnumericLiteral, "nl is not a AIntOnumericLiteral");
 		AIntOnumericLiteral intlit = (AIntOnumericLiteral)nl;
 		
 		POsign ps = intlit.getOsign();
-		assertThat(ps instanceof APositiveOsign);
+		assertThat(ps instanceof APositiveOsign, "ps is not a APositiveOsign");
 		APositiveOsign psign = (APositiveOsign)ps;
 		
 		TWholeNumber wn = intlit.getWholeNumber();
-		assertThat(wn.getText().equals("1"));
+		assertThat(wn.getText().equals("1"), "wn is not 1");
 	}
 	
 	// Test negative whole number

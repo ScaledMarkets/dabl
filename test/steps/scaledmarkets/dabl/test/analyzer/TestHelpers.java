@@ -53,10 +53,11 @@ public class TestHelpers extends TestBase {
 	public void i_call_getPrimaryNamespace() throws Throwable {
 		
 		AOnamespace primaryNamespace = getHelper().getPrimaryNamespace();
-		assertThat(primaryNamespace != null);
+		assertThat(primaryNamespace != null, "primaryNamespace is null");
 		LinkedList<TId> path = primaryNamespace.getPath();
-		assertThat(path.size() == 3);
-		assertThat(Utilities.createNameFromPath(path).equals("simple.is.better"));
+		assertThat(path.size() == 3, "path size is not 3");
+		assertThat(Utilities.createNameFromPath(path).equals("simple.is.better"),
+			"Created name is not correct");
 	}
 	
 	@Then("^it returns the correct AOnamespace symbol$")
@@ -68,13 +69,14 @@ public class TestHelpers extends TestBase {
 	public void i_call_getNamespace_with_a_start_symbol() throws Throwable {
 		
 		List<Start> asts = getHelper().getASTs();
-		assertThat(asts.size() == 2);
+		assertThat(asts.size() == 2, "asts size is not 2");
 		Start importedAST = asts.get(1);
 		AOnamespace importedNamespace = getHelper().getNamespace(importedAST);
-		assertThat(importedNamespace != null);
+		assertThat(importedNamespace != null, "importedNamespace is null");
 		LinkedList<TId> path = importedNamespace.getPath();
-		assertThat(path.size() == 2);
-		assertThat(Utilities.createNameFromPath(path).equals("another.one"));
+		assertThat(path.size() == 2, "path size is not 2");
+		assertThat(Utilities.createNameFromPath(path).equals("another.one"),
+			"created name is not correct");
 	}
 	
 	@Then("^it returns the AOnamespace symbol for that AST$")
@@ -86,18 +88,18 @@ public class TestHelpers extends TestBase {
 	public void i_call_getNamespaceFullName_with_a_namespace_argument() throws Throwable {
 		
 		AOnamespace primaryNamespace = getHelper().getPrimaryNamespace();
-		assertThat(primaryNamespace != null);
+		assertThat(primaryNamespace != null, "primaryNamespace is null");
 
 		String namespace1Name = getHelper().getNamespaceFullName(primaryNamespace);
-		assertThat(namespace1Name.equals("simple.is.better"));
+		assertThat(namespace1Name.equals("simple.is.better"), "namespace1Name is incorrect");
 		
 		List<Start> asts = getHelper().getASTs();
-		assertThat(asts.size() == 2);
+		assertThat(asts.size() == 2, "asts size is not 2");
 		Start importedAST = asts.get(1);
 		AOnamespace importedNamespace = getHelper().getNamespace(importedAST);
 
 		String namespace2Name = getHelper().getNamespaceFullName(importedNamespace);
-		assertThat(namespace2Name.equals("another.one"));
+		assertThat(namespace2Name.equals("another.one"), "namespace2Name is not correct");
 	}
 	
 	@Then("^it returns the fully qualified name of that namespace$")
@@ -109,7 +111,7 @@ public class TestHelpers extends TestBase {
 	public void i_call_getNamespaceElements() throws Throwable {
 		
 		List<POnamespaceElt> elts = getHelper().getNamespaceElements();
-		assertThat(elts.size() == 2);
+		assertThat(elts.size() == 2, "elts size is not 2");
 	}
 	
 	@Then("^it returns the POnamespaceElt elements of the namespace$")
