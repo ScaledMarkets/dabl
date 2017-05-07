@@ -1,11 +1,6 @@
 # Compiler Design
 
-## Template Processor
-
-TBD
-
-
-## Main Program Top Level Structure
+### Main Program Top Level Structure
 
 The DABL compiler consists of two main parts: an Analyzer and an Executor. 
 
@@ -41,7 +36,18 @@ Parse phase.
 
 ![Figure 2: Compiler Top Level Structure](Compiler_Design_Fig1.png "Figure 1: Compiler Top Level Structure")
 
-## Key Dynamic Structures
+## Template Processing Phase
+
+TBD
+
+## Parse Phase
+
+TBD
+
+
+## Analysis Phase
+
+### Key Dynamic Structures
 
 The compiler's dynamic structure is completely encapsulated in the
 [`CompilerState`](analysis/CompilerState.java) object.
@@ -53,7 +59,7 @@ object is returned by the compiler.
 
 ![Figure 3: Dynamic Structures](Compiler_Design_Fig2.png "Figure 2: Dynamic Structures")
 
-## Language Analyzer
+### Language Analyzer
 
 The [`LanguageAnalyzer`](analysis/LanguageAnalyzer.java) class performs the Analysis processing phase
 (see https://github.com/Scaled-Markets/dabl/tree/master/langref#processing-phases).
@@ -73,7 +79,7 @@ to each nested scope within the source input.
 
 ![Figure 4: Language Analyzer Structure](Compiler_Design_Fig3.png "Figure 3: Language Analyzer Structure")
 
-## AST Annotations
+### AST Annotations
 
 There are three kinds of annotation:
 
@@ -91,7 +97,7 @@ The structure of annotations is shown in the figure.
 
 ![Figure 5: AST Annotations](Compiler_Design_Fig4.png "Figure 4: AST Annotations")
 
-## Symbol Table Structure
+### Symbol Table Structure
 
 A `NameScope` is an annotation that specifies that the associated `Node` is a
 declarative region (within which symbols can be defined). `NameScopes` form a
@@ -100,7 +106,7 @@ that are declared by that declarative region. This is depicted in the figure.
 
 ![Figure 6: Symbol Table Structure](Compiler_Design_Fig5.png "Figure 5: Symbol Table Structure")
 
-## Analyzer Output
+### Analyzer Output
 
 The Analyzer returns a [`CompilerState`](analysis/CompilerState.java) object. In the
 `CompilerState`, the `globalScope` variable references the root level
@@ -126,7 +132,14 @@ The linkage between the AST and the `NameScope` hierarchy is as follows:
 provide a `getDefiningNode()` method, which provides a reference to
 the AST `Node` that declares the symbol that the `SymbolEntry` defines.
 
-## Dependency Graph
+## Execution Phase
+
+### Default Executor
+
+TBD
+
+
+### Dependency Graph
 
 The [`DefaultExecutor`](exec/DefaultExecutor.java) creates a dependency graph,
 by calling 
@@ -212,7 +225,12 @@ The actual dependency graph structures that are created are illustrated below.
 
 ![Figure 8: Actual Dependency Graphs](ActualGraph.png "Figure 8: Actual Dependency Graphs")
 
-## Docker Daemon Interface
+### Task Executor
+
+TBD
+
+
+### Docker Daemon Interface
 
 Docker is used to create a distinct and therefore isolated container for each task.
 The only inputs from the host system that can reach a task's container are those that are specified
@@ -241,7 +259,7 @@ maintaining backward compatibility.
 The result is a package `scaledmarkets.dabl.docker` which does exactly what we
 need for this project.
 
-## How Data Is Exchanged With a Task Container
+### How Data Is Exchanged With a Task Container
 
 When the [`DefaultExecutor`](exec/DefaultExecutor.java) prepares to execute a
 task, it creates a temporary directory for the task, to serve as the task's
