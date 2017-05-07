@@ -136,7 +136,7 @@ These values can also be set in a <code>.dabl.properties</code> file in the curr
 directory or the user's home directory. Enviornment settings take precedence;
 after that, the current directory, and then the user's home directory. If the required
 value is not found in any of those locations, then the classpath is searched for
-the default <a href=""><code>.dabl.properties</code></a> file.
+the default <a href="https://github.com/ScaledMarkets/dabl/blob/master/.dabl.properties"><code>.dabl.properties</code></a> file.
 
 Note: At present, the required third-party jars are not included in the DABL
 jar file, `dabl.jar`.
