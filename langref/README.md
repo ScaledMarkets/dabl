@@ -7,7 +7,7 @@ development and is therefore subject to change.
 Once the spec has been labeled version 1.0, it will not change: changes to the language
 will be published as separate versions. After 1.0 has been published, great effort
 will be made to avoid breaking changes in future versions: we view backward compatibility
-as an essential feature of a build language—indeed, of any infrastructure tool.
+as an essential feature of a build language—indeed, of any infrastructure-as-code tool.
 
 ## Background
 
