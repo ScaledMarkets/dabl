@@ -139,7 +139,7 @@ compile: config
 		$(src_dir)/$(package)/util/*.java \
 		$(src_dir)/$(package)/repos/*.java \
 		$(src_dir)/$(package)/helper/*.java
-	cp $(src_dir)/$(package)/.dabl.properties $(build_dir)
+	cp $(CurDir)/.dabl.properties $(build_dir)
 
 compile_clean:
 	rm -r -f $(build_dir)/*
