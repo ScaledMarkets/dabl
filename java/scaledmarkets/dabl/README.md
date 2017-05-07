@@ -1,6 +1,6 @@
 # Compiler Design
 
-### Main Program Top Level Structure
+## Main Program Top Level Structure
 
 The DABL compiler consists of two main parts: an Analyzer and an Executor. 
 
