@@ -14,7 +14,7 @@ as an essential feature of a build language—indeed, of any infrastructure-as-c
 This is the DABL language normative spec.
 
 The purpose of the DABL language is to provide a robust way to define highly
-reliable and maintainable software build programs. DABL supports the concept
+reliable, maintainable, and composable software build programs. DABL supports the concept
 of "infrastructure as code", and as such it is designed in a manner similar
 to a programming language. It is not a programming language, however: e.g.,
 one cannot define loops or perform arithmetic.
