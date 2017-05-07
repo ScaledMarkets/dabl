@@ -60,7 +60,7 @@ DABL has four types of comment:
 All DABL constructs can span multiple lines. Only multi-line comments must be
 terminated with either a <code> */</code> or <code> *//</code>, depending on the
 type of comment. DABL does not use any statement terminators such as semi-colon
-or newline.
+or newline, and statement indentation is ignored.
 
 ## Literal String Values
 
