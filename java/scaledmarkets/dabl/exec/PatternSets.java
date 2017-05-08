@@ -130,6 +130,16 @@ public class PatternSets implements Comparable<PatternSets> {
 			// Get the files F of curDir.
 			DirectoryStream<Path> F = Files.newDirectoryStream(curDir.toPath());
 			
+			
+			// debug
+			System.out.println("curDir=" + curDir.toString());
+			System.out.println("curDir path = " + curDir.toPath().toString());
+			System.out.println("curDir contains " + curDir.list().length + " elements");
+			// end debug
+			
+			
+			
+			
 			match: for (Path f : F) {
 				
 				System.out.println("\t\tConsidering path " + f.toString());  // debug

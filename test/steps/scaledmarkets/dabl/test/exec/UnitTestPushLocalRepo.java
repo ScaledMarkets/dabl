@@ -298,11 +298,15 @@ public class UnitTestPushLocalRepo extends TestBase {
 
 	protected void pushOutputsToRepo(ALocalOartifactSet localArtifactSet,
 			LocalRepo repo, Predicate<PatternSets> predicate) throws Exception {
+	
 		LinkedList<POfilesetOperation> filesetOps = localArtifactSet.getOfilesetOperation();
 		PatternSets patternSets = new PatternSets(repo);
 		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
-		assertThat(predicate.test(patternSets), "pattern sets predicate failed");
 		
+		System.out.println("patternSets=" + patternSets.toString());
+		
+		
+		assertThat(predicate.test(patternSets), "pattern sets predicate failed");
 		repo.putFiles(this.givendir, patternSets);
 	}
 
@@ -316,7 +320,29 @@ public class UnitTestPushLocalRepo extends TestBase {
 		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,
 			localArtifactSet);
 		
+		assertThat(givendir.exists(), "Source dir " + givendir.toString() + " does not exist");
+		System.out.println("Source dir " + givendir.toString() +
+			" exists and contains " + givendir.list().length + " files.");
+		
+		String workingDirPath = System.getProperty("user.dir");
+		File workingDir = new File(workingDirPath);
+		File namespaceDir = new File(workingDir, NamespaceName);
+		File taskDir = new File(namespaceDir, TaskName);
+		File repoDir = new File(taskDir, OutputsName);
+		assertThat(repoDir.exists(), "Repo directory " + repoDir.toString() + " not found");
+		System.out.println(repoDir.toString() + " exists, and contains " +
+			repoDir.list().length + " files.");
+		
+		
 		// Push the task's outputs to the local repo.
 		pushOutputsToRepo(localArtifactSet, repo, patternSetsPredicate);
+
+		assertThat(givendir.exists(), "Source dir " + givendir.toString() + " does not exist");
+		System.out.println("Source dir " + givendir.toString() +
+			" still exists and contains " + givendir.list().length + " files.");
+		
+		assertThat(repoDir.exists(), "Repo directory " + repoDir.toString() + " not found");
+		System.out.println(repoDir.toString() + " still exists, and contains " +
+			repoDir.list().length + " files.");
 	}
 }

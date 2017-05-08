@@ -21,7 +21,7 @@ public class TestNumberFormats extends TestBase {
 	
 	Reader reader;
 
-	@Before
+	@Before("@numberformats")
 	public void beforeEachScenario() throws Exception {
 		reader = null;
 	}

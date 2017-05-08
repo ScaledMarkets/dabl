@@ -87,7 +87,7 @@ public class LocalRepo implements Repo {
 		System.out.println("\tpatternSets=" + patternSets.toString());  // debug
 		System.out.println("\tdirectory=" + directory.toString());  // debug
 		
-		patternSets.operateOnFiles(this.directory, new PatternSets.FileOperator() {
+		patternSets.operateOnFiles(dir, new PatternSets.FileOperator() {
 			public void op(File root, String pathRelativeToRoot) throws Exception {
 
 				System.out.println("\top: root=" + root + ", pathRelativeToRoot=" +  // debug

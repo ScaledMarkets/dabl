@@ -21,10 +21,6 @@ public class TestArtifacts extends TestBase {
 	
 	Reader reader;
 
-	@Before
-	public void beforeEachScenario() throws Exception {
-	}
-	
 	@When("^a repo has the same name as the artifact$")
 	public void a_repo_has_the_same_name_as_the_artifact() throws Throwable {
 

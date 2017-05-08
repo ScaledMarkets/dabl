@@ -15,11 +15,11 @@ import java.io.StringReader;
 
 public class SmokeTest extends TestBase {
 	
-	@Before
+	@Before("@smoke")
 	public void beforeEachScenario() throws Exception {
 	}
 	
-	@After
+	@After("@smoke")
 	public void afterEachScenario() throws Exception {
 	}
 	

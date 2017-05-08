@@ -1,5 +1,6 @@
 # language: en
 
+@numberformats
 Feature: TestNumberFormats
 	
 	@done
