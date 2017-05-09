@@ -23,7 +23,7 @@ public class DockerTaskContainer extends TaskContainer {
 	 * Perform a task's procedural statements.
 	 * The container is contacted and instructed to perform the task.
 	 */
-	public void execute() throws Exception {
+	public void execute(int timeout) throws Exception {
 		
 		// Start the container.
 		this.dockerContainer.start();

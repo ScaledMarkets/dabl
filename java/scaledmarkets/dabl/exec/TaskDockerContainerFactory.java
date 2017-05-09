@@ -8,7 +8,6 @@ import java.io.File;
 
 public class TaskDockerContainerFactory extends TaskContainerFactory {
 	
-	public static String dockerImageName = "centos7.2";
 	private Map<TaskContainer, TaskContainer> taskContainers = new TreeMap<TaskContainer, TaskContainer>();
 	private Docker docker;
 	
@@ -24,10 +23,14 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	 */
 	public TaskContainer createTaskContainer(Task task, File workspace) throws Exception {
 		
+		String dockerImageName = Utilities.getSetting("dabl.task_container_image_name");
+		if ((dockerImageName == null) || dockerImageName.equals("")) throw new Exception(
+			"Unable to identify container image to use");
+		
 		// Create a container for performing a task. (Do not start the container.)
 		// The container maps the temp directory.
 		DockerContainer dockerContainer = this.docker.createContainer2(
-			this.dockerImageName, task.getName(), workspace.getCanonicalPath(),
+			dockerImageName, task.getName(), workspace.getCanonicalPath(),
 			workspace.getCanonicalPath()); 
 		
 		// Return an object that can be used to control the container.

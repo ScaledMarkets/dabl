@@ -130,6 +130,11 @@ When running DABL, the following environment variables can be set:
 <dd><code>dabl.repo.providers.</code><i>repo-provider</i> - The Java class name of
 	the repository provider for accessing repositories of type <i>repo-provider</i>.
 	(See <i>repo_type</i> <a href="langref/repo_decl.md#syntax">here</a>.)</dd>
+<dd><code>dabl.task_container_image_name</code> - The name of the docker image
+	to use for task execution containers. Normally a user will not change this
+	setting from its default, which references an image in dockerhub. However, an
+	enterprise might want to replace the setting with an image maintained in an
+	internal image repository. [TBD: Include reference to the image's dockerfile.]
 </dl>
 
 These values can also be set in a <code>.dabl.properties</code> file in the current
