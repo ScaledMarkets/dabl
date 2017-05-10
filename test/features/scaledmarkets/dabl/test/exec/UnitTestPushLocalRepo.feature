@@ -40,7 +40,13 @@ Feature: UnitTestPushLocalRepo
 		Then the files a.txt, d/a.txt, and d/dd/a.txt are pushed
 	
 	@done
-	Scenario: 7: Two include patterns, and exclude files that match a specified extension to push
+	Scenario: 7: One include pattern, and exclude files that match a specified extension to push
 		Given directory 7 with files a.txt, a.rtf, d/a.txt, d/a.rtf, e/a.txt, e/a.rtf, d/dd/a.txt, d/dd/a.rtf
 		When the include pattern specifies ** and the exclude pattern specifies *.txt
+		Then the files a.rtf, d/a.rtf, d/dd/a.rtf, e/a.rtf are pushed
+	
+	@done
+	Scenario: 8: Two include patterns, and exclude files that match a specified extension to push
+		Given directory 8 with files a.txt, a.rtf, d/a.txt, d/a.rtf, e/a.txt, e/a.rtf, d/dd/a.txt, d/dd/a.rtf
+		When the include patterns specify ** and * and the exclude pattern specifies *.txt
 		Then the files a.rtf, d/a.rtf, d/dd/a.rtf, e/a.rtf are pushed

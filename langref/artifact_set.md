@@ -23,14 +23,17 @@ repository.
 *files-stmts* have the following syntax:
 
 <dl>
-<dd>[ <code>exclude</code> ] <i>fileset-spec</i></dd>
+<dd><code>include</code> <i>fileset-spec</i></dd>
+<dd></dd>
+<dd><code>exclude</code> <i>fileset-spec</i></dd>
 </dl>
 
 where a *fileset-spec* is a string value expression that specifies a set of files
 in the project. Wildcards may be used to match parts of a filename or directory.
 
-If `exclude` is specified, then the files of the *fileset-spec* are excluded
-from the artifact set. If `exclude` is not specified, then the files are included.
+If `include` is specified, then the files of the *fileset-spec* are included
+in the artifact set. If `exclude` is specified, then the files of the *fileset-spec*
+are excluded from the artifact set.
 
 *prefer-stmts* serve to specify that if the repository supports DABL's concept of
 artifact versions, that the specified version criteria should be applied.

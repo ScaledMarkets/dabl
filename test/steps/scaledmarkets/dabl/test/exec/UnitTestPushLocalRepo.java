@@ -258,10 +258,10 @@ public class UnitTestPushLocalRepo extends TestBase {
 	@When("^the include pattern specifies \\*\\* and the exclude pattern specifies \\*\\.txt$")
 	public void the_include_pattern_specifies_star_star_and_the_exclude_pattern_specifies_txt() throws Throwable {
 		
-		String pattern = "include \"*\", include \"**\", exclude \"*.txt\"";
+		String pattern = "include \"**\", exclude \"**.txt\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern, patternSets -> 
-			(patternSets.getIncludePatterns().size() == 2) &&
+			(patternSets.getIncludePatterns().size() == 1) &&
 			(patternSets.getExcludePatterns().size() == 1));
 	}
 	
@@ -273,6 +273,18 @@ public class UnitTestPushLocalRepo extends TestBase {
 		assertThat(this.repo.containsFile("e/a.rtf"), "e/a.rtf not found");
 		long n = this.repo.countAllFiles();
 		assertThat(n == 4, "Found " + n + " files");
+	}
+	
+	
+	// Scenario: 8: Two include patterns, and exclude files that match a specified extension to push
+	@When("^the include patterns specify \\*\\* and \\* and the exclude pattern specifies \\*\\.txt$")
+	public void the_include_patterns_specify_star_star_and_star_and_the_exclude_pattern_specifies_txt() throws Throwable {
+		
+		String pattern = "include \"**\", include \"*\", exclude \"**.txt\"";
+		createDabl(pattern);
+		pushPatternsToRepo(pattern, patternSets -> 
+			(patternSets.getIncludePatterns().size() == 2) &&
+			(patternSets.getExcludePatterns().size() == 1));
 	}
 	
 	
