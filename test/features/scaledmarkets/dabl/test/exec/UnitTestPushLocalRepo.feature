@@ -30,17 +30,17 @@ Feature: UnitTestPushLocalRepo
 	@done
 	Scenario: 5: Include a directory hierarchy
 		Given directory 5 with files a.txt, b.txt, d/a.txt, d/b.txt, d/dd/a.txt, d/dd/b.txt
-		When the include pattern specifies **a.txt
+		When the include pattern specifies **
 		Then the files a.txt, d/a.txt, and d/dd/a.txt are pushed
 	
 	@done
 	Scenario: 6: One include pattern, and exclude a directory to push
 		Given directory 6 with files a.txt, a.rtf, d/a.txt, d/a.rtf, e/a.txt, e/a.rtf, d/dd/a.txt, d/dd/a.rtf
-		When the include pattern specifies **/*.txt and the exclude pattern specifies e
+		When the include pattern specifies ** and the exclude pattern specifies e
 		Then the files a.txt, d/a.txt, and d/dd/a.txt are pushed
 	
 	@done
 	Scenario: 7: Two include patterns, and exclude files that match a specified extension to push
 		Given directory 7 with files a.txt, a.rtf, d/a.txt, d/a.rtf, e/a.txt, e/a.rtf, d/dd/a.txt, d/dd/a.rtf
-		When the include pattern specifies * and ** and the exclude pattern specifies **/*.txt
+		When the include pattern specifies ** and the exclude pattern specifies *.txt
 		Then the files a.rtf, d/a.rtf, d/dd/a.rtf, e/a.rtf are pushed

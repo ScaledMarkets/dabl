@@ -200,11 +200,10 @@ public class UnitTestPushLocalRepo extends TestBase {
 		(new File(dd, "b.txt")).createNewFile();
 	}
 	
-	@When("^the include pattern specifies \\*\\*a\\.txt$")
-	public void the_include_pattern_specifies_a_txt() throws Throwable {
+	@When("^the include pattern specifies \\*\\*$")
+	public void the_include_pattern_specifies_star_star() throws Throwable {
 		
 		String pattern = "include \"**\"";
-		//String pattern = "include \"**a.txt\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern, patternSets -> 
 			patternSets.getIncludePatterns().size() == 1);
@@ -244,10 +243,10 @@ public class UnitTestPushLocalRepo extends TestBase {
 		(new File(dd, "a.rtf")).createNewFile();
 	}
 	
-	@When("^the include pattern specifies \\*\\*/\\*\\.txt and the exclude pattern specifies e$")
-	public void the_include_pattern_specifies_txt_and_the_exclude_pattern_specifies_e() throws Throwable {
+	@When("^the include pattern specifies \\*\\* and the exclude pattern specifies e$")
+	public void the_include_pattern_specifies_star_star_and_the_exclude_pattern_specifies_e() throws Throwable {
 		
-		String pattern = "include \"**/*.txt\", exclude \"e\"";
+		String pattern = "include \"**\", exclude \"e\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern, patternSets -> 
 			(patternSets.getIncludePatterns().size() == 1) &&
@@ -256,10 +255,10 @@ public class UnitTestPushLocalRepo extends TestBase {
 	
 	
 	// Scenario: 7: Two include patterns, and exclude files that match a specified extension to push
-	@When("^the include pattern specifies \\* and \\*\\* and the exclude pattern specifies \\*\\*/\\*\\.txt$")
-	public void the_include_pattern_specifies_and_and_the_exclude_pattern_specifies_txt() throws Throwable {
+	@When("^the include pattern specifies \\*\\* and the exclude pattern specifies \\*\\.txt$")
+	public void the_include_pattern_specifies_star_star_and_the_exclude_pattern_specifies_txt() throws Throwable {
 		
-		String pattern = "include \"*\", include \"**\", exclude \"**/*.txt\"";
+		String pattern = "include \"*\", include \"**\", exclude \"*.txt\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern, patternSets -> 
 			(patternSets.getIncludePatterns().size() == 2) &&
