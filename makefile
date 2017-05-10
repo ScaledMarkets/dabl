@@ -13,13 +13,16 @@ include makefile.inc
 ORG = Scaled Markets
 PRODUCT_NAME = Dabl
 JAR_NAME = dabl
+TASK_JAR_NAME = taskruntime
 
 # Output artifact names:
 package=scaledmarkets/dabl
 test_package=scaledmarkets/dabl/test
 package_name = scaledmarkets.dabl
+task_package_name = scaledmarkets.dabl.task
 test_package_name = scaledmarkets.dabl.test
 main_class := $(package_name).Main
+task_main_class := $(task_package_name).Main
 
 # Intermediate artifacts:
 classfiles := \
@@ -34,6 +37,9 @@ classfiles := \
 	$(build_dir)/$(package)/node/*.class \
 	$(build_dir)/$(package)/repos/*.class \
 	$(build_dir)/$(package)/parser/*.class
+
+task_classfiles := \
+	$(build_dir)/$(package)/task/*.class
 
 # Command aliases:
 SHELL = /bin/sh
@@ -62,19 +68,10 @@ third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
 ################################################################################
 # Tasks
 .PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
+	task_manifest task_jar image \
 	check compile_tests test runsonar javadoc clean info
 
-all: clean parser compile jar compile_tests test
-
-# Create the manifest file for the JAR.
-manifest:
-	echo "Main-Class: $(main_class)" > Manifest
-	echo "Specification-Title: $(PRODUCT_NAME)" >> Manifest
-	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
-	echo "Specification-Vendor: $(ORG)" >> Manifest
-	echo "Implementation-Title: $(main_class)" >> Manifest
-	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
-	echo "Implementation-Vendor: $(ORG)" >> Manifest
+all: clean parser compile jar task_jar image compile_tests test
 
 # Create a Config.java file that contains the current application version.
 config:
@@ -120,14 +117,6 @@ $(test_build_dir):
 $(jar_dir):
 	mkdir $(jar_dir)
 
-# Package application into a JAR file.
-jar: $(jar_dir)/$(JAR_NAME).jar
-
-$(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
-	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest -C $(build_dir) scaledmarkets \
-		-C $(build_dir) .dabl.properties
-	rm Manifest
-
 # Define the 'compile' target so that we can reference it in .DEFAULT_GOAL.
 compile: config
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp):$(third_party_cp) -d $(build_dir) \
@@ -147,6 +136,45 @@ compile_clean:
 
 # Define 'dist' target so we can reference it in 'all' target.
 dist: jar
+
+# Create the manifest file for the JAR.
+manifest:
+	echo "Main-Class: $(main_class)" > Manifest
+	echo "Specification-Title: $(PRODUCT_NAME)" >> Manifest
+	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
+	echo "Specification-Vendor: $(ORG)" >> Manifest
+	echo "Implementation-Title: $(main_class)" >> Manifest
+	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
+	echo "Implementation-Vendor: $(ORG)" >> Manifest
+
+# Package application into a JAR file.
+jar: $(jar_dir)/$(JAR_NAME).jar
+
+$(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
+	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest -C $(build_dir) scaledmarkets \
+		-C $(build_dir) .dabl.properties
+	rm Manifest
+
+# Create the manifest file for the task JAR.
+task_manifest:
+	echo "Main-Class: $(main_class)" > Manifest
+	echo "Specification-Title: $(PRODUCT_NAME) Task Execution Engine" >> Manifest
+	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
+	echo "Specification-Vendor: $(ORG)" >> Manifest
+	echo "Implementation-Title: $(task_main_class)" >> Manifest
+	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
+	echo "Implementation-Vendor: $(ORG)" >> Manifest
+
+# Package task runtime into a JAR file.
+taskjar: $(jar_dir)/$(TASK_JAR_NAME).jar
+
+$(jar_dir)/$(TASK_JAR_NAME).jar: $(task_classfiles) task_manifest $(jar_dir)
+	$(JAR) cvfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest -C $(task_build_dir) scaledmarkets
+	rm Manifest
+
+# Build container image for task runtime.
+image:
+	docker ....
 
 # Run parser to scan a sample input file. This is for checking that the parser
 # can recognize the language.

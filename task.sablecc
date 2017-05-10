@@ -1,0 +1,121 @@
+// Grammer for task interpreter that runs in a task execution container.
+
+
+Package scaledmarkets.dabl.task;
+
+Helpers
+
+Tokens
+
+Ignored Tokens
+
+
+Productions
+
+    procedural_stmts_opt {-> oproc_stmt*} =
+        {multiple} procedural_stmts         {-> [procedural_stmts.oproc_stmt]}
+      | {none}                              {-> []}
+      ;
+    
+    procedural_stmts {-> oproc_stmt*} =
+        {multiple} procedural_stmts procedural_stmt
+                                            {-> [procedural_stmts.oproc_stmt,
+                                                procedural_stmt.oproc_stmt]}
+      | {one} procedural_stmt               {-> [procedural_stmt.oproc_stmt]}
+      ;
+      
+    procedural_stmt {-> oproc_stmt} =
+        {func_call} func_call_stmt          {-> func_call_stmt.oproc_stmt}
+      | {if_error} if_error_stmt            {-> if_error_stmt.oproc_stmt}
+      ;
+    
+    func_call_stmt {-> oproc_stmt} =
+        {no_target} [target]:id eq [func_name]:id args
+                                            {-> New oproc_stmt.func_call(
+                                                New oid_ref(func_name),
+                                                [args.oexpr], New otarget_opt.target(target))}
+      | {target} [func_name]:id args
+                                            {-> New oproc_stmt.func_call(
+                                                New oid_ref(func_name),
+                                                [args.oexpr], New otarget_opt.no_target())}
+        ;
+    
+    args {-> oexpr*} =
+        {multiple_args} arg arg_separator args
+                                            {-> [arg.oexpr, args.oexpr]}
+      | {one_arg} arg                       {-> [arg.oexpr]}
+      ;
+    
+    arg_separator {-> otype_spec_separator} =
+        {comma} comma_char                  {-> New otype_spec_separator.comma()}
+      | {prep} preposition                  {-> New otype_spec_separator.preposition(
+                                                  preposition.opreposition)}
+      ;
+    
+    arg {-> oexpr} =
+        expr                                {-> expr.oexpr}
+        ;
+    
+    if_error_stmt {-> oproc_stmt} =
+        [a]:if error procedural_stmts end [b]:if
+                                            {-> New oproc_stmt.if_error(
+                                                [procedural_stmts.oproc_stmt])}
+        ;
+
+
+Abstract Syntax Tree
+
+    oproc_stmt =
+        {func_call} oid_ref oexpr* otarget_opt
+      | {if_error} oproc_stmt*
+      ;
+    
+    otarget_opt =
+        {target} id
+      | {no_target}
+      ;
+
+    oexpr =
+        {literal} oliteral
+      | {variable} ovariable
+      | {unary} ounary_op oexpr
+      | {binary} [operand1]:oexpr obinary_op [operand2]:oexpr
+      | {success} osuccess_expr
+      | {age} oage_expr
+      ;
+    
+    oliteral =
+        {logic} ologic_literal
+      | {string} ostring_literal
+      | {numeric} onumeric_literal
+      ;
+    
+    ovariable =
+        oid_ref
+        ;
+    
+    ologic_literal =
+        {true}
+      | {false}
+      ;
+    
+    ostring_literal =
+        {string} string
+      | {string2} string2
+      | {static_string_expr} [left]:ostring_literal [right]:ostring_literal
+      ;
+    
+    onumeric_literal =
+        {int} osign whole_number
+      | {pattern} osign [magnitude]:onum_slot [mantissa]:onum_slot*
+        ;
+
+    onum_slot =
+        {num} whole_number
+      | {wildcard}
+      ;
+
+    osign =
+        {positive}
+      | {negative}
+      ;

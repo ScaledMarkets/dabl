@@ -12,6 +12,7 @@ BUILD_TAG = 0
 
 # Output directories.
 build_dir = /Transient/dabl
+task_build_dir = /Transient/dabl_task
 jar_dir = /Transient/dabl/jars
 
 # Locations of tools:
