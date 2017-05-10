@@ -1,6 +1,8 @@
 package scaledmarkets.dabl.docker;
 
 import java.net.URI;
+import java.io.Reader;
+import java.io.Writer;
 import java.io.StringWriter;
 import java.io.StringReader;
 import java.util.List;
@@ -247,13 +249,17 @@ public class Docker {
 	/**
 	 * Tell docker to start container.
 	 */
-	public void startContainer(String containerId) throws Exception {
+	public Reader startContainer(String containerId, Writer writer) throws Exception {
 		
 		Response response = makePostRequest(
 			"v1.24/containers/" + containerId + "/start", null);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
+		
+		....connect writer to stdin
+		
+		....return stdout as a Reader
 	}
 	
 	/**
@@ -328,6 +334,10 @@ public class Docker {
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
 		return true;
+	}
+	
+	public getExitStatus(String containerId) throws Exception {
+		....
 	}
 	
 	/**

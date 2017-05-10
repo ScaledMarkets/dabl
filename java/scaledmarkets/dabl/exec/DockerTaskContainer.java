@@ -26,12 +26,16 @@ public class DockerTaskContainer extends TaskContainer {
 	public void execute(int timeout) throws Exception {
 		
 		// Start the container.
-		this.dockerContainer.start();
+		// The container starts with its configured entrypoint, which is a
+		// call to the TaskExecutor JAR. Each procedural statement is passed
+		// via stdin.
+		Write stmtWriter = new ....
+		Reader reader = this.dockerContainer.start(stmtWriter);
+		....where should we send the container stdout?
 		
-		// Execute the task in the container.
-		//....
-		
-		
+		int exitStatus = this.dockerContainer.getExitStatus();
+		if (exitStatus != 0) throw new Exception(
+			"Container had exit status " + exitStatus);
 	}
 	
 	public void destroy() throws Exception {
