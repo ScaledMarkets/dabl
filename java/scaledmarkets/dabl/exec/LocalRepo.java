@@ -69,9 +69,10 @@ public class LocalRepo implements Repo {
 	public void getFiles(PatternSets patternSets, File dir) throws Exception {
 		
 		patternSets.operateOnFiles(this.directory, new PatternSets.FileOperator() {
+				
 			public void op(File root, String pathRelativeToRoot) throws Exception {
 				// Get the file
-				File origin = new File(LocalRepo.this.directory, pathRelativeToRoot);
+				File origin = new File(root, pathRelativeToRoot);
 				File dest = new File(dir, pathRelativeToRoot);
 				Files.copy(origin.toPath(), dest.toPath());
 			}
@@ -79,7 +80,7 @@ public class LocalRepo implements Repo {
 	}
 	
 	/**
-	 * Store ("push") the specified files from 'dir' to this specified repository.
+	 * Store ("push") the specified files from 'dir' to this repository.
 	 */
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
@@ -88,6 +89,7 @@ public class LocalRepo implements Repo {
 		System.out.println("\tdirectory=" + directory.toString());  // debug
 		
 		patternSets.operateOnFiles(dir, new PatternSets.FileOperator() {
+				
 			public void op(File root, String pathRelativeToRoot) throws Exception {
 
 				System.out.println("\top: root=" + root + ", pathRelativeToRoot=" +  // debug
@@ -95,9 +97,24 @@ public class LocalRepo implements Repo {
 				
 				
 				// Put the file
-				File origin = new File(dir, pathRelativeToRoot);
+				File origin = new File(root, pathRelativeToRoot);
 				File dest = new File(LocalRepo.this.directory, pathRelativeToRoot);
-				Files.copy(origin.toPath(), dest.toPath());
+				
+				if (origin.isDirectory()) {
+					dest.mkdir();
+				} else {
+					try {  // debug
+					Files.copy(origin.toPath(), dest.toPath());
+					} catch (Exception ex) {  // debug
+						System.out.println("Origin:" + origin.toString());
+						System.out.println("Origin dir:");  // debug
+						Utilities.printDirectoryTree(root);  // debug
+						System.out.println("Dest:" + dest.toString());
+						System.out.println("Dest dir:");  // debug
+						Utilities.printDirectoryTree(LocalRepo.this.directory);  // debug
+						throw ex;  // debug
+					}  // debug
+				}
 			}
 		});
 	}

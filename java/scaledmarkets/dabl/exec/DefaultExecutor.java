@@ -103,7 +103,7 @@ public class DefaultExecutor implements Executor {
 					this.taskContainerFactory.createTaskContainer(task, workspace);
 				
 				// Execute the task in the container.
-				taskContainer.execute();
+				taskContainer.execute(3600000);
 				
 				// Write the outputs from the workspace to the output directories.
 				(new ArtifactOperator(this.helper) {

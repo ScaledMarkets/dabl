@@ -30,7 +30,7 @@ Feature: UnitTestPushLocalRepo
 	@done
 	Scenario: 5: Include a directory hierarchy
 		Given directory 5 with files a.txt, b.txt, d/a.txt, d/b.txt, d/dd/a.txt, d/dd/b.txt
-		When the include pattern specifies **/a.txt
+		When the include pattern specifies **a.txt
 		Then the files a.txt, d/a.txt, and d/dd/a.txt are pushed
 	
 	@done

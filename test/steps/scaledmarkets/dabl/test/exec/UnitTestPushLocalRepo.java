@@ -200,10 +200,11 @@ public class UnitTestPushLocalRepo extends TestBase {
 		(new File(dd, "b.txt")).createNewFile();
 	}
 	
-	@When("^the include pattern specifies \\*\\*/a\\.txt$")
+	@When("^the include pattern specifies \\*\\*a\\.txt$")
 	public void the_include_pattern_specifies_a_txt() throws Throwable {
 		
-		String pattern = "include \"**/a.txt\"";
+		String pattern = "include \"**\"";
+		//String pattern = "include \"**a.txt\"";
 		createDabl(pattern);
 		pushPatternsToRepo(pattern, patternSets -> 
 			patternSets.getIncludePatterns().size() == 1);
@@ -215,7 +216,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 		assertThat(this.repo.containsFile("d/a.txt"), "d/a.txt not found");
 		assertThat(this.repo.containsFile("d/dd/a.txt"), "d/dd/a.txt not found");
 		long n = this.repo.countAllFiles();
-		assertThat(n == 3, "Found " + n + " files");
+		assertThat(n == 6, "Found " + n + " files");
 	}
 	
 	
@@ -280,6 +281,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	
 	protected void setup(int dirNum) throws Exception {
 		
+		System.out.println("Test number " + dirNum + "----------------");
 		this.givendir = new File(basedir, "given" + String.valueOf(dirNum));
 		deleteDirectoryTree(this.givendir);
 		this.givendir.mkdir(); // merely returns false if directory already exists.
@@ -322,7 +324,8 @@ public class UnitTestPushLocalRepo extends TestBase {
 		
 		assertThat(givendir.exists(), "Source dir " + givendir.toString() + " does not exist");
 		System.out.println("Source dir " + givendir.toString() +
-			" exists and contains " + givendir.list().length + " files.");
+			" exists and contains " + givendir.list().length + " files:");
+		printDirectoryTree(givendir);
 		
 		String workingDirPath = System.getProperty("user.dir");
 		File workingDir = new File(workingDirPath);
@@ -331,18 +334,20 @@ public class UnitTestPushLocalRepo extends TestBase {
 		File repoDir = new File(taskDir, OutputsName);
 		assertThat(repoDir.exists(), "Repo directory " + repoDir.toString() + " not found");
 		System.out.println(repoDir.toString() + " exists, and contains " +
-			repoDir.list().length + " files.");
-		
+			repoDir.list().length + " files:");
+		printDirectoryTree(repoDir);
 		
 		// Push the task's outputs to the local repo.
 		pushOutputsToRepo(localArtifactSet, repo, patternSetsPredicate);
 
 		assertThat(givendir.exists(), "Source dir " + givendir.toString() + " does not exist");
 		System.out.println("Source dir " + givendir.toString() +
-			" still exists and contains " + givendir.list().length + " files.");
+			" still exists and contains " + givendir.list().length + " files:");
+		printDirectoryTree(givendir);
 		
 		assertThat(repoDir.exists(), "Repo directory " + repoDir.toString() + " not found");
 		System.out.println(repoDir.toString() + " still exists, and contains " +
-			repoDir.list().length + " files.");
+			repoDir.list().length + " files:");
+		printDirectoryTree(repoDir);
 	}
 }

@@ -3,6 +3,7 @@ package scaledmarkets.dabl.test;
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.helper.*;
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.util.Utilities;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -59,22 +60,20 @@ public class TestBase {
 	 * well as the specified directory.
 	 */
 	protected void deleteDirectoryTree(File dir) throws Exception {
-		if (! dir.exists()) return;
-		if (! dir.isDirectory()) throw new Exception("File " + dir.toString() + " is not a direcrtory");
-		Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path> () {
-			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-				Files.delete(file);
-				return FileVisitResult.CONTINUE;
-			}
-			
-			public FileVisitResult postVisitDirectory(Path d, IOException exc) throws IOException {
-				if (exc == null) {
-					Files.delete(d);
-					return FileVisitResult.CONTINUE;
-				} else {
-					throw exc; // directory iteration failed
-				}
-			}
-		});
+		Utilities.deleteDirectoryTree(dir);
+	}
+	
+	/**
+	 * 
+	 */
+	protected void printDirectoryTree(File dir) throws Exception {
+		Utilities.printDirectoryTree(dir);
+	}
+	
+	/**
+	 * 
+	 */
+	protected void operateOnDirectoryTree(File dir, Utilities.FileOperator operator) throws Exception {
+		Utilities.operateOnDirectoryTree(dir, operator);
 	}
 }

@@ -53,7 +53,57 @@ public class Utilities {
 			throw new RuntimeException("Assertion violation");
 		}
 	}
+
+	public interface FileOperator {
+		void operateOnFile(Path f) throws IOException;
+	}
 	
+	/**
+	 * Delete all of the files and subdirectories in the specified directory, as
+	 * well as the specified directory.
+	 */
+	public static void deleteDirectoryTree(File dir) throws Exception {
+		operateOnDirectoryTree(dir, new FileOperator() {
+			public void operateOnFile(Path f) throws IOException {
+				Files.delete(f);
+			}
+		});
+	}
+	
+	/**
+	 * 
+	 */
+	public static void printDirectoryTree(File dir) throws Exception {
+		operateOnDirectoryTree(dir, new FileOperator() {
+			public void operateOnFile(Path f) throws IOException {
+				System.out.println(f.toString());
+			}
+		});
+	}
+	
+	/**
+	 * 
+	 */
+	public static void operateOnDirectoryTree(File dir, FileOperator operator) throws Exception {
+		if (! dir.exists()) return;
+		if (! dir.isDirectory()) throw new Exception("File " + dir.toString() + " is not a direcrtory");
+		Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<Path> () {
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				operator.operateOnFile(file);
+				return FileVisitResult.CONTINUE;
+			}
+			
+			public FileVisitResult postVisitDirectory(Path d, IOException exc) throws IOException {
+				if (exc == null) {
+					operator.operateOnFile(d);
+					return FileVisitResult.CONTINUE;
+				} else {
+					throw exc; // directory iteration failed
+				}
+			}
+		});
+	}
+
 	/**
 	 * Recursively delete the specified directory and all contents.
 	 */
