@@ -84,18 +84,10 @@ public class LocalRepo implements Repo {
 	 */
 	public void putFiles(File dir, PatternSets patternSets) throws Exception {
 		
-		System.out.println("putFiles: dir=" + dir.toString());  // debug
-		System.out.println("\tpatternSets=" + patternSets.toString());  // debug
-		System.out.println("\tdirectory=" + directory.toString());  // debug
-		
 		patternSets.operateOnFiles(dir, new PatternSets.FileOperator() {
 				
 			public void op(File root, String pathRelativeToRoot) throws Exception {
 
-				System.out.println("\top: root=" + root + ", pathRelativeToRoot=" +  // debug
-					pathRelativeToRoot);  // debug
-				
-				
 				// Put the file
 				File origin = new File(root, pathRelativeToRoot);
 				File dest = new File(LocalRepo.this.directory, pathRelativeToRoot);
@@ -103,17 +95,17 @@ public class LocalRepo implements Repo {
 				if (origin.isDirectory()) {
 					dest.mkdir();
 				} else {
-					try {  // debug
-					Files.copy(origin.toPath(), dest.toPath());
-					} catch (Exception ex) {  // debug
+					try {
+						Files.copy(origin.toPath(), dest.toPath());
+					} catch (Exception ex) {
 						System.out.println("Origin:" + origin.toString());
-						System.out.println("Origin dir:");  // debug
-						Utilities.printDirectoryTree(root);  // debug
+						System.out.println("Origin dir:");
+						Utilities.printDirectoryTree(root);
 						System.out.println("Dest:" + dest.toString());
-						System.out.println("Dest dir:");  // debug
-						Utilities.printDirectoryTree(LocalRepo.this.directory);  // debug
-						throw ex;  // debug
-					}  // debug
+						System.out.println("Dest dir:");
+						Utilities.printDirectoryTree(LocalRepo.this.directory);
+						throw ex;
+					}
 				}
 			}
 		});

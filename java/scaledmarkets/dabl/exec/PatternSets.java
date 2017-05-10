@@ -117,33 +117,17 @@ public class PatternSets implements Comparable<PatternSets> {
 		// Verify that curDir is within the tree of patternRoot.
 		patternRoot.toPath().relativize(curDir.toPath());
 		
-		System.out.println("For dir " + patternRoot.toString());  // debug
-		
 		Set<File> visited = new HashSet<File>();
 		
 		FileSystem fileSystem = FileSystems.getDefault();
 		
 		for (String pi : this.includePatterns) {
 			
-			System.out.println("\tConsidering pattern " + pi);  // debug
-			
 			// Get the files F of curDir.
 			DirectoryStream<Path> F = Files.newDirectoryStream(curDir.toPath());
 			
-			
-			// debug
-			System.out.println("curDir=" + curDir.toString());
-			System.out.println("curDir path = " + curDir.toPath().toString());
-			System.out.println("curDir contains " + curDir.list().length + " elements");
-			// end debug
-			
-			
-			
-			
 			match: for (Path f : F) {
 				
-				System.out.println("\t\tConsidering path " + f.toString());  // debug
-			
 				// Check if we have already operated on the file.
 				File matchingFile = new File(curDir, f.getFileName().toString());
 				if (visited.contains(matchingFile)) // the file has been visited
@@ -158,8 +142,6 @@ public class PatternSets implements Comparable<PatternSets> {
 				// If g does not match pi, continue to next file of F.
 				PathMatcher includeMatcher = fileSystem.getPathMatcher("glob:" + pi);
 				if (! includeMatcher.matches(g)) { // skip the file.
-					
-					System.out.println("\t\tpath does not match include pattern");  // debug
 					continue match;
 				}
 				
@@ -168,12 +150,10 @@ public class PatternSets implements Comparable<PatternSets> {
 					PathMatcher excludeMatcher = fileSystem.getPathMatcher("glob:" + pe);
 					
 					if (excludeMatcher.matches(g)) { // skip the file.
-						System.out.println("\t\tpath matches exclude pattern");  // debug
 						continue match;
 					}
 				}
 				
-				System.out.println("\t\toperating on " + patternRoot + ", " + g);  // debug
 				fileOperator.op(patternRoot, g.toString());
 				
 				if (matchingFile.isDirectory()) {
