@@ -24,7 +24,7 @@ repository.
 
 <dl>
 <dd><code>include</code> <i>fileset-spec</i></dd>
-<dd></dd>
+<dd>or</dd>
 <dd><code>exclude</code> <i>fileset-spec</i></dd>
 </dl>
 
