@@ -49,6 +49,9 @@ public class DefaultExecutor implements Executor {
 	 * 
 	 */
 	protected void executeAll(DependencyGraph graph) throws Exception {
+		
+		// To do: convert this to use streams.
+		
 		for (Task task : graph.getRootTasks()) { // each root task tr,
 			executeTaskTree(graph, task);
 		}
@@ -103,7 +106,7 @@ public class DefaultExecutor implements Executor {
 					this.taskContainerFactory.createTaskContainer(task, workspace);
 				
 				// Execute the task in the container.
-				taskContainer.execute(3600000);
+				taskContainer.execute(System.out, 3600000);
 				
 				// Write the outputs from the workspace to the output directories.
 				(new ArtifactOperator(this.helper) {
@@ -121,6 +124,8 @@ public class DefaultExecutor implements Executor {
 			}
 			
 			for (Task t_o : task.getConsumers()) {
+				// To do: convert this to use streams.
+				
 				// for each task t_o that is immediately downstream of task,
 				executeTaskTree(graph, t_o);
 			}

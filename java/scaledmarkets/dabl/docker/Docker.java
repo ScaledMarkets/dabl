@@ -247,7 +247,7 @@ public class Docker {
 	}
 	
 	/**
-	 * Tell docker to start container.
+	 * Tell docker to start container. Connect the ....
 	 */
 	public Reader startContainer(String containerId, Writer writer) throws Exception {
 		
