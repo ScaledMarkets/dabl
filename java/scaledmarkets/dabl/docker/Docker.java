@@ -1,10 +1,10 @@
 package scaledmarkets.dabl.docker;
 
 import java.net.URI;
-import java.io.Reader;
-import java.io.Writer;
 import java.io.StringWriter;
 import java.io.StringReader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
@@ -249,7 +249,7 @@ public class Docker {
 	/**
 	 * Tell docker to start container. Connect the ....
 	 */
-	public Reader startContainer(String containerId, Writer writer) throws Exception {
+	public InputStream startContainer(String containerId, String taskProgram) throws Exception {
 		
 		Response response = makePostRequest(
 			"v1.24/containers/" + containerId + "/start", null);
@@ -257,9 +257,28 @@ public class Docker {
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
 		
+		// Attach to container.
+		// Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerAttach
+		
+		String params = "?";
+		params = params + "stream=logs";
+		params = params + "&stdin=true";
+		params = params + "&stdout=true";
+		params = params + "&stderr=true";
+
+		response = makePostRequest(
+			"v1.24/containers/" + containerId + "/attach" + params, taskProgram);
+		
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
+		
+		// Connect response output stream to 
+		
+		InputStream inputStream = response.readEntity(InputStream.class);
+		
 		....connect writer to stdin
 		
-		....return stdout as a Reader
+		return inputStream;
 	}
 	
 	/**

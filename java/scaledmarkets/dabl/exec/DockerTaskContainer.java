@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.docker.*;
 import java.io.File;
 import java.io.PrintStream;
+import java.io.InputStream;
 
 /**
  * Provides ability to control a container, in which a TaskExecutor is running.
@@ -31,9 +32,8 @@ public class DockerTaskContainer extends TaskContainer {
 		// The container starts with its configured entrypoint, which is a
 		// call to the TaskExecutor JAR. Each procedural statement is passed
 		// via stdin.
-		Write stmtWriter = new ....
-		Reader reader = this.dockerContainer.start(stmtWriter);
-		....where should we send the container stdout?
+		InputStream containerOutput = this.dockerContainer.start(....task program);
+		.... send output to....
 		
 		int exitStatus = this.dockerContainer.getExitStatus();
 		if (exitStatus != 0) throw new Exception(

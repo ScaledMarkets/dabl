@@ -1,7 +1,6 @@
 package scaledmarkets.dabl.docker;
 
-import java.io.Reader;
-import java.io.Writer;
+import java.io.InputStream;
 
 /**
  * A wrapper for a docker container. Enables one to start, stop, and remove
@@ -19,9 +18,9 @@ public class DockerContainer {
 	
 	public String getContainerId() { return this.containerId; }
 	
-	public Reader start(Writer writer) throws Exception {
+	public InputStream start(String taskProgram) throws Exception {
 		
-		return this.docker.startContainer(this.containerId, writer);
+		return this.docker.startContainer(this.containerId, taskProgram);
 	}
 	
 	public void stop() throws Exception {
