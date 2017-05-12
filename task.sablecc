@@ -12,6 +12,13 @@ Ignored Tokens
 
 Productions
 
+    procedural_stmts {-> oproc_stmt*} =
+        {multiple} procedural_stmts procedural_stmt
+                                            {-> [procedural_stmts.oproc_stmt,
+                                                procedural_stmt.oproc_stmt]}
+      | {one} procedural_stmt               {-> [procedural_stmt.oproc_stmt]}
+      ;
+      
     procedural_stmt {-> oproc_stmt} =
         {func_call} func_call_stmt          {-> func_call_stmt.oproc_stmt}
       | {if_error} if_error_stmt            {-> if_error_stmt.oproc_stmt}

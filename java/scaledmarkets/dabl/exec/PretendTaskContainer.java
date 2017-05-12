@@ -1,6 +1,7 @@
 package scaledmarkets.dabl.exec;
 
-import java.io.PrintStream;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 
 /**
  * Used by TaskSimulatorFactory for simulating task execution.
@@ -13,8 +14,8 @@ public class PretendTaskContainer extends TaskContainer {
 		this.task = task;
 	}
 	
-	public void execute(PrintStream taskOutput, int timeout) throws Exception {
-		taskOutput.println(
+	public InputStream execute(int timeout) throws Exception {
+		return new StringBufferInputStream(
 			">> Simulator: Task " + this.task.getName() + " would be executed");
 	}
 	

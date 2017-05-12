@@ -276,8 +276,6 @@ public class Docker {
 		
 		InputStream inputStream = response.readEntity(InputStream.class);
 		
-		....connect writer to stdin
-		
 		return inputStream;
 	}
 	

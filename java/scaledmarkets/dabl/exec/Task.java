@@ -89,4 +89,12 @@ public class Task {
 		System.out.println("Performing task " + this.getName());
 		container.execute(3600000);
 	}
+	
+	/**
+	 * Return the task's statement sequence as a string. This is the program
+	 * that the task will execute in the container.
+	 */
+	public String getTaskProgram() {
+		....
+	}
 }

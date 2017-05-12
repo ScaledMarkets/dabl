@@ -19,7 +19,23 @@ public class TaskExecutor {
 		
 		TaskContext taskContext = new TaskContext();
 		
+		// Parse the input and generate an AST.
+		Lexer lexer = new Lexer(new PushbackReader(this.reader));
+		Parser parser = new Parser(lexer);
+		Start start = parser.parse();
+		System.out.println("Syntax is correct");
+		state.getASTs().add(start);
 		
+		if (print) PrettyPrint.pp(start);
+		
+		// declarations. Expressions may be partially evaluated, where possible.
+		// Values that depend on the DABL file context (e.g., its location on a
+		// file system) are elaborated.
+		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
+		start.apply(analyzer);
+		
+		state.setPrimaryNamespaceSymbolEntry(analyzer.getEnclosingScopeEntry());
+		return analyzer.getNamespaceNamescope();
 		//.....
 	}
 	
