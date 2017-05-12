@@ -100,41 +100,7 @@ public class Task {
 		LinkedList<POprocStmt> plist = this.taskDecl.getOprocStmt();
 		for (POprocStmt p : plist) {
 			
-			if (p instanceof AFuncCallOprocStmt) {
-				AFuncCallOprocStmt funcCallStmt = (AFuncCallOprocStmt)p;
-				// oid_ref oexpr* otarget_opt
-				
-				// Obtain the elements of the statement.
-				
-				POidRef pfidref = funcCallStmt.getOidRef();
-				
-				LinkedList<POexpr> pexprs = funcCallStmt.getOexpr();
-				
-				POtargetOpt ptarget = funcCallStmt.getOtargetOpt();
-				
-				// Write the function call statement to the task program string.
-				
-				taskProgram += ptarget.toString();
-				taskProgram += ( " = " + pfidref.toString());
-				
-				boolean firstTime = true;
-				for (POexpr pexpr : pexprs) {
-					if (firstTime) firstTime = false;
-					else taskProgram += ", ";
-					taskProgram += getHelper().exprToString(pexpr);
-				}
-					
-			} else if (p instanceof AIfErrorOprocStmt) {
-				AIfErrorOprocStmt errorStmt = (AIfErrorOprocStmt)p;
-				// oproc_stmt*
-				taskProgram += ....
-				LinkedList<POprocStmt> pes = errorStmt.getOprocStmt();
-				taskProgram += ....
-				
-			} else
-				throw new RuntimeException(
-					"Unexpected POprocStmt node kind: " + p.getClass().getName());
-			
+			taskProgram += getHelper().procStmtToString(p);
 			taskProgram += "\n";
 		}
 		

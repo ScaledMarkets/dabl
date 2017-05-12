@@ -456,6 +456,56 @@ public class Helper {
 	}
 	
 	/**
+	 * 
+	 */
+	public String procStmtToString(POprocStmt p) {
+		
+		String taskProgram = "";
+		
+		if (p instanceof AFuncCallOprocStmt) {
+			AFuncCallOprocStmt funcCallStmt = (AFuncCallOprocStmt)p;
+			// oid_ref oexpr* otarget_opt
+			
+			// Obtain the elements of the statement.
+			
+			POidRef pfidref = funcCallStmt.getOidRef();
+			
+			LinkedList<POexpr> pexprs = funcCallStmt.getOexpr();
+			
+			POtargetOpt ptarget = funcCallStmt.getOtargetOpt();
+			
+			// Write the function call statement to the task program string.
+			
+			taskProgram += ptarget.toString();
+			taskProgram += ( " = " + pfidref.toString());
+			
+			boolean firstTime = true;
+			for (POexpr pexpr : pexprs) {
+				if (firstTime) firstTime = false;
+				else taskProgram += ", ";
+				taskProgram += getHelper().exprToString(pexpr);
+			}
+				
+		} else if (p instanceof AIfErrorOprocStmt) {
+			AIfErrorOprocStmt errorStmt = (AIfErrorOprocStmt)p;
+			
+			taskProgram += "if error\n";
+			
+			// oproc_stmt*
+			LinkedList<POprocStmt> procStmts = errorStmt.getOprocStmt();
+			for (POprocStmt procStmt : procStmts) {
+				taskProgram += ("\t" + procStmtToString(procStmt) + "\n");
+			}
+
+			taskProgram += "end if";
+		} else
+			throw new RuntimeException(
+				"Unexpected POprocStmt node kind: " + p.getClass().getName());
+			
+		return taskProgram;
+	}
+	
+	/**
 	 * Walk the string literal and return its DABL string syntax representation.
 	 */
 	public String stringLiteralToString(POstringLiteral pstrlit) {
