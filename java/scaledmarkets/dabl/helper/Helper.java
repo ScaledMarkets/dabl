@@ -439,19 +439,7 @@ public class Helper {
 				return plit.toString();
 			} else if (plit instanceof AStringOliteral) {
 				POstringLiteral pstrlit = ((AStringOliteral)plit).getOstringLiteral();
-				if (pstrlit instanceof AStaticStringExprOstringLiteral) {
-					POstringLiteral left = ((AStaticStringExprOstringLiteral)pstrlist).getLeft():
-					POstringLiteral right = ((AStaticStringExprOstringLiteral)pstrlist).getRight();
-					return left + "^" + right
-					....
-				} else if (pstrlit instanceof AString2OstringLiteral) {
-					"\"\"\"" + .... + "\"\"\""
-					....
-				} else if (pstrlit instanceof AStringOstringLiteral) {
-					"\"" + .... "\""
-					....
-				} else throw new RuntimeException(
-					"string literal is not a known type of POstringLiteral: it is a " + pstrlit.getClass().getName());
+				return stringLiteralToString(pstrlit);
 			} else throw new RuntimeException(
 				"literal is not a known type of POliteral: it is a " + plit.getClass().getName());
 		} else if (pexor instanceof ASuccessOexpr) {
@@ -465,6 +453,25 @@ public class Helper {
 			return pexpr.toString();
 		} else throw new RuntimeException(
 			"expr is not an known type of POexpr: it is a " + pexor.getClass().getName());
+	}
+	
+	/**
+	 * Walk the string literal and return its DABL string syntax representation.
+	 */
+	public String stringLiteralToString(POstringLiteral pstrlit) {
+		
+		if (pstrlit instanceof AStaticStringExprOstringLiteral) {
+			POstringLiteral left = ((AStaticStringExprOstringLiteral)pstrlist).getLeft():
+			POstringLiteral right = ((AStaticStringExprOstringLiteral)pstrlist).getRight();
+			return stringLiteralToString(left) + "^" + stringLiteralToString(right);
+		} else if (pstrlit instanceof AString2OstringLiteral) {
+			"\"\"\"" + .... + "\"\"\""
+			....
+		} else if (pstrlit instanceof AStringOstringLiteral) {
+			"\"" + .... "\""
+			....
+		} else throw new RuntimeException(
+			"string literal is not a known type of POstringLiteral: it is a " + pstrlit.getClass().getName());
 	}
 	
 	/**
