@@ -465,11 +465,11 @@ public class Helper {
 			POstringLiteral right = ((AStaticStringExprOstringLiteral)pstrlist).getRight();
 			return stringLiteralToString(left) + "^" + stringLiteralToString(right);
 		} else if (pstrlit instanceof AString2OstringLiteral) {
-			"\"\"\"" + .... + "\"\"\""
-			....
+			TString2 str = ((AString2OstringLiteral)pstrlit).getString2();
+			return "\"\"\"" + str.toString() + "\"\"\"";
 		} else if (pstrlit instanceof AStringOstringLiteral) {
-			"\"" + .... "\""
-			....
+			TString str = ((AStringOstringLiteral)pstrlit).getString();
+			return "\"" + str.toString() +  "\"";
 		} else throw new RuntimeException(
 			"string literal is not a known type of POstringLiteral: it is a " + pstrlit.getClass().getName());
 	}
