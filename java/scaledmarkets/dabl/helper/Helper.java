@@ -440,10 +440,15 @@ public class Helper {
 			} else if (plit instanceof AStringOliteral) {
 				POstringLiteral pstrlit = ((AStringOliteral)plit).getOstringLiteral();
 				if (pstrlit instanceof AStaticStringExprOstringLiteral) {
+					POstringLiteral left = ((AStaticStringExprOstringLiteral)pstrlist).getLeft():
+					POstringLiteral right = ((AStaticStringExprOstringLiteral)pstrlist).getRight();
+					return left + "^" + right
 					....
 				} else if (pstrlit instanceof AString2OstringLiteral) {
+					"\"\"\"" + .... + "\"\"\""
 					....
 				} else if (pstrlit instanceof AStringOstringLiteral) {
+					"\"" + .... "\""
 					....
 				} else throw new RuntimeException(
 					"string literal is not a known type of POstringLiteral: it is a " + pstrlit.getClass().getName());
