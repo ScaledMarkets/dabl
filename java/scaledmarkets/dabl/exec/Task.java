@@ -95,6 +95,32 @@ public class Task {
 	 * that the task will execute in the container.
 	 */
 	public String getTaskProgram() {
-		....
+		
+		String taskProgram = "";
+		LinkedList<POprocStmt> plist = this.taskDecl.getOprocStmt();
+		for (POprocStmt p : plist) {
+			
+			if (p instanceof AFuncCallOprocStmt) {
+				AFuncCallOprocStmt funcCallStmt = (AFuncCallOprocStmt)p;
+				// oid_ref oexpr* otarget_opt
+				POtargetOpt ptarget = funcCallStmt.getOtargetOpt();
+				POidRef pfidref = funcCallStmt.getOidRef();
+				LinkedList<POexpr> pexprs = funcCallStmt.getOexpr();
+				taskProgram += ....
+					
+			} else if (p instanceof AIfErrorOprocStmt) {
+				AIfErrorOprocStmt errorStmt = (AIfErrorOprocStmt)p;
+				// oproc_stmt*
+				taskProgram += ....
+				LinkedList<POprocStmt> pes = errorStmt.getOprocStmt();
+				taskProgram += ....
+				
+			} else
+				throw new RuntimeException(
+					"Unexpected POprocStmt node kind: " + p.getClass().getName());
+			
+		}
+		
+		return taskProgram;
 	}
 }

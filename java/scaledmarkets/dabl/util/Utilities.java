@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.FileNotFoundException;
 import java.util.Properties;
 import java.util.List;
@@ -180,5 +181,19 @@ public class Utilities {
 		
 		// Setting was not found.
 		return null;
+	}
+	
+	/**
+	 * 
+	 */
+	public void pipeInputStreamToOutputStream(InputStream istream, OutputStream ostream)
+	throws IOException {
+		
+		byte[] buffer = new byte[1024];
+		while(true) {
+			int n = istream.read(buffer);
+			if (n <= 0) break;
+			ostream.write(buffer, 0, n);
+		}
 	}
 }

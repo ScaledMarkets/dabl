@@ -14,19 +14,19 @@ Feature: TestTask
 		When I compile them in simulate mode
 		Then I can verify the task dependency
 	
-	@done
+	@done @container
 	Scenario: Execute bash
 		Given I have a task containing bash commands
 		When I compile the task
 		Then the bash commands are executed
 	
-	@done
+	@done @container
 	Scenario: Basic pushing inputs and retrieving outputs
 		Given a task containing bash commands that compute the sum of values in an input file
 		When I compile the task
 		Then the outputs contains a file with the correct sum value
 	
-	@done
+	@done @container
 	Scenario: Complex pushing inputs and retrieving outputs
 		Given a task containing bash commands that read three files that are named in the inputs and two other files that are referenced via a wildcard
 		  And the task writes two files by name and two more by wildcard

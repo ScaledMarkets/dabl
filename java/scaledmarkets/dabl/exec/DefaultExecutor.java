@@ -107,7 +107,9 @@ public class DefaultExecutor implements Executor {
 				
 				// Execute the task in the container.
 				InputStream containerOutput = taskContainer.execute(3600000);
-				....do something with container output
+				
+				// Send the container's output to this process's stdout.
+				Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
 				
 				// Write the outputs from the workspace to the output directories.
 				(new ArtifactOperator(this.helper) {
