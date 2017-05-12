@@ -425,8 +425,30 @@ public class Helper {
 		} else if (pexpr instanceof ABinaryOexpr) {
 			return pexpr.toString();
 		} else if (pexpr instanceof ALiteralOexpr) {
-			
+			POliteral plit = ((ALiteralOexpr)pexor).getOliteral();
 			// logic, string lit, or numeric lit
+			if (plit instanceof ALogicOliteral) {
+				POlogicLiteral plog = ((ALogicOliteral)plit).getOlogicLiteral();
+				if (plog instanceof ATrueOlogicLiteral) {
+					return "true";
+				} else if (plog instanceof AFalseOlogicLiteral) {
+					return "false";
+				} else throw new RuntimeException(
+					"logic literal is not a known type of POlogicLiteral: it is a " + plog.getClass().getName());
+			} else if (plit instanceof ANumericOliteral) {
+				return plit.toString();
+			} else if (plit instanceof AStringOliteral) {
+				POstringLiteral pstrlit = ((AStringOliteral)plit).getOstringLiteral();
+				if (pstrlit instanceof AStaticStringExprOstringLiteral) {
+					....
+				} else if (pstrlit instanceof AString2OstringLiteral) {
+					....
+				} else if (pstrlit instanceof AStringOstringLiteral) {
+					....
+				} else throw new RuntimeException(
+					"string literal is not a known type of POstringLiteral: it is a " + pstrlit.getClass().getName());
+			} else throw new RuntimeException(
+				"literal is not a known type of POliteral: it is a " + plit.getClass().getName());
 		} else if (pexor instanceof ASuccessOexpr) {
 			
 			// id succeeded
