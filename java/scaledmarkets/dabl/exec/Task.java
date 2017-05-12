@@ -109,16 +109,6 @@ public class Task {
 				POidRef pfidref = funcCallStmt.getOidRef();
 				
 				LinkedList<POexpr> pexprs = funcCallStmt.getOexpr();
-					AAgeOexpr			d newer than [older_id]:id
-										or
-										d older than [older_id]:id
-					ABinaryOexpr		( toString )
-					ALiteralOexpr		logic, string lit, or numeric lit
-					ASuccessOexpr		id succeeded
-										or
-										id failed
-					AUnaryOexpr			toString
-					AVariableOexpr		toString
 				
 				POtargetOpt ptarget = funcCallStmt.getOtargetOpt();
 				
@@ -131,7 +121,7 @@ public class Task {
 				for (POexpr pexpr : pexprs) {
 					if (firstTime) firstTime = false;
 					else taskProgram += ", ";
-					taskProgram += ....
+					taskProgram += getHelper().exprToString(pexpr);
 				}
 					
 			} else if (p instanceof AIfErrorOprocStmt) {
@@ -145,6 +135,7 @@ public class Task {
 				throw new RuntimeException(
 					"Unexpected POprocStmt node kind: " + p.getClass().getName());
 			
+			taskProgram += "\n";
 		}
 		
 		return taskProgram;
