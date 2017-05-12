@@ -404,6 +404,43 @@ public class Helper {
 	}
 	
 	/**
+	 * Walk the expression and write its DABL syntax equivalent,
+	 */
+	public String exprToString(POexpr pexpr) {
+		
+		if (pexpr instanceof AAgeOexpr) {
+			POageExpr pe = ((AAgeOexpr)pexor).getOageExpr();
+			if (pe instanceof ANewerThanOageExpr) {
+				// id newer than [older_id]:id
+				POidRef pnewer = ((ANewerThanOageExpr)pe).getNewerId();
+				POidRef polder = ((ANewerThanOageExpr)pe).getOlderId();
+				return pnewer.toString() + " newer than " + polder.toString();
+			} else if (pe instanceof AOlderThanOageExpr) {
+				// id older than [older_id]:id
+				POidRef polder = ((AOlderThanOageExpr)pe).getOlderId();
+				POidRef pnewer = ((AOlderThanOageExpr)pe).getNewerId();
+				return polder + " older than " + pnewer.toString();
+			} else throw new RuntimeException(
+				"age expr is not a known type of POageExpr: it is a " + pe.getClass().getName());
+		} else if (pexpr instanceof ABinaryOexpr) {
+			return pexpr.toString();
+		} else if (pexpr instanceof ALiteralOexpr) {
+			
+			// logic, string lit, or numeric lit
+		} else if (pexor instanceof ASuccessOexpr) {
+			
+			// id succeeded
+			// or
+			// id failed
+		} else if (pexpr instanceof AUnaryOexpr) {
+			return pexpr.toString();
+		} else if (pexpr instanceof AVariableOexpr) {
+			return pexpr.toString();
+		} else throw new RuntimeException(
+			"expr is not an known type of POexpr: it is a " + pexor.getClass().getName());
+	}
+	
+	/**
 	 * If expr is false, print the message and throw an Exception.
 	 */
 	public static void assertThat(boolean expr, String msg) throws Exception {

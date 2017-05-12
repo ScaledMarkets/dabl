@@ -103,10 +103,36 @@ public class Task {
 			if (p instanceof AFuncCallOprocStmt) {
 				AFuncCallOprocStmt funcCallStmt = (AFuncCallOprocStmt)p;
 				// oid_ref oexpr* otarget_opt
-				POtargetOpt ptarget = funcCallStmt.getOtargetOpt();
+				
+				// Obtain the elements of the statement.
+				
 				POidRef pfidref = funcCallStmt.getOidRef();
+				
 				LinkedList<POexpr> pexprs = funcCallStmt.getOexpr();
-				taskProgram += ....
+					AAgeOexpr			d newer than [older_id]:id
+										or
+										d older than [older_id]:id
+					ABinaryOexpr		( toString )
+					ALiteralOexpr		logic, string lit, or numeric lit
+					ASuccessOexpr		id succeeded
+										or
+										id failed
+					AUnaryOexpr			toString
+					AVariableOexpr		toString
+				
+				POtargetOpt ptarget = funcCallStmt.getOtargetOpt();
+				
+				// Write the function call statement to the task program string.
+				
+				taskProgram += ptarget.toString();
+				taskProgram += ( " = " + pfidref.toString());
+				
+				boolean firstTime = true;
+				for (POexpr pexpr : pexprs) {
+					if (firstTime) firstTime = false;
+					else taskProgram += ", ";
+					taskProgram += ....
+				}
 					
 			} else if (p instanceof AIfErrorOprocStmt) {
 				AIfErrorOprocStmt errorStmt = (AIfErrorOprocStmt)p;
