@@ -26,17 +26,18 @@ public class TaskExecutor {
 		System.out.println("Syntax is correct");
 		state.getASTs().add(start);
 		
-		if (print) PrettyPrint.pp(start);
-		
-		// declarations. Expressions may be partially evaluated, where possible.
-		// Values that depend on the DABL file context (e.g., its location on a
-		// file system) are elaborated.
-		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
+		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(state, this.importHandler);
 		start.apply(analyzer);
 		
 		state.setPrimaryNamespaceSymbolEntry(analyzer.getEnclosingScopeEntry());
 		return analyzer.getNamespaceNamescope();
-		//.....
+		
+		Executor exec = new TaskExecutor(state, taskContainerFactory, simulate);
+		try {
+			exec.execute();
+		}
+		catch (....)
+		
 	}
 	
 }

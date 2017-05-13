@@ -72,9 +72,6 @@ public class Dabl
 		
 		if (print) PrettyPrint.pp(start);
 		
-		// declarations. Expressions may be partially evaluated, where possible.
-		// Values that depend on the DABL file context (e.g., its location on a
-		// file system) are elaborated.
 		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
 		start.apply(analyzer);
 		

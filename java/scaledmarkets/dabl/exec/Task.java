@@ -91,8 +91,8 @@ public class Task {
 	}
 	
 	/**
-	 * Return the task's statement sequence as a string. This is the program
-	 * that the task will execute in the container.
+	 * Return the task's statement sequence as a DABL syntax fragment. This is the
+	 * program that the task will execute in the container.
 	 */
 	public String getTaskProgram() {
 		
@@ -100,7 +100,7 @@ public class Task {
 		LinkedList<POprocStmt> plist = this.taskDecl.getOprocStmt();
 		for (POprocStmt p : plist) {
 			
-			taskProgram += getHelper().procStmtToString(p);
+			taskProgram += SyntaxWriter.procStmtToString(p);
 			taskProgram += "\n";
 		}
 		
