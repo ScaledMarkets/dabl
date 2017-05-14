@@ -131,8 +131,8 @@ The directory structure of the inputs and outputs is preserved, as are file attr
 ### Idempotency and Isolation ("Hermeticity")
 
 This copying and the use of a container for task execution provides a very high
-level of isolation and idempotency for each task. Tasks are therefore *hermetic*—
-only defined inputs and outputs may enter and exit a task, respectively.
+level of isolation and idempotency for each task. Tasks are therefore
+*hermetic*—only defined inputs and outputs may enter and exit a task, respectively.
 
 There are qualifications to task hermeticity, however. One is that the task may be
 declared to be `open`, in which case the task is able to access the networks of the
