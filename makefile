@@ -14,7 +14,6 @@ ORG = Scaled Markets
 PRODUCT_NAME = Dabl
 JAR_NAME = dabl
 TASK_JAR_NAME = taskruntime
-TASK_RUNTIME_IMAGE_NAME = taskruntime
 
 # Output artifact names:
 package=scaledmarkets/dabl
@@ -176,6 +175,7 @@ $(jar_dir)/$(TASK_JAR_NAME).jar: $(task_classfiles) task_manifest $(jar_dir)
 # Build container image for task runtime.
 image:
 	docker build --file Dockerfile --tag=$TASK_RUNTIME_IMAGE_NAME .
+	....push image to scaled markets image registry
 
 # Run parser to scan a sample input file. This is for checking that the parser
 # can recognize the language.

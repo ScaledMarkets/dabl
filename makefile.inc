@@ -9,6 +9,7 @@ maxerrs = 5
 # Versions produced by this build:
 DABL_VERSION = 0.1
 BUILD_TAG = 0
+TASK_RUNTIME_IMAGE_NAME = registry.hub.docker.com/ScaledMarkets/taskruntime
 
 # Output directories.
 build_dir = /Transient/dabl

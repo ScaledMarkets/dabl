@@ -129,13 +129,27 @@ the outputs are copied to the file system of the DABL process context.
 The directory structure of the inputs and outputs is preserved, as are file attributes.
 
 This copying and the use of a container for task execution provides a very high
-level of isolation and idempotency for each task. However, it is not impermeable.
-By default, a task container has no network access; however, a task may be declared
-to be `open`, which means that it has the same network access as the host in
-which the task container executes. It is strongly recommended that a task should
-be declared to be `open` only if it performs functions that are known to be
-idempotent. In particular, tasks that access network based provisioning tools
-are usually idempotent, and require network access.
+level of isolation and idempotency for each task. Tasks are therefore `hermetic`—
+only defined inputs and outputs may enter and exit a task, respectively.
+
+There are qualifications to task hermeticity, however. One is that the task may be
+declared to be open, in which case the task is able to access the networks of the
+host—and therefore any resources that the host may access, including the Internet.
+That breaks the hermeticity, but in a declared manner (tasks are not open by default),
+and is necessary for tasks that need to install build tools. It is highly advisable
+that any resources obtained by an open task should be declared by comments for the task.
+Note that DABL enables one to access external resources—including executables—via
+the files mechanism. That mechanism copies those resources into the execution
+context of the task. A future version of DABL might expand on this, enabling a
+task to use the native package manager and possibly non-native package management
+systems such as npm and maven, reducing the need for open tasks.
+
+Another way that hermeticity is broken is that the underlying operating system
+on which a task executes may be accessed by the task. Tasks execute in containers,
+and so the underlying operating system is the container’s kernel and base
+operating system, provided by the container base image. The container base image
+is specified by the dabl.task_container_image_name property, and it defaults to
+an Alpine image that has the latest version of Java installed.
 
 ### Task Lifecycle Model
 
