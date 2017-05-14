@@ -43,7 +43,7 @@ task_classfiles := \
 
 # Command aliases:
 SHELL = /bin/sh
-JAVAC = javac
+JAVAC = javac -Xlint:deprecation
 JAVA = java
 JAR = jar
 JAVADOC = javadoc

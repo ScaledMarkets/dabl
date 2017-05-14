@@ -6,6 +6,7 @@ import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.util.Utilities;
 import java.util.Set;
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;

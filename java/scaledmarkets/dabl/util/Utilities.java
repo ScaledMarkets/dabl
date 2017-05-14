@@ -186,7 +186,7 @@ public class Utilities {
 	/**
 	 * 
 	 */
-	public void pipeInputStreamToOutputStream(InputStream istream, OutputStream ostream)
+	public static void pipeInputStreamToOutputStream(InputStream istream, OutputStream ostream)
 	throws IOException {
 		
 		byte[] buffer = new byte[1024];

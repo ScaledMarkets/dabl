@@ -8,4 +8,5 @@ scaledmarkets.dabl.lexer
 scaledmarkets.dabl.node
 scaledmarkets.dabl.parser
 scaledmarkets.dabl.repos
+scaledmarkets.dabl.task
 scaledmarkets.dabl.util

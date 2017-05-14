@@ -155,10 +155,11 @@ public class Docker {
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
 	public DockerContainer createContainer2(String imageIdOrName, String containerName,
-		String hostPathToMap, String containerPathToMap) throws Exception {
+		String hostPathToMap, String containerPathToMap, boolean enableNetworking)
+	throws Exception {
 		
 		return createContainer(imageIdOrName, containerName, new String[] {hostPathToMap},
-			new String[] {containerPathToMap});
+			new String[] {containerPathToMap}, enableNetworking);
 	}
 	
 	/**
@@ -166,7 +167,8 @@ public class Docker {
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
 	public DockerContainer createContainer(String imageIdOrName, String containerName,
-		String[] hostPathsToMap, String[] containerPathsToMap) throws Exception {
+		String[] hostPathsToMap, String[] containerPathsToMap, boolean enableNetworking)
+	throws Exception {
 		
 		if ((hostPathsToMap == null) || (containerPathsToMap == null))
 			if (hostPathsToMap != containerPathsToMap) throw new Exception(
@@ -212,7 +214,7 @@ public class Docker {
 			.add("Image", imageIdOrName)
 			.add("Labels", Json.createObjectBuilder())
 			.add("Volumes", Json.createObjectBuilder())
-			.add("NetworkDisabled", false)
+			.add("NetworkDisabled", ! enableNetworking)
 			.add("ExposedPorts", ports)
 			.add("StopSignal", "SIGTERM")
 			.add("HostConfig", hostConfig)
@@ -353,8 +355,49 @@ public class Docker {
 		return true;
 	}
 	
-	public getExitStatus(String containerId) throws Exception {
-		....
+	public int getExitStatus(String containerId) throws Exception {
+		
+		Response response = makeGetRequest(
+			"v1.24/containers/" + containerId + "/json");
+		
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
+		
+		// Obtain the "State" JSON object, and from that obtain the
+		// "Status" and the ExitCode.
+		/*
+		"State": 
+		{
+			"Error": "",
+			"ExitCode": 9,
+			"FinishedAt": "2015-01-06T15:47:32.080254511Z",
+			"OOMKilled": false,
+			"Dead": false,
+			"Paused": false,
+			"Pid": 0,
+			"Restarting": false,
+			"Running": true,
+			"StartedAt": "2015-01-06T15:47:32.072697474Z",
+			"Status": "running"
+		},
+		*/
+		
+		// Parse response.
+		String responseBody = response.readEntity(String.class);
+		JsonReader reader = Json.createReader(new StringReader(responseBody));
+		JsonObject json = (JsonObject)(reader.read());
+		
+		JsonObject state = json.getJsonObject("State");
+		boolean running = state.getBoolean("Running");
+		
+		if (running) throw new Exception("Container is running");
+		
+		try {
+			int exitCode = state.getInt("ExitCode");
+			return exitCode;
+		} catch (NullPointerException ex) {
+			throw new Exception("No value found for ExitCode", ex);
+		}
 	}
 	
 	/**

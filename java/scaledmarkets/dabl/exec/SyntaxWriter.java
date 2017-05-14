@@ -1,6 +1,7 @@
 package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.node.*;
+import java.util.LinkedList;
 
 /**
  * Methods for writing DABL AST elements as DABL syntax.
@@ -13,7 +14,7 @@ public class SyntaxWriter {
 	public static String exprToString(POexpr pexpr) {
 		
 		if (pexpr instanceof AAgeOexpr) {
-			POageExpr pe = ((AAgeOexpr)pexor).getOageExpr();
+			POageExpr pe = ((AAgeOexpr)pexpr).getOageExpr();
 			if (pe instanceof ANewerThanOageExpr) {
 				// id newer than [older_id]:id
 				POidRef pnewer = ((ANewerThanOageExpr)pe).getNewerId();
@@ -29,7 +30,7 @@ public class SyntaxWriter {
 		} else if (pexpr instanceof ABinaryOexpr) {
 			return pexpr.toString();
 		} else if (pexpr instanceof ALiteralOexpr) {
-			POliteral plit = ((ALiteralOexpr)pexor).getOliteral();
+			POliteral plit = ((ALiteralOexpr)pexpr).getOliteral();
 			// logic, string lit, or numeric lit
 			if (plit instanceof ALogicOliteral) {
 				POlogicLiteral plog = ((ALogicOliteral)plit).getOlogicLiteral();
@@ -46,17 +47,22 @@ public class SyntaxWriter {
 				return stringLiteralToString(pstrlit);
 			} else throw new RuntimeException(
 				"literal is not a known type of POliteral: it is a " + plit.getClass().getName());
-		} else if (pexor instanceof ASuccessOexpr) {
-			....
-			// id succeeded
-			// or
-			// id failed
+		} else if (pexpr instanceof ASuccessOexpr) {
+			POsuccessExpr sexpr = ((ASuccessOexpr)pexpr).getOsuccessExpr();
+			if (sexpr instanceof ASucceededOsuccessExpr) {
+				AOidRef idref = (AOidRef)(((ASucceededOsuccessExpr)sexpr).getOidRef());
+				return idref.toString() + " succeeded";
+			} else if (sexpr instanceof AFailedOsuccessExpr) {
+				AOidRef idref = (AOidRef)(((AFailedOsuccessExpr)sexpr).getOidRef());
+				return idref.toString() + " failed";
+			} else throw new RuntimeException(
+				"Success expression is not a known type: " + sexpr.getClass().getName());
 		} else if (pexpr instanceof AUnaryOexpr) {
 			return pexpr.toString();
 		} else if (pexpr instanceof AVariableOexpr) {
 			return pexpr.toString();
 		} else throw new RuntimeException(
-			"expr is not an known type of POexpr: it is a " + pexor.getClass().getName());
+			"expr is not an known type of POexpr: it is a " + pexpr.getClass().getName());
 	}
 	
 	/**
@@ -87,7 +93,7 @@ public class SyntaxWriter {
 			for (POexpr pexpr : pexprs) {
 				if (firstTime) firstTime = false;
 				else taskProgram += ", ";
-				taskProgram += getHelper().exprToString(pexpr);
+				taskProgram += exprToString(pexpr);
 			}
 				
 		} else if (p instanceof AIfErrorOprocStmt) {
@@ -115,8 +121,8 @@ public class SyntaxWriter {
 	public static String stringLiteralToString(POstringLiteral pstrlit) {
 		
 		if (pstrlit instanceof AStaticStringExprOstringLiteral) {
-			POstringLiteral left = ((AStaticStringExprOstringLiteral)pstrlist).getLeft():
-			POstringLiteral right = ((AStaticStringExprOstringLiteral)pstrlist).getRight();
+			POstringLiteral left = ((AStaticStringExprOstringLiteral)pstrlit).getLeft();
+			POstringLiteral right = ((AStaticStringExprOstringLiteral)pstrlit).getRight();
 			return stringLiteralToString(left) + "^" + stringLiteralToString(right);
 		} else if (pstrlit instanceof AString2OstringLiteral) {
 			TString2 str = ((AString2OstringLiteral)pstrlit).getString2();

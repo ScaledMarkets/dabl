@@ -61,6 +61,10 @@ public class Task {
 		return isProducerFor;
 	}
 	
+	public boolean isOpen() {
+		return (this.taskDecl.getOopen() instanceof AOpenOopen);
+	}
+	
 	void visit() {
 		visited = true;
 	}

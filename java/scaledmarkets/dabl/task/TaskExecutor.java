@@ -20,6 +20,7 @@ public class TaskExecutor {
 		TaskContext taskContext = new TaskContext();
 		
 		// Parse the input and generate an AST.
+		/*
 		Lexer lexer = new Lexer(new PushbackReader(this.reader));
 		Parser parser = new Parser(lexer);
 		Start start = parser.parse();
@@ -36,8 +37,9 @@ public class TaskExecutor {
 		try {
 			exec.execute();
 		}
-		catch (....)
-		
+		catch (Exception ex) {
+		}
+		*/
 	}
 	
 }

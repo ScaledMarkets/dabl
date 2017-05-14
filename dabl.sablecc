@@ -246,6 +246,7 @@ Productions
     task_decl {-> otask_declaration} =
         scope_decl open_decl task id when_clause_opt input_sets_opt output_sets_opt
             procedural_stmts_opt            {-> New otask_declaration(scope_decl.oscope,
+                                                open_decl.oopen,
                                                 id, [when_clause_opt.oexpr],
                                                 [input_sets_opt.onamed_artifact_set],
                                                 [output_sets_opt.onamed_artifact_set],
@@ -798,7 +799,7 @@ Abstract Syntax Tree
       ;
     
     otask_declaration =
-        oscope [name]:id [when]:oexpr*  // each expr must be a logical valued expr
+        oscope oopen [name]:id [when]:oexpr*  // each expr must be a logical valued expr
             [input]:onamed_artifact_set*
             [output]:onamed_artifact_set* oproc_stmt*;
     

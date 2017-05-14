@@ -34,3 +34,9 @@ Feature: TestTask
 		When I compile the task
 		Then the outputs contain the output files, and the input files are unmodified
 	
+	@done @container
+	Scenario: Test that an open container is able to access the host's networks
+	
+	@done @container
+	Scenario: Test that a closed container is not able to access the host's networks
+	
