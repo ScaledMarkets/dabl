@@ -152,7 +152,11 @@ on which a task executes may be accessed by the task. Tasks execute in container
 and so the underlying operating system is the container’s kernel and base
 operating system, provided by the container base image. The container base image
 is specified by the `dabl.task_container_image_name` property, and it defaults to
-an Alpine image that has the latest version of Java installed. Changes made to a
+an Alpine image that has the latest version of Java installed. A fully documented
+build process therefore consists of the DABL file and the Dockerfile for the
+images that are used to execute tasks.
+
+Changes made to a
 container's file system are discarded after the task exits, but the container file system is
 still a path for data to enter the task.
 
