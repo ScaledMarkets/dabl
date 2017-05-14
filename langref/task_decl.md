@@ -140,11 +140,11 @@ host—and therefore any resources that the host may access, including the Inter
 That breaks the hermeticity, but in a declared manner (tasks are not `open` by default),
 and is necessary for tasks that need to install build tools. The installation of
 a build tool is usually idempotent. It is highly advisable
-that any resources obtained by an open task should be declared by comments for the task.
+that any resources obtained by an `open` task should be declared by comments for the task.
 Note that DABL enables one to access external resources—including executables—via
 the `files` mechanism. That mechanism copies those resources into the execution
 context of the task. A future version of DABL might expand on this, enabling a
-task to use the native container package manager and possibly non-native package management
+task to use the container's native package manager and possibly non-native package management
 systems such as `npm` and `maven`, reducing the need for open tasks.
 
 Another way that hermeticity is broken is that the underlying operating system
