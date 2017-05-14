@@ -128,7 +128,7 @@ into the temporary filesystem of the container. On successful task completion,
 the outputs are copied to the file system of the DABL process context.
 The directory structure of the inputs and outputs is preserved, as are file attributes.
 
-### Idempotency and Isolation ("Hermeticity")
+### Idempotency, Isolation, and Hermeticity
 
 This copying and the use of a container for task execution provides a very high
 level of isolation and idempotency for each task. Tasks are therefore
