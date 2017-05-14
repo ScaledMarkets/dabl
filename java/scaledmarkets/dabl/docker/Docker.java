@@ -249,9 +249,9 @@ public class Docker {
 	}
 	
 	/**
-	 * Tell docker to start container. Connect the ....
+	 * Tell docker to start container, and pass it a string for its stdin.
 	 */
-	public InputStream startContainer(String containerId, String taskProgram) throws Exception {
+	public InputStream startContainer(String containerId, String stdin) throws Exception {
 		
 		Response response = makePostRequest(
 			"v1.24/containers/" + containerId + "/start", null);
@@ -269,7 +269,7 @@ public class Docker {
 		params = params + "&stderr=true";
 
 		response = makePostRequest(
-			"v1.24/containers/" + containerId + "/attach" + params, taskProgram);
+			"v1.24/containers/" + containerId + "/attach" + params, stdin);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());

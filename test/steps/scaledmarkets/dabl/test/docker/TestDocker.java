@@ -62,7 +62,7 @@ public class TestDocker extends TestBase {
 	@When("^I make a create container request to docker$")
 	public void i_make_a_create_container_request_to_docker() throws Exception {
 		DockerContainer container = docker.createContainer("alpine", "MyContainer",
-			null, null);
+			null, null, false);
 		docker.destroyContainers("MyContainer", null);
 	}
 	
@@ -71,14 +71,14 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers$")
 	public void that_i_have_created_two_containers() throws Exception {
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
-			null, null);
+			null, null, false);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
-			null, null);
+			null, null, false);
 	}
 	
 	@When("^I request to start a container$")
 	public void i_request_to_start_a_container() throws Exception {
-		this.container1.start();
+		this.container1.start("");  // ....
 	}
 	
 	@And("^the container that I started is running$")
@@ -91,11 +91,11 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers and both are running$")
 	public void that_i_have_created_two_containers_and_both_are_running() throws Exception {
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
-			null, null);
+			null, null, false);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
-			null, null);
-		this.container1.start();
-		this.container2.start();
+			null, null, false);
+		this.container1.start("");  // ....
+		this.container2.start("");  //....
 		assertThat(this.container1.isRunning(), "container1 is not running");
 		assertThat(this.container2.isRunning(), "container2 is not running");
 	}
@@ -116,10 +116,10 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers and one is running$")
 	public void that_i_have_created_two_containers_and_one_is_running() throws Exception {
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
-			null, null);
+			null, null, false);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
-			null, null);
-		this.container1.start();
+			null, null, false);
+		this.container1.start(""); // ....
 		assertThat(this.container1.isRunning(), "container1 is not running");
 		assertThat(! this.container2.isRunning(), "container2 is running");
 	}

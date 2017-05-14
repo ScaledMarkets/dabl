@@ -18,9 +18,9 @@ public class DockerContainer {
 	
 	public String getContainerId() { return this.containerId; }
 	
-	public InputStream start(String taskProgram) throws Exception {
+	public InputStream start(String stdin) throws Exception {
 		
-		return this.docker.startContainer(this.containerId, taskProgram);
+		return this.docker.startContainer(this.containerId, stdin);
 	}
 	
 	public void stop() throws Exception {

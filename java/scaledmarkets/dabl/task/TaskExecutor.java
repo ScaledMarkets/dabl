@@ -1,5 +1,11 @@
 package scaledmarkets.dabl.task;
 
+import scaledmarkets.dabl.task.lexer.*;
+import scaledmarkets.dabl.task.node.*;
+import scaledmarkets.dabl.task.parser.*;
+import scaledmarkets.dabl.task.analyzer.*;
+import scaledmarkets.dabl.exec.*;
+
 /**
  * For executing a DABL task inside of a container.
  * When a container is started by a TaskContainerFactory, the container is
@@ -7,7 +13,9 @@ package scaledmarkets.dabl.task;
  * TaskExecutor where to find the definition of the Task that the TaskExecutor
  * is to run.
  */
-public class TaskExecutor {
+public class TaskExecutor implements Executor {
+	
+	private TaskContext context;
 	
 	public static void main(String[] args) {
 
@@ -20,26 +28,46 @@ public class TaskExecutor {
 		TaskContext taskContext = new TaskContext();
 		
 		// Parse the input and generate an AST.
-		/*
 		Lexer lexer = new Lexer(new PushbackReader(this.reader));
 		Parser parser = new Parser(lexer);
 		Start start = parser.parse();
 		System.out.println("Syntax is correct");
-		state.getASTs().add(start);
+
+		/*
+		TaskContext context = new TaskContext();
+		context.getASTs().add(start);
 		
-		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(state, this.importHandler);
+		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(context);
 		start.apply(analyzer);
 		
 		state.setPrimaryNamespaceSymbolEntry(analyzer.getEnclosingScopeEntry());
 		return analyzer.getNamespaceNamescope();
+		*/
 		
-		Executor exec = new TaskExecutor(state, taskContainerFactory, simulate);
+		Executor exec = new TaskExecutor(context);
 		try {
 			exec.execute();
 		}
 		catch (Exception ex) {
+			// Set process status
 		}
-		*/
 	}
 	
+	/**
+	 * Visit each proc stmt and execute it.
+	 */
+	public void execute() throws Exception {
+		
+		for (POprocStmt p : ....) {
+			
+			if (p instanceof AFuncCallOprocStmt) {
+			
+			} else if (p instanceof AIfErrorOprocStmt) {
+				
+			} else throw new RuntimeException(
+				"proc stmt is not a known type: " + p.getClass().getName());
+		
+		}
+		
+	}
 }
