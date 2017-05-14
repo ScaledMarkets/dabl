@@ -133,23 +133,26 @@ level of isolation and idempotency for each task. Tasks are therefore `hermetic`
 only defined inputs and outputs may enter and exit a task, respectively.
 
 There are qualifications to task hermeticity, however. One is that the task may be
-declared to be open, in which case the task is able to access the networks of the
+declared to be `open`, in which case the task is able to access the networks of the
 host—and therefore any resources that the host may access, including the Internet.
-That breaks the hermeticity, but in a declared manner (tasks are not open by default),
-and is necessary for tasks that need to install build tools. It is highly advisable
+That breaks the hermeticity, but in a declared manner (tasks are not `open` by default),
+and is necessary for tasks that need to install build tools. The installation of
+a build tool is usually idempotent. It is highly advisable
 that any resources obtained by an open task should be declared by comments for the task.
 Note that DABL enables one to access external resources—including executables—via
-the files mechanism. That mechanism copies those resources into the execution
+the `files` mechanism. That mechanism copies those resources into the execution
 context of the task. A future version of DABL might expand on this, enabling a
-task to use the native package manager and possibly non-native package management
-systems such as npm and maven, reducing the need for open tasks.
+task to use the native container package manager and possibly non-native package management
+systems such as `npm` and `maven`, reducing the need for open tasks.
 
 Another way that hermeticity is broken is that the underlying operating system
 on which a task executes may be accessed by the task. Tasks execute in containers,
 and so the underlying operating system is the container’s kernel and base
 operating system, provided by the container base image. The container base image
-is specified by the dabl.task_container_image_name property, and it defaults to
-an Alpine image that has the latest version of Java installed.
+is specified by the `dabl.task_container_image_name` property, and it defaults to
+an Alpine image that has the latest version of Java installed. Changes made to a
+container's file system are discarded after the task exits, but the container file system is
+still a path for data to enter the task.
 
 ### Task Lifecycle Model
 
