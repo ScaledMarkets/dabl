@@ -119,9 +119,9 @@ via input and output streams named after the input and output names. For example
 the following task,
 ```
 task compileit
-  inputs A $thisdir/**.java of "my_repo" in my_git
+  inputs A of "my_repo" in my_git include "/**.java"
   inputs XYZ
-  outputs B ./**.class, ./**.txt
+  outputs B of "my_project" in my_artifact_repo include "./**.class", include "./**.txt"
 ```
 can read from A and XYZ, and write to B. When the task starts, the inputs are copied
 into the temporary filesystem of the container. On successful task completion,
