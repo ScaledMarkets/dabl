@@ -16,7 +16,8 @@ JAR_NAME = dabl
 TASK_JAR_NAME = taskruntime
 
 # Output artifact names:
-package=scaledmarkets/dabl
+package := scaledmarkets/dabl
+task_parser_package := $(package)/dabl/task
 test_package=scaledmarkets/dabl/test
 package_name = scaledmarkets.dabl
 task_package_name = scaledmarkets.dabl.task
@@ -56,7 +57,8 @@ test_build_dir := $(CurDir)/buildtest
 test_package = $(package)/test
 testsourcefiles := $(test_src_dir)/$(test_package)/*.java
 testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/exec/*.class
-sable_out_dir := $(CurDir)/SableCCOutput
+sable_dabl_out_dir := $(CurDir)/SableCCOutput
+sable_task_out_dir := $(CurDir)/SableCCTaskOutput
 javadoc_dir := $(CurDir)/docs
 
 # Java classpaths:
@@ -67,11 +69,13 @@ third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
 
 ################################################################################
 # Tasks
-.PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
-	task_manifest task_jar image \
-	check compile_tests test runsonar javadoc clean info
 
-all: clean parser compile jar task_jar image compile_tests test
+
+.PHONY: all manifest config gen_dabl_parser compile_dabl_parser parser jar compile dist \
+	task_manifest task_jar image \
+	check compile_tests test runsonar javadoc clean_dabl_parser clean_task_parser info
+
+all: clean dabl_parser compile jar task_jar image compile_tests test
 
 # Create a Config.java file that contains the current application version.
 config:
@@ -80,30 +84,60 @@ config:
 	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(src_dir)/$(package)/Config.java
 	echo "}" >> $(src_dir)/$(package)/Config.java
 
-# Generate the DABL parser.
-# Generates dabl compiler tables and classes.
-gen_parser: dabl.sablecc $(sable_out_dir) $(build_dir)
-	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_out_dir) --no-inline dabl.sablecc
+# ------------------------------------------------------------------------------
+# Create parsers.
 
-# Compile the generated code.
-compile_parser: gen_parser
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
-		$(sable_out_dir)/$(package)/node/*.java \
-		$(sable_out_dir)/$(package)/lexer/*.java \
-		$(sable_out_dir)/$(package)/analysis/*.java \
-		$(sable_out_dir)/$(package)/parser/*.java
-	cp $(sable_out_dir)/$(package)/lexer/lexer.dat $(build_dir)/$(package)/lexer
-	cp $(sable_out_dir)/$(package)/parser/parser.dat $(build_dir)/$(package)/parser
+dabl_parser: compile_dabl_parser
 
-# Generate and compile the parser classs.
-parser: compile_parser
-
-clean_parser:
-	rm -r -f $(sable_out_dir)/*
+task_parser: compile_task_parser
 
 # Create the directory into which the generated parser source files will be placed.
-$(sable_out_dir):
-	mkdir $(sable_out_dir)
+$(sable_dabl_out_dir):
+	mkdir $(sable_dabl_out_dir)
+
+$(sable_task_out_dir):
+	mkdir -p $(sable_task_out_dir)/$(task_parser_package)
+
+# Generate the DABL parser.
+# Generates dabl compiler tables and classes.
+gen_dabl_parser: dabl.sablecc $(sable_dabl_out_dir) $(build_dir)
+	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_dabl_out_dir) --no-inline dabl.sablecc
+
+# Generate the task parser.
+# Generates task compiler tables and classes.
+gen_task_parser: task.sablecc $(sable_task_out_dir) $(build_dir)
+	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_task_out_dir) --no-inline task.sablecc
+
+# Compile the generated code for the dabl parser.
+compile_dabl_parser: gen_dabl_parser
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
+		$(sable_dabl_out_dir)/$(package)/node/*.java \
+		$(sable_dabl_out_dir)/$(package)/lexer/*.java \
+		$(sable_dabl_out_dir)/$(package)/analysis/*.java \
+		$(sable_dabl_out_dir)/$(package)/parser/*.java
+	cp $(sable_dabl_out_dir)/$(package)/lexer/lexer.dat $(build_dir)/$(package)/lexer
+	cp $(sable_dabl_out_dir)/$(package)/parser/parser.dat $(build_dir)/$(package)/parser
+
+# Compile the generated code for the task parser.
+compile_task_parser: gen_task_parser
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
+		$(sable_task_out_dir)/$(task_parser_package)/node/*.java \
+		$(sable_task_out_dir)/$(task_parser_package)/lexer/*.java \
+		$(sable_task_out_dir)/$(task_parser_package)/analysis/*.java \
+		$(sable_task_out_dir)/$(task_parser_package)/parser/*.java
+	cp $(sable_task_out_dir)/$(task_parser_package)/lexer/lexer.dat $(build_dir)/$(task_parser_package)/lexer
+	cp $(sable_task_out_dir)/$(task_parser_package)/parser/parser.dat $(build_dir)/$(task_parser_package)/parser
+
+clean_dabl_parser:
+	rm -r -f $(sable_dabl_out_dir)/*
+
+clean_task_parser:
+	rm -r -f $(sable_task_out_dir)/*
+
+
+# ------------------------------------------------------------------------------
+# Build compilers.
+
 
 # Create the directory that will contain the compiled class files.
 $(build_dir):
@@ -177,6 +211,27 @@ image:
 	docker build --file Dockerfile --tag=$TASK_RUNTIME_IMAGE_NAME .
 	....push image to scaled markets image registry
 
+# Create the directory that will contain the javadocs.
+$(javadoc_dir):
+	mkdir $(javadoc_dir)
+
+# Generate API docs (javadocs).
+javadoc: $(javadoc_dir)
+	rm -rf $(javadoc_dir)/*
+	$(JAVADOC) -protected -d $(javadoc_dir) \
+		-classpath $(build_dir) \
+		-sourcepath $(src_dir):$(sable_dabl_out_dir) \
+		-subpackages $(package_name) \
+		-exclude $(test_package_name)
+	git add $(javadoc_dir)/
+	git commit -am "Generated api docs"
+	git push
+
+
+# ------------------------------------------------------------------------------
+# Tests
+
+
 # Run parser to scan a sample input file. This is for checking that the parser
 # can recognize the language.
 check:
@@ -221,22 +276,6 @@ test_clean:
 runsonar:
 	$(SONAR_RUNNER)
 
-# Create the directory that will contain the javadocs.
-$(javadoc_dir):
-	mkdir $(javadoc_dir)
-
-# Generate API docs (javadocs).
-javadoc: $(javadoc_dir)
-	rm -rf $(javadoc_dir)/*
-	$(JAVADOC) -protected -d $(javadoc_dir) \
-		-classpath $(build_dir) \
-		-sourcepath $(src_dir):$(sable_out_dir) \
-		-subpackages $(package_name) \
-		-exclude $(test_package_name)
-	git add $(javadoc_dir)/
-	git commit -am "Generated api docs"
-	git push
-
 cukehelp:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help
 
@@ -246,7 +285,7 @@ cukever:
 cukehelp:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help
 
-clean: compile_clean test_clean clean_parser
+clean: compile_clean test_clean clean_dabl_parser clean_task_parser
 	rm -f Manifest
 	rm -r -f $(javadoc_dir)/*
 
