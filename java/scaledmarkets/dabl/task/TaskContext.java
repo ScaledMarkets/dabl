@@ -10,7 +10,15 @@ import java.util.Date;
  * when the task is actually performed. A TaskContext is only available in
  * the environment in which the task runs (its container).
  */
-public class TaskContext extends ExpressionContext {
+public class TaskContext extends CompilerState {
+	
+	private AOprogram program;
+	
+	public TaskContext(AOprogram program) {
+		this.program = program;
+	}
+	
+	public AOprogram getProgram() { return this.program; }
 	
 	public Object getValueForVariable(String variableName) {
 		return get(variableName);

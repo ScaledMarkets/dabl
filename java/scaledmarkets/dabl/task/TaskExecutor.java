@@ -6,6 +6,8 @@ import scaledmarkets.dabl.task.parser.*;
 import scaledmarkets.dabl.task.analyzer.*;
 import scaledmarkets.dabl.exec.*;
 
+import java.util.LinkedList;
+
 /**
  * For executing a DABL task inside of a container.
  * When a container is started by a TaskContainerFactory, the container is
@@ -25,7 +27,6 @@ public class TaskExecutor implements Executor {
 		// Parse the procedural statements.
 		
 		
-		TaskContext taskContext = new TaskContext();
 		
 		// Parse the input and generate an AST.
 		Lexer lexer = new Lexer(new PushbackReader(this.reader));
@@ -33,10 +34,12 @@ public class TaskExecutor implements Executor {
 		Start start = parser.parse();
 		System.out.println("Syntax is correct");
 
-		/*
+		AOprogram program = (AOprogram)(start.getPOprogram());
+		
 		TaskContext context = new TaskContext();
 		context.getASTs().add(start);
 		
+		/*
 		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(context);
 		start.apply(analyzer);
 		
@@ -58,7 +61,7 @@ public class TaskExecutor implements Executor {
 	 */
 	public void execute() throws Exception {
 		
-		for (POprocStmt p : ....) {
+		for (POprocStmt p : taskContext.getProgram().getOprocStmt()) {
 			
 			if (p instanceof AFuncCallOprocStmt) {
 			

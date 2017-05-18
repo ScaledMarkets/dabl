@@ -12,7 +12,7 @@ import java.net.URLClassLoader;
  */
 public class CompilerState
 {
-	public List<Start> getASTs() { return this.asts; }
+    public List<Start> getASTs() { return this.asts; }
 	
 	public NameScope getGlobalScope() { return this.globalScope; }
 	
@@ -20,8 +20,6 @@ public class CompilerState
     
     public Annotation getOut(Node node) { return out.get(node); }
     
-    public NameScopeEntry getPrimaryNamespaceSymbolEntry() { return primaryNamespaceSymbolEntry; }
-	
 	public SymbolEntry getIdBinding(TId id) {
 		return (SymbolEntry)(this.getIn(id));
 	}
@@ -30,10 +28,6 @@ public class CompilerState
 		return (NameScope)(this.getIn(node));
 	}
 
-	public ExprAnnotation getExprAnnotation(Node node) {
-		return (ExprAnnotation)(this.getOut(node));
-	}
-    
 	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
 
 	/**
@@ -46,11 +40,6 @@ public class CompilerState
 	 * Scope in which the namespace is defined.
 	 */
 	protected NameScope globalScope;
-	
-	/**
-	 * The entry in the global scope that references the primary namespace.
-	 */
-	protected NameScopeEntry primaryNamespaceSymbolEntry;
 	
 	/**
 	 * A stack of NameScopes that is maintained during the Analysis phase.
@@ -75,9 +64,5 @@ public class CompilerState
 	
 	protected NameScope popScope() {
 		return this.scopeStack.remove(0);
-	}
-	
-	protected void setPrimaryNamespaceSymbolEntry(NameScopeEntry e) {
-		primaryNamespaceSymbolEntry = e;
 	}
 }

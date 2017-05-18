@@ -17,7 +17,7 @@ TASK_JAR_NAME = taskruntime
 
 # Output artifact names:
 package := scaledmarkets/dabl
-task_parser_package := $(package)/dabl/task
+task_parser_package := $(package)/task
 test_package=scaledmarkets/dabl/test
 package_name = scaledmarkets.dabl
 task_package_name = scaledmarkets.dabl.task
@@ -87,53 +87,17 @@ config:
 # ------------------------------------------------------------------------------
 # Create parsers.
 
-dabl_parser: compile_dabl_parser
+dabl_parser: config
+	sable_out_dir=$(sable_dabl_out_dir) && \
+		package=$(package) && \
+		grammar_file=dabl.sablecc && \
+		make -f make_parser.makefile all
 
-task_parser: compile_task_parser
-
-# Create the directory into which the generated parser source files will be placed.
-$(sable_dabl_out_dir):
-	mkdir $(sable_dabl_out_dir)
-
-$(sable_task_out_dir):
-	mkdir -p $(sable_task_out_dir)/$(task_parser_package)
-
-# Generate the DABL parser.
-# Generates dabl compiler tables and classes.
-gen_dabl_parser: dabl.sablecc $(sable_dabl_out_dir) $(build_dir)
-	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_dabl_out_dir) --no-inline dabl.sablecc
-
-# Generate the task parser.
-# Generates task compiler tables and classes.
-gen_task_parser: task.sablecc $(sable_task_out_dir) $(build_dir)
-	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_task_out_dir) --no-inline task.sablecc
-
-# Compile the generated code for the dabl parser.
-compile_dabl_parser: gen_dabl_parser
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
-		$(sable_dabl_out_dir)/$(package)/node/*.java \
-		$(sable_dabl_out_dir)/$(package)/lexer/*.java \
-		$(sable_dabl_out_dir)/$(package)/analysis/*.java \
-		$(sable_dabl_out_dir)/$(package)/parser/*.java
-	cp $(sable_dabl_out_dir)/$(package)/lexer/lexer.dat $(build_dir)/$(package)/lexer
-	cp $(sable_dabl_out_dir)/$(package)/parser/parser.dat $(build_dir)/$(package)/parser
-
-# Compile the generated code for the task parser.
-compile_task_parser: gen_task_parser
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
-		$(sable_task_out_dir)/$(task_parser_package)/node/*.java \
-		$(sable_task_out_dir)/$(task_parser_package)/lexer/*.java \
-		$(sable_task_out_dir)/$(task_parser_package)/analysis/*.java \
-		$(sable_task_out_dir)/$(task_parser_package)/parser/*.java
-	cp $(sable_task_out_dir)/$(task_parser_package)/lexer/lexer.dat $(build_dir)/$(task_parser_package)/lexer
-	cp $(sable_task_out_dir)/$(task_parser_package)/parser/parser.dat $(build_dir)/$(task_parser_package)/parser
-
-clean_dabl_parser:
-	rm -r -f $(sable_dabl_out_dir)/*
-
-clean_task_parser:
-	rm -r -f $(sable_task_out_dir)/*
-
+task_parser:
+	sable_out_dir=$(sable_task_out_dir) && \
+		package=$(task_parser_package) && \
+		grammar_file=task.sablecc && \
+		make -f make_parser.makefile all
 
 # ------------------------------------------------------------------------------
 # Build compilers.
@@ -143,89 +107,12 @@ clean_task_parser:
 $(build_dir):
 	mkdir $(build_dir)
 
-# Create the directory that will contain the compiled test class files.
-$(test_build_dir):
-	mkdir $(test_build_dir)
+client:
+	make -f build_client.makefile all
 
-# Create the directory that will contain the packaged application (JAR file).
-$(jar_dir):
-	mkdir $(jar_dir)
+task_runtime:
+	make -f build_task_runtime.makefile all
 
-# Define the 'compile' target so that we can reference it in .DEFAULT_GOAL.
-compile: config
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp):$(third_party_cp) -d $(build_dir) \
-		$(src_dir)/sablecc/*.java \
-		$(src_dir)/$(package)/*.java \
-		$(src_dir)/$(package)/docker/*.java \
-		$(src_dir)/$(package)/analyzer/*.java \
-		$(src_dir)/$(package)/exec/*.java \
-		$(src_dir)/$(package)/util/*.java \
-		$(src_dir)/$(package)/repos/*.java \
-		$(src_dir)/$(package)/helper/*.java
-	cp $(CurDir)/.dabl.properties $(build_dir)
-
-compile_clean:
-	rm -r -f $(build_dir)/*
-	rm -r -f $(jar_dir)/*
-
-# Define 'dist' target so we can reference it in 'all' target.
-dist: jar
-
-# Create the manifest file for the JAR.
-manifest:
-	echo "Main-Class: $(main_class)" > Manifest
-	echo "Specification-Title: $(PRODUCT_NAME)" >> Manifest
-	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
-	echo "Specification-Vendor: $(ORG)" >> Manifest
-	echo "Implementation-Title: $(main_class)" >> Manifest
-	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
-	echo "Implementation-Vendor: $(ORG)" >> Manifest
-
-# Package application into a JAR file.
-jar: $(jar_dir)/$(JAR_NAME).jar
-
-$(jar_dir)/$(JAR_NAME).jar: $(classfiles) manifest $(jar_dir)
-	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest -C $(build_dir) scaledmarkets \
-		-C $(build_dir) .dabl.properties
-	rm Manifest
-
-# Create the manifest file for the task JAR.
-task_manifest:
-	echo "Main-Class: $(main_class)" > Manifest
-	echo "Specification-Title: $(PRODUCT_NAME) Task Execution Engine" >> Manifest
-	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
-	echo "Specification-Vendor: $(ORG)" >> Manifest
-	echo "Implementation-Title: $(task_main_class)" >> Manifest
-	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
-	echo "Implementation-Vendor: $(ORG)" >> Manifest
-
-# Package task runtime into a JAR file.
-taskjar: $(jar_dir)/$(TASK_JAR_NAME).jar
-
-$(jar_dir)/$(TASK_JAR_NAME).jar: $(task_classfiles) task_manifest $(jar_dir)
-	$(JAR) cvfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest -C $(task_build_dir) scaledmarkets
-	rm Manifest
-
-# Build container image for task runtime.
-image:
-	docker build --file Dockerfile --tag=$TASK_RUNTIME_IMAGE_NAME .
-	....push image to scaled markets image registry
-
-# Create the directory that will contain the javadocs.
-$(javadoc_dir):
-	mkdir $(javadoc_dir)
-
-# Generate API docs (javadocs).
-javadoc: $(javadoc_dir)
-	rm -rf $(javadoc_dir)/*
-	$(JAVADOC) -protected -d $(javadoc_dir) \
-		-classpath $(build_dir) \
-		-sourcepath $(src_dir):$(sable_dabl_out_dir) \
-		-subpackages $(package_name) \
-		-exclude $(test_package_name)
-	git add $(javadoc_dir)/
-	git commit -am "Generated api docs"
-	git push
 
 
 # ------------------------------------------------------------------------------
