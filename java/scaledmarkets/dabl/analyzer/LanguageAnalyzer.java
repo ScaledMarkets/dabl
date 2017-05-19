@@ -5,6 +5,8 @@ import scaledmarkets.dabl.util.Utilities;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * Perform symbol resolution and annotation:
@@ -31,7 +33,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
 		}
 		
-		Reader reader = ....dabl.standard
+		Reader reader = new StringReader(DablStandard.PackageText);
 		NamespaceImporter.importNamespace(reader, state);
 	}
 	
