@@ -81,14 +81,16 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	}
 	
 	/**
-	 * 
+	 * Resolve a reference to a name that is declared elsewhere.
 	 */
     protected void outRefNode(Node node, List<TId> path, VisibilityChecker checker)
     {
+    	// Node can be a AOidRef or a AOqualifiedNameRef
+    	
 		// Find the declaration of the id. If it exists, annotate it.
 		
 		SymbolEntry entry = resolveSymbol(path);
-		if (entry == null) {
+		if (entry == null) {  // it is currently undeclared.
 			// Might be a reference to something that is declared later.
 			// 
 			// Identify all the enclosing scopes, and attach a handler to each one.
@@ -105,7 +107,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 				// followed by removeFromAllScopes().
 			};
 			
-		} else {
+		} else {  // declaration found.
 			// Annotate the Id reference with the DeclaredEntry that defines the Id.
 			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
 				"Unexpected: entry is a " + entry.getClass().getName());
@@ -209,6 +211,19 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		}
 	}
 
+	protected void importNamespace(String name) {
+		
+		// Replace NameScope stack with a fresh one.
+		List<NameScope> originalScopeStack = state.scopeStack;
+		state.scopeStack = new LinkedList<NameScope>();
+		state.pushScope(state.globalScope);
+		NameScope importedScope = getImportHandler().importNamespace(name, getState());
+		
+		// Restore NameScope stack.
+		state.scopeStack = originalScopeStack;
+		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
+	}
+	
 	
 	/* Methods for annotating */
 	

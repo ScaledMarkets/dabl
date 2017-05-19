@@ -30,6 +30,9 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		if (state.globalScope == null) {
 			state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
 		}
+		
+		Reader reader = ....dabl.standard
+		NamespaceImporter.importNamespace(reader, state);
 	}
 	
 	public ImportHandler getImportHandler() { return importHandler; }
@@ -130,18 +133,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	
 	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
 		
-		String name = Utilities.createNameFromPath(node.getId());
-		
-		// Replace NameScope stack with a fresh one.
-		CompilerState state = getState();
-		List<NameScope> originalScopeStack = state.scopeStack;
-		state.scopeStack = new LinkedList<NameScope>();
-		state.pushScope(state.globalScope);
-		NameScope importedScope = getImportHandler().importNamespace(name, getState());
-		
-		// Restore NameScope stack.
-		state.scopeStack = originalScopeStack;
-		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
+		importNamespace(Utilities.createNameFromPath(node.getId()));
 	}
 	
 	
