@@ -355,6 +355,11 @@ public class Helper {
 		return (AOartifactDeclaration)n;
 	}
 	
+	public DeclaredEntry getDeclaredEntryForIdRef(AOidRef idRef) {
+		
+		....
+	}
+	
 	/**
 	 * 
 	 */

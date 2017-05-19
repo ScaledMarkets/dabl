@@ -7,6 +7,8 @@ import scaledmarkets.dabl.task.analyzer.*;
 import scaledmarkets.dabl.exec.*;
 
 import java.util.LinkedList;
+import java.io.Reader;
+import java.io.InputStreamReader;
 
 /**
  * For executing a DABL task inside of a container.
@@ -21,39 +23,36 @@ public class TaskExecutor implements Executor {
 	
 	public static void main(String[] args) {
 
-		// Obtain the input file, containing only function declarations and
-		// procedural statements.
-		
-		// Parse the procedural statements.
-		
-		
+		// Obtain the program to run, containing only function declarations and
+		// procedural statements (AST defined by task.sablecc).
+		Reader reader = new InputStreamReader(System.in);
 		
 		// Parse the input and generate an AST.
-		Lexer lexer = new Lexer(new PushbackReader(this.reader));
+		Lexer lexer = new Lexer(new PushbackReader(reader));
 		Parser parser = new Parser(lexer);
 		Start start = parser.parse();
 		System.out.println("Syntax is correct");
 
-		AOprogram program = (AOprogram)(start.getPOprogram());
-		
+		// Create an analysis context and analyze the AST.
 		TaskContext context = new TaskContext();
 		context.getASTs().add(start);
-		
-		/*
 		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(context);
 		start.apply(analyzer);
 		
-		state.setPrimaryNamespaceSymbolEntry(analyzer.getEnclosingScopeEntry());
-		return analyzer.getNamespaceNamescope();
-		*/
-		
+		// Execute the actions defined by the analyzed AST.
 		Executor exec = new TaskExecutor(context);
 		try {
 			exec.execute();
 		}
 		catch (Exception ex) {
-			// Set process status
+			// Set process status and exit.
+			ex.printStackTrace();
+			Runtime.exit(1);
 		}
+	}
+	
+	TaskExecutor(TaskContext context) {
+		this.context = context;
 	}
 	
 	/**
@@ -64,12 +63,30 @@ public class TaskExecutor implements Executor {
 		for (POprocStmt p : taskContext.getProgram().getOprocStmt()) {
 			
 			if (p instanceof AFuncCallOprocStmt) {
-			
+				
+				AFuncCallOprocStmt funcCall = (AFuncCallOprocStmt)p;
+				// oid_ref oexpr* otarget_opt
+				
+				POidRef pid = funcCall.getOidRef();
+				AOidRef idRef = (AOidRef)pid;
+				DeclaredEntry entry = getHelper().getDeclaredEntryForIdRef(idRef);
+				
+				
+				LinkedList<POexpr> pexs = funcCall.getOexpr();
+				
+				
+				POtargetOpt ptopt = funcCall.getOtargetOpt();
+				
+				
+				
+				
 			} else if (p instanceof AIfErrorOprocStmt) {
+				
+				// Install an error handler.
+				
 				
 			} else throw new RuntimeException(
 				"proc stmt is not a known type: " + p.getClass().getName());
-		
 		}
 		
 	}

@@ -1,5 +1,6 @@
 package scaledmarkets.dabl.task;
 
+import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.exec.ExpressionContext;
 import java.util.HashMap;
 import java.util.Date;
@@ -12,13 +13,13 @@ import java.util.Date;
  */
 public class TaskContext extends CompilerState {
 	
-	private AOprogram program;
-	
 	public TaskContext(AOprogram program) {
 		this.program = program;
 	}
 	
-	public AOprogram getProgram() { return this.program; }
+	public AOprogram getProgram() {
+		return (AOprogram)(start.getPOprogram());
+	}
 	
 	public Object getValueForVariable(String variableName) {
 		return get(variableName);
