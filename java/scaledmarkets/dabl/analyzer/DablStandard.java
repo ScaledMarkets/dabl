@@ -8,24 +8,38 @@ public class DablStandard {
 			"\tstring /// the artifact to publish \n" +
 			"\tto string /// destination repo \n" +
 			"\tstring /// path in the destination repo \n" +
-			"\tbinds to java method dabl.task.Standard.post\n" +
+			"\tbinds to java method dabl.task.Standard.post \n" +
 		
-		"function report string \n" +
-			"\tbinds to java method dabl.task.Standard.report\n" +
+		"//* Display a message to stdout. \n" +
+		"function report \n" +
+			"\tstring /// the message to send to stdout \n" +
+			"\tbinds to java method dabl.task.Standard.report \n" +
 		
-		"function bash string \n" +
-			"\tbinds to java method dabl.task.Standard.bash\n" +
+		"//* Execute a shell command. \n" +
+		"function bash \n" +
+			"\tstring /// the command to execute \n" +
+			"\tbinds to java method dabl.task.Standard.bash \n" +
 		
-		"function powershell string \n" +
-			"\tbinds to java method dabl.task.Standard.powershell\n" +
+		"//* Execute a powershell command. \n" +
+		"function powershell \n" +
+			"\tstring /// the command to execute \n" +
+			"\tbinds to java method dabl.task.Standard.powershell \n" +
 		
-		"function deploy string to string \n" +
-			"\tbinds to java method dabl.task.Standard.deploy\n" +
+		"//* Deploy an artifact, using the specified template file. \n" +
+		"function deploy \n" +
+			"\tstring /// template file \n" +
+			"\tto string /// deployment \n" +
+			"\tbinds to java method dabl.task.Standard.deploy \n" +
 		
-		"function ssh string string string \n" +
-			"\tbinds to java method dabl.task.Standard.ssh\n" +
+		"//* Execute a shell command via ssh. \n" +
+		"function ssh \n" +
+			"\tstring /// target host \n" +
+			"\tstring /// command string \n" +
+			"\tbinds to java method dabl.task.Standard.ssh \n" +
 		
-		"function destroy string \n" +
-			"\tbinds to java method dabl.task.Standard.destroy\n" +
+		"//* Destroy a deployed environment. \n" +
+		"function destroy \n" +
+			"\tstring /// deployment \n" +
+			"\tbinds to java method dabl.task.Standard.destroy \n" +
 	;
 }

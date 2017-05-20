@@ -50,7 +50,9 @@ The following functions are pre-defined in dabl.standard:
 <dd><code>report</code> <i>string-message</i></dd>
 <dd><code>bash</code> <i>command string</i></dd>
 <dd><code>powershell</code> <i>command string</i></dd>
-<dd><code>deploy</code> <i>template-file-ref</i> => <i>deployment-ref</i></dd>
+<dd><code>deploy</code> <i>template-file-ref</i> <code>to</code> <i>deployment-ref</i></dd>
 <dd><code>ssh</code> <i>target-host command-string</i></dd>
 <dd><code>destroy</code> <i>deployment-ref</i></dd>
 </dl>
+
+The actual specification of package `standard` can be found [here](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/task/Standard.java).
