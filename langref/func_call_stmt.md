@@ -55,4 +55,5 @@ The following functions are pre-defined in dabl.standard:
 <dd><code>destroy</code> <i>deployment-ref</i></dd>
 </dl>
 
-The actual specification of package `standard` can be found [here](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/task/DablStandard.java).
+The actual specification of package `dabl.standard` can be found
+[here](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/task/DablStandard.java).
