@@ -51,6 +51,6 @@ The following functions are pre-defined in dabl.standard:
 <dd><code>bash</code> <i>command string</i></dd>
 <dd><code>powershell</code> <i>command string</i></dd>
 <dd><code>deploy</code> <i>template-file-ref</i> => <i>deployment-ref</i></dd>
-<dd><code>ssh</code> <i>target-host command string</i></dd>
+<dd><code>ssh</code> <i>target-host command-string</i></dd>
 <dd><code>destroy</code> <i>deployment-ref</i></dd>
 </dl>
