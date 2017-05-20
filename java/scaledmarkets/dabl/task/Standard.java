@@ -1,5 +1,9 @@
 package dabl.task;
 
+/**
+ * Implement the functions that are defined by DABL built-in package dabl.standard,
+ * which is defined in class DablStandard.
+ */
 public class Standard {
 
 

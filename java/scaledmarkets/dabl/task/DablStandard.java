@@ -40,6 +40,6 @@ public class DablStandard {
 		"//* Destroy a deployed environment. \n" +
 		"function destroy \n" +
 			"\tstring /// deployment \n" +
-			"\tbinds to java method dabl.task.Standard.destroy \n" +
+			"\tbinds to java method dabl.task.Standard.destroy \n"
 	;
 }
