@@ -67,9 +67,20 @@ public class TaskExecutor implements Executor {
 				AFuncCallOprocStmt funcCall = (AFuncCallOprocStmt)p;
 				// oid_ref oexpr* otarget_opt
 				
+				// 
 				POidRef pid = funcCall.getOidRef();
 				AOidRef idRef = (AOidRef)pid;
 				DeclaredEntry entry = getHelper().getDeclaredEntryForIdRef(idRef);
+				
+				AOfunctionDeclaration funcDecl = ....
+				
+				TId funcDecl.getName();
+				LinkedList<POtypeSpec> funcDecl.getOtypeSpec();
+				POstringLiteral funcDecl.getNativeLanguage();
+				POstringLiteral funcDecl.getNativeName();
+				POtypeSpec funcDecl.getReturnType();
+				
+				String lang = ....getHelper().getStringLiteralValue(funcDecl.getNativeLanguage());
 				
 				
 				LinkedList<POexpr> pexs = funcCall.getOexpr();

@@ -513,7 +513,7 @@ Productions
             method [native_name]:string_literal returns type_spec
                                             {-> New ofunction_declaration(scope_decl.oscope,
                                                     dabl_name, [type_spec_seq.otype_spec],
-                                                    target_language.ostring_literal,
+                                                    native_language.ostring_literal,
                                                     native_name.ostring_literal,
                                                     type_spec.otype_spec)}
         ;
