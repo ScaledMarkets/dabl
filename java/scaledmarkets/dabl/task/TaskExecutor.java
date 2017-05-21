@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 public class TaskExecutor implements Executor {
 	
 	private TaskContext context;
+	private ErrorHandler errorHandler;
 	
 	public static void main(String[] args) {
 
@@ -39,15 +40,27 @@ public class TaskExecutor implements Executor {
 		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(context);
 		start.apply(analyzer);
 		
-		// Execute the actions defined by the analyzed AST.
-		Executor exec = new TaskExecutor(context);
+		// Create a TaskExecutor, which will execute the actions defined by
+		// the analyzed AST.
+		int status;
 		try {
-			exec.execute();
+			status = (new TaskExecutor(context)).execute();
+			Runtime.exit(status);
 		}
 		catch (Exception ex) {
-			// Set process status and exit.
 			ex.printStackTrace();
-			Runtime.exit(1);
+			status = 1;
+		}
+		catch (RuntimeException rex) {
+			rex.printStackTrace();
+			status = 2;
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+			status = 3;
+		}
+		finally {
+			Runtime.exit(status);
 		}
 	}
 	
@@ -58,9 +71,21 @@ public class TaskExecutor implements Executor {
 	/**
 	 * Visit each proc stmt and execute it.
 	 */
-	public void execute() throws Exception {
+	public int execute() throws Throwable {
 		
-		for (POprocStmt p : taskContext.getProgram().getOprocStmt()) {
+		performProcStmts(taskContext.getProgram().getOprocStmt(), true);
+	}
+	
+	/**
+	 * Perform each of a list of procedural statements. Recursive, since a
+	 * procedural statment may invoke a error handler - which contains 
+	 * procedural statements. If 'recover' is true, then an error results
+	 * in the invocation of the current error handler; otherwise, the error
+	 * is thrown.
+	 */
+	protected void performProcStmts(List<POprocStmt> procStmts, boolean recover) throws Throwable {
+		
+		for (POprocStmt p : procStmts) {
 			
 			if (p instanceof AFuncCallOprocStmt) {
 				
@@ -70,7 +95,7 @@ public class TaskExecutor implements Executor {
 				// 
 				POidRef pid = funcCall.getOidRef();
 				AOidRef idRef = (AOidRef)pid;
-				DeclaredEntry entry = getHelper().getDeclaredEntryForIdRef(idRef);
+				DeclaredEntry entry = ....getHelper().getDeclaredEntryForIdRef(idRef);
 				
 				AOfunctionDeclaration funcDecl = ....
 				
@@ -83,22 +108,48 @@ public class TaskExecutor implements Executor {
 				String lang = ....getHelper().getStringLiteralValue(funcDecl.getNativeLanguage());
 				
 				
+				
+				
 				LinkedList<POexpr> pexs = funcCall.getOexpr();
+				List<Object> argValues = new LinkedList<Object>();
+				
+				
 				
 				
 				POtargetOpt ptopt = funcCall.getOtargetOpt();
+				if there is a target {
+					Create target variable, of the specified type
+				}
 				
-				
-				
+				try {
+					callFunction(lang, funcNativeName, argValues, ....targetVariableRef);
+				} catch (Throwable t) {
+					
+					if (errorHandler == null) throw t;
+					if (! recover) throw t;
+					
+					errorHandler.invoke(t);
+				}
 				
 			} else if (p instanceof AIfErrorOprocStmt) {
 				
-				// Install an error handler.
+				AIfErrorOprocStmt ifErrorStmt = (AIfErrorOprocStmt)p;
 				
+				// Install an error handler.
+				this.errorHandler = new ErrorHandler() {
+					
+					public void invoke() throws Throwable {
+						performProcStmts(ifErrorStmt.getOprocStmt(), false);
+					}
+				}
 				
 			} else throw new RuntimeException(
 				"proc stmt is not a known type: " + p.getClass().getName());
 		}
+	}
+	
+	protected void callFunction(String lang, String funcNativeName, Object[] args,
+		....targetVariableRef) throws Exception {
 		
 	}
 }

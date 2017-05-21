@@ -157,7 +157,8 @@ Ignored Tokens
 Productions
 
     program {-> oprogram} =
-        procedural_stmts_opt                {-> New oprogram([procedural_stmts_opt.oproc_stmt])}
+        function_decls_opt                  {->
+      | procedural_stmts_opt                {-> New oprogram([procedural_stmts_opt.oproc_stmt])}
         ;
     
     procedural_stmts_opt {-> oproc_stmt*} =
@@ -213,6 +214,18 @@ Productions
     scope_decl {-> oscope} =
         {public} public                     {-> New oscope.public()}
       | {unspecified}                       {-> New oscope.private()}
+      ;
+    
+    function_decls_opt {-> ofunction_declaration*} =
+        {multiple} function_decls           {-> [function_decls.ofunction_declaration]}
+      | {none}                              {-> []}
+      ;
+    
+    function_decls {-> ofunction_declaration*} =
+        {multiple} function_decls function_decl
+                                            {-> [function_decls.ofunction_declaration,
+                                                function_decl.ofunction_declaration]}
+      | {one} function_decl                 {-> [function_decl.ofunction_declaration]}
       ;
     
     function_decl {-> ofunction_declaration} =

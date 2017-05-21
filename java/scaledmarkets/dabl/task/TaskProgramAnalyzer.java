@@ -5,6 +5,9 @@ import scaledmarkets.dabl.analyzer.NamespaceImporter;
 import java.io.Reader;
 import java.io.StringReader;
 
+/**
+ * Annotate function call arguments with their values.
+ */
 public class TaskProgramAnalyzer extends DablBaseAdapter {
 	
 	private TaskContext context;
