@@ -41,7 +41,8 @@ public class TaskExecutor implements Executor {
 		start.apply(analyzer);
 		
 		// Create a TaskExecutor, which will execute the actions defined by
-		// the analyzed AST.
+		// the analyzed AST. If task execution produces an error, set the
+		// process status accordingly.
 		int status;
 		try {
 			status = (new TaskExecutor(context)).execute();
@@ -121,8 +122,10 @@ public class TaskExecutor implements Executor {
 					Create target variable, of the specified type
 				}
 				
+				FunctionHandler handler = getFunctionHandler(lang);
+				
 				try {
-					callFunction(lang, funcNativeName, argValues, ....targetVariableRef);
+					handler.callFunction(funcNativeName, argValues, ....targetVariableRef);
 				} catch (Throwable t) {
 					
 					if (errorHandler == null) throw t;
@@ -149,27 +152,16 @@ public class TaskExecutor implements Executor {
 	}
 	
 	/**
-	 * 
-	 */
-	protected void callFunction(String lang, String funcNativeName, Object[] args,
-		....targetVariableRef) throws Exception {
-		
-		FunctionHandler handler = getFunctionHandler(lang);
-			
-		handler.callFunction(funcNativeName, args, targetVariableRef);
-	}
-	
-	/**
-	 * 
+	 * Find and load a function handler for the specified language.
 	 */
 	protected FunctionHandler getFunctionHandler(String lang) throws Exception {
 		
-		String handlerClassname = Utilities.getSetting("dabl.function_handler." + lang);
-		if (handlerClassname == null) throw new Exception(
+		String handlerClassName = Utilities.getSetting("dabl.function_handler." + lang);
+		if (handlerClassName == null) throw new Exception(
 			"Unrecognized function language " + lang);
 		
 		// Load the handler class.
-		Class handlerClass = ....
+		Class handlerClass = Class.forName(handlerClassName);
 		
 		// Create an instance of the handler class.
 		Object obj = handlerClass.newInstance();
