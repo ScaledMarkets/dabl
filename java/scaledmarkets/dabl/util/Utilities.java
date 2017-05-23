@@ -134,7 +134,8 @@ public class Utilities {
 	/**
 	 * Obtain a DABL configuration setting. Obtain it first from the environment;
 	 * if not found, then look for a .dabl.properties file in the current directory
-	 * and then in the user's home directory.
+	 * and then in the user's home directory. If that fails, look for the properties
+	 * file in the classpath. If that fails, return null.
 	 */
 	public static String getSetting(String name) throws IOException {
 		

@@ -148,8 +148,34 @@ public class TaskExecutor implements Executor {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	protected void callFunction(String lang, String funcNativeName, Object[] args,
 		....targetVariableRef) throws Exception {
 		
+		FunctionHandler handler = getFunctionHandler(lang);
+			
+		handler.callFunction(funcNativeName, args, targetVariableRef);
+	}
+	
+	/**
+	 * 
+	 */
+	protected FunctionHandler getFunctionHandler(String lang) throws Exception {
+		
+		String handlerClassname = Utilities.getSetting("dabl.function_handler." + lang);
+		if (handlerClassname == null) throw new Exception(
+			"Unrecognized function language " + lang);
+		
+		// Load the handler class.
+		Class handlerClass = ....
+		
+		// Create an instance of the handler class.
+		Object obj = handlerClass.newInstance();
+		if (! (obj instanceof FunctionHandler)) throw new Error(
+			"Class " + handlerClass.getName() + " is not a FunctionHandler");
+		
+		return (FunctionHandler)obj;
 	}
 }

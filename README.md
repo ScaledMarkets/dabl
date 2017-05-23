@@ -134,7 +134,9 @@ When running DABL, the following environment variables can be set:
 	to use for task execution containers. Normally a user will not change this
 	setting from its default, which references an image in dockerhub. However, an
 	enterprise might want to replace the setting with an image maintained in an
-	internal image repository. [TBD: Include reference to the image's dockerfile.]
+	internal image repository. [TBD: Include reference to the image's dockerfile.]</dd>
+<dd><code>dabl.function_handler.<i>language</i></code> - The full name of
+	the Java class that handles function calls in the specified language.</dd>
 </dl>
 
 These values can also be set in a <code>.dabl.properties</code> file in the current

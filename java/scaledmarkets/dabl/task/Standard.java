@@ -17,6 +17,10 @@ public class Standard {
 		....
 	}
 	
+	/**
+	 * Create a process, run bash in the process, and pass the command string to it.
+	 * If the process ends with a non-zero status, throw a RuntimeException.
+	 */
 	public static void bash(String commandString) {
 		
 		....
