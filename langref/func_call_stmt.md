@@ -13,7 +13,7 @@ The function is called during the Execution phase (see
 A function call statement has the form,
 
 <dl>
-<dd>[<i>variable</i> =] <i>function-name</i> [<i>args</i>...]</dd>
+<dd>[<i>variable</i> <-] <i>function-name</i> [<i>args</i>...]</dd>
 </dl>
 
 where 
@@ -24,6 +24,9 @@ where
 <dd><i>args</i> is a sequence of zero or more argument values.
 Arguments are <i>not</i> separated by commas.</dd>
 </dl>
+
+Note the use of the `<-` symbol: it is spoken as "gets", to indicate the the variable
+*gets* (i.e., receives) the returned function value.
 
 Argument values can be any [expression](expression.md), but may not contain a function call. A
 function call can only appear in a function call statement.

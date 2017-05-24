@@ -51,6 +51,8 @@ A function declaration has the following syntax:
 </dd>
 </dl>
 
+The <i>type</i> may be any of the allowed DABL expression types: see [Expressions](expression.md).
+
 ## Example
 
 ```

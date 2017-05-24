@@ -49,6 +49,7 @@ Tokens
     le = '<=';
     eq = '=';
     ne = '!=';
+    gets = '<-';
     colon = ':';
     semicolon = ';';
     dotdot = '..';
@@ -421,7 +422,7 @@ Productions
       ;
     
     func_call_stmt {-> oproc_stmt} =
-        {no_target} [target]:id eq [func_name]:id args
+        {no_target} [target]:id gets [func_name]:id args
                                             {-> New oproc_stmt.func_call(
                                                 New oid_ref(func_name),
                                                 [args.oexpr], New otarget_opt.target(target))}
