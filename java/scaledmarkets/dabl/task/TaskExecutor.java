@@ -122,10 +122,14 @@ public class TaskExecutor implements Executor {
 					Create target variable, of the specified type
 				}
 				
+				checkTypeConformance(....declaredArgTypes, ....argValueTypes, 
+						....declaredTargetType, ....targetVariableRef);
+				
 				FunctionHandler handler = getFunctionHandler(lang);
 				
 				try {
-					handler.callFunction(funcNativeName, argValues, ....targetVariableRef);
+					handler.callFunction(funcNativeName, declaredArgTypes, argValues, 
+						declaredTargetType, targetVariableRef);
 				} catch (Throwable t) {
 					
 					if (errorHandler == null) throw t;
