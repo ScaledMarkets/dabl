@@ -115,9 +115,10 @@ Tokens
     end = 'end';
     error = 'error';
     string_keyword = 'string';
-    int_keyword = 'int';
-    float_keyword = 'float';
-    boolean_keyword = 'boolean';
+    //int_keyword = 'int';
+    //float_keyword = 'float';
+    numeric_keyword = 'numeric';
+    logical_keyword = 'logical';
     not_keyword = 'not';
     and_keyword = 'and';
     or_keyword = 'or';
@@ -130,6 +131,7 @@ Tokens
     new = 'new';
     local = 'local';
     open = 'open';
+    array_keyword = 'array';
 
     // Variable Length Sequences:
     whole_number = digit+;
@@ -548,9 +550,11 @@ Productions
     
     type_spec {-> otype_spec} = 
         {string} string_keyword             {-> New otype_spec.string()}
-      | {int} int_keyword                   {-> New otype_spec.int()}
-      | {float} float_keyword               {-> New otype_spec.float()}
-      | {boolean} boolean_keyword           {-> New otype_spec.logical()}
+      //| {int} int_keyword                   {-> New otype_spec.int()}
+      //| {float} float_keyword               {-> New otype_spec.float()}
+      | {numeric} numeric_keyword           {-> New otype_spec.numeric()}
+      | {logical} logical_keyword           {-> New otype_spec.logical()}
+      | {array} array_keyword of type_spec  {-> New otype_spec.array(type_spec.otype_spec)}
       ;
     
     path {-> id*} =
@@ -573,6 +577,8 @@ Productions
       | {variable} id                       {-> New oexpr.variable(New ovariable(New oid_ref(id)))}
       | {parentheses} left_paren expr right_paren
                                             {-> expr.oexpr}
+      | {array_elt} id left_brack expr right_brack
+                                            {-> New oexpr.array_elt(expr.oexpr)}
       ;
     
     // Logical expressions.
@@ -776,9 +782,11 @@ Abstract Syntax Tree
 
     otype_spec = 
         {string}
-      | {int}
-      | {float}
+      //| {int}
+      //| {float}
+      | {numeric}
       | {logical}
+      | {array} otype_spec
       | {separator} otype_spec_separator
       ;
     
@@ -880,6 +888,7 @@ Abstract Syntax Tree
       | {binary} [operand1]:oexpr obinary_op [operand2]:oexpr
       | {success} osuccess_expr
       | {age} oage_expr
+      | {array_elt} oexpr
       ;
     
     oliteral =
