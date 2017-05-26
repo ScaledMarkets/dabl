@@ -1,5 +1,6 @@
 # language: en
 
+@inputsandoutputs
 Feature: TestInputsAndOutputs
 	
 	@done

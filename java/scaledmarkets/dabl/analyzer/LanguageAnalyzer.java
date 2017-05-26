@@ -294,9 +294,20 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		// Check function aregument and target actual types against declared types.
 		....
 		
-		checkTypeConformance(....declaredArgTypes, ....argValueTypes, 
+		try { checkTypeConformance(....declaredArgTypes, ....argValueTypes, 
 				....declaredTargetType, ....targetVariableRef);
-		
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public checkTypeConformance(List<ValueType> declaredArgTypes, List<ValueType> argValueTypes, 
+		ValueType declaredTargetType, ValueType targetVariableRef) throws Exception {
+	
+		....
 	}
 	
 	public void outAFuncCallOprocStmt(AFuncCallOprocStmt node)

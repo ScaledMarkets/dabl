@@ -142,7 +142,8 @@ test:
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
 		$(test_src_dir)/features \
-		--tags @patternsets,@pushlocalrepo
+		--tags @inputsandoutputs
+		#--tags @patternsets,@pushlocalrepo
 
 test_exec:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \

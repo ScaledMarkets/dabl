@@ -1,5 +1,6 @@
 # language: en
 
+@import
 Feature: TestImport
 	
 	@done
