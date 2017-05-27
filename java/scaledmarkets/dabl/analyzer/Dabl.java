@@ -10,6 +10,8 @@ import sablecc.PrettyPrint;
 
 import java.io.Reader;
 import java.io.PushbackReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.FileReader;
 import java.util.Hashtable;
 import java.util.List;
@@ -72,10 +74,14 @@ public class Dabl
 		
 		if (print) PrettyPrint.pp(start);
 		
+		Reader reader = new StringReader(DablStandard.PackageText);
+		NamespaceImporter.importNamespace(reader, state);
+
 		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
 		start.apply(analyzer);
 		
 		state.setPrimaryNamespaceSymbolEntry(analyzer.getEnclosingScopeEntry());
+		
 		return analyzer.getNamespaceNamescope();
 	}
 }

@@ -81,11 +81,12 @@ to each nested scope within the source input.
 
 ### AST Annotations
 
-There are three kinds of annotation:
+There are four kinds of annotation:
 
 * `NameScope`.
 * `SymbolEntry`.
 * `IdRefAnnotation`.
+* `ExprAnnotation`.
 
 Each implements the `Annotation` interface.
 

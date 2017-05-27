@@ -6,8 +6,6 @@ import scaledmarkets.dabl.task.DablStandard;
 
 import java.util.List;
 import java.util.LinkedList;
-import java.io.Reader;
-import java.io.StringReader;
 
 /**
  * Perform symbol resolution and annotation:
@@ -25,6 +23,7 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	protected ImportHandler importHandler;
 	protected NameScopeEntry enclosingScopeEntry;
 	protected NameScope namespaceNamescope;
+	protected List<AFuncCallOprocStmt> funcCalls = new LinkedList<AFuncCallOprocStmt>();
 	
 	public LanguageAnalyzer(CompilerState state, ImportHandler importHandler) {
 		super(state);
@@ -33,9 +32,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		if (state.globalScope == null) {
 			state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
 		}
-		
-		Reader reader = new StringReader(DablStandard.PackageText);
-		NamespaceImporter.importNamespace(reader, state);
 	}
 	
 	public ImportHandler getImportHandler() { return importHandler; }
@@ -131,7 +127,77 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	}
 	
 	public void outAOnamespace(AOnamespace node) {
+		
+		// Analyze functions calls, to verify that the actual argument types
+		// are compatible with the function declaration.
+		
+		for (AFuncCallOprocStmt funcCall : this.funcCalls) {
+			
+			POidRef idRef = funcCall.getOidRef();
+			Annotation annot = getState().getOut(idRef);
+			assertThat(annot != null, "Symbol " + idRef.toString() + " unidentified");
+			assertThat(annot instanceof IdRefAnnotation,
+				"Symbol " + idRef.toString() + " was not recognized as an Id reference");
+			IdRefAnnotation idRefAnnot = (IdRefAnnotation)annot;
+			SymbolEntry entry = idRefAnnot.getDefiningSymbolEntry();
+			assertThat(entry instanceof DeclaredEntry,
+				"Symbol " + idRef.toString() + " is not declared");
+			DeclaredEntry declEntry = (DeclaredEntry)entry;
+			Node defNode = declEntry.getDefiningNode();
+			assertThat(defNode instanceof AOfunctionDeclaration,
+				"Id " + idRef.getName() + " does not refer to a function declaration");
+			
+			AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)defNode;
+			List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
+			for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
+				declaredArgTypes.add(mapTypeSpecToValueType(typeSpec));
+			}
+			
+			List<ValueType> argValueTypes = new LinkedList<ValueType>();
+			for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
+				
+				ExprAnnotation annot = getExprAnnotation(arg);
+				ValueType type = annot.getType();
+				argValueTypes.add(type);
+			}
+			
+			try { checkFunctionTypeConformance(declaredArgTypes, argValueTypes);
+			} catch (Exception ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		
 		popNameScope();
+	}
+	
+	/**
+	 * 
+	 */
+	public ValueType mapTypeSpecToValueType(POtypeSpec typeSpec) {
+		if (typeSpec instanceof ANumericOtypeSpec) return ValueType.numeric;
+		if (typeSpec instanceof AStringOtypeSpec) return ValueType.string;
+		if (typeSpec instanceof ALogicalOtypeSpec) return ValueType.logical;
+		if (typeSpec instanceof AArrayOtypeSpec) return ValueType.array;
+		throw new RuntimeException("Unexpected typespec: " + typeSpec.getClass().getName());
+	}
+	
+	/**
+	 * 
+	 */
+	public checkFunctionTypeConformance(List<ValueType> declaredTypes,
+		List<ValueType> actualTypes) throws Exception {
+	
+		assertThat(declaredTypes.size() == actualTypes.size(),
+			"Mismatch in number of actual (" + actualTypes.size() + ") and declared (" +
+			declaredTypes.size() + ") arguments");
+		
+		int i = 0;
+		for (ValueType declaredType : declaredTypes) {
+			ValueType actualType = actualTypes.get(i++);
+			assertThat(actualType == declaredType,
+				"Type " + actualType.toString() + " is not compatible with " +
+				declaredType.toString());
+		}
 	}
 	
 	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
@@ -291,23 +357,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			resolveForwardReferences(entry);
 		}
 		
-		// Check function aregument and target actual types against declared types.
-		....
-		
-		try { checkTypeConformance(....declaredArgTypes, ....argValueTypes, 
-				....declaredTargetType, ....targetVariableRef);
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public checkTypeConformance(List<ValueType> declaredArgTypes, List<ValueType> argValueTypes, 
-		ValueType declaredTargetType, ValueType targetVariableRef) throws Exception {
-	
-		....
+		// Check function argument and target actual types against declared types.
+		funcCalls.add(node);  // Check will be performed in outAOnamespace.
 	}
 	
 	public void outAFuncCallOprocStmt(AFuncCallOprocStmt node)
