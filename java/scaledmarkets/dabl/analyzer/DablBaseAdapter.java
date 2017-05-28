@@ -6,6 +6,8 @@ import scaledmarkets.dabl.util.Utilities;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Add methods for name resolution, symbol table creation and management, and
@@ -15,6 +17,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 {
 	private CompilerState state;
 	private List<IdentHandler> identHandlers = new LinkedList<IdentHandler>();
+	private Map<Node, IdentSemanticHandler> identSemanticHandlers = new HashMap<Node, IdentSemanticHandler>();
 	
 	public DablBaseAdapter(CompilerState state)
 	{
@@ -119,17 +122,26 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		}
 	}
 	
-	protected void registerSemanticHandlerFor(Node ref) {
+	/**
+	 * Register the specified semantic handler for the specified node. The node must
+	 * be a symbol reference - specifically a AOidRef or a AOqualifiedNameRef.
+	 * A semantic handlers for a symbol reference is invoked when the symbol reference
+	 * is matched with the symbol declaration.
+	 */
+	protected void registerSemanticHandlerFor(Node ref, IdentSemanticHandler handler) {
 		
     	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
-		....register this handler
+		this.identSemanticHandlers.put(ref, handler);
 	}
 
+	/**
+	 * Return the semantic handler for the specified symbol reference, or null if
+	 * there is not one.
+	 */
 	protected IdentSemanticHandler getIdentSemanticHandler(Node node) {
 		
     	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
-    	
-    	....
+    	return this.identSemanticHandlers(node);
 	}
 	
 	/**
