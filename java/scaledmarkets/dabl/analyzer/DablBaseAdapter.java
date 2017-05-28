@@ -99,8 +99,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 			// and then remove itself from all of the scopes to which it is attached.
 			new IdentHandler(this, path, getCurrentNameScope()) {
 				public void resolveRetroactively(DeclaredEntry entry) {
-					checker.check(getCurrentNameScope(), entry);
-					setIdRefAnnotation(node, entry);
+					DablBaseAdapter.this.resolveRetroactively(node, checker, entry);
 				}
 				// Note: the base class, IdentHandler, contains a method
 				// checkForPathResolution, which calls resolveRetroactively, 
@@ -111,10 +110,17 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 			// Annotate the Id reference with the DeclaredEntry that defines the Id.
 			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
 				"Unexpected: entry is a " + entry.getClass().getName());
-			checker.check(getCurrentNameScope(), entry);
-			DeclaredEntry declent = (DeclaredEntry)entry;
-			setIdRefAnnotation(node, declent);
+			resolveRetroactively(node, checker, (DeclaredEntry)entry);
 		}
+	}
+	
+	/**
+	 * Annotate the node (an Id reference - either an AOidRef or a AOqualifiedNameRef -
+	 * with the DeclaredEntry that defines the Id.
+	 */
+	void resolveRetroactively(Node node, VisibilityChecker checker, DeclaredEntry entry) {
+		checker.check(getCurrentNameScope(), entry);
+		setIdRefAnnotation(node, entry);
 	}
     
 	/**
@@ -200,7 +206,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	/**
 	 * Beginning with the current scope, and progressing outward, attempt to
 	 * resolve the unresolved references that are attached to each scope.
-	 * This method should be called after each name declaration is processed.
+	 * This method should be called after each name declaration is processed,
+	 * so that references to that name are then resolved.
 	 */
 	protected void resolveForwardReferences(DeclaredEntry entry)
 	{

@@ -23,7 +23,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	protected ImportHandler importHandler;
 	protected NameScopeEntry enclosingScopeEntry;
 	protected NameScope namespaceNamescope;
-	protected List<AFuncCallOprocStmt> funcCalls = new LinkedList<AFuncCallOprocStmt>();
 	
 	public LanguageAnalyzer(CompilerState state, ImportHandler importHandler) {
 		super(state);
@@ -67,47 +66,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
     	outRefNode(node, path, new PublicVisibilityChecker(path));
     }
     
-    /**
-     * A callback handler for checking if access is allowed to an element.
-     * Used by outAOidRef and outAOqualifiedNameRef.
-     */
-    static class PublicVisibilityChecker implements VisibilityChecker {
-    	
-    	PublicVisibilityChecker(List<TId> path) { this.path = path; }
-    	private List<TId> path;
-    	
-		public void check(NameScope refScope, SymbolEntry entry) {
-			NameScope referringNameScope = getNamespaceNameScope(refScope);
-			NameScope entryNamespaceScope = getNamespaceNameScope(entry.getEnclosingScope());
-			if (referringNameScope != entryNamespaceScope) {
-				// referring scope is in a different namespace than entry name scope
-				if (! entry.isDeclaredPublic()) {
-					referringNameScope.printUpward();
-					throw new RuntimeException(
-						"Element " + Utilities.createNameFromPath(path) +
-							" is referenced from " + referringNameScope.getName() + 
-							" but is not public in " + entryNamespaceScope.getName());
-				}
-			}
-		}
-	}
-    
-	/**
-	 * Determine the name scope of the namespace that encloses the specified scope.
-	 */
-    static NameScope getNamespaceNameScope(NameScope scope) {
-    	
-    	for (NameScope s = scope;;) {
-    		Node node = s.getNodeThatDefinesScope();
-    		if (node instanceof AOnamespace) return s;
-    		s = s.getParentNameScope();
-    		if (s == null) break;
-    	}
-    	System.out.println("Namespace for scope " + scope.getName() + " not found");
-    	scope.printUpward();  // debug
-    	throw new RuntimeException("Namespace for scope " + scope.getName() + " not found");
-    }
-    
 	
 	/* Only onamespace and otask_declaration define name scopes. */
 	
@@ -132,42 +90,51 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		// are compatible with the function declaration.
 		
 		for (AFuncCallOprocStmt funcCall : this.funcCalls) {
-			
-			POidRef idRef = funcCall.getOidRef();
-			Annotation annot = getState().getOut(idRef);
-			assertThat(annot != null, "Symbol " + idRef.toString() + " unidentified");
-			assertThat(annot instanceof IdRefAnnotation,
-				"Symbol " + idRef.toString() + " was not recognized as an Id reference");
-			IdRefAnnotation idRefAnnot = (IdRefAnnotation)annot;
-			SymbolEntry entry = idRefAnnot.getDefiningSymbolEntry();
-			assertThat(entry instanceof DeclaredEntry,
-				"Symbol " + idRef.toString() + " is not declared");
-			DeclaredEntry declEntry = (DeclaredEntry)entry;
-			Node defNode = declEntry.getDefiningNode();
-			assertThat(defNode instanceof AOfunctionDeclaration,
-				"Id " + idRef.getName() + " does not refer to a function declaration");
-			
-			AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)defNode;
-			List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
-			for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
-				declaredArgTypes.add(mapTypeSpecToValueType(typeSpec));
-			}
-			
-			List<ValueType> argValueTypes = new LinkedList<ValueType>();
-			for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
-				
-				ExprAnnotation annot = getExprAnnotation(arg);
-				ValueType type = annot.getType();
-				argValueTypes.add(type);
-			}
-			
-			try { checkFunctionTypeConformance(declaredArgTypes, argValueTypes);
-			} catch (Exception ex) {
-				throw new RuntimeException(ex);
-			}
+			checkFuncCallTypes(funcCall);
 		}
 		
+		....Check if there are unresolved symbols
+		
 		popNameScope();
+	}
+	
+	/**
+	 * 
+	 */
+	void checkFuncCallTypes(AFuncCallOprocStmt funcCall) {
+		
+		POidRef idRef = funcCall.getOidRef();
+		Annotation annot = getState().getOut(idRef);
+		assertThat(annot != null, "Symbol " + idRef.toString() + " unidentified");
+		assertThat(annot instanceof IdRefAnnotation,
+			"Symbol " + idRef.toString() + " was not recognized as an Id reference");
+		IdRefAnnotation idRefAnnot = (IdRefAnnotation)annot;
+		SymbolEntry entry = idRefAnnot.getDefiningSymbolEntry();
+		assertThat(entry instanceof DeclaredEntry,
+			"Symbol " + idRef.toString() + " is not declared");
+		DeclaredEntry declEntry = (DeclaredEntry)entry;
+		Node defNode = declEntry.getDefiningNode();
+		assertThat(defNode instanceof AOfunctionDeclaration,
+			"Id " + idRef.getName() + " does not refer to a function declaration");
+		
+		AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)defNode;
+		List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
+		for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
+			declaredArgTypes.add(mapTypeSpecToValueType(typeSpec));
+		}
+		
+		List<ValueType> argValueTypes = new LinkedList<ValueType>();
+		for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
+			
+			ExprAnnotation annot = getExprAnnotation(arg);
+			ValueType type = annot.getType();
+			argValueTypes.add(type);
+		}
+		
+		try { checkFunctionTypeConformance(declaredArgTypes, argValueTypes);
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 	
 	/**
@@ -215,6 +182,8 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		
 		POscope p = node.getOscope();
 		if (p instanceof APublicOscope) scope.getSelfEntry().setDeclaredPublic();
+		
+		resolveForwardReferences(scope.getSelfEntry());
 	}
 	
 	public void outAOtaskDeclaration(AOtaskDeclaration node) {
@@ -357,10 +326,27 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			resolveForwardReferences(entry);
 		}
 		
-		// Check function argument and target actual types against declared types.
-		funcCalls.add(node);  // Check will be performed in outAOnamespace.
+		// Add a semantic check: that function argument types and declared types match.
+		/*
+		If function declaration has been processed, perform the check now; otherwise,
+		add it to the set of checks that should be performed when the function's
+		declaration is processed.
+		
+		*/
+		SymbolEntry entry = resolveSymbol(node.getOidRef());
+		if (entry == null) {  // it is currently undeclared.
+			new IdentSemanticHandler(node.getOidRef()) {
+				public void semanticAction(DeclaredEntry entry) {
+					checkFuncCallTypes(node);
+				}
+			};
+		} else {  // declaration found.
+			checkFuncCallTypes(node);
+		}
+		 
+		....make sure that the semantic handlers are called.
 	}
-	
+		
 	public void outAFuncCallOprocStmt(AFuncCallOprocStmt node)
 	{
 		super.outAFuncCallOprocStmt(node);
