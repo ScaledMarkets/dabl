@@ -85,86 +85,10 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	}
 	
 	public void outAOnamespace(AOnamespace node) {
-		
-		// Analyze functions calls, to verify that the actual argument types
-		// are compatible with the function declaration.
-		
-		for (AFuncCallOprocStmt funcCall : this.funcCalls) {
-			checkFuncCallTypes(funcCall);
-		}
-		
+				
 		....Check if there are unresolved symbols
 		
 		popNameScope();
-	}
-	
-	/**
-	 * 
-	 */
-	void checkFuncCallTypes(AFuncCallOprocStmt funcCall) {
-		
-		POidRef idRef = funcCall.getOidRef();
-		Annotation annot = getState().getOut(idRef);
-		assertThat(annot != null, "Symbol " + idRef.toString() + " unidentified");
-		assertThat(annot instanceof IdRefAnnotation,
-			"Symbol " + idRef.toString() + " was not recognized as an Id reference");
-		IdRefAnnotation idRefAnnot = (IdRefAnnotation)annot;
-		SymbolEntry entry = idRefAnnot.getDefiningSymbolEntry();
-		assertThat(entry instanceof DeclaredEntry,
-			"Symbol " + idRef.toString() + " is not declared");
-		DeclaredEntry declEntry = (DeclaredEntry)entry;
-		Node defNode = declEntry.getDefiningNode();
-		assertThat(defNode instanceof AOfunctionDeclaration,
-			"Id " + idRef.getName() + " does not refer to a function declaration");
-		
-		AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)defNode;
-		List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
-		for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
-			declaredArgTypes.add(mapTypeSpecToValueType(typeSpec));
-		}
-		
-		List<ValueType> argValueTypes = new LinkedList<ValueType>();
-		for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
-			
-			ExprAnnotation annot = getExprAnnotation(arg);
-			ValueType type = annot.getType();
-			argValueTypes.add(type);
-		}
-		
-		try { checkFunctionTypeConformance(declaredArgTypes, argValueTypes);
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public ValueType mapTypeSpecToValueType(POtypeSpec typeSpec) {
-		if (typeSpec instanceof ANumericOtypeSpec) return ValueType.numeric;
-		if (typeSpec instanceof AStringOtypeSpec) return ValueType.string;
-		if (typeSpec instanceof ALogicalOtypeSpec) return ValueType.logical;
-		if (typeSpec instanceof AArrayOtypeSpec) return ValueType.array;
-		throw new RuntimeException("Unexpected typespec: " + typeSpec.getClass().getName());
-	}
-	
-	/**
-	 * 
-	 */
-	public checkFunctionTypeConformance(List<ValueType> declaredTypes,
-		List<ValueType> actualTypes) throws Exception {
-	
-		assertThat(declaredTypes.size() == actualTypes.size(),
-			"Mismatch in number of actual (" + actualTypes.size() + ") and declared (" +
-			declaredTypes.size() + ") arguments");
-		
-		int i = 0;
-		for (ValueType declaredType : declaredTypes) {
-			ValueType actualType = actualTypes.get(i++);
-			assertThat(actualType == declaredType,
-				"Type " + actualType.toString() + " is not compatible with " +
-				declaredType.toString());
-		}
 	}
 	
 	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
@@ -335,21 +259,92 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		*/
 		SymbolEntry entry = resolveSymbol(node.getOidRef());
 		if (entry == null) {  // it is currently undeclared.
-			new IdentSemanticHandler(node.getOidRef()) {
-				public void semanticAction(DeclaredEntry entry) {
-					checkFuncCallTypes(node);
-				}
-			};
+			Node ref = node.getOidRef();
+			registerSemanticHandlerFor(ref,
+				// Handler is called by the IdentHandler that is created in
+				// DablBaseAdapter.outRefNode
+				new IdentSemanticHandler(node.getOidRef()) {
+					public void semanticAction(DeclaredEntry entry) {
+						checkFuncCallTypes(node);
+					}
+				});
 		} else {  // declaration found.
 			checkFuncCallTypes(node);
 		}
-		 
-		....make sure that the semantic handlers are called.
 	}
 		
 	public void outAFuncCallOprocStmt(AFuncCallOprocStmt node)
 	{
 		super.outAFuncCallOprocStmt(node);
+	}
+	
+	/**
+	 * 
+	 */
+	void checkFuncCallTypes(AFuncCallOprocStmt funcCall) {
+		
+		POidRef idRef = funcCall.getOidRef();
+		Annotation annot = getState().getOut(idRef);
+		assertThat(annot != null, "Symbol " + idRef.toString() + " unidentified");
+		assertThat(annot instanceof IdRefAnnotation,
+			"Symbol " + idRef.toString() + " was not recognized as an Id reference");
+		IdRefAnnotation idRefAnnot = (IdRefAnnotation)annot;
+		SymbolEntry entry = idRefAnnot.getDefiningSymbolEntry();
+		assertThat(entry instanceof DeclaredEntry,
+			"Symbol " + idRef.toString() + " is not declared");
+		DeclaredEntry declEntry = (DeclaredEntry)entry;
+		Node defNode = declEntry.getDefiningNode();
+		assertThat(defNode instanceof AOfunctionDeclaration,
+			"Id " + idRef.getName() + " does not refer to a function declaration");
+		
+		AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)defNode;
+		List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
+		for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
+			declaredArgTypes.add(mapTypeSpecToValueType(typeSpec));
+		}
+		
+		List<ValueType> argValueTypes = new LinkedList<ValueType>();
+		for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
+			
+			ExprAnnotation annot = getExprAnnotation(arg);
+			ValueType type = annot.getType();
+			argValueTypes.add(type);
+		}
+		
+		try { checkFunctionTypeConformance(declaredArgTypes, argValueTypes);
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public ValueType mapTypeSpecToValueType(POtypeSpec typeSpec) {
+		if (typeSpec instanceof ANumericOtypeSpec) return ValueType.numeric;
+		if (typeSpec instanceof AStringOtypeSpec) return ValueType.string;
+		if (typeSpec instanceof ALogicalOtypeSpec) return ValueType.logical;
+		if (typeSpec instanceof AArrayOtypeSpec) return ValueType.array;
+		throw new RuntimeException("Unexpected typespec: " + typeSpec.getClass().getName());
+	}
+	
+	/**
+	 * 
+	 */
+	public checkFunctionTypeConformance(List<ValueType> declaredTypes,
+		List<ValueType> actualTypes) throws Exception {
+	
+		assertThat(declaredTypes.size() == actualTypes.size(),
+			"Mismatch in number of actual (" + actualTypes.size() + ") and declared (" +
+			declaredTypes.size() + ") arguments");
+		
+		int i = 0;
+		for (ValueType declaredType : declaredTypes) {
+			ValueType actualType = actualTypes.get(i++);
+			assertThat(actualType == declaredType,
+				"Type " + actualType.toString() + " is not compatible with " +
+				declaredType.toString());
+		}
 	}
 	
 	

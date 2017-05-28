@@ -86,6 +86,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
     protected void outRefNode(Node node, List<TId> path, VisibilityChecker checker)
     {
     	// Node can be a AOidRef or a AOqualifiedNameRef
+    	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
     	
 		// Find the declaration of the id. If it exists, annotate it.
 		
@@ -100,6 +101,10 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 			new IdentHandler(this, path, getCurrentNameScope()) {
 				public void resolveRetroactively(DeclaredEntry entry) {
 					DablBaseAdapter.this.resolveRetroactively(node, checker, entry);
+					
+					// If there is a semantic handler, execute it.
+					IdentSemanticHandler h = getIdentSemanticHandler(node);
+					if (h != null) e.semanticAction(entry);
 				}
 				// Note: the base class, IdentHandler, contains a method
 				// checkForPathResolution, which calls resolveRetroactively, 
@@ -112,6 +117,19 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 				"Unexpected: entry is a " + entry.getClass().getName());
 			resolveRetroactively(node, checker, (DeclaredEntry)entry);
 		}
+	}
+	
+	protected void registerSemanticHandlerFor(Node ref) {
+		
+    	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
+		....register this handler
+	}
+
+	protected IdentSemanticHandler getIdentSemanticHandler(Node node) {
+		
+    	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
+    	
+    	....
 	}
 	
 	/**
