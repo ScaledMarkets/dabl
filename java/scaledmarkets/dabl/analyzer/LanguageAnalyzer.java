@@ -251,12 +251,9 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		}
 		
 		// Add a semantic check: that function argument types and declared types match.
-		/*
-		If function declaration has been processed, perform the check now; otherwise,
-		add it to the set of checks that should be performed when the function's
-		declaration is processed.
-		
-		*/
+		// If function declaration has been processed, perform the check now; otherwise,
+		// add it to the set of checks that should be performed when the function's
+		// declaration is processed.
 		SymbolEntry entry = resolveSymbol(node.getOidRef());
 		if (entry == null) {  // it is currently undeclared.
 			Node ref = node.getOidRef();

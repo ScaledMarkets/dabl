@@ -18,6 +18,8 @@ public class JavaFunctionHandler implements FunctionHandler {
 		
 		// Verify that the function exists in the class, and that it is static.
 		
+		// 
+		
 		
 		// Call the function on the class, passing the argument values.
 		
