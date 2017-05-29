@@ -34,11 +34,15 @@ public class TaskExecutor implements Executor {
 		Parser parser = new Parser(lexer);
 		Start start = parser.parse();
 		System.out.println("Syntax is correct");
+		
+		// Create a import handler that will analyze according to the rules of
+		// the TaskProgramAnalyzer.
+		ImportHandler importHandler = ....
 
 		// Create an analysis context and analyze the AST.
 		TaskContext context = new TaskContext();
 		context.getASTs().add(start);
-		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(context);
+		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(context, importHandler);
 		start.apply(analyzer);
 		
 		// Create a TaskExecutor, which will execute the actions defined by
@@ -46,8 +50,8 @@ public class TaskExecutor implements Executor {
 		// process status accordingly.
 		int status;
 		try {
-			status = (new TaskExecutor(context)).execute();
-			Runtime.exit(status);
+			(new TaskExecutor(context)).execute();
+			status = 0;
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -73,7 +77,7 @@ public class TaskExecutor implements Executor {
 	/**
 	 * Visit each proc stmt and execute it.
 	 */
-	public int execute() throws Throwable {
+	public void execute() throws Throwable {
 		
 		performProcStmts(taskContext.getProgram().getOprocStmt(), true);
 	}
@@ -97,7 +101,7 @@ public class TaskExecutor implements Executor {
 				// 
 				POidRef pid = funcCall.getOidRef();
 				AOidRef idRef = (AOidRef)pid;
-				DeclaredEntry entry = ....getHelper().getDeclaredEntryForIdRef(idRef);
+				DeclaredEntry entry = getHelper().getDeclaredEntryForIdRef(idRef);
 				
 				AOfunctionDeclaration funcDecl = ....
 				

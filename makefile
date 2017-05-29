@@ -85,18 +85,12 @@ config:
 	echo "}" >> $(src_dir)/$(package)/Config.java
 
 # ------------------------------------------------------------------------------
-# Create parsers.
+# Create parser.
 
 dabl_parser: config
 	sable_out_dir=$(sable_dabl_out_dir) && \
 		package=$(package) && \
 		grammar_file=dabl.sablecc && \
-		make -f make_parser.makefile all
-
-task_parser:
-	sable_out_dir=$(sable_task_out_dir) && \
-		package=$(task_parser_package) && \
-		grammar_file=task.sablecc && \
 		make -f make_parser.makefile all
 
 # ------------------------------------------------------------------------------

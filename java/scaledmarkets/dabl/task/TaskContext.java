@@ -17,8 +17,8 @@ public class TaskContext extends CompilerState {
 		this.program = program;
 	}
 	
-	public AOprogram getProgram() {
-		return (AOprogram)(start.getPOprogram());
+	public .....AOprogram getProgram() {
+		return (AOprogram)(start.getPOprogram());.....
 	}
 	
 	public Object getValueForVariable(String variableName) {

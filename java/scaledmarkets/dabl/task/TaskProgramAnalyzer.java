@@ -69,8 +69,6 @@ public class TaskProgramAnalyzer extends LanguageCoreAnalyzer {
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
 		super(node);
 		taskCount++;
-		if (taskCount > 1) throw new RuntimeException(
-			"More than one task found");
 	}
 	
 	public void inAOfunctionDeclaration(AOfunctionDeclaration node) {
