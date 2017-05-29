@@ -1,9 +1,9 @@
 package scaledmarkets.dabl.task;
 
-import scaledmarkets.dabl.task.lexer.*;
-import scaledmarkets.dabl.task.node.*;
-import scaledmarkets.dabl.task.parser.*;
-import scaledmarkets.dabl.task.analyzer.*;
+import scaledmarkets.dabl.lexer.*;
+import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.parser.*;
+import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.analyzer.ValueType;
 
