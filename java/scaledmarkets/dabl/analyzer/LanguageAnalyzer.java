@@ -276,7 +276,9 @@ public class LanguageAnalyzer extends DablBaseAdapter
 	}
 	
 	/**
-	 * 
+	 * Verify that the actual arguments of the specified function call match the
+	 * declared argument types for the function. It is assumed that the function
+	 * declaration has been analyzed.
 	 */
 	void checkFuncCallTypes(AFuncCallOprocStmt funcCall) {
 		
@@ -308,14 +310,15 @@ public class LanguageAnalyzer extends DablBaseAdapter
 			argValueTypes.add(type);
 		}
 		
-		try { checkFunctionTypeConformance(declaredArgTypes, argValueTypes);
+		try { ValueType.checkTypeListConformance(declaredArgTypes, argValueTypes);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 	}
 	
 	/**
-	 * 
+	 * Map the node types that are used to specify a DABL expression type, to the
+	 * actual value types that are defined by the language.
 	 */
 	public ValueType mapTypeSpecToValueType(POtypeSpec typeSpec) {
 		if (typeSpec instanceof ANumericOtypeSpec) return ValueType.numeric;
@@ -323,25 +326,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		if (typeSpec instanceof ALogicalOtypeSpec) return ValueType.logical;
 		if (typeSpec instanceof AArrayOtypeSpec) return ValueType.array;
 		throw new RuntimeException("Unexpected typespec: " + typeSpec.getClass().getName());
-	}
-	
-	/**
-	 * 
-	 */
-	public checkFunctionTypeConformance(List<ValueType> declaredTypes,
-		List<ValueType> actualTypes) throws Exception {
-	
-		assertThat(declaredTypes.size() == actualTypes.size(),
-			"Mismatch in number of actual (" + actualTypes.size() + ") and declared (" +
-			declaredTypes.size() + ") arguments");
-		
-		int i = 0;
-		for (ValueType declaredType : declaredTypes) {
-			ValueType actualType = actualTypes.get(i++);
-			assertThat(actualType == declaredType,
-				"Type " + actualType.toString() + " is not compatible with " +
-				declaredType.toString());
-		}
 	}
 	
 	

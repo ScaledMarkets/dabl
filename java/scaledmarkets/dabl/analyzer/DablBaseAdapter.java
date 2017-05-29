@@ -126,11 +126,14 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 	 * Register the specified semantic handler for the specified node. The node must
 	 * be a symbol reference - specifically a AOidRef or a AOqualifiedNameRef.
 	 * A semantic handlers for a symbol reference is invoked when the symbol reference
-	 * is matched with the symbol declaration.
+	 * is matched with the symbol declaration. Only one semantic handler can be
+	 * registered for a given node.
 	 */
 	protected void registerSemanticHandlerFor(Node ref, IdentSemanticHandler handler) {
 		
     	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
+    	assertThat(this.identSemanticHandlers.get(ref) == null,
+    		"A semantic handler for node '" + ref.toString() + "' is already registered");
 		this.identSemanticHandlers.put(ref, handler);
 	}
 

@@ -5,6 +5,7 @@ import scaledmarkets.dabl.task.node.*;
 import scaledmarkets.dabl.task.parser.*;
 import scaledmarkets.dabl.task.analyzer.*;
 import scaledmarkets.dabl.exec.*;
+import scaledmarkets.dabl.analyzer.ValueType;
 
 import java.util.LinkedList;
 import java.io.Reader;
@@ -122,8 +123,7 @@ public class TaskExecutor implements Executor {
 					Create target variable, of the specified type
 				}
 				
-				checkTypeConformance(....declaredArgTypes, ....argValueTypes, 
-						....declaredTargetType, ....targetVariableRef);
+				ValueType.checkTypeListConformance(....declaredArgTypes, ....argValueTypes);
 				
 				FunctionHandler handler = getFunctionHandler(lang);
 				
