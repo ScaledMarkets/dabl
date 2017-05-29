@@ -18,27 +18,24 @@ import java.util.LinkedList;
  *	Add files declarations to the namespace.
  *	Evaluate string literals and string expressions.
  */
-public class LanguageAnalyzer extends DablBaseAdapter
+public class LanguageAnalyzer extends LanguageCoreAnalyzer
 {
-	protected ImportHandler importHandler;
-	protected NameScopeEntry enclosingScopeEntry;
-	protected NameScope namespaceNamescope;
-	
 	public LanguageAnalyzer(CompilerState state, ImportHandler importHandler) {
-		super(state);
-		this.importHandler = importHandler;
-		
-		if (state.globalScope == null) {
-			state.setGlobalScope(pushNameScope(new NameScope("Global", null, null)));
-		}
+		super(state, importHandler);
 	}
 	
-	public ImportHandler getImportHandler() { return importHandler; }
 	
-	public NameScopeEntry getEnclosingScopeEntry() { return enclosingScopeEntry; }
-	
-	public NameScope getNamespaceNamescope() { return namespaceNamescope; }
-	
+	/* Unsupported features. */
+
+
+	public void inAOtypographicDeclaration(AOfilesDeclaration node) {
+		System.out.println("Not supported yet: " + node.getClass().getName());
+	}
+
+	public void inAOtranslationDeclaration(AOfilesDeclaration node) {
+		System.out.println("Not supported yet: " + node.getClass().getName());
+	}
+
 	
 	/* Resolve references to declared names. */
 	
@@ -66,54 +63,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
     	outRefNode(node, path, new PublicVisibilityChecker(path));
     }
     
-	
-	/* Only onamespace and otask_declaration define name scopes. */
-	
-	public void inAOnamespace(AOnamespace node) {
-		LinkedList<TId> path = node.getPath();
-		String name = Utilities.createNameFromPath(path);
-		
-		NameScope enclosingScope = getCurrentNameScope();
-		NameScope newScope = createNameScope(name, node);  // pushes name scope
-											// and annotates the namespace Node.
-		NameScopeEntry entry = new NameScopeEntry(newScope, name, enclosingScope);
-		try { enclosingScope.addEntry(name, entry); } catch (Exception ex) {
-			throw new RuntimeException(ex);
-		}
-		this.enclosingScopeEntry = entry;
-		this.namespaceNamescope = newScope;
-	}
-	
-	public void outAOnamespace(AOnamespace node) {
-				
-		....Check if there are unresolved symbols
-		
-		popNameScope();
-	}
-	
-	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
-		
-		importNamespace(Utilities.createNameFromPath(node.getId()));
-	}
-	
-	
-	/* Task declarations. */
-	
-	public void inAOtaskDeclaration(AOtaskDeclaration node) {
-		
-		TId id = node.getName();
-		NameScope scope = createNameScope(id, node);
-		
-		POscope p = node.getOscope();
-		if (p instanceof APublicOscope) scope.getSelfEntry().setDeclaredPublic();
-		
-		resolveForwardReferences(scope.getSelfEntry());
-	}
-	
-	public void outAOtaskDeclaration(AOtaskDeclaration node) {
-		popNameScope();
-	}
-	
 	
 	/* Add input and output names to their enclosing task's scope. */
 	
@@ -165,27 +114,6 @@ public class LanguageAnalyzer extends DablBaseAdapter
 		
 		// Verify that artifact does not assert tested with itself.
 		//....
-	}
-	
-	
-	/* Add function declarations to the namespace. */
-	
-	public void inAOfunctionDeclaration(AOfunctionDeclaration node)
-	{
-		TId id = node.getName();
-		DeclaredEntry entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
-		try {
-			addSymbolEntry(entry, id);
-		} catch (SymbolEntryPresent ex) {
-			throw new RuntimeException(ex);
-		}
-		if (node.getOscope() instanceof APublicOscope) entry.setDeclaredPublic();
-		resolveForwardReferences(entry);
-	}
-
-	public void outAOfunctionDeclaration(AOfunctionDeclaration node)
-	{
-		super.outAOfunctionDeclaration(node);
 	}
 	
 	
