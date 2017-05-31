@@ -102,6 +102,17 @@ public class LanguageCoreAnalyzer extends DablBaseAdapter {
 	{
 		super.outAOfunctionDeclaration(node);
 	}
-	
+
+	/**
+	 * Map the node types that are used to specify a DABL expression type, to the
+	 * actual value types that are defined by the language.
+	 */
+	public static ValueType mapTypeSpecToValueType(POtypeSpec typeSpec) {
+		if (typeSpec instanceof ANumericOtypeSpec) return ValueType.numeric;
+		if (typeSpec instanceof AStringOtypeSpec) return ValueType.string;
+		if (typeSpec instanceof ALogicalOtypeSpec) return ValueType.logical;
+		if (typeSpec instanceof AArrayOtypeSpec) return ValueType.array;
+		throw new RuntimeException("Unexpected typespec: " + typeSpec.getClass().getName());
+	}
 }
 

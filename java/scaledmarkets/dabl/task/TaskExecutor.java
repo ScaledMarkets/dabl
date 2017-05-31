@@ -22,6 +22,7 @@ public class TaskExecutor implements Executor {
 	
 	private TaskContext context;
 	private ErrorHandler errorHandler;
+	private Helper helper;
 	
 	public static void main(String[] args) {
 
@@ -72,6 +73,7 @@ public class TaskExecutor implements Executor {
 	
 	TaskExecutor(TaskContext context) {
 		this.context = context;
+		this.helper = new Helper(context);
 	}
 	
 	/**
@@ -87,7 +89,7 @@ public class TaskExecutor implements Executor {
 	 * procedural statment may invoke a error handler - which contains 
 	 * procedural statements. If 'recover' is true, then an error results
 	 * in the invocation of the current error handler; otherwise, the error
-	 * is thrown.
+	 * is thrown. Recursive.
 	 */
 	protected void performProcStmts(List<POprocStmt> procStmts, boolean recover) throws Throwable {
 		
@@ -98,42 +100,58 @@ public class TaskExecutor implements Executor {
 				AFuncCallOprocStmt funcCall = (AFuncCallOprocStmt)p;
 				// oid_ref oexpr* otarget_opt
 				
-				// 
+				// Locate the function's declaration.
 				POidRef pid = funcCall.getOidRef();
 				AOidRef idRef = (AOidRef)pid;
 				DeclaredEntry entry = getHelper().getDeclaredEntryForIdRef(idRef);
+				assertThat(entry != null, "No entry found for function " + idRef.toString());
+				Node n = entry.getDefiningNode();
+				assertThat(n instanceof AOfunctionDeclaration,
+					idRef.toString() + " was expected to be a function declaration");
+				AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)n;
 				
-				AOfunctionDeclaration funcDecl = ....
+				// Determine the function language and native name.
+				String lang = getHelper().getStringLiteralValue(funcDecl.getNativeLanguage());
+				String funcNativeName = getHelper().getStringLiteralValue(funcDecl.getNativeName());
 				
-				TId funcDecl.getName();
-				LinkedList<POtypeSpec> funcDecl.getOtypeSpec();
-				POstringLiteral funcDecl.getNativeLanguage();
-				POstringLiteral funcDecl.getNativeName();
-				POtypeSpec funcDecl.getReturnType();
-				
-				String lang = ....getHelper().getStringLiteralValue(funcDecl.getNativeLanguage());
-				
-				
-				
-				
-				LinkedList<POexpr> pexs = funcCall.getOexpr();
-				List<Object> argValues = new LinkedList<Object>();
-				
-				
-				
-				
+				// Allocate a variable into which to place the function return result, if any.
 				POtargetOpt ptopt = funcCall.getOtargetOpt();
-				if there is a target {
-					Create target variable, of the specified type
+				Object[] targetVariableRef = null;
+				if (ptopt instanceof ATargetOtargetOpt) { // there is a target
+					// Create target variable.
+					targetVariableRef = new Object[1];
 				}
 				
-				ValueType.checkTypeListConformance(....declaredArgTypes, ....argValueTypes);
+				// Obtain the function call actual arguments.
+				LinkedList<POexpr> pexs = funcCall.getOexpr();
+				List<Object> argValues = getHelper().getFunctionCallArgValues(funcCall);
 				
+				// Determine the function declared argument types and actual argument types.
+				List<ValueType> declaredArgTypes = getHelper().getFunctionDeclTypes(funcDecl);
+				List<ValueType> argValueTypes = getHelper().getFunctionCallTypes(funcCall);
+				
+				// Check that the actual argument types are compatible with the declared types.
+				ValueType.checkTypeListAssignabilityTo(argValueTypes, declaredArgTypes);
+				
+				// Obtain a handler that can be used to perform the function call
+				// in the function's language.
 				FunctionHandler handler = getFunctionHandler(lang);
 				
+				// Call the function.
 				try {
-					handler.callFunction(funcNativeName, declaredArgTypes, argValues, 
-						declaredTargetType, targetVariableRef);
+					handler.callFunction(funcNativeName, argValues, targetVariableRef);
+					
+					if (targetVariableRef != null) { // there is a target
+						// Transfer return value to target.
+						Object returnValue = targetVariableRef[0];
+						this.context.setVariable(ptopt.toString(), returnValue);
+						
+						// Check that the value that was returned conforms to the
+						// declared return type.
+						POtypeSpec ptp = funcDecl.getReturnType();
+						ValueType returnType = LanguageCoreAnalyzer.mapTypeSpecToValueType(ptp);
+						returnType.checkNativeTypeAssignabilityFrom(returnType.getClass());
+					}
 				} catch (Throwable t) {
 					
 					if (errorHandler == null) throw t;
@@ -178,4 +196,6 @@ public class TaskExecutor implements Executor {
 		
 		return (FunctionHandler)obj;
 	}
+	
+	protected Helper getHelper() { return this.helper; }
 }

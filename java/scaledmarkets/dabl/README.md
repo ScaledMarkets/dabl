@@ -228,8 +228,30 @@ The actual dependency graph structures that are created are illustrated below.
 
 ### Task Executor
 
-TBD
+When the DABL `DefaultExecutor` executes a task, it does so by creating a container,
+transporting the files required for the task into a location accessible to the
+container, and then streaming to the container a “task program”.
 
+A task program adheres to DABL syntax, but only a subset of the DABL language
+is allowed. Specifically, the following statement types are rejected by the
+`TaskProgramAnalyzer`, which executes in the container:
+
+* `artifact_decl`
+* `repo_decl`
+* `files_decl`
+* `typographic_decl` (ignored)
+* `translation_decl` (ignored)
+
+Thus, only these are allowed:
+
+* `import_decl`
+* `task_decl`
+* `function_decl`
+
+Also, only one `task_decl` is permitted in a task program.
+
+When the `TaskProgramAnalyzer` completes successfully, the `TaskExecutor` (also
+in the container) executes the task.
 
 ### Docker Daemon Interface
 

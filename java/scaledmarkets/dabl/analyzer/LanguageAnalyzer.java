@@ -225,35 +225,14 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 			"Id " + idRef.getName() + " does not refer to a function declaration");
 		
 		AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)defNode;
-		List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
-		for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
-			declaredArgTypes.add(mapTypeSpecToValueType(typeSpec));
-		}
 		
-		List<ValueType> argValueTypes = new LinkedList<ValueType>();
-		for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
-			
-			ExprAnnotation annot = getExprAnnotation(arg);
-			ValueType type = annot.getType();
-			argValueTypes.add(type);
-		}
+		List<ValueType> declaredArgTypes = getHelper().getFunctionDeclTypes(funcDecl);
+		List<ValueType> argValueTypes = getHelper().getFunctionCallTypes(funcCall);
 		
-		try { ValueType.checkTypeListConformance(declaredArgTypes, argValueTypes);
+		try { ValueType.checkTypeListAssignabilityTo(argValueTypes, declaredArgTypes);
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-	}
-	
-	/**
-	 * Map the node types that are used to specify a DABL expression type, to the
-	 * actual value types that are defined by the language.
-	 */
-	public ValueType mapTypeSpecToValueType(POtypeSpec typeSpec) {
-		if (typeSpec instanceof ANumericOtypeSpec) return ValueType.numeric;
-		if (typeSpec instanceof AStringOtypeSpec) return ValueType.string;
-		if (typeSpec instanceof ALogicalOtypeSpec) return ValueType.logical;
-		if (typeSpec instanceof AArrayOtypeSpec) return ValueType.array;
-		throw new RuntimeException("Unexpected typespec: " + typeSpec.getClass().getName());
 	}
 	
 	

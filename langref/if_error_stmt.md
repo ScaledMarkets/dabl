@@ -32,3 +32,6 @@ process status is set to 0. Otherwise, the task's final process status is non-ze
 An error handler sequence of procedural statements may contain an `if error` statement.
 If so, that `if error` defines a new error handler that permantently replaces the
 one that is currently installed.
+
+If a function call within an error handler returns a value (i.e., has a target),
+the value is scoped to the task.

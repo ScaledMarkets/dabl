@@ -2,6 +2,7 @@ package scaledmarkets.dabl.task;
 
 import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.exec.ExpressionContext;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Date;
 
@@ -12,6 +13,8 @@ import java.util.Date;
  * the environment in which the task runs (its container).
  */
 public class TaskContext extends CompilerState {
+	
+	private Map<String, Object> variables = new HashMap<String, Object>();
 	
 	public TaskContext(AOprogram program) {
 		this.program = program;
@@ -33,5 +36,13 @@ public class TaskContext extends CompilerState {
 	public Date getDateOfMostRecentChange(String name) throws Exception {
 		//....
 		throw new RuntimeException("Not implemented yet");
+	}
+	
+	public void setVariable(String name, Object value) {
+		variables.put(name, value);
+	}
+	
+	public Object getVariable(String name) {
+		return variables.get(name);
 	}
 }

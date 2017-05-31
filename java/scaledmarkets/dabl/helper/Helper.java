@@ -412,6 +412,40 @@ public class Helper {
 	}
 	
 	/**
+	 * 
+	 */
+	public List<ValueType> getFunctionDeclTypes(AOfunctionDeclaration funcDecl) {
+		
+		List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
+		for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
+			declaredArgTypes.add(mapTypeSpecToValueType(typeSpec));
+		}
+		return declaredArgTypes;
+	}
+	
+	/**
+	 * 
+	 */
+	public List<ValueType> getFunctionCallTypes(AFuncCallOprocStmt funcCall) {
+		List<ValueType> argValueTypes = new LinkedList<ValueType>();
+		for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
+			
+			ExprAnnotation annot = getExprAnnotation(arg);
+			ValueType type = annot.getType();
+			argValueTypes.add(type);
+		}
+		return argValueTypes;
+	}
+	
+	/**
+	 * 
+	 */
+	public List<Object> getFunctionCallArgValues(AFuncCallOprocStmt funcCall) {
+		
+		....
+	}
+
+	/**
 	 * If expr is false, print the message and throw an Exception.
 	 */
 	public static void assertThat(boolean expr, String msg) throws Exception {

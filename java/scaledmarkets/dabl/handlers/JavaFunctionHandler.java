@@ -5,7 +5,7 @@ import scaledmarkets.task.FunctionHandler;
 public class JavaFunctionHandler implements FunctionHandler {
 	
 	public void callFunction(String funcNativeName, Object[] args,
-		....targetVariableRef) throws Exception {
+		Object[] targetVariableRef) throws Exception {
 		
 		// Parse the parts of the function name.
 		String functionClassName = ....
