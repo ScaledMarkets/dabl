@@ -360,14 +360,6 @@ public class Helper {
 	 */
 	public DeclaredEntry getDeclaredEntryForIdRef(AOidRef idRef) {
 		
-		....
-	}
-	
-	/**
-	 * 
-	 */
-	public AOrepoDeclaration getRepoDeclFromRepoRef(AOidRef reposIdRef) {
-		
 		Annotation a = state.getOut(reposIdRef);
 		if (a == null) throw new RuntimeException(
 			"Unable to identify " + reposIdRef.getId());
@@ -378,7 +370,15 @@ public class Helper {
 		SymbolEntry e = reposIdRefAnnotation.getDefiningSymbolEntry();
 		if (! (e instanceof DeclaredEntry)) throw new RuntimeException(
 			"Expected a DeclaredEntry, but found a " + e.getClass().getName());
-		DeclaredEntry de = (DeclaredEntry)e;
+		return (DeclaredEntry)e;
+	}
+	
+	/**
+	 * 
+	 */
+	public AOrepoDeclaration getRepoDeclFromRepoRef(AOidRef reposIdRef) {
+		
+		DeclaredEntry de = getDeclaredEntryForIdRef(reposIdRef);
 		Node n = de.getDefiningNode();
 		if (! (n instanceof AOrepoDeclaration)) throw new RuntimeException(
 			"Expected a AOrepoDeclaration, but found a " + e.getClass().getName());

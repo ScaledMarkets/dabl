@@ -2,6 +2,7 @@ package scaledmarkets.dabl.task;
 
 import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.exec.ExpressionContext;
+import scaledmarkets.dabl.exec.ExpressionEvaluator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Date;

@@ -14,5 +14,7 @@ public abstract class TaskContainer {
 	 */
 	public abstract InputStream execute(int timeout) throws Exception;
 	
+	public abstract int getExitStatus() throws Exception;
+	
 	public abstract void destroy() throws Exception;
 }

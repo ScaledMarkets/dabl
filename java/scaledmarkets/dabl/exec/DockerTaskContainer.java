@@ -41,6 +41,10 @@ public class DockerTaskContainer extends TaskContainer {
 		return containerOutput;
 	}
 	
+	public int getExitStatus() throws Exception {
+		return dockerContainer.getExitStatus();
+	}
+
 	public void destroy() throws Exception {
 		
 		dockerContainer.destroy();

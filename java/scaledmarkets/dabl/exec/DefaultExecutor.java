@@ -112,15 +112,16 @@ public class DefaultExecutor implements Executor {
 				// Send the container's output to this process's stdout.
 				Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
 				
+				// Obtain the container's exit status.
+				int exitStatus = taskContainer.getExitStatus();
+				this.dablContext.setTaskStatus(task.getName(), exitStatus);
+				
 				// Write the outputs from the workspace to the output directories.
 				(new ArtifactOperator(this.helper) {
 					protected void operation(PatternSets patternSets) throws Exception {
 						patternSets.getRepo().putFiles(workspace, patternSets);
 					}
 				}).operateOnArtifacts(helper.getPrimaryNamespaceFullName(), task.getName(), outputs);
-				
-				....dablContext.setTaskStatus(....);
-				
 				
 				// Destroy the container, if desired.
 				taskContainer.destroy();
