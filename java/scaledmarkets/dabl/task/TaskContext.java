@@ -16,29 +16,27 @@ public class TaskContext extends CompilerState {
 	
 	private ExpressionContext exprContext = new ExpressionContext() {
 		
+		private Map<String, Object> variableValues = new HashMap<String, Object>();
+		
 		public Object getValueForVariable(String variableName) {
-			return this.get(variableName);
+			return this.variableValues.get(variableName);
 		}
 		
 		void setValueForVariable(String name, Object value) {
-			this.put(name, value);
+			this.variableValues.put(name, value);
 		}
 		
 		public int getTaskStatus(String taskName) throws Exception {
-			....
+			throw new Exception("Status of other tasks is not available from a task");
 		}
 		
-		int setTaskStatus(String taskName, int status) throws Exception {
-			....
-		}
-		
-		public Date getDateOfMostRecentChange(String name) throws Exception {
+		public Date getDateOfMostRecentChange(String inputOrOutputName) throws Exception {
 			....
 		}
 	}
 	
 	private ExpressionEvaluator exprEvaluator = new ExpressionEvaluator(exprContext);
-	
+		
 	/**
 	 * 
 	 */
@@ -72,7 +70,7 @@ public class TaskContext extends CompilerState {
 	/**
 	 * 
 	 */
-	public int setTaskStatus(String taskName, int status) throws Exception {
+	public void setTaskStatus(String taskName, int status) throws Exception {
 		return this.exprContext.putTaskStatus(taskName, status);
 	}
 	

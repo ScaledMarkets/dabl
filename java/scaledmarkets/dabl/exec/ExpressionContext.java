@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Runtime context in which a Dabl expression is evaluated.
  */
-public abstract class ExpressionContext extends HashMap {
+public abstract class ExpressionContext {
 	
 	/**
 	 * 
@@ -23,5 +23,5 @@ public abstract class ExpressionContext extends HashMap {
 	 * Return the most recent date/time at which the input or output represented
 	 * by the specified identifier was changed.
 	 */
-	public abstract Date getDateOfMostRecentChange(String name) throws Exception;
+	public abstract Date getDateOfMostRecentChange(String inputOrOutputName) throws Exception;
 }

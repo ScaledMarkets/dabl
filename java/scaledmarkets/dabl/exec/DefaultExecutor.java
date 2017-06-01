@@ -119,6 +119,9 @@ public class DefaultExecutor implements Executor {
 					}
 				}).operateOnArtifacts(helper.getPrimaryNamespaceFullName(), task.getName(), outputs);
 				
+				....dablContext.setTaskStatus(....);
+				
+				
 				// Destroy the container, if desired.
 				taskContainer.destroy();
 				this.taskContainerFactory.containerWasDestroyed(taskContainer);
