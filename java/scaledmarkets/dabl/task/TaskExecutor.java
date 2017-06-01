@@ -81,7 +81,7 @@ public class TaskExecutor implements Executor {
 	 */
 	public void execute() throws Throwable {
 		
-		performProcStmts(taskContext.getProgram().getOprocStmt(), true);
+		performProcStmts(taskContext.getTaskDeclaration().getOprocStmt(), true);
 	}
 	
 	/**
@@ -122,9 +122,12 @@ public class TaskExecutor implements Executor {
 					targetVariableRef = new Object[1];
 				}
 				
-				// Obtain the function call actual arguments.
-				LinkedList<POexpr> pexs = funcCall.getOexpr();
-				List<Object> argValues = getHelper().getFunctionCallArgValues(funcCall);
+				// Obtain the function call actual argument expressions, and evaluate
+				// each one.
+				List<Object> argValues = new LinkedList<Object>();
+				for (POexpr expr : funcCall.getOexpr()) {
+					argValues.add(this.context.evaluateExpression(expr));
+				}
 				
 				// Determine the function declared argument types and actual argument types.
 				List<ValueType> declaredArgTypes = getHelper().getFunctionDeclTypes(funcDecl);
@@ -144,7 +147,7 @@ public class TaskExecutor implements Executor {
 					if (targetVariableRef != null) { // there is a target
 						// Transfer return value to target.
 						Object returnValue = targetVariableRef[0];
-						this.context.setVariable(ptopt.toString(), returnValue);
+						this.context.setValueForVariable(ptopt.toString(), returnValue);
 						
 						// Check that the value that was returned conforms to the
 						// declared return type.

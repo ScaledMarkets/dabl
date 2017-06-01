@@ -14,35 +14,79 @@ import java.util.Date;
  */
 public class TaskContext extends CompilerState {
 	
-	private Map<String, Object> variables = new HashMap<String, Object>();
-	
-	public TaskContext(AOprogram program) {
-		this.program = program;
+	private ExpressionContext exprContext = new ExpressionContext() {
+		
+		public Object getValueForVariable(String variableName) {
+			return this.get(variableName);
+		}
+		
+		void setValueForVariable(String name, Object value) {
+			this.put(name, value);
+		}
+		
+		public int getTaskStatus(String taskName) throws Exception {
+			....
+		}
+		
+		int setTaskStatus(String taskName, int status) throws Exception {
+			....
+		}
+		
+		public Date getDateOfMostRecentChange(String name) throws Exception {
+			....
+		}
 	}
 	
-	public .....AOprogram getProgram() {
-		return (AOprogram)(start.getPOprogram());.....
+	private ExpressionEvaluator exprEvaluator = new ExpressionEvaluator(exprContext);
+	
+	/**
+	 * 
+	 */
+	public AOtaskDeclaration getTaskDeclaration() throws Exception {
+		List<AOtaskDeclaration> taskDecls = getHelper().getTaskDeclarations();
+		assertThat(taskDecls.size() == 1, "There must be one task: there are " + taskDecls.size());
+		return taskDecls.get(0);
 	}
 	
+	/**
+	 * 
+	 */
 	public Object getValueForVariable(String variableName) {
-		return get(variableName);
+		return this.exprContext.getValueForVariable(variableName);
 	}
 	
+	/**
+	 * 
+	 */
+	public void setValueForVariable(String name, Object value) {
+		this.exprContext.setValueForVariable(name, value);
+	}
+	
+	/**
+	 * 
+	 */
 	public int getTaskStatus(String taskName) throws Exception {
-		throw new Exception(
-			"status of tasks is not available in a task's individual runtime context");
+		return this.exprContext.getTaskStatus(taskName);
 	}
 	
+	/**
+	 * 
+	 */
+	public int setTaskStatus(String taskName, int status) throws Exception {
+		return this.exprContext.putTaskStatus(taskName, status);
+	}
+	
+	/**
+	 * 
+	 */
 	public Date getDateOfMostRecentChange(String name) throws Exception {
-		//....
-		throw new RuntimeException("Not implemented yet");
+		return this.exprContext.getDateOfMostRecentChange(name);
 	}
 	
-	public void setVariable(String name, Object value) {
-		variables.put(name, value);
-	}
-	
-	public Object getVariable(String name) {
-		return variables.get(name);
+	/**
+	 * Evaluate the specified expression in the context of the current task.
+	 */
+	public Object evaluateExpr(POexpr expr) {
+		return this.exprEvaluator.evaluateExpr(expr);
 	}
 }

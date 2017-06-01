@@ -355,6 +355,9 @@ public class Helper {
 		return (AOartifactDeclaration)n;
 	}
 	
+	/**
+	 * 
+	 */
 	public DeclaredEntry getDeclaredEntryForIdRef(AOidRef idRef) {
 		
 		....
@@ -437,14 +440,6 @@ public class Helper {
 		return argValueTypes;
 	}
 	
-	/**
-	 * 
-	 */
-	public List<Object> getFunctionCallArgValues(AFuncCallOprocStmt funcCall) {
-		
-		....
-	}
-
 	/**
 	 * If expr is false, print the message and throw an Exception.
 	 */
