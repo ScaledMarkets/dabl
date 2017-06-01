@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Date;
 
 /**
- * The execution context of the task. Provides a task with access to the runtime,
+ * The container-side execution context of the task. Provides a task with access to the runtime,
  * when the task is executed. This can be used to obtain environment variables, etc.,
  * when the task is actually performed. A TaskContext is only available in
  * the environment in which the task runs (its container).
@@ -31,7 +31,7 @@ public class TaskContext extends CompilerState {
 		}
 		
 		public Date getDateOfMostRecentChange(String inputOrOutputName) throws Exception {
-			....
+			throw new Exception("Change history of an input or output is not available from a task");
 		}
 	}
 	

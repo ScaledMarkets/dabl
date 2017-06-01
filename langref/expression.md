@@ -68,3 +68,10 @@ For example, the length of array A can be obtained via,
 
 `A.length`
 
+## Contextual Restrictions
+
+A function return variable value can only be referenced from within a task.
+
+A `newer than` or `older than` expression can only appear outside of a task.
+
+A `succeeded` or `failed` expression can only appear outside of a task.
