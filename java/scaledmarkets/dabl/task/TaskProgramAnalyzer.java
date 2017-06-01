@@ -10,12 +10,12 @@ import java.io.StringReader;
  */
 public class TaskProgramAnalyzer extends LanguageCoreAnalyzer {
 	
-	public TaskProgramAnalyzer(TaskContext contex, ImportHandler importHandlert) {
+	public TaskProgramAnalyzer(TaskContext contex, ImportHandler importHandler) {
 		
 		super(context, importHandler);
 		
 		Reader reader = new StringReader(DablStandard.PackageText);
-		NamespaceImporter.importNamespace(reader, state);
+		importHandler.getNamespaceImporter().importNamespace(reader, state);
 	}
 	
 	private int taskCount = 0;

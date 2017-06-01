@@ -38,12 +38,12 @@ public class Dabl
 	}
 	
 	public Dabl(boolean print, boolean printTrace, Reader reader) {
-		this(print, printTrace, reader, new DefaultImportHandler());
+		this(print, printTrace, reader, new DefaultImportHandler(new DablNamespaceImporter()));
 	}
 	
 	public Dabl(Reader reader) {
 		this.reader = reader;
-		this.importHandler = new DefaultImportHandler();
+		this.importHandler = new DefaultImportHandler(new DablNamespaceImporter());
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class Dabl
 		if (print) PrettyPrint.pp(start);
 		
 		Reader reader = new StringReader(DablStandard.PackageText);
-		NamespaceImporter.importNamespace(reader, state);
+		importHandler.getNamespaceImporter().importNamespace(reader, state);
 
 		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
 		start.apply(analyzer);

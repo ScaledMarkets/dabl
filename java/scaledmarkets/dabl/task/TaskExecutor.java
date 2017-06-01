@@ -4,6 +4,10 @@ import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.analyzer.CompilerState;
+import scaledmarkets.dabl.analyzer.ImportHandler;
+import scaledmarkets.dabl.analyzer.DefaultImportHandler;
+import scaledmarkets.dabl.analyzer.NamespaceImporter;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.analyzer.ValueType;
 
@@ -38,7 +42,33 @@ public class TaskExecutor implements Executor {
 		
 		// Create a import handler that will analyze according to the rules of
 		// the TaskProgramAnalyzer.
-		ImportHandler importHandler = ....
+		NamespaceImporter namespaceImporter = new NamespaceImporter() {
+			
+			public NameScope importNamespace(Reader reader, CompilerState state) {
+				
+				TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(
+					....TaskContext contex, ....ImportHandler importHandler);
+				Lexer lexer = new Lexer(new PushbackReader(reader));
+				Parser parser = new Parser(lexer);
+				Start start = parser.parse();
+				start.apply(analyzer);
+				
+				
+
+				/* From DablNamespaceImporter:
+				Dabl dabl = new Dabl(false, false, reader, this);
+				System.out.println("Processing " + path + "..."); // debug
+				NameScope importedScope;
+				try { importedScope = dabl.process(state); } catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
+				System.out.println("...done processing " + path); // debug
+				return importedScope;
+				*/
+			}
+		};
+		
+		ImportHandler importHandler = new DefaultImportHandler(namespaceImporter);
 
 		// Create an analysis context and analyze the AST.
 		TaskContext context = new TaskContext();

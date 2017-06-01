@@ -3,5 +3,7 @@ package scaledmarkets.dabl.analyzer;
 
 public interface ImportHandler {
 
-	public NameScope importNamespace(String path, CompilerState state);
+	NameScope importNamespace(String path, CompilerState state);
+	
+	NamespaceImporter getNamespaceImporter();
 }
