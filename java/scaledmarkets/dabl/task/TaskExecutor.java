@@ -6,8 +6,8 @@ import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.analyzer.ImportHandler;
-import scaledmarkets.dabl.analyzer.DefaultImportHandler;
-import scaledmarkets.dabl.analyzer.NamespaceImporter;
+import scaledmarkets.dabl.analyzer.FileImportHandler;
+import scaledmarkets.dabl.analyzer.NamespaceAnalyzer;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.analyzer.ValueType;
 
@@ -42,7 +42,7 @@ public class TaskExecutor implements Executor {
 		
 		// Create a import handler that will analyze according to the rules of
 		// the TaskProgramAnalyzer.
-		NamespaceImporter namespaceImporter = new NamespaceImporter() {
+		NamespaceAnalyzer namespaceAnalyzer = new NamespaceAnalyzer() {
 			
 			public NameScope importNamespace(Reader reader, CompilerState state) {
 				
@@ -68,7 +68,7 @@ public class TaskExecutor implements Executor {
 			}
 		};
 		
-		ImportHandler importHandler = new DefaultImportHandler(namespaceImporter);
+		ImportHandler importHandler = new FileImportHandler(namespaceAnalyzer);
 
 		// Create an analysis context and analyze the AST.
 		TaskContext context = new TaskContext();

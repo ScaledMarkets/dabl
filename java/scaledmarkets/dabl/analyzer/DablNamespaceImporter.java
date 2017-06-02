@@ -2,7 +2,7 @@ package scaledmarkets.dabl.analyzer;
 
 import java.io.Reader;
 
-public class DablNamespaceImporter implements NamespaceImporter {
+public class DablNamespaceImporter implements NamespaceAnalyzer {
 	
 	public NameScope importNamespace(Reader reader, CompilerState state) {
 

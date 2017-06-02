@@ -1,7 +1,7 @@
 package scaledmarkets.dabl.task;
 
 import scaledmarkets.dabl.analyzer.LanguageCoreAnalyzer;
-import scaledmarkets.dabl.analyzer.NamespaceImporter;
+import scaledmarkets.dabl.analyzer.NamespaceAnalyzer;
 import java.io.Reader;
 import java.io.StringReader;
 

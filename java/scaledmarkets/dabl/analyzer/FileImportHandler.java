@@ -8,12 +8,12 @@ import java.io.FileReader;
  * Attempts to read the namespace from the file system, using the env
  * variable "DABL_PATH".
  */
-public class DefaultImportHandler implements ImportHandler {
+public class FileImportHandler implements ImportHandler {
 
-	private NamespaceImporter namespaceImporter;
+	private NamespaceAnalyzer namespaceAnalyzer;
 	
-	public DefaultImportHandler(NamespaceImporter namespaceImporter) {
-		this.namespaceImporter = namespaceImporter;
+	public FileImportHandler(NamespaceAnalyzer namespaceAnalyzer) {
+		this.namespaceAnalyzer = namespaceAnalyzer;
 	}
 	
 	public NameScope importNamespace(String path, CompilerState state) {
@@ -58,8 +58,8 @@ public class DefaultImportHandler implements ImportHandler {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		return namespaceImporter.importNamespace(reader, state);
+		return namespaceAnalyzer.importNamespace(reader, state);
 	}
 	
-	public NamespaceImporter getNamespaceImporter() { return namespaceImporter; }
+	public NamespaceAnalyzer getNamespaceImporter() { return namespaceAnalyzer; }
 }

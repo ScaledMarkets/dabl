@@ -38,12 +38,12 @@ public class Dabl
 	}
 	
 	public Dabl(boolean print, boolean printTrace, Reader reader) {
-		this(print, printTrace, reader, new DefaultImportHandler(new DablNamespaceImporter()));
+		this(print, printTrace, reader, new FileImportHandler(new DablNamespaceImporter()));
 	}
 	
 	public Dabl(Reader reader) {
 		this.reader = reader;
-		this.importHandler = new DefaultImportHandler(new DablNamespaceImporter());
+		this.importHandler = new FileImportHandler(new DablNamespaceImporter());
 	}
 
 	/**
