@@ -7,7 +7,7 @@ import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.analyzer.ImportHandler;
 import scaledmarkets.dabl.analyzer.FileImportHandler;
-import scaledmarkets.dabl.analyzer.NamespaceAnalyzer;
+import scaledmarkets.dabl.analyzer.NamespaceProcessor;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.analyzer.ValueType;
 
@@ -42,9 +42,9 @@ public class TaskExecutor implements Executor {
 		
 		// Create a import handler that will analyze according to the rules of
 		// the TaskProgramAnalyzer.
-		NamespaceAnalyzer namespaceAnalyzer = new NamespaceAnalyzer() {
+		NamespaceProcessor namespaceAnalyzer = new NamespaceProcessor() {
 			
-			public NameScope importNamespace(Reader reader, CompilerState state) {
+			public NameScope processNamespace(Reader reader, CompilerState state) {
 				
 				TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(
 					....TaskContext contex, ....ImportHandler importHandler);
@@ -55,7 +55,7 @@ public class TaskExecutor implements Executor {
 				
 				
 
-				/* From DablNamespaceImporter:
+				/* From DablNamespaceProcessor:
 				Dabl dabl = new Dabl(false, false, reader, this);
 				System.out.println("Processing " + path + "..."); // debug
 				NameScope importedScope;

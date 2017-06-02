@@ -25,6 +25,19 @@ public class LanguageCoreAnalyzer extends DablBaseAdapter {
 		}
 	}
 
+	public void processNamespace(String name) {
+		
+		// Replace NameScope stack with a fresh one.
+		List<NameScope> originalScopeStack = state.scopeStack;
+		state.scopeStack = new LinkedList<NameScope>();
+		state.pushScope(state.globalScope);
+		NameScope importedScope = getImportHandler().processNamespace(name, getState());
+		
+		// Restore NameScope stack.
+		state.scopeStack = originalScopeStack;
+		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
+	}
+	
 	public ImportHandler getImportHandler() { return importHandler; }
 
 	public NameScopeEntry getEnclosingScopeEntry() { return enclosingScopeEntry; }
@@ -61,7 +74,7 @@ public class LanguageCoreAnalyzer extends DablBaseAdapter {
 	
 	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
 		
-		importNamespace(Utilities.createNameFromPath(node.getId()));
+		processNamespace(Utilities.createNameFromPath(node.getId()));
 	}
 	
 	

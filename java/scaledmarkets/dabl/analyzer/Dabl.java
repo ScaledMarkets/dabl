@@ -23,12 +23,12 @@ import java.util.LinkedList;
  */
 public class Dabl
 {
-	boolean print = false;
-	boolean printTrace = false;
-	boolean analysisOnly = false;
+	private boolean print = false;
+	private boolean printTrace = false;
+	private boolean analysisOnly = false;
 	
-	Reader reader = null;
-	ImportHandler importHandler = null;
+	private Reader reader = null;
+	private ImportHandler importHandler = null;
 	
 	public Dabl(boolean print, boolean printTrace, Reader reader, ImportHandler importHandler) {
 		this.print = print;
@@ -38,12 +38,12 @@ public class Dabl
 	}
 	
 	public Dabl(boolean print, boolean printTrace, Reader reader) {
-		this(print, printTrace, reader, new FileImportHandler(new DablNamespaceImporter()));
+		this(print, printTrace, reader, new FileImportHandler(new DablNamespaceProcessor()));
 	}
 	
 	public Dabl(Reader reader) {
 		this.reader = reader;
-		this.importHandler = new FileImportHandler(new DablNamespaceImporter());
+		this.importHandler = new FileImportHandler(new DablNamespaceProcessor());
 	}
 
 	/**
@@ -65,23 +65,17 @@ public class Dabl
 		
 		// ....Need to insert template processor here
 		
-		// Parse the input and generate an AST.
-		Lexer lexer = new Lexer(new PushbackReader(this.reader));
-		Parser parser = new Parser(lexer);
-		Start start = parser.parse();
-		System.out.println("Syntax is correct");
-		state.getASTs().add(start);
+		
+		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
+		NamespaceProcessor processor = new DablNamespaceProcessor(analyzer);
 		
 		if (print) PrettyPrint.pp(start);
 		
 		Reader reader = new StringReader(DablStandard.PackageText);
-		importHandler.getNamespaceImporter().importNamespace(reader, state);
+		NameScope scope = analyzer.analyzeNamespace(reader, state);
 
-		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
-		start.apply(analyzer);
-		
 		state.setPrimaryNamespaceSymbolEntry(analyzer.getEnclosingScopeEntry());
 		
-		return analyzer.getNamespaceNamescope();
+		return scope;
 	}
 }

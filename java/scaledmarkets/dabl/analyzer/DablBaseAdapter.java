@@ -253,19 +253,6 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter
 		}
 	}
 
-	protected void importNamespace(String name) {
-		
-		// Replace NameScope stack with a fresh one.
-		List<NameScope> originalScopeStack = state.scopeStack;
-		state.scopeStack = new LinkedList<NameScope>();
-		state.pushScope(state.globalScope);
-		NameScope importedScope = getImportHandler().importNamespace(name, getState());
-		
-		// Restore NameScope stack.
-		state.scopeStack = originalScopeStack;
-		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
-	}
-	
 	
 	/* Methods for annotating */
 	

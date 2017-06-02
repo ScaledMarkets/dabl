@@ -10,13 +10,13 @@ import java.io.FileReader;
  */
 public class FileImportHandler implements ImportHandler {
 
-	private NamespaceAnalyzer namespaceAnalyzer;
+	private NamespaceProcessor namespaceProcessor;
 	
-	public FileImportHandler(NamespaceAnalyzer namespaceAnalyzer) {
-		this.namespaceAnalyzer = namespaceAnalyzer;
+	public FileImportHandler(NamespaceProcessor namespaceProcessor) {
+		this.namespaceProcessor = namespaceProcessor;
 	}
 	
-	public NameScope importNamespace(String path, CompilerState state) {
+	public NameScope processNamespace(String path, CompilerState state) {
 		
 		System.out.println("------------Importing namespace " + path); // debug
 		
@@ -58,8 +58,8 @@ public class FileImportHandler implements ImportHandler {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		return namespaceAnalyzer.importNamespace(reader, state);
+		return namespaceProcessor.processNamespace(reader, state);
 	}
 	
-	public NamespaceAnalyzer getNamespaceImporter() { return namespaceAnalyzer; }
+	public NamespaceProcessor getNamespaceProcessor() { return namespaceProcessor; }
 }

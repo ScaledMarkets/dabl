@@ -1,7 +1,7 @@
 package scaledmarkets.dabl.task;
 
 import scaledmarkets.dabl.analyzer.LanguageCoreAnalyzer;
-import scaledmarkets.dabl.analyzer.NamespaceAnalyzer;
+import scaledmarkets.dabl.analyzer.NamespaceProcessor;
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -15,7 +15,7 @@ public class TaskProgramAnalyzer extends LanguageCoreAnalyzer {
 		super(context, importHandler);
 		
 		Reader reader = new StringReader(DablStandard.PackageText);
-		importHandler.getNamespaceImporter().importNamespace(reader, state);
+		importHandler.getNamespaceProcessor().processNamespace(reader, state);
 	}
 	
 	private int taskCount = 0;
