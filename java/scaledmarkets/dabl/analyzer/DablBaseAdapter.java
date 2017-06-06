@@ -11,7 +11,8 @@ import java.util.HashMap;
 
 /**
  * Add methods for name resolution, symbol table creation and management, and
- * Node annotation.
+ * Node annotation. These methods are mostly language-agnostic (but may reflect
+ * some particular needs for a language such as DABL).
  */
 public abstract class DablBaseAdapter extends DepthFirstAdapter
 {

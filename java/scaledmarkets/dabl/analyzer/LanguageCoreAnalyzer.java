@@ -9,8 +9,9 @@ import java.util.LinkedList;
 
 /**
  * Language analysis that is shared among the LanguageAnalyzer and the TaskProgramAnalyzer.
+ * These methods are specific to DABL, but are a subset.
  */
-public class LanguageCoreAnalyzer extends DablBaseAdapter {
+public class LanguageCoreAnalyzer extends DablBaseAdapter implements Analyzer {
 
 	protected ImportHandler importHandler;
 	protected NameScopeEntry enclosingScopeEntry;
@@ -25,19 +26,6 @@ public class LanguageCoreAnalyzer extends DablBaseAdapter {
 		}
 	}
 
-	public void processNamespace(String name) {
-		
-		// Replace NameScope stack with a fresh one.
-		List<NameScope> originalScopeStack = state.scopeStack;
-		state.scopeStack = new LinkedList<NameScope>();
-		state.pushScope(state.globalScope);
-		NameScope importedScope = getImportHandler().processNamespace(name, getState());
-		
-		// Restore NameScope stack.
-		state.scopeStack = originalScopeStack;
-		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
-	}
-	
 	public ImportHandler getImportHandler() { return importHandler; }
 
 	public NameScopeEntry getEnclosingScopeEntry() { return enclosingScopeEntry; }
@@ -75,6 +63,28 @@ public class LanguageCoreAnalyzer extends DablBaseAdapter {
 	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
 		
 		processNamespace(Utilities.createNameFromPath(node.getId()));
+	}
+	
+	/**
+	 * Locate the specified namespace, and parse and analyze it. Add its AST to
+	 * the CompilerState. Also add the new namespace to the global scope.
+	 */
+	protected void processNamespace(String namespaceName) {
+		
+		// Replace NameScope stack with a fresh one.
+		List<NameScope> originalScopeStack = state.scopeStack;
+		state.scopeStack = new LinkedList<NameScope>();
+		state.pushScope(state.globalScope);
+		
+		// Import and process the namespace. The import handler uses a NamespaceProcessor
+		// that was given to it at construction.
+		NameScope importedScope = getImportHandler().processNamespace(namespaceName, getState());
+		
+		// Restore NameScope stack.
+		state.scopeStack = originalScopeStack;
+		
+		// Add the new namespace to the global scope.
+		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());
 	}
 	
 	
