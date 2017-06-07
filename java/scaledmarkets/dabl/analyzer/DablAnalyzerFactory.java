@@ -1,6 +1,9 @@
 package scaledmarkets.dabl.analyzer;
 
-public class DablAnalyzerFactory {
+/**
+ * For creating analysis components that analyze DABL input in a client context.
+ */
+public class DablAnalyzerFactory implements AnalyzerFactory {
 	public NamespaceProcessor createNamespaceProcessor() {
 		ClientState state = new ClientState();
 		return new DablNamespaceProcessor(createAnalyzer(state));

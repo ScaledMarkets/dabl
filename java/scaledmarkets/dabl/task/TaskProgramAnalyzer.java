@@ -15,7 +15,7 @@ public class TaskProgramAnalyzer extends LanguageCoreAnalyzer {
 		super(context, importHandler);
 		
 		Reader reader = new StringReader(DablStandard.PackageText);
-		importHandler.getNamespaceProcessor().processNamespace(reader, state);
+		....importHandler.getNamespaceProcessor().processNamespace(reader, state);
 	}
 	
 	private int taskCount = 0;

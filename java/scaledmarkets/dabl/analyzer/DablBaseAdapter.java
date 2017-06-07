@@ -14,7 +14,7 @@ import java.util.HashMap;
  * Node annotation. These methods are mostly language-agnostic (but may reflect
  * some particular needs for a language such as DABL).
  */
-public abstract class DablBaseAdapter extends DepthFirstAdapter
+public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analyzer
 {
 	private CompilerState state;
 	private List<IdentHandler> identHandlers = new LinkedList<IdentHandler>();

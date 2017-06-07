@@ -11,7 +11,7 @@ import java.util.LinkedList;
  * Language analysis that is shared among the LanguageAnalyzer and the TaskProgramAnalyzer.
  * These methods are specific to DABL, but are a subset.
  */
-public class LanguageCoreAnalyzer extends DablBaseAdapter implements Analyzer {
+public class LanguageCoreAnalyzer extends DablBaseAdapter {
 
 	protected ImportHandler importHandler;
 	protected NameScopeEntry enclosingScopeEntry;

@@ -39,14 +39,8 @@ public class TaskExecutor implements Executor {
 		// procedural statements (AST defined by task.sablecc).
 		Reader reader = new InputStreamReader(System.in);
 		
-		// Parse the input and generate an AST.
-		NameScope nameScope = namespaceProcessor.processNamespace(reader, ....CompilerState state)
-		
-		// Create a import handler that will analyze according to the rules of
-		// the TaskProgramAnalyzer.
-		
-		// Create an analysis context and analyze the AST.
-		//TaskContext context = new TaskContext();
+		// Parse and analyze the input.
+		NameScope nameScope = namespaceProcessor.processNamespace(reader);
 		
 		// Create a TaskExecutor, which will execute the actions defined by
 		// the analyzed AST. If task execution produces an error, set the

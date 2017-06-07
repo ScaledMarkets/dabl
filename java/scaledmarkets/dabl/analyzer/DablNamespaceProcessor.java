@@ -10,9 +10,9 @@ public class DablNamespaceProcessor implements NamespaceProcessor {
 		this.analyzer = analyzer;
 	}
 	
-	public NameScope processNamespace(Reader reader, CompilerState state) {
+	public NameScope processNamespace(Reader reader) {
 
-		assertThat(state instanceof ClientState,
+		assertThat(analyzer.getState() instanceof ClientState,
 			"CompilerState passed to Dabl namespace processor is not a ClientState");
 		
 		// Parse the input and generate an AST.
@@ -21,7 +21,7 @@ public class DablNamespaceProcessor implements NamespaceProcessor {
 		Start start = parser.parse();
 		
 		// Analyze the AST.
-		state.getASTs().add(start);
+		analyzer.getState().getASTs().add(start);
 		start.apply(this.analyzer);
 
 		return analyzer.getNamespaceNamescope();
