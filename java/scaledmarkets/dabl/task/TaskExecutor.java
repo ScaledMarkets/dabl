@@ -31,32 +31,22 @@ public class TaskExecutor implements Executor {
 	
 	public static void main(String[] args) {
 
+		AnalyzerFactory analyzerFactory = new TaskAnalyzerFactory();
+		
+		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
+
 		// Obtain the program to run, containing only function declarations and
 		// procedural statements (AST defined by task.sablecc).
 		Reader reader = new InputStreamReader(System.in);
 		
 		// Parse the input and generate an AST.
-		Lexer lexer = new Lexer(new PushbackReader(reader));
-		Parser parser = new Parser(lexer);
-		Start start = parser.parse();
-		System.out.println("Syntax is correct");
+		NameScope nameScope = namespaceProcessor.processNamespace(reader, ....CompilerState state)
 		
 		// Create a import handler that will analyze according to the rules of
 		// the TaskProgramAnalyzer.
-		AnalyzerFactory analyzerFactory = new AnalyzerFactory() {
-			public Analyzer createAnalyzer() {
-				return new TaskProgramAnalyzer(
-					....(TaskContext)state, new FileImportHandler(....this));
-			}
-		}
-		NamespaceProcessor importProcessor = new DablNamespaceProcessor(analyzerFactory);
-		ImportHandler importHandler = new FileImportHandler(importProcessor);
-
+		
 		// Create an analysis context and analyze the AST.
-		TaskContext context = new TaskContext();
-		context.getASTs().add(start);
-		TaskProgramAnalyzer analyzer = new TaskProgramAnalyzer(context, importHandler);
-		start.apply(analyzer);
+		//TaskContext context = new TaskContext();
 		
 		// Create a TaskExecutor, which will execute the actions defined by
 		// the analyzed AST. If task execution produces an error, set the

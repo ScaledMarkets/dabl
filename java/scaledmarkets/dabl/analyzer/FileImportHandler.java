@@ -10,10 +10,10 @@ import java.io.FileReader;
  */
 public class FileImportHandler implements ImportHandler {
 
-	private NamespaceProcessor namespaceProcessor;
+	private AnalyzerFactory analyzerFactory;
 	
-	public FileImportHandler(NamespaceProcessor namespaceProcessor) {
-		this.namespaceProcessor = namespaceProcessor;
+	public FileImportHandler(AnalyzerFactory analyzerFactory) {
+		this.analyzerFactory = analyzerFactory;
 	}
 	
 	public NameScope processNamespace(String path, CompilerState state) {
@@ -58,6 +58,8 @@ public class FileImportHandler implements ImportHandler {
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
+		
+		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
 		return namespaceProcessor.processNamespace(reader, state);
 	}
 	

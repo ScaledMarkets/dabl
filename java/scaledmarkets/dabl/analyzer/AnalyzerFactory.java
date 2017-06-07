@@ -1,5 +1,7 @@
 package scaledmarkets.dabl.analyzer;
 
 public interface AnalyzerFactory {
-	Analyzer createAnalyzer();
+	NamespaceProcessor createNamespaceProcessor();
+	Analyzer createAnalyzer(CompilerState state);
+	ImportHandler createImportHandler();
 }

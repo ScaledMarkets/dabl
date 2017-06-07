@@ -65,9 +65,10 @@ public class Dabl
 		
 		// ....Need to insert template processor here
 		
+		NamespaceProcessor namespaceProcessor = ....analyzerFactory.createNamespaceProcessor(state);
 		
-		LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
-		NamespaceProcessor processor = new DablNamespaceProcessor(analyzer);
+		//LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
+		//NamespaceProcessor processor = new DablNamespaceProcessor(analyzer);
 		
 		if (print) PrettyPrint.pp(start);
 		
