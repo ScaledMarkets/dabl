@@ -20,6 +20,12 @@ public class CompilerState
     
     public Annotation getOut(Node node) { return out.get(node); }
     
+    public NameScopeEntry getPrimaryNamespaceSymbolEntry() { return primaryNamespaceSymbolEntry; }
+	
+	void setPrimaryNamespaceSymbolEntry(NameScopeEntry e) {
+		primaryNamespaceSymbolEntry = e;
+	}
+	
 	public SymbolEntry getIdBinding(TId id) {
 		return (SymbolEntry)(this.getIn(id));
 	}
@@ -30,6 +36,11 @@ public class CompilerState
 
 	void setGlobalScope(NameScope scope) { this.globalScope = scope; }
 
+	/**
+	 * The entry in the global scope that references the primary namespace.
+	 */
+	protected NameScopeEntry primaryNamespaceSymbolEntry;
+	
 	/**
 	 * Root of the ASTs that are created. The first AST is for the main file;
 	 * others are for imported namespaces.

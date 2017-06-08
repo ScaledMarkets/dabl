@@ -10,7 +10,7 @@ import java.io.StringReader;
  */
 public class TaskProgramAnalyzer extends LanguageCoreAnalyzer {
 	
-	public TaskProgramAnalyzer(TaskContext contex, ImportHandler importHandler) {
+	TaskProgramAnalyzer(TaskContext contex, ImportHandler importHandler) {
 		
 		super(context, importHandler);
 		

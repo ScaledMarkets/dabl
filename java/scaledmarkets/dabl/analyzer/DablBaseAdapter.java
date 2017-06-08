@@ -20,7 +20,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	private List<IdentHandler> identHandlers = new LinkedList<IdentHandler>();
 	private Map<Node, IdentSemanticHandler> identSemanticHandlers = new HashMap<Node, IdentSemanticHandler>();
 	
-	public DablBaseAdapter(CompilerState state)
+	DablBaseAdapter(CompilerState state)
 	{
 		this.state = state;
 	}

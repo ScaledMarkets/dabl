@@ -20,7 +20,7 @@ import java.util.LinkedList;
  */
 public class LanguageAnalyzer extends LanguageCoreAnalyzer
 {
-	public LanguageAnalyzer(CompilerState state, ImportHandler importHandler) {
+	LanguageAnalyzer(CompilerState state, ImportHandler importHandler) {
 		super(state, importHandler);
 	}
 	

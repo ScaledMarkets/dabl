@@ -6,8 +6,6 @@ import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.Config;
 
-import sablecc.PrettyPrint;
-
 import java.io.Reader;
 import java.io.PushbackReader;
 import java.io.Reader;
@@ -28,22 +26,15 @@ public class Dabl
 	private boolean analysisOnly = false;
 	
 	private Reader reader = null;
-	private ImportHandler importHandler = null;
 	
-	public Dabl(boolean print, boolean printTrace, Reader reader, ImportHandler importHandler) {
+	public Dabl(boolean print, boolean printTrace, Reader reader) {
 		this.print = print;
 		this.printTrace = printTrace;
 		this.reader = reader;
-		this.importHandler = importHandler;
-	}
-	
-	public Dabl(boolean print, boolean printTrace, Reader reader) {
-		this(print, printTrace, reader, new FileImportHandler(new DablNamespaceProcessor()));
 	}
 	
 	public Dabl(Reader reader) {
 		this.reader = reader;
-		this.importHandler = new FileImportHandler(new DablNamespaceProcessor());
 	}
 
 	/**
@@ -65,18 +56,13 @@ public class Dabl
 		
 		// ....Need to insert template processor here
 		
-		NamespaceProcessor namespaceProcessor = ....analyzerFactory.createNamespaceProcessor(state);
-		
-		//LanguageAnalyzer analyzer = new LanguageAnalyzer(state, this.importHandler);
-		//NamespaceProcessor processor = new DablNamespaceProcessor(analyzer);
-		
-		if (print) PrettyPrint.pp(start);
+		AnalyzerFactory factory = new DablAnalyzerFactory(state);
+		NamespaceProcessor namespaceProcessor = factory.createNamespaceProcessor();
+		namespaceProcessor.setPrettyPrint(print);
 		
 		Reader reader = new StringReader(DablStandard.PackageText);
-		NameScope scope = analyzer.analyzeNamespace(reader, state);
-
-		state.setPrimaryNamespaceSymbolEntry(analyzer.getEnclosingScopeEntry());
+		NameScope nameScope = namespaceProcessor.processPrimaryNamespace(reader);
 		
-		return scope;
+		return nameScope;
 	}
 }

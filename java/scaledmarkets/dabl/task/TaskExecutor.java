@@ -8,7 +8,6 @@ import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.analyzer.ImportHandler;
 import scaledmarkets.dabl.analyzer.FileImportHandler;
 import scaledmarkets.dabl.analyzer.NamespaceProcessor;
-import scaledmarkets.dabl.analyzer.DablNamespaceProcessor;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.analyzer.ValueType;
 
@@ -32,7 +31,6 @@ public class TaskExecutor implements Executor {
 	public static void main(String[] args) {
 
 		AnalyzerFactory analyzerFactory = new TaskAnalyzerFactory();
-		
 		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
 
 		// Obtain the program to run, containing only function declarations and
@@ -40,7 +38,7 @@ public class TaskExecutor implements Executor {
 		Reader reader = new InputStreamReader(System.in);
 		
 		// Parse and analyze the input.
-		NameScope nameScope = namespaceProcessor.processNamespace(reader);
+		NameScope nameScope = namespaceProcessor.processPrimaryNamespace(reader);
 		
 		// Create a TaskExecutor, which will execute the actions defined by
 		// the analyzed AST. If task execution produces an error, set the

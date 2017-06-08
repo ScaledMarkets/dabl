@@ -11,8 +11,16 @@ import scaledmarkets.dabl.analyzer.CompilerState;
  * For creating analysis components that analyze DABL input in a task execution context.
  */
 public class TaskAnalyzerFactory implements AnalyzerFactory {
+
+	TaskAnalyzerFactory() {
+		this.taskContext = new TaskContext();
+	}
+	
+	public ClientState getClientState() { return this.taskContext; }
+	
 	public NamespaceProcessor createNamespaceProcessor() {
-		return new TaskNamespaceProcessor(createAnalyzer());
+		TaskContext taskContext = new TaskContext();
+		return new NamespaceProcessor(createAnalyzer(taskContext));
 	}
 	
 	public Analyzer createAnalyzer(CompilerState state) {
@@ -22,4 +30,6 @@ public class TaskAnalyzerFactory implements AnalyzerFactory {
 	public ImportHandler createImportHandler() {
 		return new FileImportHandler(this);
 	}
+	
+	private TaskContext taskContext;
 }
