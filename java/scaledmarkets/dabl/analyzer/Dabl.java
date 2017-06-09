@@ -52,16 +52,16 @@ public class Dabl
 	/**
 	 * This version of process should only be called by ImportHandlers.
 	 */
-	public NameScope process(CompilerState state) throws Exception {
+	protected NameScope process(CompilerState state) throws Exception {
 		
 		// ....Need to insert template processor here
 		
 		AnalyzerFactory factory = new DablAnalyzerFactory(state);
 		NamespaceProcessor namespaceProcessor = factory.createNamespaceProcessor();
+		Reader r = new StringReader(DablStandard.PackageText);
+		namespaceProcessor.processNamespace(r);
 		namespaceProcessor.setPrettyPrint(this.print);
-		
-		Reader reader = new StringReader(DablStandard.PackageText);
-		NameScope nameScope = namespaceProcessor.processPrimaryNamespace(reader);
+		NameScope nameScope = namespaceProcessor.processPrimaryNamespace(this.reader);
 		
 		return nameScope;
 	}

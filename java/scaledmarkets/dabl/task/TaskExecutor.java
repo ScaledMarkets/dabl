@@ -33,6 +33,10 @@ public class TaskExecutor implements Executor {
 		AnalyzerFactory analyzerFactory = new TaskAnalyzerFactory();
 		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
 
+		// Process the Dabl standard package.
+		Reader r = new StringReader(DablStandard.PackageText);
+		namespaceProcessor.processNamespace(r);
+		
 		// Obtain the program to run, containing only function declarations and
 		// procedural statements (AST defined by task.sablecc).
 		Reader reader = new InputStreamReader(System.in);
