@@ -58,7 +58,7 @@ public class Dabl
 		
 		AnalyzerFactory factory = new DablAnalyzerFactory(state);
 		NamespaceProcessor namespaceProcessor = factory.createNamespaceProcessor();
-		namespaceProcessor.setPrettyPrint(print);
+		namespaceProcessor.setPrettyPrint(this.print);
 		
 		Reader reader = new StringReader(DablStandard.PackageText);
 		NameScope nameScope = namespaceProcessor.processPrimaryNamespace(reader);

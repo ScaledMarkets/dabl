@@ -27,6 +27,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	
 	public abstract ImportHandler getImportHandler();
 	
+	public abstract NameScopeEntry getEnclosingScopeEntry();
+	
 	public CompilerState getState() { return state; }
 	
 	public void addIdentHandler(IdentHandler handler) { identHandlers.add(handler); }
