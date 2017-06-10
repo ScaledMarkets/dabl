@@ -108,7 +108,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 			// and then remove itself from all of the scopes to which it is attached.
 			new IdentHandler(this, path, getCurrentNameScope()) {
 				public void resolveRetroactively(DeclaredEntry entry) {
-					DablBaseAdapter.this.resolveRetroactively(node, checker, entry);
+					DablBaseAdapter.this.resolve(node, checker, entry);
 					
 					// If there is a semantic handler, execute it.
 					IdentSemanticHandler h = getIdentSemanticHandler(node);
@@ -123,7 +123,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 			// Annotate the Id reference with the DeclaredEntry that defines the Id.
 			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
 				"Unexpected: entry is a " + entry.getClass().getName());
-			resolveRetroactively(node, checker, (DeclaredEntry)entry);
+			resolve(node, checker, (DeclaredEntry)entry);
 		}
 	}
 	
@@ -156,7 +156,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	 * Annotate the node (an Id reference - either an AOidRef or a AOqualifiedNameRef -
 	 * with the DeclaredEntry that defines the Id.
 	 */
-	void resolveRetroactively(Node node, VisibilityChecker checker, DeclaredEntry entry) {
+	void resolve(Node node, VisibilityChecker checker, DeclaredEntry entry) {
 		checker.check(getCurrentNameScope(), entry);
 		setIdRefAnnotation(node, entry);
 	}

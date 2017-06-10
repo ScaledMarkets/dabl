@@ -52,7 +52,15 @@ public class LanguageCoreAnalyzer extends DablBaseAdapter {
 	
 	public void outAOnamespace(AOnamespace node) {
 				
-		....Check if there are unresolved symbols
+		// Check if there are unresolved symbols
+		List<IdentHandler> handlers = getIdentHandlers();
+		if (handlers.size() > 0) {
+			System.out.println("The following symbols are unresolved:");
+			for (IdentHandler handler : handlers) {
+				System.out.println("\t" + Utilities.createNameFromPath(handler.getPath()));
+			}
+			throw new RuntimeException(handlers.size() + " unresolved symbols");
+		}
 		
 		popNameScope();
 	}
