@@ -10,72 +10,55 @@ include makefile.inc
 .SUFFIXES:
 
 # Artifact names:
-ORG = Scaled Markets
-PRODUCT_NAME = Dabl
-JAR_NAME = dabl
-TASK_JAR_NAME = taskruntime
+export ORG = Scaled Markets
+export PRODUCT_NAME = Dabl
+export JAR_NAME = dabl
+export TASK_JAR_NAME = taskruntime
 
 # Output artifact names:
-package := scaledmarkets/dabl
-task_parser_package := $(package)/task
-test_package=scaledmarkets/dabl/test
-package_name = scaledmarkets.dabl
-task_package_name = scaledmarkets.dabl.task
-test_package_name = scaledmarkets.dabl.test
-main_class := $(package_name).Main
-task_main_class := $(task_package_name).Main
-
-# Intermediate artifacts:
-classfiles := \
-	$(build_dir)/$(package)/*.class \
-	$(build_dir)/$(package)/docker/*.class \
-	$(build_dir)/$(package)/exec/*.class \
-	$(build_dir)/$(package)/helper/*.class \
-	$(build_dir)/$(package)/analysis/*.class \
-	$(build_dir)/$(package)/analyzer/*.class \
-	$(build_dir)/$(package)/util/*.class \
-	$(build_dir)/$(package)/lexer/*.class \
-	$(build_dir)/$(package)/node/*.class \
-	$(build_dir)/$(package)/repos/*.class \
-	$(build_dir)/$(package)/parser/*.class
-
-task_classfiles := \
-	$(build_dir)/$(package)/task/*.class
+export package := scaledmarkets/dabl
+export task_parser_package := $(package)/task
+export test_package=scaledmarkets/dabl/test
+export package_name = scaledmarkets.dabl
+export task_package_name = scaledmarkets.dabl.task
+export test_package_name = scaledmarkets.dabl.test
+export main_class := $(package_name).Main
+export task_main_class := $(task_package_name).Main
 
 # Command aliases:
-SHELL = /bin/sh
-JAVAC = javac -Xlint:deprecation
-JAVA = java
-JAR = jar
-JAVADOC = javadoc
+export SHELL = /bin/sh
+export JAVAC = javac -Xlint:deprecation
+export JAVA = java
+export JAR = jar
+export JAVADOC = javadoc
 
 # Relative locations:
-CurDir := $(shell pwd)
-src_dir := $(CurDir)/java
-test_src_dir := $(CurDir)/test
-test_build_dir := $(CurDir)/buildtest
-test_package = $(package)/test
-testsourcefiles := $(test_src_dir)/$(test_package)/*.java
-testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/exec/*.class
-sable_dabl_out_dir := $(CurDir)/SableCCOutput
-sable_task_out_dir := $(CurDir)/SableCCTaskOutput
-javadoc_dir := $(CurDir)/docs
+export CurDir := $(shell pwd)
+export src_dir := $(CurDir)/java
+export test_src_dir := $(CurDir)/test
+export test_build_dir := $(CurDir)/buildtest
+export test_package = $(package)/test
+export testsourcefiles := $(test_src_dir)/$(test_package)/*.java
+export testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/exec/*.class
+export sable_dabl_out_dir := $(CurDir)/SableCCOutput
+export sable_task_out_dir := $(CurDir)/SableCCTaskOutput
+export javadoc_dir := $(CurDir)/docs
 
 # Java classpaths:
-buildcp := $(build_dir)
-compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
-test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
-third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
+export buildcp := $(build_dir)
+export compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
+export test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
+export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
 
 ################################################################################
 # Tasks
 
 
-.PHONY: all manifest config gen_dabl_parser compile_dabl_parser parser jar compile dist \
+.PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
 	task_manifest task_jar image \
-	check compile_tests test runsonar javadoc clean_dabl_parser clean_task_parser info
+	check compile_tests test runsonar javadoc clean_parser clean_task_parser info
 
-all: clean dabl_parser compile jar task_jar image compile_tests test
+all: clean parser compile jar task_jar image compile_tests test
 
 # Create a Config.java file that contains the current application version.
 config:
@@ -87,10 +70,10 @@ config:
 # ------------------------------------------------------------------------------
 # Create parser.
 
-dabl_parser: config
-	sable_out_dir=$(sable_dabl_out_dir) && \
-		package=$(package) && \
-		grammar_file=dabl.sablecc && \
+parser: config
+	sable_out_dir=$(sable_dabl_out_dir) \
+		package=$(package) \
+		grammar_file=dabl.sablecc \
 		make -f make_parser.makefile all
 
 # ------------------------------------------------------------------------------
@@ -101,8 +84,21 @@ dabl_parser: config
 $(build_dir):
 	mkdir $(build_dir)
 
+# Create the directory that will contain the jar files that are created.
+$(jar_dir):
+	mkdir $(jar_dir)
+
 client:
 	make -f build_client.makefile all
+
+export main_class
+export PRODUCT_NAME
+export DABL_VERSION
+export ORG
+export task_main_class
+export BUILD_TAG
+
+#	jar_dir, TASK_JAR_NAME, task_classfiles, JAR, task_build_dir, TASK_RUNTIME_IMAGE_NAME
 
 task_runtime:
 	make -f build_task_runtime.makefile all
@@ -164,10 +160,7 @@ cukehelp:
 cukever:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --version
 
-cukehelp:
-	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help
-
-clean: compile_clean test_clean clean_dabl_parser clean_task_parser
+clean: compile_clean test_clean clean_parser clean_task_parser
 	rm -f Manifest
 	rm -r -f $(javadoc_dir)/*
 

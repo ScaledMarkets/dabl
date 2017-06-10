@@ -512,7 +512,7 @@ Productions
         ;
     
     function_decl {-> ofunction_declaration} =
-        scope_decl function [dabl_name]:id type_spec_seq binds to [target_language]:string_literal
+        scope_decl function [dabl_name]:id type_spec_seq binds to [native_language]:string_literal
             method [native_name]:string_literal returns type_spec
                                             {-> New ofunction_declaration(scope_decl.oscope,
                                                     dabl_name, [type_spec_seq.otype_spec],

@@ -1,5 +1,12 @@
 
 
+# Uses variables:
+#	main_class, PRODUCT_NAME, DABL_VERSION, ORG, task_main_class, BUILD_TAG,
+#	jar_dir, TASK_JAR_NAME, task_classfiles, JAR, task_build_dir, TASK_RUNTIME_IMAGE_NAME
+
+# Intermediate artifacts:
+export task_classfiles := \
+	$(build_dir)/$(package)/task/*.class
 
 
 # Create the manifest file for the task JAR.
