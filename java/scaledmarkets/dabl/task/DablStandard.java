@@ -3,21 +3,15 @@ package scaledmarkets.dabl.task;
 public class DablStandard {
 	public static final String PackageText = "package dabl.standard\n" +
 		
-		"//* Publish an artifact to a repository. \n" +
-		"function post \n" +
-			"\tstring /// the artifact to publish \n" +
-			"\tto string /// destination repo \n" +
-			"\tstring /// path in the destination repo \n" +
-			"\tbinds to java method dabl.task.Standard.post \n" +
-		
 		"//* Display a message to stdout. \n" +
 		"function report \n" +
 			"\tstring /// the message to send to stdout \n" +
 			"\tbinds to java method dabl.task.Standard.report \n" +
 		
-		"//* Execute a shell command. \n" +
+		"//* Execute a shell command. Blocks until the command finishes. \n" +
 		"function bash \n" +
 			"\tstring /// the command to execute \n" +
+			"\tnumeric /// maximum seconds before command should time out \n" +
 			"\tbinds to java method dabl.task.Standard.bash \n" +
 		
 		"//* Execute a powershell command. \n" +

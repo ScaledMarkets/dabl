@@ -49,9 +49,11 @@ The namespace dabl.standard is implicitly imported in a DABL file.
 The following functions are pre-defined in dabl.standard:
 
 <dl>
-<dd><code>post</code> <i>artifact</i> <code>to</code> <i>destination-repo</i> <i>path</i></dd>
 <dd><code>report</code> <i>string-message</i></dd>
-<dd><code>bash</code> <i>command string</i></dd>
+<dd><code>bash</code> <i>command-string timeout-seconds</i> - Creates a new process running bash,
+	and executes the specified shell command. Blocks until the command completes.
+	If the process executes with non-zero status, an exception is thrown, causing
+	DABL to set the task status to non-zero.</dd>
 <dd><code>powershell</code> <i>command-string</i></dd>
 <dd><code>deploy</code> <i>template-file-ref</i> <code>to</code> <i>deployment-ref</i></dd>
 <dd><code>ssh</code> <i>target-host command-string</i></dd>
