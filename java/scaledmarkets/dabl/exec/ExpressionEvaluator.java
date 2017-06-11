@@ -220,20 +220,20 @@ public class ExpressionEvaluator {
 		try {
 			if (pAgeExpr instanceof ANewerThanOageExpr) {
 				ANewerThanOageExpr newExpr = (ANewerThanOageExpr)pAgeExpr;
-				TId newerId = ((AOidRef)(newExpr.getNewerId())).getId();
-				TId olderId = ((AOidRef)(newExpr.getOlderId())).getId();
+				AOidRef newerIdRef = (AOidRef)(newExpr.getNewerId());
+				AOidRef olderIdRef = (AOidRef)(newExpr.getOlderId());
 				
-				Date newerDate = this.context.getDateOfMostRecentChange(newerId.getText());
-				Date olderDate = this.context.getDateOfMostRecentChange(olderId.getText());
+				Date newerDate = this.context.getDateOfMostRecentChange(newerIdRef);
+				Date olderDate = this.context.getDateOfMostRecentChange(olderIdRef);
 				isTrue = (newerDate.compareTo(olderDate) > 0);
 				
 			} else if (pAgeExpr instanceof AOlderThanOageExpr) {
 				AOlderThanOageExpr olderExpr = (AOlderThanOageExpr)pAgeExpr;
-				TId olderId = ((AOidRef)(olderExpr.getOlderId())).getId();
-				TId newerId = ((AOidRef)(olderExpr.getNewerId())).getId();
+				AOidRef olderId = (AOidRef)(olderExpr.getOlderId());
+				AOidRef newerId = (AOidRef)(olderExpr.getNewerId());
 				
-				Date newerDate = this.context.getDateOfMostRecentChange(newerId.getText());
-				Date olderDate = this.context.getDateOfMostRecentChange(olderId.getText());
+				Date newerDate = this.context.getDateOfMostRecentChange(newerId);
+				Date olderDate = this.context.getDateOfMostRecentChange(olderId);
 				isTrue = (newerDate.compareTo(olderDate) > 0);
 				
 			} else throw new RuntimeException(

@@ -1,5 +1,6 @@
 package scaledmarkets.dabl.exec;
 
+import scaledmarkets.dabl.node.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Date;
@@ -31,7 +32,14 @@ public class DablContext extends ExpressionContext {
 	 * Return the most recent date/time at which the input or output represented
 	 * by the specified identifier was changed.
 	 */
-	public Date getDateOfMostRecentChange(String inputOrOutputName) throws Exception {
-		....
+	public Date getDateOfMostRecentChange(AOidRef inputOrOutputName) throws Exception {
+		
+		// Identify the declaration of the input or output.
+		POnamedArtifactSet artifactSet =
+			getHelper().getNamedArtifactDeclFromArtfiactRef(inputOrOutputName);
+		
+		// Examine each file and determine the date of the most recent change.
+		PatternSets patternSets = ....
+		return repo.getDateOfMostRecentChange(patternSets);
 	}
 }

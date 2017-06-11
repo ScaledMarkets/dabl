@@ -1,5 +1,6 @@
 package scaledmarkets.dabl.task;
 
+import scaledmarkets.dabl.node.AOidRef;
 import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.exec.ExpressionContext;
 import scaledmarkets.dabl.exec.ExpressionEvaluator;
@@ -31,7 +32,7 @@ public class TaskContext extends CompilerState {
 			throw new Exception("Status of other tasks is not available from a task");
 		}
 		
-		public Date getDateOfMostRecentChange(String inputOrOutputName) throws Exception {
+		public Date getDateOfMostRecentChange(AOidRef inputOrOutputName) throws Exception {
 			throw new Exception("Change history of an input or output is not available from a task");
 		}
 	}
@@ -78,7 +79,7 @@ public class TaskContext extends CompilerState {
 	/**
 	 * 
 	 */
-	public Date getDateOfMostRecentChange(String name) throws Exception {
+	public Date getDateOfMostRecentChange(AOidRef name) throws Exception {
 		return this.exprContext.getDateOfMostRecentChange(name);
 	}
 	

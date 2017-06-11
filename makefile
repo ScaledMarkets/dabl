@@ -91,15 +91,6 @@ $(jar_dir):
 client:
 	make -f build_client.makefile all
 
-export main_class
-export PRODUCT_NAME
-export DABL_VERSION
-export ORG
-export task_main_class
-export BUILD_TAG
-
-#	jar_dir, TASK_JAR_NAME, task_classfiles, JAR, task_build_dir, TASK_RUNTIME_IMAGE_NAME
-
 task_runtime:
 	make -f build_task_runtime.makefile all
 

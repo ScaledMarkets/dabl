@@ -1,4 +1,4 @@
-
+# Do not run this makefile alone. Can only be run from the main makefile.
 
 # Uses variables:
 #	main_class, PRODUCT_NAME, DABL_VERSION, ORG, task_main_class, BUILD_TAG,

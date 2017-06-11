@@ -2,6 +2,7 @@ package scaledmarkets.dabl.exec;
 
 import java.io.File;
 import java.util.List;
+import java.util.Date;
 
 /**
  * A container for a set of files, such as a repository project, or a directory.
@@ -55,4 +56,10 @@ public interface Repo {
 	 * Return the total number of non-directory files in all directories of this Repo.
 	 */
 	long countAllFiles() throws Exception;
+	
+	/**
+	 * Examine all of the files in the pattern set, and return most recent date
+	 * of change among all of the included files.
+	 */
+	Date getDateOfMostRecentChange(PatternSets patternSets);
 }

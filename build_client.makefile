@@ -1,4 +1,4 @@
-
+# Do not run this makefile alone. Can only be run from the main makefile.
 
 # Uses variables:
 #	JAVAC, maxerrs, buildcp, third_party_cp, build_dir, src_dir, package, CurDir,

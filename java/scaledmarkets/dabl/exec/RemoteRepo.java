@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
 import java.util.List;
+import java.util.Date;
 
 /**
  * A remote container for a set of files. By 'remote', we mean that the repo is
@@ -92,5 +93,9 @@ public abstract class RemoteRepo implements Repo {
 	
 	public long countAllFiles() throws Exception {
 		return getRepoProvider().countAllFiles(this);
+	}
+	
+	public Date getDateOfMostRecentChange(PatternSets patternSets) {
+		return getRepoProvider().getDateOfMostRecentChange(patternSets);
 	}
 }

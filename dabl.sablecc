@@ -266,17 +266,17 @@ Productions
         ;
     
     success_expr {-> osuccess_expr} =
-        {succeeded} id succeeded            {-> New osuccess_expr.succeeded(New oid_ref(id))}
-      | {failed} id failed                  {-> New osuccess_expr.failed(New oid_ref(id))}
+        {succeeded} path succeeded          {-> New osuccess_expr.succeeded(New oid_ref([path.id]))}
+      | {failed} path failed                {-> New osuccess_expr.failed(New oid_ref([path.id]))}
       ;
     
     age_expr {-> oage_expr} =
-        {newer_than} [newer_id]:id newer than [older_id]:id
+        {newer_than} [newer_id]:path newer than [older_id]:path
                                             {-> New oage_expr.newer_than(
-                                                New oid_ref(newer_id), New oid_ref(older_id))}
-      | {older_than} [older_id]:id older than [newer_id]:id
+                                                New oid_ref([newer_id.id]), New oid_ref([older_id.id]))}
+      | {older_than} [older_id]:path older than [newer_id]:path
                                             {-> New oage_expr.older_than(
-                                                  New oid_ref(older_id), New oid_ref(newer_id))}
+                                                  New oid_ref([older_id.id]), New oid_ref([newer_id.id]))}
       ;
     
     input_sets_opt {-> onamed_artifact_set*} =
@@ -295,11 +295,7 @@ Productions
                                                 artifact_set.oartifact_set)}
       | {anonymous} inputs artifact_set     {-> New onamed_artifact_set.anonymous(
                                                 artifact_set.oartifact_set)}
-      | {files} inputs id                   {-> New onamed_artifact_set.files(
-                                                New oid_ref(id))}
-      | {task} inputs [task]:id per_char [output]:id
-                                            {-> New onamed_artifact_set.task(
-                                                New oqualified_name_ref([task, output]))}
+      | {ref} inputs path                   {-> New onamed_artifact_set.ref(New oid_ref([path.id]))}
         ;
     
     output_sets_opt {-> onamed_artifact_set*} =
@@ -318,8 +314,7 @@ Productions
                                                 artifact_set.oartifact_set)}
       | {anonymous} outputs artifact_set    {-> New onamed_artifact_set.anonymous(
                                                 artifact_set.oartifact_set)}
-      | {files} outputs id                  {-> New onamed_artifact_set.files(
-                                                New oid_ref(id))}
+      | {ref} outputs path                  {-> New onamed_artifact_set.ref(New oid_ref([path.id]))}
         ;
       
     //artifact_sets {-> oartifact_set*} =
@@ -329,10 +324,10 @@ Productions
     //  ;
     
     artifact_set {-> oartifact_set} =
-        {remote} of [project]:string_literal in [repository_id]:id prefer_stmt_opt files_stmts_opt
+        {remote} of [project]:string_literal in [repository]:path prefer_stmt_opt files_stmts_opt
                                             {-> New oartifact_set.remote(
                                                 [files_stmts_opt.ofileset_operation],
-                                                project.ostring_literal, New oid_ref(repository_id))}
+                                                project.ostring_literal, New oid_ref([repository.id]))}
       | {local} new local files_stmts_opt   {-> New oartifact_set.local(
                                                 [files_stmts_opt.ofileset_operation])}
         ;
@@ -424,13 +419,13 @@ Productions
       ;
     
     func_call_stmt {-> oproc_stmt} =
-        {no_target} [target]:id gets [func_name]:id args
+        {no_target} [target]:id gets [func_name]:path args
                                             {-> New oproc_stmt.func_call(
-                                                New oid_ref(func_name),
+                                                New oid_ref([func_name.id]),
                                                 [args.oexpr], New otarget_opt.target(target))}
-      | {target} [func_name]:id args
+      | {target} [func_name]:path args
                                             {-> New oproc_stmt.func_call(
-                                                New oid_ref(func_name),
+                                                New oid_ref([func_name.id]),
                                                 [args.oexpr], New otarget_opt.no_target())}
         ;
     
@@ -574,7 +569,7 @@ Productions
     
     value {-> oexpr} =
         {value} literal                     {-> New oexpr.literal(literal.oliteral)}
-      | {variable} id                       {-> New oexpr.variable(New ovariable(New oid_ref(id)))}
+      | {variable} id                       {-> New oexpr.variable(New ovariable(New oid_ref([id])))}
       | {parentheses} left_paren expr right_paren
                                             {-> expr.oexpr}
       | {array_elt} id left_brack expr right_brack
@@ -716,12 +711,12 @@ Abstract Syntax Tree
         [path]:id* onamespace_elt*;
     
     oid_ref =
-        id
-        ;
-    
-    oqualified_name_ref =
         id*
         ;
+    
+//    oqualified_name_ref =
+//        id*
+//        ;
     
     onamespace_elt =
         {import} id*
@@ -825,8 +820,8 @@ Abstract Syntax Tree
     onamed_artifact_set =
         {named} id oartifact_set
       | {anonymous} oartifact_set
-      | {files} oid_ref
-      | {task} oqualified_name_ref
+      | {ref} oid_ref
+//      | {task} oqualified_name_ref
       ;
     
     oartifact_set =

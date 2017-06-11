@@ -1,4 +1,4 @@
-
+# Do not run this makefile alone. Can only be run from the main makefile.
 
 # Uses variables:
 #	jar_dir, JAR_NAME, sable_out_dir, package, JAVA, sable, grammar_file, JAVAC,

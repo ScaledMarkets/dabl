@@ -5,6 +5,7 @@ import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Date;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.FileVisitOption;
@@ -153,6 +154,10 @@ public class LocalRepo implements Repo {
 			FileVisitOption.FOLLOW_LINKS)
 				.filter(path -> ! path.toFile().isDirectory())
 				.count();
+	}
+	
+	public Date getDateOfMostRecentChange(PatternSets patternSets) {
+		....
 	}
 
 	private String outputName;

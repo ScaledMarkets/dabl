@@ -387,6 +387,14 @@ public class Helper {
 	}
 	
 	/**
+	 * 
+	 */
+	public POnamedArtifactSet getNamedArtifactDeclFromArtfiactRef(AOidRef artIdRef) {
+		
+		....
+	}
+	
+	/**
 	 * Return the value of the specified String literal symbol.
 	 */
 	public String getStringLiteralValue(POstringLiteral literal) throws Exception {

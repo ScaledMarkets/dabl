@@ -34,10 +34,10 @@ public enum ValueType {
 	public void checkNativeTypeAssignabilityFrom(Class sourceNativeType) throws Exception {
 		
 		switch (this) {
-			string: Utilities.assertThat(String.class.isAssignableFrom(sourceNativeType)); return;
-			numeric: Utilities.assertThat(Number.class.isAssignableFrom(sourceNativeType)); return;
-			logical: Utilities.assertThat(Boolean.class.isAssignableFrom(sourceNativeType)); return;
-			array: Utilities.assertThat(sourceNativeType.isArray()); return;
+			case string: Utilities.assertThat(String.class.isAssignableFrom(sourceNativeType)); return;
+			case numeric: Utilities.assertThat(Number.class.isAssignableFrom(sourceNativeType)); return;
+			case logical: Utilities.assertThat(Boolean.class.isAssignableFrom(sourceNativeType)); return;
+			case array: Utilities.assertThat(sourceNativeType.isArray()); return;
 			default: throw new RuntimeException(
 				"Unexpected ValueType value: " + this.toString());
 		}

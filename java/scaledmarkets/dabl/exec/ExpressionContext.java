@@ -1,5 +1,6 @@
 package scaledmarkets.dabl.exec;
 
+import scaledmarkets.dabl.node.AOidRef;
 import java.util.HashMap;
 import java.util.Date;
 
@@ -23,5 +24,5 @@ public abstract class ExpressionContext {
 	 * Return the most recent date/time at which the input or output represented
 	 * by the specified identifier was changed.
 	 */
-	public abstract Date getDateOfMostRecentChange(String inputOrOutputName) throws Exception;
+	public abstract Date getDateOfMostRecentChange(AOidRef inputOrOutputName) throws Exception;
 }
