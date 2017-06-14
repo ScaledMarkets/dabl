@@ -6,6 +6,7 @@ import scaledmarkets.dabl.exec.PatternSets;
 import java.io.File;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Date;
 
 /**
  * Used for testing. Does not actually interact with a repository: instead, the
@@ -80,5 +81,9 @@ public class DummyProvider implements RepoProvider {
 	
 	public long countAllFiles(RemoteRepo repo) throws Exception {
 		return 0; //....
+	}
+
+	public Date getDateOfMostRecentChange(PatternSets patternSets) {
+		return null;
 	}
 }

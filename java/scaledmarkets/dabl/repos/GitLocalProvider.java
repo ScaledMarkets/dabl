@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.client.*;
 import java.io.File;
 import java.util.List;
+import java.util.Date;
 
 public class GitLocalProvider implements RepoProvider {
 	
@@ -62,6 +63,10 @@ public class GitLocalProvider implements RepoProvider {
 	
 	public long countAllFiles(RemoteRepo repo) throws Exception {
 		return 0; //....
+	}
+
+	public Date getDateOfMostRecentChange(PatternSets patternSets) {
+		....
 	}
 
 	class GitLocalRepo extends RemoteRepo {

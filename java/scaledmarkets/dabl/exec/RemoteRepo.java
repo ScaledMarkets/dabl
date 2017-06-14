@@ -39,6 +39,29 @@ public abstract class RemoteRepo implements Repo {
 		this.password = password;
 	}
 
+	public static class Map extends HashMap<String, RemoteRepo> {
+		
+		/**
+		 * Return the RemoteRepo for the specified address. If it does
+		 * not exist, create it.
+		 */
+		public RemoteRepo getRemoteRepo(String repoType, String scheme, String path,
+				String project, String userid, String password) {
+			
+			String key = RemoteRepo.getKey(repoType, scheme, path, project);
+			RemoteRepo r = get(key);
+			if (r == null) {
+				r = new getRepo(repoType, scheme, path, project, userid, password);
+				put(key, r);
+			}
+			return r;
+		}
+	}
+	
+	static String getKey(String repoType, String scheme, String path, String project) {
+		return repoType + " : " + scheme + " : " + path + " : " + project;
+	}
+
 	/**
 	 * Retrieve the specified files from the specified project in the repository,
 	 * and store them in 'dir'.

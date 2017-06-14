@@ -9,7 +9,8 @@ import java.util.LinkedList;
 
 /**
  * Perform an operation (specified by a derived class) on a collection of artifacts
- * which are specified via include/exclude pattern sets.
+ * which are specified via include/exclude pattern sets. The sets of artifacts
+ * are potentially overlapping.
  */
 public abstract class ArtifactOperator {
 	
@@ -31,12 +32,14 @@ public abstract class ArtifactOperator {
 		Set<Artifact> artifacts) throws Exception {
 		
 		PatternSets.Map patternSetsMap = new PatternSets.Map();
+		RemoteRepo.Map remoteRepoMap = new RemoteRepo.Map();
 		
 		for (Artifact artifact : artifacts) {
 			POartifactSet artifactSet = artifact.getArtifactSet();
 			
 			Repo repo;
 			LinkedList<POfilesetOperation> filesetOps;
+			
 			if (artifactSet instanceof ALocalOartifactSet) {
 				// Find the NamedArtifactSet that owns the artifactSet.
 				ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)artifactSet;
@@ -66,7 +69,7 @@ public abstract class ArtifactOperator {
 				String repoType = this.helper.getStringLiteralValue(repoDecl.getType());
 				
 				// Use the repo info to construct a Repo object.
-				repo = RemoteRepo.getRepo(repoType, scheme, path, project, userid, password);
+				repo = remoteRepoMap.getRemoteRepo(repoType, scheme, path, project, userid, password);
 				
 				filesetOps = remoteArtifactSet.getOfilesetOperation();
 				

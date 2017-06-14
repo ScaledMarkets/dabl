@@ -2,6 +2,7 @@ package scaledmarkets.dabl.exec;
 
 import java.io.File;
 import java.util.List;
+import java.util.Date;
 
 public interface RepoProvider {
 	RemoteRepo getRepo(String scheme, String path, String project,
@@ -21,4 +22,6 @@ public interface RepoProvider {
 	boolean containsFile(RemoteRepo repo, String filepath) throws Exception;
 	
 	long countAllFiles(RemoteRepo repo) throws Exception;
+	
+	Date getDateOfMostRecentChange(PatternSets patternSets);
 }
