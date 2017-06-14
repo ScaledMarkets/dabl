@@ -39,33 +39,22 @@ public class DablContext extends ExpressionContext {
 			getHelper().getNamedArtifactDeclFromArtfiactRef(inputOrOutputName);
 		
 		AOartifactSet artifactSet;
-		Repo repo;
-		List<POfilesetOperation> filesetOps;
+		PatternSets patternSets;
 		if (namedArtifactSet instanceof ANamedOnamedArtifactSet) {
-			POartifactSet aset = ((ANamedOnamedArtifactSet)namedArtifactSet).getOartifactSet();
-			if (aset instanceof ALocalOartifactSet) {
-				ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)aset;
-				repo = ....
-				filesetOps = localArtifactSet.getOfilesetOperation();
-			} else if (aset instanceof ARemoteOartifactSet) {
-				....
-				filesetOps = ....
-			} else throw new RuntimeException(
-				"artifact set is an unexpected type: " + aset.getClass().getName());
+			POartifactSet artifactSet = 
+				((ANamedOnamedArtifactSet)namedArtifactSet).getOartifactSet();
 			
-			repo = ....
-			
+			patternSets = PatternSets.convertArtifactSetToPatternSets(artifactSet);
+
 		} else if (namedArtifactSet instanceof ARefOnamedArtifactSet) {
 			POidRef getOidRef()
 			DeclaredEntry getHelper().getDeclaredEntryForIdRef((AOidRef)idRef);
-			repo = ....
-			filesetOps = ....
+
+		
+		
 		} else throw new RuntimeException(
 			"named artifact set is an unexpected type: " + namedArtifactSet.getClass().getName());
-		
-		PatternSets patternSets = new PatternSets(repo);
-		patternSets.assembleIncludesAndExcludes(getHelper(), filesetOps);
-				
+						
 		// Examine each file and determine the date of the most recent change.
 		return repo.getDateOfMostRecentChange(patternSets);
 	}

@@ -37,50 +37,9 @@ public abstract class ArtifactOperator {
 		for (Artifact artifact : artifacts) {
 			POartifactSet artifactSet = artifact.getArtifactSet();
 			
-			Repo repo;
-			LinkedList<POfilesetOperation> filesetOps;
-			
-			if (artifactSet instanceof ALocalOartifactSet) {
-				// Find the NamedArtifactSet that owns the artifactSet.
-				ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)artifactSet;
-				String outputName = getName(localArtifactSet);
-
-				// Create a local repository, managed by DABL.
-				repo = LocalRepo.createRepo(namespaceName, taskName, outputName,
-					localArtifactSet);
-				
-				filesetOps = localArtifactSet.getOfilesetOperation();
-				
-			} else if (artifactSet instanceof ARemoteOartifactSet) {
-				ARemoteOartifactSet remoteArtifactSet = (ARemoteOartifactSet)artifactSet;
-				AOidRef reposIdRef = (AOidRef)(remoteArtifactSet.getRepositoryId());
-				
-				// Use the Repo object to pull the files from the repo.
-				String project = this.helper.getStringLiteralValue(remoteArtifactSet.getProject());
-				
-				// Identify the repo declaration.
-				AOrepoDeclaration repoDecl = this.helper.getRepoDeclFromRepoRef(reposIdRef);
-				String path = this.helper.getStringLiteralValue(repoDecl.getPath());
-				
-				// Obtain the repo information.
-				String scheme = this.helper.getStringValueOpt(repoDecl.getScheme());
-				String userid = this.helper.getStringValueOpt(repoDecl.getUserid());
-				String password = this.helper.getStringValueOpt(repoDecl.getPassword());
-				String repoType = this.helper.getStringLiteralValue(repoDecl.getType());
-				
-				// Use the repo info to construct a Repo object.
-				repo = remoteRepoMap.getRemoteRepo(repoType, scheme, path, project, userid, password);
-				
-				filesetOps = remoteArtifactSet.getOfilesetOperation();
-				
-			} else
-				throw new RuntimeException(
-					"Unexpected artifactSet type: " + artifactSet.getClass().getName());
-
-			PatternSets patternSets = patternSetsMap.getPatternSets(repo);
-			
-			// Construct a set of include patterns and a set of exclude patterns.
-			patternSets.assembleIncludesAndExcludes(this.helper, filesetOps);
+			PatternSets patternSets = 
+				PatternSets.convertArtifactSetToPatternSets(artifactSet,
+					patternSetsMap, remoteRepoMap);
 		}
 		
 		for (PatternSets patternSets : patternSetsMap.values()) {

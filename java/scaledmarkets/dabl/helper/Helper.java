@@ -395,13 +395,6 @@ public class Helper {
 	}
 	
 	/**
-	 * 
-	 */
-	public Collection<PatternSets> convertArtifactSetToPatternSets(AOartifactSet artifactSet) {
-		....
-	}
-	
-	/**
 	 * Return the value of the specified String literal symbol.
 	 */
 	public String getStringLiteralValue(POstringLiteral literal) throws Exception {
