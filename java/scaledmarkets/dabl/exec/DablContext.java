@@ -38,7 +38,6 @@ public class DablContext extends ExpressionContext {
 		POnamedArtifactSet namedArtifactSet =
 			getHelper().getNamedArtifactDeclFromArtfiactRef(inputOrOutputName);
 		
-		AOartifactSet artifactSet;
 		PatternSets patternSets;
 		if (namedArtifactSet instanceof ANamedOnamedArtifactSet) {
 			POartifactSet artifactSet = 
@@ -50,7 +49,10 @@ public class DablContext extends ExpressionContext {
 			POidRef getOidRef()
 			DeclaredEntry getHelper().getDeclaredEntryForIdRef((AOidRef)idRef);
 
-		
+			// Find the corresponding artifact set declaration, and create a
+			// pattern set for that.
+			POartifactSet artifactSet = ....
+			patternSets = PatternSets.convertArtifactSetToPatternSets(artifactSet);
 		
 		} else throw new RuntimeException(
 			"named artifact set is an unexpected type: " + namedArtifactSet.getClass().getName());
