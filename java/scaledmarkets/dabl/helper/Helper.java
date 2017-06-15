@@ -336,7 +336,7 @@ public class Helper {
 	}
 	
 	/**
-	 * 
+	 * Return the task declaration node that has the specified name.
 	 */
 	public AOtaskDeclaration getTaskDeclaration(String taskName) throws Exception {
 		
@@ -356,7 +356,8 @@ public class Helper {
 	}
 	
 	/**
-	 * 
+	 * Return the annotation representing the declaration of the symbol that is
+	 * referenced by the specified Id ref.
 	 */
 	public DeclaredEntry getDeclaredEntryForIdRef(AOidRef idRef) {
 		
@@ -374,7 +375,7 @@ public class Helper {
 	}
 	
 	/**
-	 * 
+	 * Return the declaration of the repository that is referenced by the specified Id ref.
 	 */
 	public AOrepoDeclaration getRepoDeclFromRepoRef(AOidRef reposIdRef) {
 		
@@ -387,7 +388,8 @@ public class Helper {
 	}
 	
 	/**
-	 * 
+	 * Return the named artifact declaration that is referenced by the specified
+	 * id reference.
 	 */
 	public POnamedArtifactSet getNamedArtifactDeclFromArtfiactRef(AOidRef artIdRef) {
 		
@@ -427,7 +429,7 @@ public class Helper {
 	}
 	
 	/**
-	 * 
+	 * Return the types of the arguments of the specified function declaration.
 	 */
 	public List<ValueType> getFunctionDeclTypes(AOfunctionDeclaration funcDecl) {
 		
@@ -439,7 +441,8 @@ public class Helper {
 	}
 	
 	/**
-	 * 
+	 * Return the actual types of the argument expressions of the specified
+	 * function call.
 	 */
 	public List<ValueType> getFunctionCallTypes(AFuncCallOprocStmt funcCall) {
 		List<ValueType> argValueTypes = new LinkedList<ValueType>();
