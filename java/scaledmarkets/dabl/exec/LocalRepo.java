@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Calendar;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.FileVisitOption;
@@ -157,7 +158,23 @@ public class LocalRepo implements Repo {
 	}
 	
 	public Date getDateOfMostRecentChange(PatternSets patternSets) {
-		....
+		
+		long mostRecentlyModified;
+		boolean firstTime = true;
+		// Iterate through all of the files.
+		DirectoryStream<Path> paths = Files.newDirectoryStream(dir.toPath());
+		for (Path path : paths) {
+			long lastModified = path.toFile().lastModified();
+			if (firstTime) {
+				firstTime = false;
+				mostRecentlyModified = lastModified;
+			} else {
+				if (lastModified > mostRecentlyModified) mostRecentlyModified = lastModified;
+			}
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(mostRecentlyModified);
+		return calendar.getTime();
 	}
 
 	private String outputName;

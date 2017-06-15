@@ -38,25 +38,30 @@ public class DablContext extends ExpressionContext {
 		POnamedArtifactSet namedArtifactSet =
 			getHelper().getNamedArtifactDeclFromArtfiactRef(inputOrOutputName);
 		
-		PatternSets patternSets;
 		if (namedArtifactSet instanceof ANamedOnamedArtifactSet) {
-			POartifactSet artifactSet = 
-				((ANamedOnamedArtifactSet)namedArtifactSet).getOartifactSet();
-			
-			patternSets = PatternSets.convertArtifactSetToPatternSets(artifactSet);
-
 		} else if (namedArtifactSet instanceof ARefOnamedArtifactSet) {
-			POidRef getOidRef()
-			DeclaredEntry getHelper().getDeclaredEntryForIdRef((AOidRef)idRef);
+			POidRef idRef = ((ARefOnamedArtifactSet)namedArtifactSet).getOidRef();
+			DeclaredEntry entry = getHelper().getDeclaredEntryForIdRef((AOidRef)idRef);
 
 			// Find the corresponding artifact set declaration, and create a
 			// pattern set for that.
-			POartifactSet artifactSet = ....
-			patternSets = PatternSets.convertArtifactSetToPatternSets(artifactSet);
+			Node artifactDef = entry.getDefiningNode();
+			if (artifactDef instanceof POnamedArtifactSet) {
+				namedArtifactSet = (POnamedArtifactSet)artifactDef;
+			} else throw new RuntimeException(
+				"artifact def is an unexpected type: " + artifactDef.getClass().getName());
 		
 		} else throw new RuntimeException(
 			"named artifact set is an unexpected type: " + namedArtifactSet.getClass().getName());
-						
+		
+		if (! (namedArtifactSet instanceof ANamedOnamedArtifactSet)) throw new RuntimeException(
+			"Unexpected type for artifact set: " + artifactSet.getClass().getName());
+		
+		POartifactSet artifactSet = 
+			((ANamedOnamedArtifactSet)namedArtifactSet).getOartifactSet();
+		
+		PatternSets patternSets = PatternSets.convertArtifactSetToPatternSets(artifactSet);
+			
 		// Examine each file and determine the date of the most recent change.
 		return repo.getDateOfMostRecentChange(patternSets);
 	}

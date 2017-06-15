@@ -31,7 +31,8 @@ public interface Repo {
 	
 	/**
 	 * List the files that exist in the specified directory and all child
-	 * directories in this repo.
+	 * directories in this repo. The file paths (relative to dirpath) are returned
+	 * in the list argument.
 	 */
 	void listFilesRecursively(List<String> files, String dirpath) throws Exception;
 	
@@ -42,6 +43,7 @@ public interface Repo {
 	
 	/**
 	 * List all of the files in this repo - including those in subdirectories.
+	 * The file paths (relative to dirpath) are returned in the list argument.
 	 */
 	void listFilesRecursively(List<String> files) throws Exception;
 	
