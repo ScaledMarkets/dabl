@@ -381,7 +381,7 @@ public class Helper {
 		DeclaredEntry de = getDeclaredEntryForIdRef(reposIdRef);
 		Node n = de.getDefiningNode();
 		if (! (n instanceof AOrepoDeclaration)) throw new RuntimeException(
-			"Expected a AOrepoDeclaration, but found a " + e.getClass().getName());
+			"Expected a AOrepoDeclaration, but found a " + de.getClass().getName());
 		AOrepoDeclaration repoDecl = (AOrepoDeclaration)n;
 		return repoDecl;
 	}
@@ -391,7 +391,11 @@ public class Helper {
 	 */
 	public POnamedArtifactSet getNamedArtifactDeclFromArtfiactRef(AOidRef artIdRef) {
 		
-		....
+		DeclaredEntry entry = getDeclaredEntryForIdRef(artIdRef);
+		Node n = entry.getDefiningNode();
+		if (! (n instanceof POnamedArtifactSet)) throw new RuntimeException(
+			"Expected a POnamedArtifactSet, but found a " + entry.getClass().getName());
+		return (POnamedArtifactSet)n;
 	}
 	
 	/**

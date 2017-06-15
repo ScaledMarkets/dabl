@@ -66,7 +66,7 @@ public class GitLocalProvider implements RepoProvider {
 	}
 
 	public Date getDateOfMostRecentChange(PatternSets patternSets) {
-		....
+		return null; //....
 	}
 
 	class GitLocalRepo extends RemoteRepo {

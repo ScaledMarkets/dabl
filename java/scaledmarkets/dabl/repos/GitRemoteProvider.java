@@ -83,7 +83,7 @@ public class GitRemoteProvider implements RepoProvider {
 	}
 
 	public Date getDateOfMostRecentChange(PatternSets patternSets) {
-		....
+		return null; //....
 	}
 
 	class GitRemoteRepo extends RemoteRepo {
