@@ -19,6 +19,10 @@ jar: $(jar_dir)/$(JAR_NAME).jar
 $(sable_out_dir):
 	mkdir -p $(sable_out_dir)/$(package)
 
+# Create the directory that will contain the parser's compiled class files.
+$(parser_build_dir):
+	mkdir -p $(parser_build_dir)
+
 # Generate the task parser.
 # Generates task compiler tables and classes.
 gen: $(grammar_file) $(sable_out_dir) $(build_dir)
@@ -26,7 +30,7 @@ gen: $(grammar_file) $(sable_out_dir) $(build_dir)
 
 # Compile the generated code for the task parser.
 compile: gen
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(build_dir) \
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(parser_build_dir) \
 		$(sable_out_dir)/$(package)/node/*.java \
 		$(sable_out_dir)/$(package)/lexer/*.java \
 		$(sable_out_dir)/$(package)/analysis/*.java \
@@ -36,3 +40,4 @@ compile: gen
 
 clean:
 	if [ -z "$(sable_out_dir)" ]; then echo "ERROR: sable_out_dir is empty"; exit 1; else rm -r -f $(sable_out_dir)/*; fi
+	if [ -z "$(parser_build_dir)" ]; then echo "ERROR: sable_out_dir is empty"; exit 1; else rm -r -f $(parser_build_dir)/*; fi

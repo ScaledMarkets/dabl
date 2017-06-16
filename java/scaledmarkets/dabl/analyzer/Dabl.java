@@ -55,6 +55,7 @@ public class Dabl
 	protected NameScope process(CompilerState state) throws Exception {
 		
 		// ....Need to insert template processor here
+		// ....Alert if any template symbols have no value.
 		
 		AnalyzerFactory factory = new DablAnalyzerFactory(state);
 		NamespaceProcessor namespaceProcessor = factory.createNamespaceProcessor();

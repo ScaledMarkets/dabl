@@ -124,6 +124,8 @@ prefixed by a dollar sign:
 <dd><code>${PATH}</code></dd>
 </dl>
 
+If an environment variable is undefined, DABL generates an error.
+
 ### Built-In Environment Variables
 
 DABL defines some built-in environment variables that are set by the DABL

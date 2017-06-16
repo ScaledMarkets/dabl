@@ -47,7 +47,7 @@ public enum ValueType {
 	 * Verify that a list of actual types can be assigned to the specified
 	 * declared types.
 	 */
-	public static checkTypeListAssignabilityTo(List<ValueType> sourceTypes,
+	public static void checkTypeListAssignabilityTo(List<ValueType> sourceTypes,
 		List<ValueType> targetTypes) throws Exception {
 	
 		Utilities.assertThat(sourceTypes.size() == targetTypes.size(),

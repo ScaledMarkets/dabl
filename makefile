@@ -35,6 +35,8 @@ export JAVADOC = javadoc
 # Relative locations:
 export CurDir := $(shell pwd)
 export src_dir := $(CurDir)/java
+export parser_build_dir := $(build_dir)/parser
+export client_build_dir := $(build_dir)/client
 export test_src_dir := $(CurDir)/test
 export test_build_dir := $(CurDir)/buildtest
 export test_package = $(package)/test
@@ -75,6 +77,10 @@ parser: config
 		package=$(package) \
 		grammar_file=dabl.sablecc \
 		make -f make_parser.makefile all
+
+clean_parser:
+	make -f make_parser.makefile clean
+
 
 # ------------------------------------------------------------------------------
 # Build compilers.
