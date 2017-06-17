@@ -5,8 +5,6 @@ import scaledmarkets.dabl.util.Utilities;
 import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analyzer.*;
 
-import sablecc.PrettyPrint;
-
 import java.util.List;
 import java.util.LinkedList;
 
@@ -398,6 +396,29 @@ public class Helper {
 		if (! (n instanceof POnamedArtifactSet)) throw new RuntimeException(
 			"Expected a POnamedArtifactSet, but found a " + entry.getClass().getName());
 		return (POnamedArtifactSet)n;
+	}
+	
+	/**
+	 * 
+	 */
+	public POartifactSet getArtifactSet(POnamedArtifactSet p) {
+		
+		POartifactSet pas;
+		
+		if (p instanceof AAnonymousOnamedArtifactSet) {
+			return ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
+		} else if (p instanceof ANamedOnamedArtifactSet) {
+			return ((ANamedOnamedArtifactSet)p).getOartifactSet();
+		} else if (p instanceof ARefOnamedArtifactSet) {
+			POidRef oidRef = ((ARefOnamedArtifactSet)p).getOidRef();
+			
+			POnamedArtifactSet naSet =
+				getHelper().getNamedArtifactDeclFromArtfiactRef((AOidRef)oidRef);
+			
+			return getArtifactSet(naSet);  // recursive
+			
+		} else throw new RuntimeException(
+			"Unexpected Node type: " + p.getClass().getName());
 	}
 	
 	/**

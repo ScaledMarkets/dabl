@@ -47,7 +47,7 @@ export sable_task_out_dir := $(CurDir)/SableCCTaskOutput
 export javadoc_dir := $(CurDir)/docs
 
 # Java classpaths:
-export buildcp := $(build_dir)
+export buildcp := $(parser_build_dir):$(client_build_dir)
 export compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
 export test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
 export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
@@ -75,6 +75,7 @@ config:
 parser: config
 	sable_out_dir=$(sable_dabl_out_dir) \
 		package=$(package) \
+		parser_build_dir=$(parser_build_dir) \
 		grammar_file=dabl.sablecc \
 		make -f make_parser.makefile all
 
@@ -110,7 +111,7 @@ task_runtime:
 # can recognize the language.
 check:
 	echo "\n         namespace simple import abc      \n" > simple.dabl
-	$(JAVA) -classpath $(build_dir) scaledmarkets.dabl.Main -t simple.dabl
+	$(JAVA) -classpath $(buildcp) scaledmarkets.dabl.Main -t simple.dabl
 
 # Compile the test source files.
 compile_tests: $(test_build_dir)
@@ -118,8 +119,7 @@ compile_tests: $(test_build_dir)
 		$(test_src_dir)/steps/$(test_package)/*.java \
 		$(test_src_dir)/steps/$(test_package)/analyzer/*.java \
 		$(test_src_dir)/steps/$(test_package)/docker/*.java \
-		$(test_src_dir)/steps/$(test_package)/exec/*.java \
-		$(src_dir)/sablecc/*.java
+		$(test_src_dir)/steps/$(test_package)/exec/*.java
 
 # Run Cucumber tests.
 # Note: We could export LD_LIBRARY_PATH instead of passing it in the java command.

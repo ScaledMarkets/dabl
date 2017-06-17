@@ -48,7 +48,7 @@ public class NameScope implements Annotation
 	}
 	
 	/**
-	 * Returned Node is one of the Node types labeled as 'a NameScope' in decl.sablecc.
+	 * Returned Node is one of the Node types labeled as 'a NameScope' in dabl.sablecc.
 	 */
 	public Node getNodeThatDefinesScope() { return nodeThatDefinesScope; }
 	

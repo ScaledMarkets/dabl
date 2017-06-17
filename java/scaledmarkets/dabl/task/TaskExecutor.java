@@ -4,6 +4,7 @@ import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.analysis.*;
+import scaledmarkets.dabl.analyzer.DablStandard;
 import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.analyzer.ImportHandler;
 import scaledmarkets.dabl.analyzer.FileImportHandler;

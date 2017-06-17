@@ -821,7 +821,6 @@ Abstract Syntax Tree
         {named} id oartifact_set
       | {anonymous} oartifact_set
       | {ref} oid_ref
-//      | {task} oqualified_name_ref
       ;
     
     oartifact_set =

@@ -6,8 +6,6 @@ import scaledmarkets.dabl.lexer.Lexer;
 import scaledmarkets.dabl.parser.Parser;
 import scaledmarkets.dabl.node.Start;
 
-import sablecc.PrettyPrint;
-
 /**
  * Parses and analyzes DABL source code. The source code is provided as input.
  */

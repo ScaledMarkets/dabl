@@ -2,7 +2,6 @@ package scaledmarkets.dabl.analyzer;
 
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.util.Utilities;
-import scaledmarkets.dabl.task.DablStandard;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -46,20 +45,7 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 
     public void outAOidRef(AOidRef node)
     {
-		TId id = node.getId();
-		LinkedList<TId> path = new LinkedList<TId>();
-		path.add(id);
-    	outRefNode(node, path, new PublicVisibilityChecker(path));
-    }
-    
-    public void inAOqualifiedNameRef(AOqualifiedNameRef node)
-    {
-    	defaultIn(node);
-    }
-    
-    public void outAOqualifiedNameRef(AOqualifiedNameRef node)
-    {
-    	List<TId> path = node.getId();
+		LinkedList<TId> path = node.getId();
     	outRefNode(node, path, new PublicVisibilityChecker(path));
     }
     

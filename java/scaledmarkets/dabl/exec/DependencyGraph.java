@@ -79,18 +79,7 @@ public class DependencyGraph {
 			LinkedList<POnamedArtifactSet> inputs = taskDecl.getInput();
 			for (POnamedArtifactSet p : inputs) {
 				
-				POartifactSet pas;
-				
-				if (p instanceof AAnonymousOnamedArtifactSet) {
-					pas = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
-				} else if (p instanceof ANamedOnamedArtifactSet) {
-					pas = ((ANamedOnamedArtifactSet)p).getOartifactSet();
-				} else if (p instanceof AFilesOnamedArtifactSet) {
-					pas = getArtifactSet((AFilesOnamedArtifactSet)p);
-				} else if (p instanceof ATaskOnamedArtifactSet) {
-					pas = getArtifactSet((ATaskOnamedArtifactSet)p);
-				} else throw new RuntimeException(
-					"Unexpected Node type: " + p.getClass().getName());
+				POartifactSet pas = getHelper().getArtifactSet(p);
 				
 				// 1. If the input Artifact does not exist, then create a new Artifact.
 				Artifact artifact = artifacts.get(pas);

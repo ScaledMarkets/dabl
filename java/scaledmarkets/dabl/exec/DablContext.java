@@ -10,18 +10,16 @@ import java.util.Date;
  */
 public class DablContext extends ExpressionContext {
 	
-	private Map<String, int> taskStatus = new HashMap<String, int>();
+	private Map<String, Integer> taskStatus = new HashMap<String, Integer>();
 	
 	public Object getValueForVariable(String variableName) {
 		throw new RuntimeException("Variables are only available in a task's runtime context");
 	}
 	
 	public int getTaskStatus(String taskName) throws Exception {
-		Object obj = this.taskStatus.get(taskName);
-		if (obj == null) throw new Exception("Task has not executed");
-		if (!( obj instanceof Integer)) throw new RuntimeException(
-			"Status of task " + taskName + " is not an integer");
-		return ((Integer)obj).intValue();
+		Integer status = this.taskStatus.get(taskName);
+		if (status == null) throw new Exception("Task has not executed");
+		return status.intValue();
 	}
 	
 	void setTaskStatus(String taskName, int status) {

@@ -4,6 +4,7 @@ import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
 import java.util.List;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * A remote container for a set of files. By 'remote', we mean that the repo is
