@@ -163,12 +163,16 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 			}
 			resolveForwardReferences(entry);
 		}
+	}
 		
+	public void outAFuncCallOprocStmt(AFuncCallOprocStmt node)
+	{
 		// Add a semantic check: that function argument types and declared types match.
 		// If function declaration has been processed, perform the check now; otherwise,
 		// add it to the set of checks that should be performed when the function's
 		// declaration is processed.
-		SymbolEntry entry = resolveSymbol(node.getOidRef());
+		List<TId> path = ((AOidRef)(node.getOidRef())).getId();
+		SymbolEntry entry = resolveSymbol(path);
 		if (entry == null) {  // it is currently undeclared.
 			Node ref = node.getOidRef();
 			registerSemanticHandlerFor(ref,
@@ -180,13 +184,9 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 					}
 				});
 		} else {  // declaration found.
-			checkFuncCallTypes(node);
+			checkFuncCallTypes(node);  // assumes that the actual arg expressions
+				// have already been analyzed.
 		}
-	}
-		
-	public void outAFuncCallOprocStmt(AFuncCallOprocStmt node)
-	{
-		super.outAFuncCallOprocStmt(node);
 	}
 	
 	/**
@@ -221,6 +221,33 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 		}
 	}
 	
+	/**
+	 * Return the types of the arguments of the specified function declaration.
+	 */
+	public static List<ValueType> getFunctionDeclTypes(AOfunctionDeclaration funcDecl) {
+		
+		List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
+		for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
+			declaredArgTypes.add(LanguageCoreAnalyzer.mapTypeSpecToValueType(typeSpec));
+		}
+		return declaredArgTypes;
+	}
+	
+	/**
+	 * Return the actual types of the argument expressions of the specified
+	 * function call. Assumes that the function call has already been analyzed.
+	 */
+	public static List<ValueType> getFunctionCallTypes(AFuncCallOprocStmt funcCall) {
+		List<ValueType> argValueTypes = new LinkedList<ValueType>();
+		for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
+			
+			ExprAnnotation annot = getExprAnnotation(arg);
+			ValueType type = annot.getType();
+			argValueTypes.add(type);
+		}
+		return argValueTypes;
+	}
+	
 	
 	/* Evaluate string literals.
 		ostring_literal =
@@ -248,7 +275,7 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 		}
 		
 		// Set attribute value.
-		setExprAnnotation(node, value);
+		setExprAnnotation(node, value, ValueType.string);
 	}
 
 	public void inAString2OstringLiteral(AString2OstringLiteral node)
@@ -267,7 +294,7 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 		}
 		
 		// Set attribute value.
-		setExprAnnotation(node, value);
+		setExprAnnotation(node, value, ValueType.string);
 	}
 	
 	/* Evaluate string expressions.
@@ -306,6 +333,6 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 		
 		String result = leftString + rightString;
 		
-		setExprAnnotation(node, result);
+		setExprAnnotation(node, result, ValueType.string);
 	}
 }

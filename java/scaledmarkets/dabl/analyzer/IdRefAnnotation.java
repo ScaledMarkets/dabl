@@ -1,19 +1,19 @@
 package scaledmarkets.dabl.analyzer;
 
-import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.node.AOidRef;
 
 public class IdRefAnnotation implements Annotation
 {
-	private Node idRef;
+	private AOidRef idRef;
 	private SymbolEntry entry;
 	
-	public IdRefAnnotation(Node idRef, SymbolEntry entry)
+	public IdRefAnnotation(AOidRef idRef, SymbolEntry entry)
 	{
 		this.idRef = idRef;
 		this.entry = entry;
 	}
 	
-	public Node getIdRef() { return idRef; }
+	public AOidRef getIdRef() { return idRef; }
 	
 	public SymbolEntry getDefiningSymbolEntry() { return entry; }
 }

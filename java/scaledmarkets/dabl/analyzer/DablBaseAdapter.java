@@ -94,7 +94,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
     protected void outRefNode(Node node, List<TId> path, VisibilityChecker checker)
     {
     	// Node can be a AOidRef or a AOqualifiedNameRef
-    	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
+    	assertThat(node instanceof AOidRef, "Node is unexpected type: " + node.getClass().getName());
+    	AOidRef idRef = (AOidRef)node;
     	
 		// Find the declaration of the id. If it exists, annotate it.
 		
@@ -108,11 +109,11 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 			// and then remove itself from all of the scopes to which it is attached.
 			new IdentHandler(this, path, getCurrentNameScope()) {
 				public void resolveRetroactively(DeclaredEntry entry) {
-					DablBaseAdapter.this.resolve(node, checker, entry);
+					DablBaseAdapter.this.resolve(idRef, checker, entry);
 					
 					// If there is a semantic handler, execute it.
 					IdentSemanticHandler h = getIdentSemanticHandler(node);
-					if (h != null) e.semanticAction(entry);
+					if (h != null) h.semanticAction(entry);
 				}
 				// Note: the base class, IdentHandler, contains a method
 				// checkForPathResolution, which calls resolveRetroactively, 
@@ -123,40 +124,54 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 			// Annotate the Id reference with the DeclaredEntry that defines the Id.
 			if (! (entry instanceof DeclaredEntry)) throw new RuntimeException(
 				"Unexpected: entry is a " + entry.getClass().getName());
-			resolve(node, checker, (DeclaredEntry)entry);
+			resolve(idRef, checker, (DeclaredEntry)entry);
 		}
 	}
 	
 	/**
 	 * Register the specified semantic handler for the specified node. The node must
-	 * be a symbol reference - specifically a AOidRef or a AOqualifiedNameRef.
+	 * be a symbol reference - specifically a AOidRef.
 	 * A semantic handlers for a symbol reference is invoked when the symbol reference
 	 * is matched with the symbol declaration. Only one semantic handler can be
 	 * registered for a given node.
 	 */
-	protected void registerSemanticHandlerFor(Node ref, IdentSemanticHandler handler) {
+	void registerSemanticHandlerFor(AOidRef ref, IdentSemanticHandler handler) {
 		
-    	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
     	assertThat(this.identSemanticHandlers.get(ref) == null,
     		"A semantic handler for node '" + ref.toString() + "' is already registered");
 		this.identSemanticHandlers.put(ref, handler);
 	}
 
 	/**
-	 * Return the semantic handler for the specified symbol reference, or null if
-	 * there is not one.
+	 * Perform semantic actions when the specified symbol reference is evantually
+	 * declared. Semantic handlers are invoked when a declaration is recognized
+	 * and after the symbol reference has been matched up with the symbol declaration.
+	 * See the outRefNode method in DablBaseAdapter.
 	 */
-	protected IdentSemanticHandler getIdentSemanticHandler(Node node) {
+	public abstract class IdentSemanticHandler {
+		private AOidRef ref;
 		
-    	assertThat((node instanceof AOidRef) || (node instanceof AOqualifiedNameRef));
-    	return this.identSemanticHandlers(node);
+		IdentSemanticHandler(AOidRef ref) {
+			this.ref = ref;
+			DablBaseAdapter.this.registerSemanticHandlerFor(ref, this);
+		}
+		
+		public abstract void semanticAction(DeclaredEntry entry);
 	}
 	
 	/**
-	 * Annotate the node (an Id reference - either an AOidRef or a AOqualifiedNameRef -
-	 * with the DeclaredEntry that defines the Id.
+	 * Return the semantic handler for the specified symbol reference, or null if
+	 * there is not one.
 	 */
-	void resolve(Node node, VisibilityChecker checker, DeclaredEntry entry) {
+	protected IdentSemanticHandler getIdentSemanticHandler(AOidRef node) {
+		
+    	return this.identSemanticHandlers.get(node);
+	}
+	
+	/**
+	 * Annotate the node with the DeclaredEntry that defines the Id.
+	 */
+	void resolve(AOidRef node, VisibilityChecker checker, DeclaredEntry entry) {
 		checker.check(getCurrentNameScope(), entry);
 		setIdRefAnnotation(node, entry);
 	}
@@ -229,8 +244,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	
 	protected SymbolEntry resolveSymbol(String name, NameScope initialScope)
 	{
-		Utilities.assertThat(name != null, "symbol name is null");
-		Utilities.assertThat(initialScope != null, "initial scope is null");
+		assertThat(name != null, "symbol name is null");
+		assertThat(initialScope != null, "initial scope is null");
 		
 		for (NameScope scope = initialScope; scope != null; scope = scope.getParentNameScope())
 		{
@@ -322,22 +337,29 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	/**
 	 * An expression whose value is defined in the declaration of a symbol.
 	 */
-	protected IdRefAnnotation setIdRefAnnotation(Node idRef, SymbolEntry entry)
+	protected IdRefAnnotation setIdRefAnnotation(AOidRef idRef, SymbolEntry entry)
 	{
 		IdRefAnnotation annotation = new IdRefAnnotation(idRef, entry);
 		this.setOut(idRef, annotation);
 		return annotation;
 	}
 	
-	protected ExprAnnotation setExprAnnotation(Node node, Object value)
+	protected ExprAnnotation setExprAnnotation(Node node, Object value, ValueType valueType)
 	{
-		ExprAnnotation annotation = new ExprAnnotation(node, value);
+		ExprAnnotation annotation = new ExprAnnotation(node, value, valueType);
 		this.setOut(node, annotation);
 		return annotation;
 	}
 	
-	protected ExprAnnotation getExprAnnotation(Node node)
-	{
-		return this.state.getExprAnnotation(node);
+	public ExprAnnotation getExprAnnotation(Node node) {
+		return (ExprAnnotation)(this.getOut(node));
+	}
+	
+	public void assertThat(boolean expr, String msg) {
+		Utilities.assertThat(expr, msg);
+	}
+	
+	public void assertThat(boolean expr, Runnable action) {
+		Utilities.assertThat(expr, action);
 	}
 }

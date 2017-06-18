@@ -20,7 +20,7 @@ import java.util.LinkedList;
  */
 public class DependencyGraph {
 
-	private CompilerState state;
+	private Helper helper;
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
 	private Map<POartifactSet, Artifact> artifacts = new HashMap<POartifactSet, Artifact>();
 	private Set<Task> rootTasks = new HashSet<Task>();
@@ -29,9 +29,9 @@ public class DependencyGraph {
 	 * Create a dependency graph that explicitly models the producer/consumer
 	 * relationships between tasks.
 	 */
-	public static DependencyGraph genDependencySet(CompilerState state) {
+	public static DependencyGraph genDependencySet(Helper helper) {
 		
-		DependencyGraph graph = new DependencyGraph(state);
+		DependencyGraph graph = new DependencyGraph(helper);
 		graph.genDependencies();
 		return graph;
 	}
@@ -54,8 +54,8 @@ public class DependencyGraph {
 		return artifacts.get(a);
 	}
 	
-	protected DependencyGraph(CompilerState state) {
-		this.state = state;
+	protected DependencyGraph(Helper helper) {
+		this.helper = helper;
 	}
 	
 	/**
@@ -65,9 +65,8 @@ public class DependencyGraph {
 	protected void genDependencies() {
 		
 		// 1. Create a graph of the artifact/task flow relationships:
-		Helper helper = new Helper(state);
 		List<AOtaskDeclaration> taskDecls;
-		try { taskDecls = helper.getTaskDeclarations(); } catch (Exception ex) {
+		try { taskDecls = this.helper.getTaskDeclarations(); } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 		for (AOtaskDeclaration taskDecl : taskDecls) { // each task declaration
@@ -159,72 +158,5 @@ public class DependencyGraph {
 		Artifact artifact = new Artifact(aset);
 		artifacts.put(aset, artifact);
 		return artifact;
-	}
-	
-	/**
-	 * Retrieve the artifact set referenced by the oid_ref.
-	 */
-	protected POartifactSet getArtifactSet(AFilesOnamedArtifactSet node) {
-		
-		POidRef p = node.getOidRef();
-		AOidRef oidRef = (AOidRef)p;
-		
-		TId id = oidRef.getId();
-		Annotation a = state.getIn(id);
-		if (a == null) throw new RuntimeException("Unable to identify " + id.getText());
-		DeclaredEntry entry = null;
-		if (a instanceof DeclaredEntry) {
-			entry = (DeclaredEntry)a;
-		} else throw new RuntimeException("Unexpected Node type: " + a.getClass().getName());
-		
-		// The defining node should be a files declaration.
-			
-		Node n = entry.getDefiningNode();
-		AOfilesDeclaration filesDecl;
-		if (n instanceof AOfilesDeclaration) {
-			filesDecl = (AOfilesDeclaration)n;
-		} else throw new RuntimeException(
-			id.getText() + " was expected to refer to a files declaration");
-		
-		POartifactSet b = filesDecl.getOartifactSet();
-		return b;
-	}
-	
-	/**
-	 * Retrieve the artifact set referenced by the qualified name.
-	 */
-	protected POartifactSet getArtifactSet(ATaskOnamedArtifactSet node) {
-		
-		POqualifiedNameRef p = node.getOqualifiedNameRef();
-		Utilities.assertThat(p instanceof AOqualifiedNameRef,
-			"Unexpected Node type: " + p.getClass().getName());
-		AOqualifiedNameRef nameRef = (AOqualifiedNameRef)p;
-		
-		Annotation a = state.getOut(nameRef);
-		if (a == null) throw new RuntimeException(
-			"Unable to identify " + Utilities.createNameFromPath(nameRef.getId()));
-		IdRefAnnotation eref = null;
-		if (a instanceof IdRefAnnotation) {
-			eref = (IdRefAnnotation)a;
-		} else throw new RuntimeException("Unexpected annotation type: " + a.getClass().getName());
-		
-		SymbolEntry e = eref.getDefiningSymbolEntry();
-		DeclaredEntry entry;
-		if (e instanceof DeclaredEntry) {
-			entry = (DeclaredEntry)e;
-		} else throw new RuntimeException("Unexpected annotation type: " + e.getClass().getName());
-		
-		// The defining node should be a ANamedOnamedArtifactSet.
-		
-		Node n = entry.getDefiningNode();
-		ANamedOnamedArtifactSet namedArtifactSet;
-		if (n instanceof ANamedOnamedArtifactSet) {
-			namedArtifactSet = (ANamedOnamedArtifactSet)n;
-		} else throw new RuntimeException(
-			Utilities.createNameFromPath(nameRef.getId()) +
-			" was expected to refer to an output in a task declaration");
-		
-		POartifactSet b = namedArtifactSet.getOartifactSet();
-		return b;
 	}
 }

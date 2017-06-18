@@ -98,6 +98,9 @@ $(jar_dir):
 client:
 	make -f build_client.makefile all
 
+clean_client:
+	make -f build_client.makefile clean
+
 task_runtime:
 	make -f build_task_runtime.makefile all
 

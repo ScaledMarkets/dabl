@@ -44,7 +44,7 @@ public class Dabl
 	 */
 	public CompilerState process() throws Exception {
 		
-		CompilerState state = new CompilerState();
+		ClientState state = new ClientState();
 		process(state);
 		return state;
 	}
@@ -52,7 +52,7 @@ public class Dabl
 	/**
 	 * This version of process should only be called by ImportHandlers.
 	 */
-	protected NameScope process(CompilerState state) throws Exception {
+	protected NameScope process(ClientState state) throws Exception {
 		
 		// ....Need to insert template processor here
 		// ....Alert if any template symbols have no value.

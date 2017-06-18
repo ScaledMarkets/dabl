@@ -26,6 +26,11 @@ public abstract class IdentHandler
 		attachToEnclosingScopes();
 	}
 	
+	/**
+	 * This method is expected to perform all reference fixing.
+	 */
+	public abstract void resolveRetroactively(DeclaredEntry entry);
+	
 	public List<TId> getPath() { return path; }
 	
 	public NameScope getOriginalScope() { return originalScope; }
@@ -49,11 +54,6 @@ public abstract class IdentHandler
 		}
 		return false;
 	}
-	
-	/**
-	 * This method is expected to perform all reference fixing.
-	 */
-	public abstract void resolveRetroactively(DeclaredEntry entry);
 	
 	/**
 	 * Attach this IdentHandler to all the NameScopes that enclose the caller.

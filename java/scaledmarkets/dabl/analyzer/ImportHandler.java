@@ -7,6 +7,4 @@ package scaledmarkets.dabl.analyzer;
 public interface ImportHandler {
 
 	NameScope processNamespace(String namespacePath, CompilerState state);
-	
-	NamespaceProcessor getNamespaceProcessor();
 }

@@ -38,7 +38,7 @@ public class DefaultExecutor implements Executor {
 	
 	public void execute() throws Exception {
 		System.out.println("Determining dependency graph...");
-		DependencyGraph graph = DependencyGraph.genDependencySet(this.state);
+		DependencyGraph graph = DependencyGraph.genDependencySet(new Helper(state));
 
 		System.out.println("Executing tasks...");
 		executeAll(graph);

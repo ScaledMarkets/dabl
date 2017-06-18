@@ -79,16 +79,16 @@ public class LanguageCoreAnalyzer extends DablBaseAdapter {
 	protected void processNamespace(String namespaceName) {
 		
 		// Replace NameScope stack with a fresh one.
-		List<NameScope> originalScopeStack = state.scopeStack;
-		state.scopeStack = new LinkedList<NameScope>();
-		state.pushScope(state.globalScope);
+		List<NameScope> originalScopeStack =
+			getState().swapScopeStack(new LinkedList<NameScope>());
+		getState().pushScope(getState().getGlobalScope());
 		
 		// Import and process the namespace. The import handler uses a NamespaceProcessor
 		// that was given to it at construction.
 		NameScope importedScope = getImportHandler().processNamespace(namespaceName, getState());
 		
 		// Restore NameScope stack.
-		state.scopeStack = originalScopeStack;
+		getState().swapScopeStack(originalScopeStack);
 		
 		// Add the new namespace to the global scope.
 		getState().globalScope.getSymbolTable().appendTable(importedScope.getSymbolTable());

@@ -71,9 +71,21 @@ public class CompilerState
 	 */
 	protected Hashtable<Node, Annotation> out = new Hashtable<Node, Annotation>();
 
-	protected void pushScope(NameScope scope) { this.scopeStack.add(0, scope); }
+	protected void pushScope(NameScope scope) {
+		this.scopeStack.add(0, scope);
+	}
 	
 	protected NameScope popScope() {
 		return this.scopeStack.remove(0);
+	}
+	
+	/**
+	 * Switch the current scope stack with the specified one, and return the
+	 * original scope stack.
+	 */
+	List<NameScope> swapScopeStack(List<NameScope> newScopeStack) {
+		List<NameScope> originalScopeStack = scopeStack;
+		this.scopeStack = newScopeStack;
+		return originalScopeStack;
 	}
 }

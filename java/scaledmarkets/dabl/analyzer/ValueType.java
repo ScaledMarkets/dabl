@@ -1,5 +1,6 @@
 package scaledmarkets.dabl.analyzer;
 
+import scaledmarkets.dabl.util.Utilities;
 import java.util.List;
 
 /**
@@ -14,8 +15,8 @@ public enum ValueType {
 	public void checkTypeAssignabilityTo(ValueType targetType) throws Exception {
 		
 		Utilities.assertThat(this.equals(targetType),
-			"Type " + actualType.toString() + " is not compatible with " +
-			declaredType.toString());
+			"Type " + this.toString() + " is not assignable to " +
+			targetType.toString());
 	}
 	
 	/**
@@ -24,8 +25,8 @@ public enum ValueType {
 	public void checkTypeAssignabilityFrom(ValueType sourceType) throws Exception {
 		
 		Utilities.assertThat(this.equals(sourceType),
-			"Type " + actualType.toString() + " is not compatible with " +
-			declaredType.toString());
+			"Type " + this.toString() + " is not assignable from " +
+			sourceType.toString());
 	}
 
 	/**
@@ -34,10 +35,14 @@ public enum ValueType {
 	public void checkNativeTypeAssignabilityFrom(Class sourceNativeType) throws Exception {
 		
 		switch (this) {
-			case string: Utilities.assertThat(String.class.isAssignableFrom(sourceNativeType)); return;
-			case numeric: Utilities.assertThat(Number.class.isAssignableFrom(sourceNativeType)); return;
-			case logical: Utilities.assertThat(Boolean.class.isAssignableFrom(sourceNativeType)); return;
-			case array: Utilities.assertThat(sourceNativeType.isArray()); return;
+			case string: Utilities.assertThat(String.class.isAssignableFrom(sourceNativeType),
+				"Cannot assign " + sourceNativeType.getName() + " to string"); return;
+			case numeric: Utilities.assertThat(Number.class.isAssignableFrom(sourceNativeType),
+				"Cannot assign " + sourceNativeType.getName() + " to numeric"); return;
+			case logical: Utilities.assertThat(Boolean.class.isAssignableFrom(sourceNativeType),
+				"Cannot assign " + sourceNativeType.getName() + " to logical"); return;
+			case array: Utilities.assertThat(sourceNativeType.isArray(),
+				"Cannot assign " + sourceNativeType.getName() + " to array"); return;
 			default: throw new RuntimeException(
 				"Unexpected ValueType value: " + this.toString());
 		}
@@ -57,7 +62,7 @@ public enum ValueType {
 		int i = 0;
 		for (ValueType targetType : targetTypes) {
 			ValueType sourceType = sourceTypes.get(i++);
-			checkTypeAssignabilityTo(sourceType, targetType);
+			sourceType.checkTypeAssignabilityTo(targetType);
 		}
 	}
 }

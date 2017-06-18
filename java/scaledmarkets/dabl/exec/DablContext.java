@@ -40,6 +40,8 @@ public class DablContext extends ExpressionContext {
 		} else if (namedArtifactSet instanceof ARefOnamedArtifactSet) {
 			POidRef idRef = ((ARefOnamedArtifactSet)namedArtifactSet).getOidRef();
 			DeclaredEntry entry = getHelper().getDeclaredEntryForIdRef((AOidRef)idRef);
+			if (entry == null) throw new RuntimeException(
+				"No symbol entry found for " + idRef.toString());
 
 			// Find the corresponding artifact set declaration, and create a
 			// pattern set for that.

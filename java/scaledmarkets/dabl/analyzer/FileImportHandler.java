@@ -60,8 +60,6 @@ public class FileImportHandler implements ImportHandler {
 		}
 		
 		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
-		return namespaceProcessor.processNamespace(reader, state);
+		return namespaceProcessor.processNamespace(reader);
 	}
-	
-	public NamespaceProcessor getNamespaceProcessor() { return namespaceProcessor; }
 }

@@ -355,7 +355,7 @@ public class Helper {
 	
 	/**
 	 * Return the annotation representing the declaration of the symbol that is
-	 * referenced by the specified Id ref.
+	 * referenced by the specified Id ref. May return null.
 	 */
 	public DeclaredEntry getDeclaredEntryForIdRef(AOidRef idRef) {
 		
@@ -367,6 +367,7 @@ public class Helper {
 			reposIdRefAnnotation = (IdRefAnnotation)a;
 		} else throw new RuntimeException("Unexpected annotation type: " + a.getClass().getName());
 		SymbolEntry e = reposIdRefAnnotation.getDefiningSymbolEntry();
+		if (e == null) return null;
 		if (! (e instanceof DeclaredEntry)) throw new RuntimeException(
 			"Expected a DeclaredEntry, but found a " + e.getClass().getName());
 		return (DeclaredEntry)e;
@@ -378,6 +379,8 @@ public class Helper {
 	public AOrepoDeclaration getRepoDeclFromRepoRef(AOidRef reposIdRef) {
 		
 		DeclaredEntry de = getDeclaredEntryForIdRef(reposIdRef);
+		if (de == null) throw new RuntimeException(
+			"No symbol entry found for " + reposIdRef.toString());
 		Node n = de.getDefiningNode();
 		if (! (n instanceof AOrepoDeclaration)) throw new RuntimeException(
 			"Expected a AOrepoDeclaration, but found a " + de.getClass().getName());
@@ -392,6 +395,8 @@ public class Helper {
 	public POnamedArtifactSet getNamedArtifactDeclFromArtfiactRef(AOidRef artIdRef) {
 		
 		DeclaredEntry entry = getDeclaredEntryForIdRef(artIdRef);
+		if (entry == null) throw new RuntimeException(
+			"No symbol entry found for " + reposIdRef.toString());
 		Node n = entry.getDefiningNode();
 		if (! (n instanceof POnamedArtifactSet)) throw new RuntimeException(
 			"Expected a POnamedArtifactSet, but found a " + entry.getClass().getName());
@@ -454,11 +459,7 @@ public class Helper {
 	 */
 	public List<ValueType> getFunctionDeclTypes(AOfunctionDeclaration funcDecl) {
 		
-		List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
-		for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
-			declaredArgTypes.add(mapTypeSpecToValueType(typeSpec));
-		}
-		return declaredArgTypes;
+		return LanguageAnalyzer.getFunctionDeclTypes(funcDecl);
 	}
 	
 	/**
@@ -466,14 +467,8 @@ public class Helper {
 	 * function call.
 	 */
 	public List<ValueType> getFunctionCallTypes(AFuncCallOprocStmt funcCall) {
-		List<ValueType> argValueTypes = new LinkedList<ValueType>();
-		for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
-			
-			ExprAnnotation annot = getExprAnnotation(arg);
-			ValueType type = annot.getType();
-			argValueTypes.add(type);
-		}
-		return argValueTypes;
+		
+		return LanguageAnalyzer.getFunctionCallTypes(funcCall);
 	}
 	
 	/**
