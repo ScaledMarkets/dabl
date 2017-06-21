@@ -43,28 +43,17 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	 */
     public void setIn(Node node, Annotation a)
     {
-    	if (getIn(node) != null) throw new RuntimeException(
-    		"Attempt to replace an Attribute");
-        if(a == null) state.in.remove(node);
-        else state.in.put(node, a);
+    	state.setIn(node, a);
     }
 
-    public Annotation getIn(Node node) { return state.in.get(node); }
+    public Annotation getIn(Node node) { return state.getIn(node); }
 
-	/**
-	 * Add the specified annotation ("o") to the set of "set-on-exit" attributes
-	 * for the specified node.
-	 */
     public void setOut(Node node, Annotation a)
     {
-    	if (getOut(node) != null) throw new RuntimeException(
-    		"Attempt to replace an existing Attribute " + getOut(node).getClass().getName() +
-    		" with a " + a.getClass().getName() + ", on a " + node.getClass().getName());
-        if(a == null) state.out.remove(node);
-        else state.out.put(node, a);
+    	state.setOut(node, a);
     }
 	
-    public Annotation getOut(Node node) { return state.out.get(node); }
+    public Annotation getOut(Node node) { return state.getOut(node); }
 
 	
 	/* Scope management */
@@ -346,13 +335,11 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	
 	protected ExprAnnotation setExprAnnotation(Node node, Object value, ValueType valueType)
 	{
-		ExprAnnotation annotation = new ExprAnnotation(node, value, valueType);
-		this.setOut(node, annotation);
-		return annotation;
+		return getState().setExprAnnotation(node, value, valueType);
 	}
 	
 	public ExprAnnotation getExprAnnotation(Node node) {
-		return (ExprAnnotation)(this.getOut(node));
+		return getState().getExprAnnotation(node);
 	}
 	
 	public void assertThat(boolean expr, String msg) {

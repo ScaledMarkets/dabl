@@ -359,14 +359,14 @@ public class Helper {
 	 */
 	public DeclaredEntry getDeclaredEntryForIdRef(AOidRef idRef) {
 		
-		Annotation a = state.getOut(reposIdRef);
+		Annotation a = state.getOut(idRef);
 		if (a == null) throw new RuntimeException(
-			"Unable to identify " + reposIdRef.getId());
-		IdRefAnnotation reposIdRefAnnotation = null;
+			"Unable to identify " + idRef.getId());
+		IdRefAnnotation idRefAnnotation = null;
 		if (a instanceof IdRefAnnotation) {
-			reposIdRefAnnotation = (IdRefAnnotation)a;
+			idRefAnnotation = (IdRefAnnotation)a;
 		} else throw new RuntimeException("Unexpected annotation type: " + a.getClass().getName());
-		SymbolEntry e = reposIdRefAnnotation.getDefiningSymbolEntry();
+		SymbolEntry e = idRefAnnotation.getDefiningSymbolEntry();
 		if (e == null) return null;
 		if (! (e instanceof DeclaredEntry)) throw new RuntimeException(
 			"Expected a DeclaredEntry, but found a " + e.getClass().getName());
@@ -396,7 +396,7 @@ public class Helper {
 		
 		DeclaredEntry entry = getDeclaredEntryForIdRef(artIdRef);
 		if (entry == null) throw new RuntimeException(
-			"No symbol entry found for " + reposIdRef.toString());
+			"No symbol entry found for " + artIdRef.toString());
 		Node n = entry.getDefiningNode();
 		if (! (n instanceof POnamedArtifactSet)) throw new RuntimeException(
 			"Expected a POnamedArtifactSet, but found a " + entry.getClass().getName());
@@ -418,7 +418,7 @@ public class Helper {
 			POidRef oidRef = ((ARefOnamedArtifactSet)p).getOidRef();
 			
 			POnamedArtifactSet naSet =
-				getHelper().getNamedArtifactDeclFromArtfiactRef((AOidRef)oidRef);
+				getNamedArtifactDeclFromArtfiactRef((AOidRef)oidRef);
 			
 			return getArtifactSet(naSet);  // recursive
 			
@@ -468,7 +468,7 @@ public class Helper {
 	 */
 	public List<ValueType> getFunctionCallTypes(AFuncCallOprocStmt funcCall) {
 		
-		return LanguageAnalyzer.getFunctionCallTypes(funcCall);
+		return LanguageAnalyzer.getFunctionCallTypes(state, funcCall);
 	}
 	
 	/**

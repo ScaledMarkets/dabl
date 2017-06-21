@@ -174,11 +174,11 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 		List<TId> path = ((AOidRef)(node.getOidRef())).getId();
 		SymbolEntry entry = resolveSymbol(path);
 		if (entry == null) {  // it is currently undeclared.
-			Node ref = node.getOidRef();
+			AOidRef ref = (AOidRef)(node.getOidRef());
 			registerSemanticHandlerFor(ref,
 				// Handler is called by the IdentHandler that is created in
 				// DablBaseAdapter.outRefNode
-				new IdentSemanticHandler(node.getOidRef()) {
+				new IdentSemanticHandler(ref) {
 					public void semanticAction(DeclaredEntry entry) {
 						checkFuncCallTypes(node);
 					}
@@ -208,12 +208,12 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 		DeclaredEntry declEntry = (DeclaredEntry)entry;
 		Node defNode = declEntry.getDefiningNode();
 		assertThat(defNode instanceof AOfunctionDeclaration,
-			"Id " + idRef.getName() + " does not refer to a function declaration");
+			"Id " + idRef.toString() + " does not refer to a function declaration");
 		
 		AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)defNode;
 		
-		List<ValueType> declaredArgTypes = getHelper().getFunctionDeclTypes(funcDecl);
-		List<ValueType> argValueTypes = getHelper().getFunctionCallTypes(funcCall);
+		List<ValueType> declaredArgTypes = getFunctionDeclTypes(funcDecl);
+		List<ValueType> argValueTypes = getFunctionCallTypes(getState(), funcCall);
 		
 		try { ValueType.checkTypeListAssignabilityTo(argValueTypes, declaredArgTypes);
 		} catch (Exception ex) {
@@ -237,11 +237,12 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 	 * Return the actual types of the argument expressions of the specified
 	 * function call. Assumes that the function call has already been analyzed.
 	 */
-	public static List<ValueType> getFunctionCallTypes(AFuncCallOprocStmt funcCall) {
+	public static List<ValueType> getFunctionCallTypes(CompilerState state,
+			AFuncCallOprocStmt funcCall) {
 		List<ValueType> argValueTypes = new LinkedList<ValueType>();
-		for /* each actual argument */ (LinkedList<POexpr> arg : funcCall.getOexpr()) {
+		for /* each actual argument */ (POexpr arg : funcCall.getOexpr()) {
 			
-			ExprAnnotation annot = getExprAnnotation(arg);
+			ExprAnnotation annot = state.getExprAnnotation(arg);
 			ValueType type = annot.getType();
 			argValueTypes.add(type);
 		}

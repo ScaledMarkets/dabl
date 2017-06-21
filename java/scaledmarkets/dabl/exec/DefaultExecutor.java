@@ -20,7 +20,7 @@ public class DefaultExecutor implements Executor {
 	
 	private CompilerState state;
 	private TaskContainerFactory taskContainerFactory;
-	private DablContext dablContext = new DablContext();
+	private DablContext dablContext;
 	private boolean verbose;
 	private Helper helper;
 
@@ -34,6 +34,7 @@ public class DefaultExecutor implements Executor {
 		this.taskContainerFactory = taskContainerFactory;
 		this.verbose = verbose;
 		this.helper = new Helper(state);
+		this.dablContext = new DablContext(this.helper);
 	}
 	
 	public void execute() throws Exception {

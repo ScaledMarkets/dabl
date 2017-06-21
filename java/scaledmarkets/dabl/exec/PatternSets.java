@@ -102,7 +102,8 @@ public class PatternSets implements Comparable<PatternSets> {
 	 * by the artifact set, then use that PatternSets - and thus merge the pattern
 	 * into that PatternSets object.
 	 */
-	public static PatternSets convertArtifactSetToPatternSets(POartifactSet artifactSet,
+	public static PatternSets convertArtifactSetToPatternSets(String namespaceName,
+		String taskName, POartifactSet artifactSet,
 		PatternSets.Map patternSetsMap, RemoteRepo.Map remoteRepoMap) throws Exception {
 		
 		Repo repo;
@@ -111,7 +112,7 @@ public class PatternSets implements Comparable<PatternSets> {
 		if (artifactSet instanceof ALocalOartifactSet) {
 			// Find the NamedArtifactSet that owns the artifactSet.
 			ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)artifactSet;
-			String outputName = getName(localArtifactSet);
+			String outputName = ArtifactOperator.getName(localArtifactSet);
 
 			// Create a local repository, managed by DABL.
 			repo = LocalRepo.createRepo(namespaceName, taskName, outputName,
@@ -157,13 +158,15 @@ public class PatternSets implements Comparable<PatternSets> {
 	 * Convenience version of this method, for cases in which there is only one
 	 * artifact set.
 	 */
-	public static PatternSets convertArtifactSetToPatternSets(POartifactSet artifactSet)
+	public static PatternSets convertArtifactSetToPatternSets(String namespaceName,
+		String taskName,POartifactSet artifactSet)
 	throws Exception {
 		
 		PatternSets.Map patternSetsMap = new PatternSets.Map();
 		RemoteRepo.Map remoteRepoMap = new RemoteRepo.Map();
 		
-		return convertArtifactSetToPatternSets(artifactSet, patternSetsMap, remoteRepoMap);
+		return convertArtifactSetToPatternSets(namespaceName, taskName,
+			artifactSet, patternSetsMap, remoteRepoMap);
 	}
 	
 	public interface FileOperator {

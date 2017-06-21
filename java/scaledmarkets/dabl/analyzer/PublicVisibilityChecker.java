@@ -2,6 +2,7 @@ package scaledmarkets.dabl.analyzer;
 
 import java.util.List;
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.util.Utilities;
 
 /**
  * A callback handler for checking if access is allowed to an element.

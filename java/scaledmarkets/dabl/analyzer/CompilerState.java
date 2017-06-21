@@ -16,8 +16,33 @@ public class CompilerState
 	
 	public NameScope getGlobalScope() { return this.globalScope; }
 	
+	/**
+	 * Add the specified annotation ("o") to the set of "set-on-entry" attributes
+	 * for the specified node.
+	 */
+    void setIn(Node node, Annotation a)
+    {
+    	if (getIn(node) != null) throw new RuntimeException(
+    		"Attempt to replace an Attribute");
+        if(a == null) this.in.remove(node);
+        else this.in.put(node, a);
+    }
+
     public Annotation getIn(Node node) { return in.get(node); }
     
+	/**
+	 * Add the specified annotation ("o") to the set of "set-on-exit" attributes
+	 * for the specified node.
+	 */
+    void setOut(Node node, Annotation a)
+    {
+    	if (getOut(node) != null) throw new RuntimeException(
+    		"Attempt to replace an existing Attribute " + getOut(node).getClass().getName() +
+    		" with a " + a.getClass().getName() + ", on a " + node.getClass().getName());
+        if(a == null) this.out.remove(node);
+        else this.out.put(node, a);
+    }
+	
     public Annotation getOut(Node node) { return out.get(node); }
     
     public NameScopeEntry getPrimaryNamespaceSymbolEntry() { return primaryNamespaceSymbolEntry; }
@@ -87,5 +112,16 @@ public class CompilerState
 		List<NameScope> originalScopeStack = scopeStack;
 		this.scopeStack = newScopeStack;
 		return originalScopeStack;
+	}
+	
+	ExprAnnotation setExprAnnotation(Node node, Object value, ValueType valueType)
+	{
+		ExprAnnotation annotation = new ExprAnnotation(node, value, valueType);
+		this.setOut(node, annotation);
+		return annotation;
+	}
+	
+	public ExprAnnotation getExprAnnotation(Node node) {
+		return (ExprAnnotation)(this.getOut(node));
 	}
 }
