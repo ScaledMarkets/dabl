@@ -1,6 +1,7 @@
 package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.analyzer.NameScope;
 import scaledmarkets.dabl.analyzer.DeclaredEntry;
 import scaledmarkets.dabl.helper.Helper;
 import java.util.Map;
@@ -71,8 +72,8 @@ public class DablContext extends ExpressionContext {
 			input or output. */
 		
 		// Get the input/output''s enclosing scope - should be a task.
-		NameScope taskScope = getHelper().getDeclaringScope(inputOrOutputName);
-		getHelper().assertThat(taskScope != null,
+		NameScope taskScope = this.helper.getDeclaringScope(inputOrOutputName);
+		this.helper.assertThat(taskScope != null,
 			"Scope containing " + inputOrOutputName.toString() + " not found");
 		
 		// Get the task''s name.
@@ -80,13 +81,13 @@ public class DablContext extends ExpressionContext {
 		
 		// Get task''s enclosing scope - should be a namespace.
 		NameScope namespaceScope = taskScope.getParentNameScope();
-		getHelper().assertThat(namespaceScope != null,
+		this.helper.assertThat(namespaceScope != null,
 			"Scope containing " + taskName + " not found");
 		
 		// Get the namespace''s name.
 		String namespaceName = namespaceScope.getName();
 		
-		PatternSets patternSets = PatternSets.convertArtifactSetToPatternSets(
+		PatternSets patternSets = this.helper.convertArtifactSetToPatternSets(
 			namespaceName, taskName, artifactSet);
 			
 		// Examine each file and determine the date of the most recent change.

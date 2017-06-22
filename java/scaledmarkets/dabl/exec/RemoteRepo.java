@@ -52,7 +52,7 @@ public abstract class RemoteRepo implements Repo {
 			String key = RemoteRepo.getKey(repoType, scheme, path, project);
 			RemoteRepo r = get(key);
 			if (r == null) {
-				r = new getRepo(repoType, scheme, path, project, userid, password);
+				r = new RemoteRepo.getRepo(repoType, scheme, path, project, userid, password);
 				put(key, r);
 			}
 			return r;

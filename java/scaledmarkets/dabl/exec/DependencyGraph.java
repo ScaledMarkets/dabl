@@ -78,7 +78,7 @@ public class DependencyGraph {
 			LinkedList<POnamedArtifactSet> inputs = taskDecl.getInput();
 			for (POnamedArtifactSet p : inputs) {
 				
-				POartifactSet pas = getHelper().getArtifactSet(p);
+				POartifactSet pas = this.helper.getArtifactSet(p);
 				
 				// 1. If the input Artifact does not exist, then create a new Artifact.
 				Artifact artifact = artifacts.get(pas);

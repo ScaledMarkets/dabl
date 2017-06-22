@@ -106,7 +106,7 @@ public class ExpressionEvaluator {
 		AOvariable variable = (AOvariable)pv;
 		POidRef pref = variable.getOidRef();
 		AOidRef vref = (AOidRef)pref;
-		String variableName = vref.getId().getText();
+		String variableName = vref.getId()....getText();
 		Object value = context.getValueForVariable(variableName);
 		if (value == null) throw new RuntimeException(
 			"No value found for variable " + variableName);

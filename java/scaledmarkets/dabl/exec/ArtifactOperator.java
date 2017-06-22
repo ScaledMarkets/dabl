@@ -38,7 +38,7 @@ public abstract class ArtifactOperator {
 			POartifactSet artifactSet = artifact.getArtifactSet();
 			
 			PatternSets patternSets = 
-				PatternSets.convertArtifactSetToPatternSets(namespaceName,
+				this.helper.convertArtifactSetToPatternSets(namespaceName,
 					taskName,artifactSet, patternSetsMap, remoteRepoMap);
 		}
 		
@@ -47,7 +47,7 @@ public abstract class ArtifactOperator {
 		}
 	}
 
-	protected static String getName(ALocalOartifactSet artifactSet) throws Exception {
+	public static String getName(ALocalOartifactSet artifactSet) throws Exception {
 		
 		Node parent = artifactSet.parent();
 		if (parent instanceof AOfilesDeclaration) {
