@@ -374,6 +374,14 @@ public class Helper {
 	}
 	
 	/**
+	 * Return the scope that contains the declaration of the referenced Id.
+	 */
+	public NameScope getDeclaringScope(AOidRef idRef) {
+		
+		return getDeclaredEntryForIdRef(idRef).getEnclosingScope();
+	}
+	
+	/**
 	 * Return the declaration of the repository that is referenced by the specified Id ref.
 	 */
 	public AOrepoDeclaration getRepoDeclFromRepoRef(AOidRef reposIdRef) {

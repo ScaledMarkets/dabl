@@ -71,14 +71,20 @@ public class DablContext extends ExpressionContext {
 			input or output. */
 		
 		// Get the input/output''s enclosing scope - should be a task.
-		....
+		NameScope taskScope = getHelper().getDeclaringScope(inputOrOutputName);
+		getHelper().assertThat(taskScope != null,
+			"Scope containing " + inputOrOutputName.toString() + " not found");
+		
 		// Get the task''s name.
-		String taskName = ....
+		String taskName = taskScope.getName();
 		
 		// Get task''s enclosing scope - should be a namespace.
-		....
+		NameScope namespaceScope = taskScope.getParentNameScope();
+		getHelper().assertThat(namespaceScope != null,
+			"Scope containing " + taskName + " not found");
+		
 		// Get the namespace''s name.
-		String namespaceName = ....
+		String namespaceName = namespaceScope.getName();
 		
 		PatternSets patternSets = PatternSets.convertArtifactSetToPatternSets(
 			namespaceName, taskName, artifactSet);
