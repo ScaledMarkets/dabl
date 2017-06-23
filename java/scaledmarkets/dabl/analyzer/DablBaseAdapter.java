@@ -80,12 +80,8 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	/**
 	 * Resolve a reference to a name that is declared elsewhere.
 	 */
-    protected void outRefNode(Node node, List<TId> path, VisibilityChecker checker)
+    protected void outRefNode(AOidRef idRef, List<TId> path, VisibilityChecker checker)
     {
-    	// Node can be a AOidRef or a AOqualifiedNameRef
-    	assertThat(node instanceof AOidRef, "Node is unexpected type: " + node.getClass().getName());
-    	AOidRef idRef = (AOidRef)node;
-    	
 		// Find the declaration of the id. If it exists, annotate it.
 		
 		SymbolEntry entry = resolveSymbol(path);
@@ -96,12 +92,12 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 			// The handler should be invoked whenever a new symbol is entered
 			// into a scope. The handler should annotate the entry,
 			// and then remove itself from all of the scopes to which it is attached.
-			new IdentHandler(this, path, getCurrentNameScope()) {
+			new IdentHandler(DablBaseAdapter.this, path, getCurrentNameScope()) {
 				public void resolveRetroactively(DeclaredEntry entry) {
 					DablBaseAdapter.this.resolve(idRef, checker, entry);
 					
 					// If there is a semantic handler, execute it.
-					IdentSemanticHandler h = getIdentSemanticHandler(node);
+					IdentSemanticHandler h = getIdentSemanticHandler(idRef);
 					if (h != null) h.semanticAction(entry);
 				}
 				// Note: the base class, IdentHandler, contains a method

@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.util.Utilities;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Date;
@@ -157,12 +158,12 @@ public class LocalRepo implements Repo {
 				.count();
 	}
 	
-	public Date getDateOfMostRecentChange(PatternSets patternSets) {
+	public Date getDateOfMostRecentChange(PatternSets patternSets) throws Exception {
 		
-		long mostRecentlyModified;
+		long mostRecentlyModified = 0;
 		boolean firstTime = true;
 		// Iterate through all of the files.
-		DirectoryStream<Path> paths = Files.newDirectoryStream(dir.toPath());
+		DirectoryStream<Path> paths = Files.newDirectoryStream(directory.toPath());
 		for (Path path : paths) {
 			long lastModified = path.toFile().lastModified();
 			if (firstTime) {
@@ -173,7 +174,7 @@ public class LocalRepo implements Repo {
 			}
 		}
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(mostRecentlyModified);
+		calendar.setTimeInMillis(mostRecentlyModified);
 		return calendar.getTime();
 	}
 

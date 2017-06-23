@@ -63,5 +63,5 @@ public interface Repo {
 	 * Examine all of the files in the pattern set, and return most recent date
 	 * of change among all of the included files.
 	 */
-	Date getDateOfMostRecentChange(PatternSets patternSets);
+	Date getDateOfMostRecentChange(PatternSets patternSets) throws Exception;
 }

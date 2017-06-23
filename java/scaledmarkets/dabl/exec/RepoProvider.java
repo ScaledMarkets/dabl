@@ -23,5 +23,5 @@ public interface RepoProvider {
 	
 	long countAllFiles(RemoteRepo repo) throws Exception;
 	
-	Date getDateOfMostRecentChange(PatternSets patternSets);
+	Date getDateOfMostRecentChange(PatternSets patternSets) throws Exception;
 }

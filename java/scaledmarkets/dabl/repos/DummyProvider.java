@@ -83,7 +83,7 @@ public class DummyProvider implements RepoProvider {
 		return 0; //....
 	}
 
-	public Date getDateOfMostRecentChange(PatternSets patternSets) {
+	public Date getDateOfMostRecentChange(PatternSets patternSets) throws Exception {
 		return null;
 	}
 }

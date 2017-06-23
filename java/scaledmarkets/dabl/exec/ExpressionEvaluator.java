@@ -1,6 +1,7 @@
 package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.util.Utilities;
 import java.util.LinkedList;
 import java.util.Date;
 
@@ -106,7 +107,10 @@ public class ExpressionEvaluator {
 		AOvariable variable = (AOvariable)pv;
 		POidRef pref = variable.getOidRef();
 		AOidRef vref = (AOidRef)pref;
-		String variableName = vref.getId()....getText();
+		LinkedList<TId> ids = vref.getId();
+		if (ids.size() != 1) throw new RuntimeException(
+			"Variable name has " + ids.size() + " parts - expected one part");
+		String variableName = ids.get(0).getText();
 		Object value = context.getValueForVariable(variableName);
 		if (value == null) throw new RuntimeException(
 			"No value found for variable " + variableName);
@@ -203,8 +207,8 @@ public class ExpressionEvaluator {
 			idref = ((AFailedOsuccessExpr)p).getOidRef();
 			wantSuccess = false;
 		} else throw new RuntimeException("Unexpected success expr type: " + p.getClass().getName());
-		TId id = ((AOidRef)idref).getId();
-		String taskName = id.getText();
+		LinkedList<TId> ids = ((AOidRef)idref).getId();
+		String taskName = Utilities.createNameFromPath(ids);
 		int taskStatus;
 		try {
 			taskStatus = context.getTaskStatus(taskName);
@@ -223,18 +227,22 @@ public class ExpressionEvaluator {
 				AOidRef newerIdRef = (AOidRef)(newExpr.getNewerId());
 				AOidRef olderIdRef = (AOidRef)(newExpr.getOlderId());
 				
-				Date newerDate = this.context.getDateOfMostRecentChange(newerIdRef);
-				Date olderDate = this.context.getDateOfMostRecentChange(olderIdRef);
-				isTrue = (newerDate.compareTo(olderDate) > 0);
+				try {
+					Date newerDate = this.context.getDateOfMostRecentChange(newerIdRef);
+					Date olderDate = this.context.getDateOfMostRecentChange(olderIdRef);
+					isTrue = (newerDate.compareTo(olderDate) > 0);
+				} catch (Exception ex) { throw new RuntimeException(ex); }
 				
 			} else if (pAgeExpr instanceof AOlderThanOageExpr) {
 				AOlderThanOageExpr olderExpr = (AOlderThanOageExpr)pAgeExpr;
 				AOidRef olderId = (AOidRef)(olderExpr.getOlderId());
 				AOidRef newerId = (AOidRef)(olderExpr.getNewerId());
 				
-				Date newerDate = this.context.getDateOfMostRecentChange(newerId);
-				Date olderDate = this.context.getDateOfMostRecentChange(olderId);
-				isTrue = (newerDate.compareTo(olderDate) > 0);
+				try {
+					Date newerDate = this.context.getDateOfMostRecentChange(newerId);
+					Date olderDate = this.context.getDateOfMostRecentChange(olderId);
+					isTrue = (newerDate.compareTo(olderDate) > 0);
+				} catch (Exception ex) { throw new RuntimeException(ex); }
 				
 			} else throw new RuntimeException(
 				"Unexpected age expr type: " + pAgeExpr.getClass().getName());

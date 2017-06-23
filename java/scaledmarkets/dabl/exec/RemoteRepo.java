@@ -47,12 +47,12 @@ public abstract class RemoteRepo implements Repo {
 		 * not exist, create it.
 		 */
 		public RemoteRepo getRemoteRepo(String repoType, String scheme, String path,
-				String project, String userid, String password) {
+				String project, String userid, String password) throws Exception {
 			
 			String key = RemoteRepo.getKey(repoType, scheme, path, project);
 			RemoteRepo r = get(key);
 			if (r == null) {
-				r = new RemoteRepo.getRepo(repoType, scheme, path, project, userid, password);
+				r = RemoteRepo.getRepo(repoType, scheme, path, project, userid, password);
 				put(key, r);
 			}
 			return r;
@@ -119,7 +119,7 @@ public abstract class RemoteRepo implements Repo {
 		return getRepoProvider().countAllFiles(this);
 	}
 	
-	public Date getDateOfMostRecentChange(PatternSets patternSets) {
+	public Date getDateOfMostRecentChange(PatternSets patternSets) throws Exception {
 		return getRepoProvider().getDateOfMostRecentChange(patternSets);
 	}
 }

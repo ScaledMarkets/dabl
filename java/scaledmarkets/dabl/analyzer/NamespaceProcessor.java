@@ -44,7 +44,8 @@ public class NamespaceProcessor {
 		// Parse the input and generate an AST.
 		Lexer lexer = new Lexer(new PushbackReader(reader));
 		Parser parser = new Parser(lexer);
-		Start start = parser.parse();
+		Start start;
+		try { start = parser.parse(); } catch (Exception ex) { throw new RuntimeException(ex); }
 		if (prettyPrint) PrettyPrint.pp(start);
 		
 		// Analyze the AST.
