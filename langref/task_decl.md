@@ -60,6 +60,7 @@ task compileit
     when inputs A newer than outputs
     inputs A "$thisdir/**.java" of "my_repo" in my_git, XYZ
     outputs "./**.class", "./**.txt"
+    timeout 5 sec
     bash "
         javac $thisdir/*.java
         "
