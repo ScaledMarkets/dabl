@@ -24,6 +24,7 @@ A task declaration has the following syntax:
 
   [`public`] [`open`] `task` *name* [ [when_clause](when_clause.md) ]
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
+  	[ `timeout` *expression* *time-unit* ]
   	[ [procedural_stmts](procedural_stmt.md)...]
 
 ### Inputs and Outputs
@@ -32,6 +33,17 @@ The inputs are the files that are read by the task, and the outputs are the file
 that are created or updated by the task. Inputs and outputs can be given names,
 but this is not required. Inputs and outputs *may* be copied to a temporary
 workspace for task execution, rather than used in place.
+
+### Timeout
+
+An optional timeout specifies how long the task may execute before it is aborted.
+The time unit may be one of,
+
+* `ms`
+* `sec`
+* `min`
+* `hours`
+* `days`
 
 ### Procedural Statements
 

@@ -132,6 +132,12 @@ Tokens
     local = 'local';
     open = 'open';
     array_keyword = 'array';
+    timeout = 'timeout';
+    ms = 'ms';
+    sec = 'sec';
+    min = 'min';
+    hours = 'hours';
+    days = 'days';
 
     // Variable Length Sequences:
     whole_number = digit+;
@@ -248,6 +254,7 @@ Productions
     
     task_decl {-> otask_declaration} =
         scope_decl open_decl task id when_clause_opt input_sets_opt output_sets_opt
+            timeout_opt
             procedural_stmts_opt            {-> New otask_declaration(scope_decl.oscope,
                                                 open_decl.oopen,
                                                 id, [when_clause_opt.oexpr],
@@ -264,6 +271,21 @@ Productions
     when_clause {-> oexpr} =
         when expr                           {-> expr.oexpr}  // must be a logical expr
         ;
+    
+    timeout_opt {-> otimeout} =
+        {specified} timeout numeric_expr time_unit
+                                            {-> New otimeout.specified(numeric_expr.oexpr,
+                                                time_unit.otime_unit)}
+        {unspecified}                       {-> New otimeout.unspecified()}
+        ;
+    
+    time_unit {-> otime_unit} =
+        ms
+      | sec
+      | min
+      | hours
+      | days
+      ;
     
     success_expr {-> osuccess_expr} =
         {succeeded} path succeeded          {-> New osuccess_expr.succeeded(New oid_ref([path.id]))}
@@ -805,7 +827,21 @@ Abstract Syntax Tree
     otask_declaration =
         oscope oopen [name]:id [when]:oexpr*  // each expr must be a logical valued expr
             [input]:onamed_artifact_set*
-            [output]:onamed_artifact_set* oproc_stmt*;
+            [output]:onamed_artifact_set* oproc_stmt*
+            otimeout;
+    
+    otimeout =
+        {specified} oexpr otime_unit
+      | {unspecified}
+      ;
+    
+    otime_unit =
+        {ms}
+      | {sec}
+      | {min}
+      | {hours}
+      | {days}
+      ;
     
     oscope =
         {public}
