@@ -1,8 +1,10 @@
 # language: en
 
-@exec
+@task
 Feature: TestTaskRuntime
 	
 	@done
 	Scenario: Simple
-		When 
+		When a task should execute
+		Then the task executes
+	

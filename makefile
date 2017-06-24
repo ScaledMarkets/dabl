@@ -122,7 +122,8 @@ compile_tests: $(test_build_dir)
 		$(test_src_dir)/steps/$(test_package)/*.java \
 		$(test_src_dir)/steps/$(test_package)/analyzer/*.java \
 		$(test_src_dir)/steps/$(test_package)/docker/*.java \
-		$(test_src_dir)/steps/$(test_package)/exec/*.java
+		$(test_src_dir)/steps/$(test_package)/exec/*.java \
+		$(test_src_dir)/steps/$(test_package)/task/*.java
 
 # Run Cucumber tests.
 # Note: We could export LD_LIBRARY_PATH instead of passing it in the java command.

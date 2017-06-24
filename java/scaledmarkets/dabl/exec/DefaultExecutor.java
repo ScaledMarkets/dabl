@@ -48,6 +48,27 @@ public class DefaultExecutor implements Executor {
 	}
 
 	/**
+	 * If the specified task has finished executing, return its final process
+	 * status. If it has not yet executed, or is still executing, throw
+	 * an exception. This method must be thread-safe, and able to be called
+	 * from different thread from the one in which this Executor initiated
+	 * execution. If 'block' is true, then this method blocks until the
+	 * task completes.
+	 */
+	public synchronized int getTaskStatus(String taskName, boolean block) throws Exception {
+		
+		if (block) {
+			wait();
+		}
+		
+		return dablContext.getTaskStatus(taskName);
+	}
+	
+	private synchronized void setTaskStatus(String taskName, int status) {
+		this.dablContext.setTaskStatus(taskName, status);
+	}
+	
+	/**
 	 * 
 	 */
 	protected void executeAll(DependencyGraph graph) throws Exception {
@@ -107,15 +128,19 @@ public class DefaultExecutor implements Executor {
 				TaskContainer taskContainer =
 					this.taskContainerFactory.createTaskContainer(task, workspace);
 				
-				// Execute the task in the container.
-				InputStream containerOutput = taskContainer.execute(3600000);
-				
-				// Send the container's output to this process's stdout.
-				Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
-				
-				// Obtain the container's exit status.
-				int exitStatus = taskContainer.getExitStatus();
-				this.dablContext.setTaskStatus(task.getName(), exitStatus);
+				try {
+					// Execute the task in the container.
+					InputStream containerOutput = taskContainer.execute(3600000);
+					
+					// Send the container's output to this process's stdout.
+					Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
+				} finally {
+					// Obtain the container's exit status.
+					int exitStatus = taskContainer.getExitStatus();
+					setTaskStatus(task.getName(), exitStatus);
+					notify();  // notify any threads that called getTaskStatus with
+						// block set to true.
+				}
 				
 				// Write the outputs from the workspace to the output directories.
 				(new ArtifactOperator(this.helper) {
