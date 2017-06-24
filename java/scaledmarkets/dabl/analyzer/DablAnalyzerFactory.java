@@ -9,7 +9,7 @@ public class DablAnalyzerFactory implements AnalyzerFactory {
 		this.state = new ClientState();
 	}
 	
-	DablAnalyzerFactory(ClientState state) {
+	DablAnalyzerFactory(CompilerState state) {
 		this.state = state;
 	}
 	
@@ -27,5 +27,5 @@ public class DablAnalyzerFactory implements AnalyzerFactory {
 		return new FileImportHandler(this);
 	}
 	
-	private ClientState state;
+	private CompilerState state;
 }

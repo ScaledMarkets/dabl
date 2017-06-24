@@ -50,20 +50,29 @@ public class Dabl
 	}
 	
 	/**
-	 * This version of process should only be called by ImportHandlers.
+	 * For use by all process methods. This method provides the common functionality.
+	 * This version of process can also be used by tests that need to provide their
+	 * own factory for creating ImportHandlers.
 	 */
-	protected NameScope process(ClientState state) throws Exception {
+	public NameScope process(AnalyzerFactory analyzerFactory) throws Exception {
 		
 		// ....Need to insert template processor here
 		// ....Alert if any template symbols have no value.
 		
-		AnalyzerFactory factory = new DablAnalyzerFactory(state);
-		NamespaceProcessor namespaceProcessor = factory.createNamespaceProcessor();
+		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
 		Reader r = new StringReader(DablStandard.PackageText);
 		namespaceProcessor.processNamespace(r);
 		namespaceProcessor.setPrettyPrint(this.print);
 		NameScope nameScope = namespaceProcessor.processPrimaryNamespace(this.reader);
 		
 		return nameScope;
+	}
+	
+	/**
+	 * This version of process should only be called by ImportHandlers.
+	 */
+	public NameScope process(CompilerState state) throws Exception {
+		
+		return process(new DablAnalyzerFactory(state));
 	}
 }
