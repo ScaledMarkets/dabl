@@ -9,6 +9,7 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.en.And;
 
 import scaledmarkets.dabl.analyzer.*;
+import scaledmarkets.dabl.docker.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.task.*;
 import scaledmarkets.dabl.node.*;
@@ -26,6 +27,13 @@ public class TestTaskRuntime extends TestBase {
 	private static String TaskName = "t123";
 
 	// Scenario: Simple
+	
+	@Given("^Docker is running$")
+	public void docker_is_running() throws Exception {
+		Docker docker = Docker.connect();
+		docker.ping();
+		docker.close();
+	}
 	
 	@When("^a task should execute$")
 	public void a_task_should_execute() throws Exception {

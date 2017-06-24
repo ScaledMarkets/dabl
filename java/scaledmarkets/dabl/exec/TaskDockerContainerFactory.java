@@ -38,6 +38,7 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 		TaskContainer taskContainer;
 		synchronized (this) {
 			taskContainer = new DockerTaskContainer(task, dockerContainer, workspace);
+			taskContainer.validateRequiredConfiguration();
 			taskContainers.put(taskContainer, taskContainer);
 		}
 		return taskContainer;

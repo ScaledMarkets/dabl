@@ -49,4 +49,11 @@ public class DockerTaskContainer extends TaskContainer {
 		
 		dockerContainer.destroy();
 	}
+	
+	public void validateRequiredConfiguration() throws Exception {
+		// Verify that the required base image is present.
+		//....
+		
+		
+	}
 }

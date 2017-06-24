@@ -17,4 +17,10 @@ public abstract class TaskContainer {
 	public abstract int getExitStatus() throws Exception;
 	
 	public abstract void destroy() throws Exception;
+	
+	/**
+	 * Verify that the container has the configuration that is required in order
+	 * to execute DABL tasks.
+	 */
+	public abstract void validateRequiredConfiguration() throws Exception;
 }

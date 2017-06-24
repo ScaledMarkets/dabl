@@ -109,8 +109,6 @@ public class Docker {
 		
 		Docker docker = new Docker(client, client.target(uri));
 
-		docker.validateRequiredConfiguration();
-		
 		return docker;
 	}
 	
@@ -126,16 +124,6 @@ public class Docker {
 	 */
 	public void close() throws Exception {
 		this.client.close();
-	}
-	
-	/**
-	 * TBD: move this out of this package.
-	 */
-	public void validateRequiredConfiguration() throws Exception {
-		// Verify that the required base image is present.
-		//....
-		
-		
 	}
 	
 	/**
