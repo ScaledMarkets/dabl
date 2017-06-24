@@ -1,5 +1,11 @@
 package dabl.task;
 
+import scaledmarkets.dabl.util.Utilities;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Implement the functions that are defined by DABL built-in package dabl.standard,
  * which is defined in class DablStandard. See DablStandard.PackageText for the
@@ -18,7 +24,7 @@ public class Standard {
 	public static void bash(String commandString, long timeoutSeconds) {
 		
 		Process process;
-		try { process = Runtime.exec("bash " + commandString); }
+		try { process = Runtime.getRuntime().exec("bash " + commandString); }
 		catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
@@ -28,11 +34,24 @@ public class Standard {
 		InputStream errorStream = new BufferedInputStream(process.getErrorStream());
 		
 		// Pipe the above to stdout and stderr.
-		Utilities.pipeInputStreamToOutputStream(inputStream, System.out);
-		Utilities.pipeInputStreamToOutputStream(errorStream, System.err);
+		try {
+			Utilities.pipeInputStreamToOutputStream(inputStream, System.out);
+		} catch (IOException ex) {
+			throw new RuntimeException("While piping input stream", ex);
+		}
+		try {
+			Utilities.pipeInputStreamToOutputStream(errorStream, System.err);
+		} catch (IOException ex) {
+			throw new RuntimeException("While piping error stream", ex);
+		}
 		
 		// Wait for the process to complete. Note that it might already be done.
-		boolean completedNormally = process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
+		boolean completedNormally;
+		try {
+			completedNormally = process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
+		} catch (InterruptedException ex) {
+			throw new RuntimeException(ex);
+		}
 		if (! completedNormally) {
 			throw new RuntimeException("Process timed out");
 		}

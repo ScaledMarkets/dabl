@@ -6,6 +6,8 @@ import scaledmarkets.dabl.analyzer.Analyzer;
 import scaledmarkets.dabl.analyzer.ImportHandler;
 import scaledmarkets.dabl.analyzer.FileImportHandler;
 import scaledmarkets.dabl.analyzer.CompilerState;
+import scaledmarkets.dabl.analyzer.ClientState;
+import scaledmarkets.dabl.util.Utilities;
 
 /**
  * For creating analysis components that analyze DABL input in a task execution context.
@@ -16,7 +18,9 @@ public class TaskAnalyzerFactory implements AnalyzerFactory {
 		this.taskContext = new TaskContext();
 	}
 	
-	public ClientState getClientState() { return this.taskContext; }
+	public CompilerState getCompilerState() { return this.taskContext; }
+	
+	public TaskContext getTaskContext() { return this.taskContext; }
 	
 	public NamespaceProcessor createNamespaceProcessor() {
 		TaskContext taskContext = new TaskContext();
@@ -24,7 +28,9 @@ public class TaskAnalyzerFactory implements AnalyzerFactory {
 	}
 	
 	public Analyzer createAnalyzer(CompilerState state) {
-		return new TaskProgramAnalyzer(state, createImportHandler());
+		Utilities.assertThat(state instanceof TaskContext,
+			"Expected a TaskContext, but received a " + state.getClass().getName());
+		return new TaskProgramAnalyzer((TaskContext)state, createImportHandler());
 	}
 	
 	public ImportHandler createImportHandler() {

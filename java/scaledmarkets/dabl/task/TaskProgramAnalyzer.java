@@ -2,6 +2,8 @@ package scaledmarkets.dabl.task;
 
 import scaledmarkets.dabl.analyzer.LanguageCoreAnalyzer;
 import scaledmarkets.dabl.analyzer.NamespaceProcessor;
+import scaledmarkets.dabl.analyzer.ImportHandler;
+import scaledmarkets.dabl.node.*;
 import java.io.Reader;
 import java.io.StringReader;
 
@@ -10,7 +12,7 @@ import java.io.StringReader;
  */
 public class TaskProgramAnalyzer extends LanguageCoreAnalyzer {
 	
-	TaskProgramAnalyzer(TaskContext contex, ImportHandler importHandler) {
+	TaskProgramAnalyzer(TaskContext context, ImportHandler importHandler) {
 		
 		super(context, importHandler);
 	}
@@ -60,15 +62,15 @@ public class TaskProgramAnalyzer extends LanguageCoreAnalyzer {
 	*/
 
 	public void inAImportOnamespaceElt(AImportOnamespaceElt node) {
-		super(node);
+		super.inAImportOnamespaceElt(node);
 	}
 	
 	public void inAOtaskDeclaration(AOtaskDeclaration node) {
-		super(node);
+		super.inAOtaskDeclaration(node);
 		taskCount++;
 	}
 	
 	public void inAOfunctionDeclaration(AOfunctionDeclaration node) {
-		super(node);
+		super.inAOfunctionDeclaration(node);
 	}
 }

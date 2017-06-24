@@ -25,4 +25,7 @@ public class PretendTaskContainer extends TaskContainer {
 	
 	public void destroy() throws Exception {
 	}
+	
+	public void validateRequiredConfiguration() throws Exception {
+	}
 }

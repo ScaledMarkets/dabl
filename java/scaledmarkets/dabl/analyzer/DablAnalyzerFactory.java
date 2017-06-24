@@ -13,7 +13,7 @@ public class DablAnalyzerFactory implements AnalyzerFactory {
 		this.state = state;
 	}
 	
-	public ClientState getClientState() { return this.state; }
+	public CompilerState getCompilerState() { return this.state; }
 	
 	public NamespaceProcessor createNamespaceProcessor() {
 		return new NamespaceProcessor(createAnalyzer(state));

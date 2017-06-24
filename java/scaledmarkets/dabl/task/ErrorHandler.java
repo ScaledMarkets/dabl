@@ -1,6 +1,6 @@
 package scaledmarkets.dabl.task;
 
-public class ErrorHandler {
+public abstract class ErrorHandler {
 	
-	public abstract void invoke() throws Throwable;
+	public abstract void invoke() throws Exception;
 }

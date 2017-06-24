@@ -4,16 +4,16 @@ import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.analysis.*;
-import scaledmarkets.dabl.analyzer.DablStandard;
-import scaledmarkets.dabl.analyzer.CompilerState;
-import scaledmarkets.dabl.analyzer.ImportHandler;
-import scaledmarkets.dabl.analyzer.FileImportHandler;
-import scaledmarkets.dabl.analyzer.NamespaceProcessor;
+import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.analyzer.ValueType;
+import scaledmarkets.dabl.helper.Helper;
+import scaledmarkets.dabl.util.Utilities;
 
+import java.util.List;
 import java.util.LinkedList;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.InputStreamReader;
 
 /**
@@ -31,7 +31,7 @@ public class TaskExecutor implements Executor {
 	
 	public static void main(String[] args) {
 
-		AnalyzerFactory analyzerFactory = new TaskAnalyzerFactory();
+		TaskAnalyzerFactory analyzerFactory = new TaskAnalyzerFactory();
 		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
 
 		// Process the Dabl standard package.
@@ -48,25 +48,25 @@ public class TaskExecutor implements Executor {
 		// Create a TaskExecutor, which will execute the actions defined by
 		// the analyzed AST. If task execution produces an error, set the
 		// process status accordingly.
-		int status;
+		int status = -1;
 		try {
-			(new TaskExecutor(context)).execute();
+			(new TaskExecutor(analyzerFactory.getTaskContext())).execute();
 			status = 0;
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-			status = 1;
 		}
 		catch (RuntimeException rex) {
 			rex.printStackTrace();
 			status = 2;
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			status = 1;
 		}
 		catch (Throwable t) {
 			t.printStackTrace();
 			status = 3;
 		}
 		finally {
-			Runtime.exit(status);
+			Runtime.getRuntime().exit(status);
 		}
 	}
 	
@@ -78,9 +78,9 @@ public class TaskExecutor implements Executor {
 	/**
 	 * Visit each proc stmt and execute it.
 	 */
-	public void execute() throws Throwable {
+	public void execute() throws Exception {
 		
-		performProcStmts(taskContext.getTaskDeclaration().getOprocStmt(), true);
+		performProcStmts(this.context.getTaskDeclaration().getOprocStmt(), true);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class TaskExecutor implements Executor {
 	 * in the invocation of the current error handler; otherwise, the error
 	 * is thrown. Recursive.
 	 */
-	protected void performProcStmts(List<POprocStmt> procStmts, boolean recover) throws Throwable {
+	protected void performProcStmts(List<POprocStmt> procStmts, boolean recover) throws Exception {
 		
 		for (POprocStmt p : procStmts) {
 			
@@ -103,15 +103,15 @@ public class TaskExecutor implements Executor {
 				POidRef pid = funcCall.getOidRef();
 				AOidRef idRef = (AOidRef)pid;
 				DeclaredEntry entry = getHelper().getDeclaredEntryForIdRef(idRef);
-				assertThat(entry != null, "No entry found for function " + idRef.toString());
+				Utilities.assertThat(entry != null, "No entry found for function " + idRef.toString());
 				Node n = entry.getDefiningNode();
-				assertThat(n instanceof AOfunctionDeclaration,
+				Utilities.assertThat(n instanceof AOfunctionDeclaration,
 					idRef.toString() + " was expected to be a function declaration");
 				AOfunctionDeclaration funcDecl = (AOfunctionDeclaration)n;
 				
 				// Determine the function language and native name.
-				String lang = getHelper().getStringLiteralValue(funcDecl.getNativeLanguage());
-				String funcNativeName = getHelper().getStringLiteralValue(funcDecl.getNativeName());
+				String lang = getHelper().getStringLiteralValue(funcDecl.getTargetLanguage());
+				String funcNativeName = getHelper().getStringLiteralValue(funcDecl.getTargetName());
 				
 				// Allocate a variable into which to place the function return result, if any.
 				POtargetOpt ptopt = funcCall.getOtargetOpt();
@@ -125,7 +125,7 @@ public class TaskExecutor implements Executor {
 				// each one.
 				List<Object> argValues = new LinkedList<Object>();
 				for (POexpr expr : funcCall.getOexpr()) {
-					argValues.add(this.context.evaluateExpression(expr));
+					argValues.add(this.context.evaluateExpr(expr));
 				}
 				
 				// Determine the function declared argument types and actual argument types.
@@ -141,7 +141,8 @@ public class TaskExecutor implements Executor {
 				
 				// Call the function.
 				try {
-					handler.callFunction(funcNativeName, argValues, targetVariableRef);
+					handler.callFunction(funcNativeName,
+						argValues.toArray(new Object[argValues.size()]), targetVariableRef);
 					
 					if (targetVariableRef != null) { // there is a target
 						// Transfer return value to target.
@@ -159,7 +160,7 @@ public class TaskExecutor implements Executor {
 					if (errorHandler == null) throw t;
 					if (! recover) throw t;
 					
-					errorHandler.invoke(t);
+					errorHandler.invoke();
 				}
 				
 			} else if (p instanceof AIfErrorOprocStmt) {
@@ -169,10 +170,10 @@ public class TaskExecutor implements Executor {
 				// Install an error handler.
 				this.errorHandler = new ErrorHandler() {
 					
-					public void invoke() throws Throwable {
+					public void invoke() throws Exception {
 						performProcStmts(ifErrorStmt.getOprocStmt(), false);
 					}
-				}
+				};
 				
 			} else throw new RuntimeException(
 				"proc stmt is not a known type: " + p.getClass().getName());

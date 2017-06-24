@@ -15,6 +15,7 @@ export classfiles := \
 	$(client_build_dir)/$(package)/*.class \
 	$(client_build_dir)/$(package)/docker/*.class \
 	$(client_build_dir)/$(package)/exec/*.class \
+	$(client_build_dir)/$(package)/task/*.class \
 	$(client_build_dir)/$(package)/helper/*.class \
 	$(client_build_dir)/$(package)/analysis/*.class \
 	$(client_build_dir)/$(package)/analyzer/*.class \
@@ -32,6 +33,7 @@ compile:
 		$(src_dir)/$(package)/docker/*.java \
 		$(src_dir)/$(package)/analyzer/*.java \
 		$(src_dir)/$(package)/exec/*.java \
+		$(src_dir)/$(package)/task/*.java \
 		$(src_dir)/$(package)/util/*.java \
 		$(src_dir)/$(package)/repos/*.java \
 		$(src_dir)/$(package)/helper/*.java

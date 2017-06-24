@@ -9,5 +9,5 @@ public interface AnalyzerFactory {
 	NamespaceProcessor createNamespaceProcessor();
 	Analyzer createAnalyzer(CompilerState state);
 	ImportHandler createImportHandler();
-	ClientState getClientState();
+	CompilerState getCompilerState();
 }
