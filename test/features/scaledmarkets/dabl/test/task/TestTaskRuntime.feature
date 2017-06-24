@@ -9,3 +9,5 @@ Feature: TestTaskRuntime
 		When a task should execute
 		Then the task executes
 	
+	Scenario: Test Timeout
+	

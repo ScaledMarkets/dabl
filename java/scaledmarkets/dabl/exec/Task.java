@@ -2,6 +2,7 @@ package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.Config;
+import scaledmarkets.dabl.analyzer.TimeUnit;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -19,6 +20,8 @@ public class Task {
 	private AOtaskDeclaration taskDecl;
 	private Set<Artifact> inputs = new HashSet<Artifact>();
 	private Set<Artifact> outputs = new HashSet<Artifact>();
+	private double timeout;
+	private TimeUnit timeUnit;
 	
 	private Set<Task> isConsumerOf = new HashSet<Task>();
 	private Set<Task> isProducerFor = new HashSet<Task>();
@@ -91,7 +94,9 @@ public class Task {
 	 */
 	public void executeTask(TaskContainer container) throws Exception {
 		System.out.println("Performing task " + this.getName());
-		container.execute(3600000);
+		// Convert timeout to ms.
+		long ms = this.timeUnit.convertToMs(this.timeout);
+		container.execute(ms);
 	}
 	
 	/**
