@@ -7,8 +7,8 @@ Under active development.
 # What Is DABL?
 
 DABL stands for "Dependent Artifact Build Language". It is a language for defining
-software dependencies. This project defines the language, and provides a robust
-container-based implementation—a "hermetic" build tool.
+software dependencies. This project defines the [language](langref/README.md),
+and provides a robust container-based implementation—a "hermetic" build tool.
 
 # Business Motivation
 
