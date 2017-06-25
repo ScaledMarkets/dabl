@@ -1,6 +1,4 @@
-# Dependent Artifact Build Language (DABL)
-
-<img src="duck.png" />
+# Dependent Artifact Build Language (DABL) <img src="duck.png" />
 
 # Project Status
 
@@ -9,7 +7,8 @@ Under active development.
 # What Is DABL?
 
 DABL stands for "Dependent Artifact Build Language". It is a language for defining
-software dependencies.
+software dependencies. This project defines the language, and provides a robust
+container-based implementation—a "hermetic" build tool.
 
 # Business Motivation
 
@@ -68,7 +67,7 @@ For robust infrastructure code, a better model than current practice is needed, 
 * **Composable**: The build language uses **information hiding**, **encapsulation**, and true **modularity** 
 	in order to promote reuse, *extensibility, composability, and idempotency*.
 * **Provides isolation**: The build language defines **isolation for tasks**, with **clearly defined inputs
-	and outputs** and **no side effects**.
+	and outputs** and **no side effects**. Google refers to this as being *hermetic*.
 * **Unambiguous**: The build language is **concise but not cryptic**, and encourages the definition of
 	**builds that are easy to read and understand**, and that are **unambiguous**.
 	Again, *ambiguity is the enemy of reliability*.
