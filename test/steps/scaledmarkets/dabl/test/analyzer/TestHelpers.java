@@ -51,7 +51,8 @@ public class TestHelpers extends TestBase {
 				return new InMemoryImportHandler(namespaces);
 			}
 		};
-		createHelper(dabl.process(analyzerFactory));
+		dabl.process(analyzerFactory);
+		createHelper(analyzerFactory.getCompilerState());
 	}
 
 	@When("^I call getPrimaryNamespace$")

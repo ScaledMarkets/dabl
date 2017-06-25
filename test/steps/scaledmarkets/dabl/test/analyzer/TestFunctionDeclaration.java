@@ -60,7 +60,7 @@ public class TestFunctionDeclaration extends TestBase {
 		int index = 0;
 		for (POtypeSpec typeSpec : argTypes) {
 			switch (index) {
-				case 0: assertThat(typeSpec instanceof AIntOtypeSpec, () -> {
+				case 0: assertThat(typeSpec instanceof ANumericOtypeSpec, () -> {
 					System.out.println("\ttypeSpec0 is a " + argTypes.get(0).getClass().getName());
 					System.out.println("\ttypeSpec1 is a " + argTypes.get(1).getClass().getName());
 					System.out.println("\ttypeSpec2 is a " + argTypes.get(2).getClass().getName());

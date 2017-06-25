@@ -9,12 +9,14 @@ import cucumber.api.java.en.When;
 
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.util.Utilities;
 import scaledmarkets.dabl.test.*;
 
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 public class TestImport extends TestBase {
 	
@@ -34,7 +36,14 @@ public class TestImport extends TestBase {
 "  public repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
 		);
 
-		Dabl dabl = new Dabl(false, true, reader, new InMemoryImportHandler(namespaces));
+		Dabl dabl = new Dabl(false, true, reader);
+		
+		dabl.process(new DablAnalyzerFactory() {
+			public ImportHandler createImportHandler() {
+				return new InMemoryImportHandler(new HashMap<String, String>());
+			}
+		});
+		
 		createHelper(dabl.process());
 		
 	}
@@ -57,8 +66,9 @@ public class TestImport extends TestBase {
 		POidRef p = as.getRepositoryId();
 		assertThat(p instanceof AOidRef, "p is not a AOidRef");
 		AOidRef reposRef = (AOidRef)p;
-		TId reposId = reposRef.getId();
-		assertThat(reposId.getText().equals("my_maven"), "reposId is not 'my_maven'");
+		List<TId> reposIds = reposRef.getId();
+		String path = Utilities.createNameFromPath(reposIds);
+		assertThat(path.equals("my_maven"), "reposId is not 'my_maven'");
 		
 		Annotation a = getHelper().getState().getOut(reposRef);
 		assertThat(a != null, "It appears that the local reference to my_maven was not resolved");

@@ -16,11 +16,11 @@ public class InMemoryImportHandler implements ImportHandler {
 	private Map<String, String> namespaces = new HashMap<String, String>();
 	private Map<String, NameScope> scopeMap = new HashMap<String, NameScope>();
 	
-	public InMemoryImportHandler(Map<String, String> namespaces) throws Exception {
+	public InMemoryImportHandler(Map<String, String> namespaces) {
 		this.namespaces = namespaces;
 	}
 	
-	public NameScope importNamespace(String namespacePath, CompilerState state) {
+	public NameScope processNamespace(String namespacePath, CompilerState state) {
 		System.out.println("------------Importing namespace " + namespacePath); // debug
 		NameScope nameScope = scopeMap.get(namespacePath);
 		if (nameScope == null) try {

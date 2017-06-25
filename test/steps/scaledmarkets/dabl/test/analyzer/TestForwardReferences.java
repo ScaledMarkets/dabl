@@ -9,6 +9,7 @@ import cucumber.api.java.en.When;
 
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.util.Utilities;
 import scaledmarkets.dabl.test.TestBase;
 
 import java.io.Reader;
@@ -54,8 +55,8 @@ public class TestForwardReferences extends TestBase {
 		assertThat(p instanceof AOidRef, "p is not a AOidRef");
 		AOidRef idRef = (AOidRef)p;
 		
-		TId id = idRef.getId();
-		assertThat(id.getText().equals("my_maven"), "id is not 'my_maven'");
+		String path = Utilities.createNameFromPath(idRef.getId());
+		assertThat(path.equals("my_maven"), "id is not 'my_maven'");
 		Annotation annot = getHelper().getState().getOut(idRef);
 		assertThat(annot != null, "annot is null");
 		assertThat(annot instanceof IdRefAnnotation, "annot is not a IdRefAnnotation");

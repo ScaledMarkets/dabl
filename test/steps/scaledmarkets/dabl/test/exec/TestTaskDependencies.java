@@ -46,7 +46,7 @@ public class TestTaskDependencies extends TestBase {
 	@When("^I compile them in simulate mode$")
 	public void i_compile_them_in_simulate_mode() throws Throwable {
 		
-		this.graph = DependencyGraph.genDependencySet(getHelper().getState());
+		this.graph = DependencyGraph.genDependencySet(getHelper());
 	}
 	
 	@Then("^I can verify that B depends on A$")

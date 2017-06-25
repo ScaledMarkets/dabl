@@ -5,11 +5,11 @@ package scaledmarkets.dabl.analyzer;
  */
 public class DablAnalyzerFactory implements AnalyzerFactory {
 	
-	DablAnalyzerFactory() {
+	public DablAnalyzerFactory() {
 		this.state = new ClientState();
 	}
 	
-	DablAnalyzerFactory(CompilerState state) {
+	public DablAnalyzerFactory(CompilerState state) {
 		this.state = state;
 	}
 	
