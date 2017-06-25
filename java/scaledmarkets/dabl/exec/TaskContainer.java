@@ -12,9 +12,11 @@ public abstract class TaskContainer {
 	 * The container is contacted and instructed to perform the task.
 	 * Return the stdout and stderr of the container.
 	 */
-	public abstract InputStream execute(int timeout) throws Exception;
+	public abstract InputStream execute() throws Exception;
 	
 	public abstract int getExitStatus() throws Exception;
+	
+	public abstract void stop() throws Exception;
 	
 	public abstract void destroy() throws Exception;
 	

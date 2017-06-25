@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analyzer.TimeUnit;
+import scaledmarkets.dabl.util.Utilities;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -11,8 +12,9 @@ import java.util.LinkedList;
 
 public class Task {
 	
-	public Task(AOtaskDeclaration taskDecl) {
+	public Task(AOtaskDeclaration taskDecl, ExpressionContext exprContext) {
 		this.taskDecl = taskDecl;
+		this.exprContext = exprContext;
 		this.timeUnit = retrieveTimeUnit();
 		this.timeout = retrieveTimeout();
 	}
@@ -20,6 +22,7 @@ public class Task {
 	public String getName() { return taskDecl.getName().getText(); }
 		
 	private AOtaskDeclaration taskDecl;
+	private ExpressionContext exprContext;
 	private Set<Artifact> inputs = new HashSet<Artifact>();
 	private Set<Artifact> outputs = new HashSet<Artifact>();
 	
@@ -124,46 +127,39 @@ public class Task {
 			POtimeUnit pu = spect.getOtimeUnit();
 			return getTimeUnit(pu);
 		} else if (pt instanceof AUnspecifiedOtimeout) {
-			throw new Exception("No timeout");
+			return null;
 		} else throw new RuntimeException(
 			"Unexpected type for timeout: " + pt.getClass().getName());
 	}
 	
-	protected Double retrieveTimeout() throws Exception {
+	protected Double retrieveTimeout() {
 		POtimeout pt = this.taskDecl.getOtimeout();
 		if (pt instanceof ASpecifiedOtimeout) {
 			ASpecifiedOtimeout spect = (ASpecifiedOtimeout)pt;
 			POexpr expr = spect.getOexpr();
-			Object result = (new ExpressionEvaluator(dablContext)).evaluateExpr(expr);
+			Object result = (new ExpressionEvaluator(this.exprContext)).evaluateExpr(expr);
 			Utilities.assertThat(result instanceof Number,
 				"Timeout expression is not numeric: it is " + result.getClass().getName());
 			if (result instanceof Double) return (Double)result;
 			return new Double(((Double)result).doubleValue());
 		} else if (pt instanceof AUnspecifiedOtimeout) {
-			throw new Exception("No timeout");
+			return null;
 		} else throw new RuntimeException(
 			"Unexpected type for timeout: " + pt.getClass().getName());
 	}
 	
 	protected TimeUnit getTimeUnit(POtimeUnit pu) {
-		switch (pu) {
-		case ADaysOtimeUnit:
+		if (pu instanceof ADaysOtimeUnit)
 			return TimeUnit.days;
-			break;
-		case AHoursOtimeUnit:
+		if (pu instanceof AHoursOtimeUnit)
 			return TimeUnit.hours;
-			break;
-		case AMinOtimeUnit: 
+		if (pu instanceof AMinOtimeUnit)
 			return TimeUnit.min;
-			break;
-		case ASecOtimeUnit: 
+		if (pu instanceof ASecOtimeUnit)
 			return TimeUnit.sec;
-			break;
-		case AMsOtimeUnit: 
+		if (pu instanceof AMsOtimeUnit)
 			return TimeUnit.ms;
-			break;
-		default: throw new RuntimeException(
+		throw new RuntimeException(
 			"Unexpected POtimeUnit kind: " + pu.getClass().getName());
-		}
 	}
 }

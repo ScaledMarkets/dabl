@@ -14,13 +14,16 @@ public class PretendTaskContainer extends TaskContainer {
 		this.task = task;
 	}
 	
-	public InputStream execute(int timeout) throws Exception {
+	public InputStream execute() throws Exception {
 		return new StringBufferInputStream(
 			">> Simulator: Task " + this.task.getName() + " would be executed");
 	}
 	
 	public int getExitStatus() throws Exception {
 		return 0;
+	}
+	
+	public void stop() throws Exception {
 	}
 	
 	public void destroy() throws Exception {

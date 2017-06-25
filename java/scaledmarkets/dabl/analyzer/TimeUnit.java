@@ -17,19 +17,14 @@ public enum TimeUnit {
 		switch (tunit) {
 		case ms:
 			return t;
-			break;
 		case sec:
 			return t * MillisecondsInASecond;
-			break;
 		case min:
 			return t * MillisecondsInAMinute;
-			break;
 		case hours:
 			return t * MillisecondsInAnHour;
-			break;
 		case days:
 			return t * MillisecondsInADay;
-			break;
 		default: throw new RuntimeException("Unexpected TimeUnit value: " + tunit.toString());
 		}
 	}

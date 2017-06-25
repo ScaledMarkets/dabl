@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.helper.Helper;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.analyzer.CompilerState;
+import scaledmarkets.dabl.analyzer.TimeUnit;
 import scaledmarkets.dabl.util.Utilities;
 import java.util.Set;
 import java.util.Timer;
@@ -131,7 +132,7 @@ public class DefaultExecutor implements Executor {
 					this.taskContainerFactory.createTaskContainer(task, workspace);
 				
 				// Set a timer to interrupt the task after the timeout period.
-				Time timer = null;
+				Timer timer = null;
 				if (task.getTimeUnit() != null) {  // there is a timeout
 					double timeout = task.getTimeout();
 					TimeUnit timeUnit = task.getTimeUnit();
@@ -148,7 +149,7 @@ public class DefaultExecutor implements Executor {
 							}
 						}
 					};
-					timer.schedule(timerTask, long delay)
+					timer.schedule(timerTask, ms);
 				}
 		
 				try {

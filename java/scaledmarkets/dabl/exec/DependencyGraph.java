@@ -144,7 +144,7 @@ public class DependencyGraph {
 	protected Task createTask(AOtaskDeclaration taskDecl) {
 		Task t = tasks.get(taskDecl);
 		if (t != null) throw new RuntimeException("Task " + t.getName() + " exists");
-		Task task = new Task(taskDecl);
+		Task task = new Task(taskDecl, new DablContext(this.helper));
 		tasks.put(taskDecl, task);
 		return task;
 	}
