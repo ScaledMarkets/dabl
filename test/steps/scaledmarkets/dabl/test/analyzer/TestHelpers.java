@@ -50,7 +50,7 @@ public class TestHelpers extends TestBase {
 			public ImportHandler createImportHandler() {
 				return new InMemoryImportHandler(namespaces);
 			}
-		}
+		};
 		createHelper(dabl.process(analyzerFactory));
 	}
 
