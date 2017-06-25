@@ -77,6 +77,8 @@ timestamp than all of the files that are specified by the output set.
 * When the task is invoked, the `bash` command will be performed, after the value
 of `$thisdir` has been substituted. (`$thisdir` evaluates to the directory in which
 the DABL script exists.)
+* If the task takes more than 5 seconds to complete, it will be terminated, and an
+error status will be set for it.
 
 ## Name Scope and Name Overloading
 

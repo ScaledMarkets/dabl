@@ -26,23 +26,23 @@ public class DockerTaskContainer extends TaskContainer {
 	 * The container is contacted and instructed to perform the task.
 	 * Direct container stdout to the specified print stream.
 	 */
-	public InputStream execute(int timeout) throws Exception {
+	public InputStream execute() throws Exception {
 		
 		// Start the container.
 		// The container starts with its configured entrypoint, which is a
 		// call to the TaskExecutor JAR. Each procedural statement is passed
-		// via stdin.
+		// via stdin. This is a blocking call.
 		InputStream containerOutput = this.dockerContainer.start(task.getTaskProgram());
-		
-		int exitStatus = this.dockerContainer.getExitStatus();
-		if (exitStatus != 0) throw new Exception(
-			"Container had exit status " + exitStatus);
 		
 		return containerOutput;
 	}
 	
 	public int getExitStatus() throws Exception {
 		return dockerContainer.getExitStatus();
+	}
+	
+	public void stop() throws Exception {
+		this.dockerContainer.stop();
 	}
 
 	public void destroy() throws Exception {

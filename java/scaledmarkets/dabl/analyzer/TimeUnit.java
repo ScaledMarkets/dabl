@@ -13,7 +13,7 @@ public enum TimeUnit {
 		return this.convertToMs(t);
 	}
 	
-	public static long convertToMs(double t, TimeUnit tunit) {
+	public static double convertToMs(double t, TimeUnit tunit) {
 		switch (tunit) {
 		case ms:
 			return t;

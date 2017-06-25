@@ -5,6 +5,8 @@ import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.util.Utilities;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -128,13 +130,35 @@ public class DefaultExecutor implements Executor {
 				TaskContainer taskContainer =
 					this.taskContainerFactory.createTaskContainer(task, workspace);
 				
+				// Set a timer to interrupt the task after the timeout period.
+				Time timer = null;
+				if (task.getTimeUnit() != null) {  // there is a timeout
+					double timeout = task.getTimeout();
+					TimeUnit timeUnit = task.getTimeUnit();
+					long ms = timeUnit.convertToMs(timeout);
+					
+					// Create timer.
+					timer = new Timer();
+					TimerTask timerTask = new TimerTask() {
+						public void run() {
+							// Interrupt the DABL task.
+							try { taskContainer.stop(); }
+							catch (Exception ex) {
+								System.err.println(ex.getMessage());
+							}
+						}
+					};
+					timer.schedule(timerTask, long delay)
+				}
+		
 				try {
 					// Execute the task in the container.
-					InputStream containerOutput = taskContainer.execute(3600000);
+					InputStream containerOutput = taskContainer.execute();
 					
 					// Send the container's output to this process's stdout.
 					Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
 				} finally {
+					if (timer != null) timer.cancel();
 					// Obtain the container's exit status.
 					int exitStatus = taskContainer.getExitStatus();
 					setTaskStatus(task.getName(), exitStatus);

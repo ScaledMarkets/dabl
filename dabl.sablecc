@@ -260,7 +260,8 @@ Productions
                                                 id, [when_clause_opt.oexpr],
                                                 [input_sets_opt.onamed_artifact_set],
                                                 [output_sets_opt.onamed_artifact_set],
-                                                [procedural_stmts_opt.oproc_stmt])}
+                                                [procedural_stmts_opt.oproc_stmt],
+                                                timeout_opt.otimeout)}
         ;
     
     when_clause_opt {-> oexpr*} =
@@ -276,15 +277,15 @@ Productions
         {specified} timeout numeric_expr time_unit
                                             {-> New otimeout.specified(numeric_expr.oexpr,
                                                 time_unit.otime_unit)}
-        {unspecified}                       {-> New otimeout.unspecified()}
+      | {unspecified}                       {-> New otimeout.unspecified()}
         ;
     
     time_unit {-> otime_unit} =
-        ms
-      | sec
-      | min
-      | hours
-      | days
+        {ms} ms                             {-> New otime_unit.ms()}
+      | {sec} sec                           {-> New otime_unit.sec()}
+      | {min} min                           {-> New otime_unit.min()}
+      | {hours} hours                       {-> New otime_unit.hours()}
+      | {days} days                         {-> New otime_unit.days()}
       ;
     
     success_expr {-> osuccess_expr} =
