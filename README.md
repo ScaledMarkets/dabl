@@ -25,7 +25,9 @@ difficult to maintain and potentially unreliable.
 
 If build, test, and deployment code is as important as application code, then
 build, test, and deployment code needs a robust language, akin to the robust
-application programming languages that are available.
+application programming languages that are available. DABL forms the foundation
+for a series of continuous delivery tools in
+the [SafeHarbor[(https://github.com/ScaledMarkets/SafeHarbor) tool suite.
 
 # Technical Motivation
 
