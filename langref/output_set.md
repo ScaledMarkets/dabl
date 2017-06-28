@@ -9,7 +9,8 @@
 </dl>
 or
 <dl>
-<dd><code>outputs </code> <i>Id</i> <code>new local</code> [ <i>files-stmts</i> ]</dd>
+<dd><code>outputs </code> <i>Id</i> <code>new local</code> [
+	<a href="files_stmt.md"><i>files-stmt...</i></a> ]</dd>
 </dl>
 
 The first form is just like a <code><a href="files_decl.md">files</a></code>
