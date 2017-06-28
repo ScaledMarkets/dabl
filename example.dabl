@@ -52,7 +52,7 @@ artifact ABC:2.$MinorVersionNumber  // Defines artifact "ABC", version 2.<mvn>
         tested with XYZ:3.3  // overrides for this variant
 
 //* Define a parameterized template that can be instantiated in this or
-    any other namespace. *//
+    any other namespace. Parameters are of type string, unless declared otherwise. *//
 public task template create_template (artif_version, dir, output)
     inputs $dir/**.class
     outputs $output

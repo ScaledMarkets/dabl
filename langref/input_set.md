@@ -9,7 +9,8 @@
 </dl>
 or
 <dl>
-<dd><code>inputs </code> <i>task-Id . task-output-Id</i> [ <i>files-stmts</i> ]</dd>
+<dd><code>inputs </code> <i>task-Id . task-output-Id</i> [ 
+	<a href="files_stmt.md"><i>files-stmt...</i></a> ]</dd>
 </dl>
 
 The first form is just like a <code><a href="files_decl.md">files</a></code>

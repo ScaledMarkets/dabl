@@ -13,6 +13,13 @@ implicitly public (such as artifact declarations are).
 <dd><code>import</code> <i><a href="namespace_path.md">namespace-path</a></i></dd>
 </dl>
 
+## Semantics
+
+An import does not automatically instantiate the elements of the imported namespace;
+rather, it makes them visible so that they can be referenced from the importing
+namespace. Thus, for example, if the imported namespace contains task declarations,
+those declarations are not automatically imported into the importing namespace.
+
 ## Mechanism By Which Import Occurs
 
 A DABL `import` translates into a call to function that has the following Java

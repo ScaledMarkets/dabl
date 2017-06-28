@@ -58,7 +58,7 @@ in an `output` construct.
 ```
 task compileit
     when inputs A newer than outputs
-    inputs A "$thisdir/**.java" of "my_repo" in my_git, XYZ
+    inputs A "$thisdir/**.java" of "my_repo" in my_git
     outputs "./**.class", "./**.txt"
     timeout 5 sec
     bash "
