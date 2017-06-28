@@ -11,7 +11,8 @@ of the task specifying the artifact set.
 An artifact set has the following syntax:
 
 <dl>
-<dd><code>of</code> <i>project-Id</i> <code>in</code> <i>repository-Id</i> [ <i>prefer-stmt</i> ] [ <i>files-stmts</i> ]</dd>
+<dd><code>of</code> <i>project-Id</i> <code>in</code> <i>repository-Id</i> [
+	<i>prefer-stmt</i> ] [ <a href="files_stmt.md"><i>files-stmt...</i></a> ]</dd>
 </dl>
 
 The *repository-Id* is the Id of a repository that is defined by
@@ -19,22 +20,6 @@ a [repo declaration](repo_decl.md).
 
 The *project-Id* is the name of a project (e.g., a github "repo") within the
 repository.
-
-*files-stmts* have the following syntax:
-
-<dl>
-<dd><code>include</code> <i>fileset-spec</i></dd>
-<dd>or</dd>
-<dd><code>exclude</code> <i>fileset-spec</i></dd>
-</dl>
-
-where a *fileset-spec* is a string value expression that specifies a set of files
-in the project. Wildcards may be used to match parts of a filename or directory,
-according to the "globbing" rules—see [here](http://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getPathMatcher-java.lang.String-).
-
-If `include` is specified, then the files of the *fileset-spec* are included
-in the artifact set. If `exclude` is specified, then the files of the *fileset-spec*
-are excluded from the artifact set.
 
 *prefer-stmts* serve to specify that if the repository supports DABL's concept of
 artifact versions, that the specified version criteria should be applied.
