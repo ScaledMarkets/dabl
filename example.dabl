@@ -53,7 +53,7 @@ artifact ABC:2.$MinorVersionNumber  // Defines artifact "ABC", version 2.<mvn>
 
 //* Define a parameterized template that can be instantiated in this or
     any other namespace. Parameters are of type string, unless declared otherwise. *//
-public task template create_template (artif_version, dir, output)
+public task create_template (artif_version, dir, output)
     inputs $dir/**.class
     outputs $output
     bash """
@@ -117,6 +117,10 @@ repo my_piper type "piper"
     Named 'sign', so that we can call it in this file. *//
 function sign string string binds to groovy method
     com.scaledmarkets.utils.Signature.sign returns array of byte
+
+//* Push the build artifacts to the artifact. *//
+task ....
+
 
 task test_XYZ_3_3
     /* If there is no "when" clause, then an implicit "when" clause is
