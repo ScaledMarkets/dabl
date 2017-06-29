@@ -23,7 +23,7 @@ networks. By default, a task is not open.
 A task declaration has the following syntax:
 
   [`public`] [`open`] `task` *name* 
-    [ [template_section](#Template_Section) ]
+    [ [template_section](#template-section) ]
     [ [when_clause](when_clause.md) ]
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
   	[ `timeout` *expression* *time-unit* ]
