@@ -155,10 +155,11 @@ Template formal parameters have the following syntax:
 
 where param_decl has the syntax,
 
-*name* `:` *type*
+*name* [ `:` *type* ]
 
 The *name* is the name of the formal parameter, and the *type* is its type. The
 type must be one of the DABL expression types - see [Expressions](Expressions.md).
+If a type is not specified, it is assumed to be `string`.
 
 Template actual parameters are a comma-separated sequence of DABL expressions.
 
