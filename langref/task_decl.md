@@ -179,9 +179,10 @@ public task some_template (dir, output)
 Template variables are also used to define environment variables of the same
 name for task function calls. However, if a parameter value needs to be accessed
 from a function string as an environment variable, the `$` environment syntax
-will be mis-interpreted by DABL as a DABL template reference. Therefore, any
+will be mis-interpreted by DABL as a DABL template processing phase environment
+variable reference (see [Processing Phases](#processing-phases)). Therefore, any
 environment variable references within a function script must be escaped, by
-using two dollar signes, as follows:
+using two dollar signs, as follows:
 
 ```
 public task some_template (artif_version, dir, output)
