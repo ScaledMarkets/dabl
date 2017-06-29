@@ -23,24 +23,11 @@ networks. By default, a task is not open.
 A task declaration has the following syntax:
 
   [`public`] [`open`] `task` *name* 
-    [ [template_section](#template-section) ]
+    [ [template_section](#task-templates) ]
     [ [when_clause](when_clause.md) ]
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
   	[ `timeout` *expression* *time-unit* ]
   	[ [procedural_stmts](procedural_stmt.md)...]
-
-### Template Section
-
-A task can be one of these forms:
-
-1. A task that is defined as a reusable template.
-2. The instantiation of a task template.
-3. A simple task, with no template related functionality.
-
-
-
-formal_params | ( `from` *template-name* actual_params )
-
 
 ### Inputs and Outputs
 
@@ -139,6 +126,30 @@ should compile with an error.
 
 If a `task` has multiple `when` clauses, then the task is executed if any of them
 is true.
+
+## Task Templates
+
+A task can be one of these forms:
+
+1. A task that is defined as a reusable template.
+2. The instantiation of a task template.
+3. A simple task, with no template related functionality.
+
+Thus, the syntax of a task template_section is one of,
+
+`(` formal_params `)`
+
+or
+
+`from` *template-name* `(` actual_params `)`
+
+or
+
+- nothing -
+
+
+
+
 
 ## Task Execution
 
