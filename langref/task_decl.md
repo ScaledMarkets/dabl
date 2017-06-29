@@ -181,7 +181,7 @@ name for task function calls. However, if a parameter value needs to be accessed
 from a function string as an environment variable, the `$` environment syntax
 will be mis-interpreted by DABL as a DABL template processing phase environment
 variable reference (see 
-[Processing Phases](https://github.com/ScaledMarkets/dabl/tree/master/langref#processing-phases)).
+[Processing Phases](../langref#processing-phases)).
 Therefore, any
 environment variable references within a function script must be escaped, by
 using two dollar signs, as follows:
