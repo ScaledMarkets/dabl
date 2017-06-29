@@ -126,6 +126,15 @@ prefixed by a dollar sign:
 
 If an environment variable is undefined, DABL generates an error.
 
+To escape a dollar sign, prefix it with another dollar sign. Thus, for example,
+this sequence is interpreted as the environment variable `abc`:
+
+`$abc`
+
+where this is treated as the literal character sequence `$abc`:
+
+`$$abc`
+
 ### Built-In Environment Variables
 
 DABL defines some built-in environment variables that are set by the DABL
@@ -217,5 +226,10 @@ something... - indicates that "something" is a sequence of one or more things.
 
 *something* - indicates that "something" is a value such as an identifier,
   string, or numeric value.
+
+( someting ) - indicates that "something" is treated as a group.
+
+something | anotherthing - indicates that "something" and "anotherthing" are mutually
+  exclusive.
 
 `something` - indicates that "something" is verbatim.

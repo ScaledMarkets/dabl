@@ -24,9 +24,8 @@ tab equivalent to 4 spaces
     in this case, an artifact declaration.
     An artifact defines a published product of this script, and its
     compatibilities. Tasks in other namespaces can specify
-    a published artifact as an input. This enables one to couple
-    scripts together, but in a safe manner (without importing an entire
-    scripts and all of its definitions). *//
+    a published artifact as an input. An artifact is published by pushing
+    it to a piper repository. *//
 artifact ABC:2.$MinorVersionNumber  // Defines artifact "ABC", version 2.<mvn>
     /* In the artifact declaration, $MinorVersionNumber refers to an
         environment variable that has been declared outside the scope
@@ -54,11 +53,11 @@ artifact ABC:2.$MinorVersionNumber  // Defines artifact "ABC", version 2.<mvn>
 //* Define a parameterized template that can be instantiated in this or
     any other namespace. Parameters are of type string, unless declared otherwise. *//
 public task create_template (artif_version, dir, output)
-    inputs $dir/**.class
-    outputs $output
+    inputs dir/**.class
+    outputs output
     bash """
-        echo "...$artif_version..." > manifest.txt
-        jar ... $output
+        echo "...$$artif_version..." > manifest.txt
+        jar ... $$output
         """
 
 //* Instantiate a template, supplying the required parameter values.

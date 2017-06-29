@@ -22,10 +22,25 @@ networks. By default, a task is not open.
 
 A task declaration has the following syntax:
 
-  [`public`] [`open`] `task` *name* [ [when_clause](when_clause.md) ]
+  [`public`] [`open`] `task` *name* 
+    [ [template_section](#Template_Section) ]
+    [ [when_clause](when_clause.md) ]
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
   	[ `timeout` *expression* *time-unit* ]
   	[ [procedural_stmts](procedural_stmt.md)...]
+
+### Template Section
+
+A task can be one of these forms:
+
+1. A task that is defined as a reusable template.
+2. The instantiation of a task template.
+3. A simple task, with no template related functionality.
+
+
+
+formal_params | ( `from` *template-name* actual_params )
+
 
 ### Inputs and Outputs
 
