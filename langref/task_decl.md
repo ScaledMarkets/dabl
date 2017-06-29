@@ -137,19 +137,57 @@ A task can be one of these forms:
 
 Thus, the syntax of a task template_section is one of,
 
-`(` formal_params `)`
+`(` template_formal_params `)`
 
 or
 
-`from` *template-name* `(` actual_params `)`
+`from` *template-name* `(` template_actual_params `)`
 
 or
 
  *nothing*
 
+corresponding to the three numbered cases above, respectively.
 
+Template formal parameters have the following syntax:
 
+[ param_decl [ , param_decl ]... ]
 
+where param_decl has the syntax,
+
+*name* `:` *type*
+
+The *name* is the name of the formal parameter, and the *type* is its type. The
+type must be one of the DABL expression types - see [Expressions](Expressions.md).
+
+Template actual parameters are a comma-separated sequence of DABL expressions.
+
+Task template formal parameters can be referenced directly withint the
+task, without any prefix. Thus, for example, the following uses the parameters
+`dir` and `output`:
+
+```
+public task some_template (dir, output)
+    inputs dir/**.class
+    outputs output
+```
+
+Template variables are also used to define environment variables of the same
+name for task function calls. However, if a parameter value needs to be accessed
+from a function string as an environment variable, the `$` environment syntax
+will be mis-interpreted by DABL as a DABL template reference. Therefore, any
+environment variable references within a function script must be escaped, by
+using two dollar signes, as follows:
+
+```
+public task some_template (artif_version, dir, output)
+    inputs dir/**.class
+    outputs output
+    bash """
+        echo "...$$artif_version..." > manifest.txt
+        jar ... $$output
+        """
+```
 
 ## Task Execution
 
