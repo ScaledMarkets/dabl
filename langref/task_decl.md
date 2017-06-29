@@ -29,6 +29,9 @@ A task declaration has the following syntax:
   	[ `timeout` *expression* *time-unit* ]
   	[ [procedural_stmts](procedural_stmt.md)...]
 
+The task template section pertains to tasks that are defined as re-usable
+templates, and is explained [later](#task-templates).
+
 ### Inputs and Outputs
 
 The inputs are the files that are read by the task, and the outputs are the files
@@ -129,7 +132,7 @@ is true.
 
 ## Task Templates
 
-A task can be one of these forms:
+A task declaration can be one of these forms:
 
 1. A task that is defined as a reusable template.
 2. The instantiation of a task template.
