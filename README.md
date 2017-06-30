@@ -170,7 +170,7 @@ file. It may have the following settings:
 </dl>
 
 It may have additional settings that are required by the FunctionHandlers that
-load classes in the container. See [Function Call Statement](https://github.com/ScaledMarkets/dabl/blob/master/langref/func_call_stmt.md).
+load classes in the container. See [Function Call Statement](https://github.com/ScaledMarkets/dabl/blob/master/langref/func_call_stmt.md#binding-to-a-function-at-runtime).
 
 The `dabl.container.properties` file may be in any of the places that the
 `.dabl.properties` file may be.
