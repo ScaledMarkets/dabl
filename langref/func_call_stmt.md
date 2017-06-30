@@ -64,7 +64,7 @@ for Java functions is,
 dabl.function_handler.java=scaledmarkets.dabl.handlers.JavaFunctionHandler
 ```
 
-See [Using the DABL Compiler](https://github.com/ScaledMarkets/dabl#using-the-dabl-compiler).
+See [Setting Container (Runtime) Properties](https://github.com/ScaledMarkets/dabl#setting-container-runtime-properties).
 
 ## Built-In Functions
 
