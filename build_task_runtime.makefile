@@ -20,7 +20,7 @@ task_manifest:
 	echo "Implementation-Vendor: $(ORG)" >> Manifest
 
 # Package task runtime into a JAR file.
-taskjar: $(jar_dir)/$(TASK_JAR_NAME).jar
+taskjar: $(jar_dir)/$(TASK_JAR_NAME).jar $(jar_dir)
 
 $(jar_dir)/$(TASK_JAR_NAME).jar: $(task_classfiles) task_manifest $(jar_dir)
 	$(JAR) cvfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest -C $(task_build_dir) scaledmarkets

@@ -1,7 +1,12 @@
+package scaledmarkets.dabl.handlers;
+
 import scaledmarkets.task.FunctionHandler;
+import scaledmarkets.util.Utilities;
+import java.lang.reflect.Method;
 
-
-
+/**
+ * For calling a Java function from a DABL script.
+ */
 public class JavaFunctionHandler implements FunctionHandler {
 	
 	public void callFunction(String funcNativeName, Object[] args,

@@ -42,11 +42,32 @@ post abc.jar to my_maven/myproject/abc.jar
 
 In this example, the word `to` is a preposition that is ignored by the DABL parser.
 
+## Binding to a Function at Runtime
+
+When a DABL Executor encounters a function call, it must locate the resources
+needed to load and execute the function. For a Java function, this amounts to
+finding an appropriate class loader for loading the Java class in which the function
+is implemented. For other langauge functions, other kinds of resources might be
+needed. In general, a FunctionHandler must be obtained for the function's language.
+The FunctionHandler decides how to obtain the resources that are needed to load
+and execute the function. FunctionHandlers can be specified in the .dabl.properties
+file, via the setting for,
+
+<dl>
+<dd><code>dabl.function_handler.</code><i>language</i></dd>
+</dl>
+
+For example, DABL's default setting for Java functions is,
+
+```
+dabl.function_handler.java=scaledmarkets.dabl.handlers.JavaFunctionHandler
+```
+
 ## Built-In Functions
 
 The namespace dabl.standard is implicitly imported in a DABL file.
 
-The following functions are pre-defined in dabl.standard:
+The following Java functions are pre-defined in dabl.standard:
 
 <dl>
 <dd><code>report</code> <i>string-message</i></dd>

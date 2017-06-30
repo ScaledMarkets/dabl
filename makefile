@@ -93,15 +93,15 @@ $(build_dir):
 
 # Create the directory that will contain the jar files that are created.
 $(jar_dir):
-	mkdir $(jar_dir)
+	mkdir -p $(jar_dir)
 
-client:
+client: $(jar_dir)
 	make -f build_client.makefile all
 
 clean_client:
 	make -f build_client.makefile clean
 
-task_runtime:
+task_runtime: $(jar_dir)
 	make -f build_task_runtime.makefile all
 
 

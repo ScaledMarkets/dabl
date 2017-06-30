@@ -34,6 +34,7 @@ compile:
 		$(src_dir)/$(package)/analyzer/*.java \
 		$(src_dir)/$(package)/exec/*.java \
 		$(src_dir)/$(package)/task/*.java \
+		$(src_dir)/$(package)/handlers/*.java \
 		$(src_dir)/$(package)/util/*.java \
 		$(src_dir)/$(package)/repos/*.java \
 		$(src_dir)/$(package)/helper/*.java
@@ -56,10 +57,11 @@ manifest:
 	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
 	echo "Implementation-Vendor: $(ORG)" >> Manifest
 
-$(jar_dir)/$(JAR_NAME).jar: manifest compile
+$(jar_dir)/$(JAR_NAME).jar: manifest compile $(jar_dir)
 	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest .dabl.properties \
-		-C $(client_build_dir) scaledmarkets \
-		-C $(parser_build_dir) scaledmarkets \
+		-C $(client_build_dir) scaledmarkets
+	$(JAR) uvf $(jar_dir)/$(JAR_NAME).jar \
+		-C $(parser_build_dir) scaledmarkets
 	rm Manifest
 
 jar: $(jar_dir)/$(JAR_NAME).jar
