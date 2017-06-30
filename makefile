@@ -133,7 +133,8 @@ test:
 		cucumber.api.cli.Main \
 		--glue scaledmarkets.dabl.test \
 		$(test_src_dir)/features \
-		--tags @inputsandoutputs
+		--tags @task
+		#--tags @inputsandoutputs
 		#--tags @patternsets,@pushlocalrepo
 
 test_exec:

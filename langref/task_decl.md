@@ -75,7 +75,6 @@ In this example,
 
 * A task named `compileit` is defined.
 * An input set called `A` is defined.
-* Another input set called `XYZ` is defined.
 * An output set (with no name) is defined.
 * The task will be invoked whenever at least one file of input set `A` has a more recent
 timestamp than all of the files that are specified by the output set.
@@ -180,11 +179,9 @@ Template variables are also used to define environment variables of the same
 name for task function calls. However, if a parameter value needs to be accessed
 from a function string as an environment variable, the `$` environment syntax
 will be mis-interpreted by DABL as a DABL template processing phase environment
-variable reference (see 
-[Processing Phases](../langref#processing-phases)).
-Therefore, any
-environment variable references within a function script must be escaped, by
-using two dollar signs, as follows:
+variable reference (see [Processing Phases](../langref#processing-phases)).
+Therefore, any environment variable references within a function script must be
+escaped, by using two dollar signs, as follows:
 
 ```
 public task some_template (artif_version, dir, output)

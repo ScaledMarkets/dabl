@@ -131,7 +131,7 @@ this sequence is interpreted as the environment variable `abc`:
 
 `$abc`
 
-where this is treated as the literal character sequence `$abc`:
+whereas this is treated as the literal character sequence `$abc`:
 
 `$$abc`
 
