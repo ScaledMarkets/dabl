@@ -22,8 +22,11 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	 * Create a container, containing the task interpreter. Return an object
 	 * that enables one to control the container.
 	 */
-	public TaskContainer createTaskContainer(Task task, File workspace) throws Exception {
+	public TaskContainer createTaskContainer(Task task, File workspace,
+		Map<String, String> containerProperties) throws Exception {
 		
+		....Set container properties
+	
 		String dockerImageName = Utilities.getSetting("dabl.task_container_image_name");
 		if ((dockerImageName == null) || dockerImageName.equals("")) throw new Exception(
 			"Unable to identify container image to use");

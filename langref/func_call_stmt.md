@@ -50,18 +50,21 @@ finding an appropriate class loader for loading the Java class in which the func
 is implemented. For other langauge functions, other kinds of resources might be
 needed. In general, a FunctionHandler must be obtained for the function's language.
 The FunctionHandler decides how to obtain the resources that are needed to load
-and execute the function. FunctionHandlers can be specified in the .dabl.properties
+and execute the function. FunctionHandlers can be specified in the `.dabl.properties`
 file, via the setting for,
 
 <dl>
 <dd><code>dabl.function_handler.</code><i>language</i></dd>
 </dl>
 
-For example, DABL's default setting for Java functions is,
+where *language* is the function's language. For example, DABL's default setting
+for Java functions is,
 
 ```
 dabl.function_handler.java=scaledmarkets.dabl.handlers.JavaFunctionHandler
 ```
+
+See [Using the DABL Compiler](https://github.com/ScaledMarkets/dabl#using-the-dabl-compiler).
 
 ## Built-In Functions
 

@@ -140,8 +140,6 @@ When running DABL, the following environment variables can be set:
 	setting from its default, which references an image in dockerhub. However, an
 	enterprise might want to replace the setting with an image maintained in an
 	internal image repository. [TBD: Include reference to the image's dockerfile.]</dd>
-<dd><code>dabl.function_handler.<i>language</i></code> - The full name of
-	the Java class that handles function calls in the specified language.</dd>
 </dl>
 
 These values can also be set in a <code>.dabl.properties</code> file in the current
@@ -157,6 +155,25 @@ self-contained) jar. At present,
 you need to add these to the classpath when running DABL. For the required
 third party jars, see the variable `third_party_cp` in
 [`makefile`](makefile).
+
+# Setting Container (Runtime) Properties
+
+DABL executes tasks in containers. Task execution often involves loading
+resources. You can control resource loading via settings in a `.dabl.container.properties`
+file. It may have the following settings:
+
+<dl>
+<dd><code>dabl.function_handler.<i>language</i></code> - The full name of
+	the Java class that handles function calls in the specified language.
+	(This setting is passed to the container runtime, since that is when
+	task functions are loaded.)</dd>
+</dl>
+
+It may have additional settings that are required by the FunctionHandlers that
+load classes in the container. See [Function Call Statement](https://github.com/ScaledMarkets/dabl/blob/master/langref/func_call_stmt.md).
+
+The `dabl.container.properties` file may be in any of the places that the
+`.dabl.properties` file may be.
 
 # Embedding the Compiler In an Application
 

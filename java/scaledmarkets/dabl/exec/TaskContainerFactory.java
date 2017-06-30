@@ -2,6 +2,7 @@ package scaledmarkets.dabl.exec;
 
 import java.util.Set;
 import java.util.List;
+import java.util.Map;
 import java.io.File;
 
 public abstract class TaskContainerFactory {
@@ -11,7 +12,8 @@ public abstract class TaskContainerFactory {
 	 * that enables one to control the container. Inputs and/or outputs
 	 * may be null, and may overlap.
 	 */
-	public abstract TaskContainer createTaskContainer(Task task, File workspace) throws Exception;
+	public abstract TaskContainer createTaskContainer(Task task, File workspace,
+		Map<String, String> containerProperties) throws Exception;
 	
 	/**
 	 * Callback: notify this factory that the underlying container was destroyed,

@@ -129,7 +129,8 @@ public class DefaultExecutor implements Executor {
 				
 				// Create a container.
 				TaskContainer taskContainer =
-					this.taskContainerFactory.createTaskContainer(task, workspace);
+					this.taskContainerFactory.createTaskContainer(
+						task, workspace, Utilities.getContainerProperties());
 				
 				// Set a timer to interrupt the task after the timeout period.
 				Timer timer = null;

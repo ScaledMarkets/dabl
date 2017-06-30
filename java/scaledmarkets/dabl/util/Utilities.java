@@ -14,10 +14,12 @@ import java.io.OutputStream;
 import java.io.FileNotFoundException;
 import java.util.Properties;
 import java.util.List;
+import java.util.Map;
 
 public class Utilities {
 	
 	public static String PropertyFileName = ".dabl.properties";
+	public static String ContainerPropertyFileName = ".dabl.container.properties";
 	
 	public static String createNameFromPath(List<TId> path) {
 		String name = "";
@@ -182,6 +184,14 @@ public class Utilities {
 		
 		// Setting was not found.
 		return null;
+	}
+	
+	/**
+	 * Assemble a map of the container runtime properties. They may be specified in all
+	 * of the same manner as DABL properties, with the same precedence rules.
+	 */
+	public static Map<String, String> getContainerProperties() {
+		....
 	}
 	
 	/**

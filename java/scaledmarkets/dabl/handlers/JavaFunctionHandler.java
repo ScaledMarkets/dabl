@@ -21,10 +21,11 @@ public class JavaFunctionHandler implements FunctionHandler {
 		Utilities.assertThat(functionSimpleName.size() > 0, "No function name found");
 		
 		// Load the class.
-		Class functionClass = Class.forName(functionClassName, boolean initialize, ClassLoader loader));
+		ClassLoader classLoader = ....
+		Class functionClass = Class.forName(functionClassName, true, classLoader));
 		
 		// Verify that the function exists in the class, and that it is static.
-		Method method = functionClass.getMethod(String name, Class<?>... parameterTypes);
+		Method method = functionClass.getMethod(....String name, ....Class<?>... parameterTypes);
 		
 		// Call the function on the class, passing the argument values.
 		Object result = method.invoke(Object obj, Object... args);
