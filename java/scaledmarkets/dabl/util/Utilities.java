@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.util.Properties;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 public class Utilities {
 	
@@ -146,40 +147,24 @@ public class Utilities {
 		if (value != null) return value;
 		
 		// Check current directory for a properties file.
-		String dirstr = System.getProperty("user.dir");
-		if (dirstr == null) throw new RuntimeException("No current working directory");
-		File curdir = new File(dirstr);
-		if (! curdir.exists()) throw new RuntimeException("Current directory not found");
-		File curdirPropertyFile = new File(curdir, PropertyFileName);
-		if (curdirPropertyFile.exists()) {
-			Properties properties = new Properties();
-			properties.load(new FileReader(curdirPropertyFile));
-			value = properties.getProperty(name);
+		Properties curDirProperties = getCurDirProperties(PropertyFileName);
+		if (curDirProperties != null) {
+			value = curDirProperties.getProperty(name);
 			if ((value != null) && (! value.equals(""))) return value;
 		}
 		
 		// Check user's home directory for a properties file.
-		String homestr = System.getProperty("user.home");
-		if (homestr == null) throw new RuntimeException("No user home");
-		File home = new File(homestr);
-		if (! home.exists()) throw new RuntimeException("User home directory not found");
-		File homePropertyFile = new File(home, PropertyFileName);
-		if (homePropertyFile.exists()) {
-			Properties properties = new Properties();
-			properties.load(new FileReader(homePropertyFile));
-			value = properties.getProperty(name);
+		Properties homeProperties = getUserHomeProperties(PropertyFileName);
+		if (homeProperties != null) {
+			value = homeProperties.getProperty(name);
 			if ((value != null) && (! value.equals(""))) return value;
 		}
 		
 		// Check classpath for a properties file.
-		try {
-			Properties properties = new Properties();
-			InputStream is = Utilities.class.getResourceAsStream("/" + PropertyFileName);
-			properties.load(is);
-			value = properties.getProperty(name);
+		Properties classpathProperties = getClasspathProperties(PropertyFileName);
+		if (classpathProperties != null) {
+			value = classpathProperties.getProperty(name);
 			if ((value != null) && (! value.equals(""))) return value;
-		} catch (FileNotFoundException e) {
-		} catch (IOException e) {
 		}
 		
 		// Setting was not found.
@@ -191,7 +176,63 @@ public class Utilities {
 	 * of the same manner as DABL properties, with the same precedence rules.
 	 */
 	public static Map<String, String> getContainerProperties() {
-		....
+		
+		Map<String, String> properties = new HashMap<String, String>();
+		
+		Properties curDirProperties = getCurDirProperties(ContainerPropertyFileName);
+		if (curDirProperties != null) properties.putAll(curDirProperties);
+		
+		Properties homeProperties = getUserHomeProperties(ContainerPropertyFileName);
+		if (homeProperties != null) properties.putAll(homeProperties);
+		
+		Properties classpathProperties = getClasspathProperties(ContainerPropertyFileName);
+		if (classpathProperties != null) properties.putAll(classpathProperties);
+		
+		return properties;
+	}
+	
+	protected static Properties getCurDirPropertyFile(String propertyFileName) {
+		
+		String dirstr = System.getProperty("user.dir");
+		if (dirstr == null) throw new RuntimeException("No current working directory");
+		File curdir = new File(dirstr);
+		if (! curdir.exists()) throw new RuntimeException("Current directory not found");
+		File curdirPropertyFile = new File(curdir, PropertyFileName);
+		if (curdirPropertyFile.exists()) {
+			Properties properties = new Properties();
+			properties.load(new FileReader(curdirPropertyFile));
+			return properties;
+		}
+		return null;
+	}
+	
+	protected static Properties getUserHomePropertyFile(String propertyFileName) {
+		
+		String homestr = System.getProperty("user.home");
+		if (homestr == null) throw new RuntimeException("No user home");
+		File home = new File(homestr);
+		if (! home.exists()) throw new RuntimeException("User home directory not found");
+		File homePropertyFile = new File(home, PropertyFileName);
+		if (homePropertyFile.exists()) {
+			Properties properties = new Properties();
+			properties.load(new FileReader(homePropertyFile));
+			return properties;
+		}
+		return null;
+	}
+	
+	protected static Properties getClasspathPropertyFile(String propertyFileName) {
+		
+		try {
+			Properties properties = new Properties();
+			InputStream is = Utilities.class.getResourceAsStream("/" + PropertyFileName);
+			properties.load(is);
+			return properties;
+		} catch (FileNotFoundException e) {
+			return null;
+		} catch (IOException e) {
+			return null;
+		}
 	}
 	
 	/**

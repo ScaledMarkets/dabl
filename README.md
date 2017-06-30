@@ -173,7 +173,8 @@ It may have additional settings that are required by the FunctionHandlers that
 load classes in the container. See [Binding to a Function at Runtime](https://github.com/ScaledMarkets/dabl/blob/master/langref/func_call_stmt.md#binding-to-a-function-at-runtime).
 
 The `dabl.container.properties` file may be in any of the places that the
-`.dabl.properties` file may be.
+`.dabl.properties` file may be. These values may not be set via environment
+variable, however.
 
 # Embedding the Compiler In an Application
 
