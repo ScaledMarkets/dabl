@@ -15,7 +15,7 @@ The best way to get up and running is to,
 You must have Java 1.8 or later to use it. I will assume that you have
 placed it at `/MyTools`.
 
-2.a. (Optional) Create an alias to point to the DABL command:
+3. (Optional) Create an alias to point to the DABL command:
 ```
 alias dabl='java -jar /MyTools/dabl.jar'
 ```
