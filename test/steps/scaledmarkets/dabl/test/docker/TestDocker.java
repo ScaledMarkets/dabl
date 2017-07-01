@@ -62,7 +62,7 @@ public class TestDocker extends TestBase {
 	@When("^I make a create container request to docker$")
 	public void i_make_a_create_container_request_to_docker() throws Exception {
 		DockerContainer container = docker.createContainer("alpine", "MyContainer",
-			null, null, false);
+			null, null, false, null);
 		docker.destroyContainers("MyContainer", null);
 	}
 	
@@ -71,9 +71,9 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers$")
 	public void that_i_have_created_two_containers() throws Exception {
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
-			null, null, false);
+			null, null, false, null);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
-			null, null, false);
+			null, null, false, null);
 	}
 	
 	@When("^I request to start a container$")

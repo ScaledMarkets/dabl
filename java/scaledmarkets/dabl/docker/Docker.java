@@ -193,16 +193,18 @@ public class Docker {
 		JsonObjectBuilder netConfig = Json.createObjectBuilder();
 		
 		JsonArrayBuilder envVarBuilder = Json.createArrayBuilder();
-		for (Object key : envVariables.keySet()) {
-			
-			if (! (key instanceof String)) throw new Exception(
-				"Property key is not a String: " + key.toString());
-			Object value = envVariables.get(key);
-			if (! (value instanceof String)) throw new Exception(
-				"Property value is not a String: " + value.toString());
-			
-			envVarBuilder.add(Json.createObjectBuilder()
-				.add((String)key, (String)value));
+		if (envVariables != null) {
+			for (Object key : envVariables.keySet()) {
+				
+				if (! (key instanceof String)) throw new Exception(
+					"Property key is not a String: " + key.toString());
+				Object value = envVariables.get(key);
+				if (! (value instanceof String)) throw new Exception(
+					"Property value is not a String: " + value.toString());
+				
+				envVarBuilder.add(Json.createObjectBuilder()
+					.add((String)key, (String)value));
+			}
 		}
 	
 		JsonObject model = Json.createObjectBuilder()
