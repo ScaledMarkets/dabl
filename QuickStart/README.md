@@ -4,7 +4,7 @@ The best way to get up and running is to,
 
 * Download and install the DABL processor.
 * Create a trivial DABL file.
-* Build your trivial DABL file.
+* Run DABL against your trivial DABL file.
 
 ## Download and Install DABL
 
@@ -22,11 +22,12 @@ command line. (I will assume a Unix/Linux command line - you can translate it
 to the appropriate Windows commands if you are using Windows.)
 
 2. Define a simple DABL file, as follows. I will assume that it is called
-"sample.dabl".
+"simple.dabl".
 
 ```
 namespace simple
   task Compile  // define a task
+    when true
     bash """
       echo "#include <stdio>\nvoid main() { println("Hello world"); }" > a.c
       cc a.c
@@ -42,7 +43,7 @@ namespace simple
 
 2. Run DABL against your DABL file:
 ```
-java -jar /MyTools/dabl.jar sample.dabl
+java -jar /MyTools/dabl.jar simple.dabl
 ```
 
 DABL should report success.
