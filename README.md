@@ -12,7 +12,8 @@ and provides a robust container-based implementation—a "hermetic" build tool.
 
 # Quick Start
 
-Click [here](QuickStart).
+Click [here](QuickStart). (Under development - the DABL tool is not yet ready
+for a "quick start" - check back in a few months, when it comes out of alpha.
 
 # Business Motivation
 
