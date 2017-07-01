@@ -10,7 +10,7 @@ export maxerrs = 5
 export DABL_VERSION = 0.1
 export BUILD_TAG = 0
 export IMAGE_REGISTRY = registry.hub.docker.com
-export TASK_RUNTIME_IMAGE_NAME = ScaledMarkets/taskruntime
+export TASK_RUNTIME_IMAGE_NAME = scaledmarkets/taskruntime
 
 # Output directories.
 export build_dir = /Transient/dabl
