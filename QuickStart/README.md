@@ -29,7 +29,7 @@ namespace simple
   task Compile  // define a task
     when true
     bash """
-      echo "#include <stdio>\nvoid main() { println("Hello world"); }" > a.c
+      echo "#include <stdio.h>\nvoid main() { println("Hello world"); }" > a.c
       cc a.c
       ./a.out
     """
