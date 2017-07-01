@@ -46,4 +46,5 @@ namespace simple
 java -jar /MyTools/dabl.jar simple.dabl
 ```
 
-DABL should report success.
+DABL should report success, and you should see "Hello world" in the output, followed
+by "Done".
