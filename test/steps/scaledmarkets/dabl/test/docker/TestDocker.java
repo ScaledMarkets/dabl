@@ -91,9 +91,9 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers and both are running$")
 	public void that_i_have_created_two_containers_and_both_are_running() throws Exception {
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
-			null, null, false);
+			null, null, false, null);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
-			null, null, false);
+			null, null, false, null);
 		this.container1.start("");  // ....
 		this.container2.start("");  //....
 		assertThat(this.container1.isRunning(), "container1 is not running");
@@ -116,9 +116,9 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers and one is running$")
 	public void that_i_have_created_two_containers_and_one_is_running() throws Exception {
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
-			null, null, false);
+			null, null, false, null);
 		this.container2 = docker.createContainer("alpine", "MyContainer2",
-			null, null, false);
+			null, null, false, null);
 		this.container1.start(""); // ....
 		assertThat(this.container1.isRunning(), "container1 is not running");
 		assertThat(! this.container2.isRunning(), "container2 is running");
