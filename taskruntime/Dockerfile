@@ -1,4 +1,5 @@
 # Container for running a DABL task.
+# Requres the environment variable $jar_dir to be set.
 
 FROM registry.hub.docker.com/alpine
 # See https://hub.docker.com/_/alpine/
@@ -7,6 +8,6 @@ FROM registry.hub.docker.com/alpine
 # See https://github.com/anapsix/docker-alpine-java
 
 RUN mkdir /taskruntime
-ADD ["taskruntime.jar", "/taskruntime/"]
+ADD ["${jar_dir}/taskruntime.jar", "/taskruntime/"]
 WORKDIR /taskruntime/
 ENTRYPOINT ["java", "-jar", "taskruntime.jar"]

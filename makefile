@@ -60,7 +60,7 @@ export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(java
 	task_manifest task_jar image \
 	check compile_tests test runsonar javadoc clean_parser clean_task_parser info
 
-all: clean parser compile jar task_jar image compile_tests test
+all: clean parser compile jar task_jar task_runtime image compile_tests test
 
 # Create a Config.java file that contains the current application version.
 config:

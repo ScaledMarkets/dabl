@@ -1,13 +1,14 @@
 # Do not run this makefile alone. Can only be run from the main makefile.
 
 # Uses variables:
+#	DockerhubUserId, DockerhubPassword,
 #	main_class, PRODUCT_NAME, DABL_VERSION, ORG, task_main_class, BUILD_TAG,
-#	jar_dir, TASK_JAR_NAME, task_classfiles, JAR, task_build_dir, TASK_RUNTIME_IMAGE_NAME
+#	jar_dir, TASK_JAR_NAME, task_classfiles, JAR, task_build_dir, IMAGE_REGISTRY,
+#	TASK_RUNTIME_IMAGE_NAME
 
 # Intermediate artifacts:
 export task_classfiles := \
 	$(build_dir)/$(package)/task/*.class
-
 
 # Create the manifest file for the task JAR.
 task_manifest:
@@ -26,7 +27,9 @@ $(jar_dir)/$(TASK_JAR_NAME).jar: $(task_classfiles) task_manifest $(jar_dir)
 	$(JAR) cvfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest -C $(task_build_dir) scaledmarkets
 	rm Manifest
 
-# Build container image for task runtime.
+# Build and push container image for task runtime.
 image:
-	docker build --file Dockerfile --tag=$TASK_RUNTIME_IMAGE_NAME .
-	....push image to scaled markets image registry
+	docker build --file Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) .
+	docker login -u $(DockerhubUserId) -p $(DockerhubPassword) $(IMAGE_REGISTRY)
+	docker push $(TASK_RUNTIME_IMAGE_NAME)
+	docker logout $(IMAGE_REGISTRY)
