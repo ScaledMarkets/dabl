@@ -13,31 +13,31 @@ all: clean jar javadoc
 # Intermediate artifacts:
 export classfiles := \
 	$(client_build_dir)/$(package)/*.class \
-	$(client_build_dir)/$(package)/docker/*.class \
-	$(client_build_dir)/$(package)/exec/*.class \
-	$(client_build_dir)/$(package)/task/*.class \
-	$(client_build_dir)/$(package)/helper/*.class \
 	$(client_build_dir)/$(package)/analysis/*.class \
 	$(client_build_dir)/$(package)/analyzer/*.class \
-	$(client_build_dir)/$(package)/util/*.class \
+	$(client_build_dir)/$(package)/docker/*.class \
+	$(client_build_dir)/$(package)/exec/*.class \
+	$(client_build_dir)/$(package)/handlers/*.class \
+	$(client_build_dir)/$(package)/helper/*.class \
 	$(client_build_dir)/$(package)/lexer/*.class \
 	$(client_build_dir)/$(package)/node/*.class \
+	$(client_build_dir)/$(package)/parser/*.class \
 	$(client_build_dir)/$(package)/repos/*.class \
-	$(client_build_dir)/$(package)/handlers/*.class \
-	$(client_build_dir)/$(package)/parser/*.class
+	$(client_build_dir)/$(package)/task/*.class \
+	$(client_build_dir)/$(package)/util/*.class
 
 # 
 compile: 
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp):$(third_party_cp) -d $(client_build_dir) \
 		$(src_dir)/$(package)/*.java \
-		$(src_dir)/$(package)/docker/*.java \
 		$(src_dir)/$(package)/analyzer/*.java \
+		$(src_dir)/$(package)/docker/*.java \
 		$(src_dir)/$(package)/exec/*.java \
-		$(src_dir)/$(package)/task/*.java \
 		$(src_dir)/$(package)/handlers/*.java \
-		$(src_dir)/$(package)/util/*.java \
+		$(src_dir)/$(package)/helper/*.java \
 		$(src_dir)/$(package)/repos/*.java \
-		$(src_dir)/$(package)/helper/*.java
+		$(src_dir)/$(package)/task/*.java \
+		$(src_dir)/$(package)/util/*.java
 	cp $(CurDir)/.dabl.properties $(client_build_dir)
 
 clean:

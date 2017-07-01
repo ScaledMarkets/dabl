@@ -8,7 +8,19 @@
 
 # Intermediate artifacts:
 export task_classfiles := \
-	$(build_dir)/$(package)/task/*.class
+	$(client_build_dir)/$(package)/*.class \
+	$(client_build_dir)/$(package)/analysis/*.class \
+	$(client_build_dir)/$(package)/analyzer/*.class \
+	$(client_build_dir)/$(package)/docker/*.class \
+	$(client_build_dir)/$(package)/exec/*.class \
+	$(client_build_dir)/$(package)/handlers/*.class \
+	$(client_build_dir)/$(package)/helper/*.class \
+	$(client_build_dir)/$(package)/lexer/*.class \
+	$(client_build_dir)/$(package)/node/*.class \
+	$(client_build_dir)/$(package)/parser/*.class \
+	$(client_build_dir)/$(package)/repos/*.class \
+	$(client_build_dir)/$(package)/task/*.class \
+	$(client_build_dir)/$(package)/util/*.class
 
 # Create the manifest file for the task JAR.
 task_manifest:
