@@ -10,6 +10,10 @@ DABL stands for "Dependent Artifact Build Language". It is a language for defini
 software dependencies. This project defines the [language](langref/README.md),
 and provides a robust container-based implementation—a "hermetic" build tool.
 
+# Quick Start
+
+Click [here](QuickStart).
+
 # Business Motivation
 
 Organizations seek greater flexibility by embracing “DevOps” methods, so that
