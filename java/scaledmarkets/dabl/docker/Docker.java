@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.io.StringReader;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Properties;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
@@ -142,12 +143,13 @@ public class Docker {
 	 * 
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
-	public DockerContainer createContainer2(String imageIdOrName, String containerName,
-		String hostPathToMap, String containerPathToMap, boolean enableNetworking)
+	public DockerContainer createContainer(String imageIdOrName, String containerName,
+		String hostPathToMap, String containerPathToMap, boolean enableNetworking,
+		Properties envVariables)
 	throws Exception {
 		
 		return createContainer(imageIdOrName, containerName, new String[] {hostPathToMap},
-			new String[] {containerPathToMap}, enableNetworking);
+			new String[] {containerPathToMap}, enableNetworking, envVariables);
 	}
 	
 	/**
@@ -155,7 +157,8 @@ public class Docker {
 	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
 	 */
 	public DockerContainer createContainer(String imageIdOrName, String containerName,
-		String[] hostPathsToMap, String[] containerPathsToMap, boolean enableNetworking)
+		String[] hostPathsToMap, String[] containerPathsToMap, boolean enableNetworking,
+		Properties envVariables)
 	throws Exception {
 		
 		if ((hostPathsToMap == null) || (containerPathsToMap == null))
@@ -188,6 +191,19 @@ public class Docker {
 			.add("NetworkMode", "bridge");
 		
 		JsonObjectBuilder netConfig = Json.createObjectBuilder();
+		
+		JsonArrayBuilder envVarBuilder = Json.createArrayBuilder();
+		for (Object key : envVariables.keySet()) {
+			
+			if (! (key instanceof String)) throw new Exception(
+				"Property key is not a String: " + key.toString());
+			Object value = envVariables.get(key);
+			if (! (value instanceof String)) throw new Exception(
+				"Property value is not a String: " + value.toString());
+			
+			envVarBuilder.add(Json.createObjectBuilder()
+				.add((String)key, (String)value));
+		}
 	
 		JsonObject model = Json.createObjectBuilder()
 			.add("AttachStdin", false)
@@ -196,7 +212,7 @@ public class Docker {
 			.add("Tty", false)
 			.add("OpenStdin", false)
 			.add("StdinOnce", false)
-			.add("Env", Json.createArrayBuilder())
+			.add("Env", envVarBuilder)
 			.add("Cmd", Json.createArrayBuilder())
 			.add("Entrypoint", "")
 			.add("Image", imageIdOrName)

@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.docker.*;
 import scaledmarkets.dabl.util.Utilities;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.io.File;
@@ -23,19 +24,17 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	 * that enables one to control the container.
 	 */
 	public TaskContainer createTaskContainer(Task task, File workspace,
-		Map<String, String> containerProperties) throws Exception {
+		Properties containerProperties) throws Exception {
 		
-		....Set container properties
-	
 		String dockerImageName = Utilities.getSetting("dabl.task_container_image_name");
 		if ((dockerImageName == null) || dockerImageName.equals("")) throw new Exception(
 			"Unable to identify container image to use");
 		
 		// Create a container for performing a task. (Do not start the container.)
 		// The container maps the temp directory.
-		DockerContainer dockerContainer = this.docker.createContainer2(
+		DockerContainer dockerContainer = this.docker.createContainer(
 			dockerImageName, task.getName(), workspace.getCanonicalPath(),
-			workspace.getCanonicalPath(), task.isOpen()); 
+			workspace.getCanonicalPath(), task.isOpen(), containerProperties); 
 		
 		// Return an object that can be used to control the container.
 		TaskContainer taskContainer;

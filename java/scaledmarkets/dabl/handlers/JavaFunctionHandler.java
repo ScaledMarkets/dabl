@@ -1,8 +1,9 @@
 package scaledmarkets.dabl.handlers;
 
-import scaledmarkets.task.FunctionHandler;
-import scaledmarkets.util.Utilities;
+import scaledmarkets.dabl.task.FunctionHandler;
+import scaledmarkets.dabl.util.Utilities;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * For calling a Java function from a DABL script.
@@ -10,25 +11,39 @@ import java.lang.reflect.Method;
 public class JavaFunctionHandler implements FunctionHandler {
 	
 	public void callFunction(String funcNativeName, Object[] args,
-		Object[] targetVariableRef) throws Exception {
+		Object[] targetVariableRef // an array of size 1
+		) throws Exception {
 		
 		// Parse the parts of the function name.
 		int pos = funcNativeName.lastIndexOf(".");
 		Utilities.assertThat(pos > 0, "Function name does not appear to contain its class name");
 		String functionClassName = funcNativeName.substring(0, pos);
-		Utilities.assertThat(functionClassName.size() > 0, "No function class name found");
+		Utilities.assertThat(functionClassName.length() > 0, "No function class name found");
 		String functionSimpleName = funcNativeName.substring(pos+1);
-		Utilities.assertThat(functionSimpleName.size() > 0, "No function name found");
+		Utilities.assertThat(functionSimpleName.length() > 0, "No function name found");
 		
-		// Load the class.
-		ClassLoader classLoader = ....
-		Class functionClass = Class.forName(functionClassName, true, classLoader));
+		// Load the class. Use the current class loader. Thus, the function class
+		// must be in the container TaskExecutor's classpath. This is the case
+		// for all built-in Java functions.
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		Class functionClass = Class.forName(functionClassName, true, classLoader);
 		
-		// Verify that the function exists in the class, and that it is static.
-		Method method = functionClass.getMethod(....String name, ....Class<?>... parameterTypes);
+		// Construct an array of Java types (classes), to match the argument types.
+		Class[] argumentTypes = new Class[args.length];
+		int i = 0;
+		for (Object arg : args) {
+			argumentTypes[i++] = arg.getClass();
+		}
+		
+		// Verify that the function exists in the class.
+		Method method = functionClass.getMethod(functionSimpleName, argumentTypes);
+		
+		// Verify that the method is a static method.
+		Utilities.assertThat((method.getModifiers() & Modifier.STATIC) != 0,
+			"Method " + funcNativeName + " is not static");
 		
 		// Call the function on the class, passing the argument values.
-		Object result = method.invoke(Object obj, Object... args);
+		Object result = method.invoke(null, args);
 		
 		// Place the return result into the target variable.
 		if (Void.class.isAssignableFrom(method.getReturnType())) {

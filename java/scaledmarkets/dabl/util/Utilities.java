@@ -140,7 +140,7 @@ public class Utilities {
 	 * and then in the user's home directory. If that fails, look for the properties
 	 * file in the classpath. If that fails, return null.
 	 */
-	public static String getSetting(String name) throws IOException {
+	public static String getSetting(String name) throws Exception {
 		
 		// Check environment.
 		String value = System.getenv(name);
@@ -175,23 +175,27 @@ public class Utilities {
 	 * Assemble a map of the container runtime properties. They may be specified in all
 	 * of the same manner as DABL properties, with the same precedence rules.
 	 */
-	public static Map<String, String> getContainerProperties() {
+	public static Properties getContainerProperties() throws Exception {
 		
-		Map<String, String> properties = new HashMap<String, String>();
+		Properties properties = new Properties();
 		
-		Properties curDirProperties = getCurDirProperties(ContainerPropertyFileName);
-		if (curDirProperties != null) properties.putAll(curDirProperties);
+		// Load settings from the classpath first - these have the lowest precedence.
+		Properties classpathProperties = getClasspathProperties(ContainerPropertyFileName);
+		if (classpathProperties != null) properties.putAll(classpathProperties);
 		
+		// Next load settings from the user home directory.
 		Properties homeProperties = getUserHomeProperties(ContainerPropertyFileName);
 		if (homeProperties != null) properties.putAll(homeProperties);
 		
-		Properties classpathProperties = getClasspathProperties(ContainerPropertyFileName);
-		if (classpathProperties != null) properties.putAll(classpathProperties);
+		// Finally, load settings from the current directory - these have the
+		// highest precedence.
+		Properties curDirProperties = getCurDirProperties(ContainerPropertyFileName);
+		if (curDirProperties != null) properties.putAll(curDirProperties);
 		
 		return properties;
 	}
 	
-	protected static Properties getCurDirPropertyFile(String propertyFileName) {
+	protected static Properties getCurDirProperties(String propertyFileName) throws Exception {
 		
 		String dirstr = System.getProperty("user.dir");
 		if (dirstr == null) throw new RuntimeException("No current working directory");
@@ -206,7 +210,7 @@ public class Utilities {
 		return null;
 	}
 	
-	protected static Properties getUserHomePropertyFile(String propertyFileName) {
+	protected static Properties getUserHomeProperties(String propertyFileName) throws Exception {
 		
 		String homestr = System.getProperty("user.home");
 		if (homestr == null) throw new RuntimeException("No user home");
@@ -221,7 +225,7 @@ public class Utilities {
 		return null;
 	}
 	
-	protected static Properties getClasspathPropertyFile(String propertyFileName) {
+	protected static Properties getClasspathProperties(String propertyFileName) {
 		
 		try {
 			Properties properties = new Properties();
