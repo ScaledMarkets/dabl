@@ -15,6 +15,11 @@ The best way to get up and running is to,
 You must have Java 1.8 or later to use it. I will assume that you have
 placed it at `/MyTools`.
 
+2.a. (Optional) Create an alias to point to the DABL command:
+```
+alias dabl='java -jar /MyTools/dabl.jar'
+```
+
 ## Create a Trivial DABL File
 
 1. Create a project directory somewhere, and go to that directory from a
@@ -29,7 +34,8 @@ namespace simple
   task Compile  // define a task
     when true
     bash """
-      echo "#include <stdio.h>\nvoid main() { println("Hello world"); }" > a.c
+      echo "#include <stdio.h>" > a.c
+      echo "void main() { println("Hello world"); }" >> a.c
       cc a.c
       ./a.out
     """
@@ -43,7 +49,7 @@ namespace simple
 
 2. Run DABL against your DABL file:
 ```
-java -jar /MyTools/dabl.jar simple.dabl
+dabl simple.dabl
 ```
 
 DABL should report success, and you should see "Hello world" in the output, followed
