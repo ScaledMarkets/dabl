@@ -32,7 +32,7 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 		
 		// Create a container for performing a task. (Do not start the container.)
 		// The container maps the temp directory.
-		DockerContainer dockerContainer = this.docker.createContainer(
+		DockerContainer dockerContainer = this.docker.createContainer2(
 			dockerImageName, task.getName(), workspace.getCanonicalPath(),
 			workspace.getCanonicalPath(), task.isOpen(), containerProperties); 
 		
