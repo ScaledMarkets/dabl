@@ -23,7 +23,6 @@ export classfiles := \
 	$(client_build_dir)/$(package)/node/*.class \
 	$(client_build_dir)/$(package)/parser/*.class \
 	$(client_build_dir)/$(package)/repos/*.class \
-	$(client_build_dir)/$(package)/task/*.class \
 	$(client_build_dir)/$(package)/util/*.class
 
 # 
