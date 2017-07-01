@@ -39,7 +39,7 @@ namespace simple
 
 ## Build Your DABL File
 
-1. Start docker.
+1. Start docker. (See [here](https://www.docker.com/community-edition) to get Docker.)
 
 2. Run DABL against your DABL file:
 ```
