@@ -94,8 +94,9 @@ For robust infrastructure code, a better model than current practice is needed, 
 
 # What's In This Project
 
-* The language definition (formal grammar file [dabl.sablecc](dabl.sablecc), and
-[Language Reference](langref/README.md)).
+* The language definition (formal grammar and
+    [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) definition file
+    [dabl.sablecc](dabl.sablecc), and [Language Reference](langref/README.md)).
 * A DABL compiler, written in Java using version 3.2 of the
 	[SableCC compiler generation tool](http://www.sablecc.org/).
 	The compiler is a Java package, which has a main method—and so it
