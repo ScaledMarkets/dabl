@@ -2,7 +2,7 @@
 
 # Project Status
 
-Under active development.
+Under active development. See the [DABL Roadmap](Roadmap).
 
 # What Is DABL?
 
@@ -241,4 +241,3 @@ make DABL build itself - i.e., we will create a DABL build file for the `dabl` p
 
 Binaries of the compiler JAR file can be found [here](https://github.com/Scaled-Markets/dabl/releases).
 Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
-
