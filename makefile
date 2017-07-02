@@ -147,10 +147,10 @@ test_docker:
 test_unit:
 	$(test) --tags @unit
 
-test_patternsets:
+test_psets:
 	$(test) --tags @patternsets
 
-test_inputsandoutputs:
+test_iao:
 	$(test) --tags @inputsandoutputs
 
 test_pushlocalrepo:
