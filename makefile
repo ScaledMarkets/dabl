@@ -52,6 +52,13 @@ export compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
 export test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
 export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
 
+# Aliases:
+test := java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar
+test := $(test) -Djava.library.path=$(junixsocketnative)
+test := $(test) cucumber.api.cli.Main --glue scaledmarkets.dabl.test
+test := $(test) $(test_src_dir)/features
+
+
 ################################################################################
 # Tasks
 
@@ -108,7 +115,8 @@ task_runtime: $(jar_dir)
 
 # ------------------------------------------------------------------------------
 # Tests
-
+#	Gherkin tags: done, smoke, notdone, docker, exec, unit, pushlocalrepo, task,
+#	patternsets, inputsandoutputs
 
 # Run parser to scan a sample input file. This is for checking that the parser
 # can recognize the language.
@@ -128,21 +136,31 @@ compile_tests: $(test_build_dir)
 # Run Cucumber tests.
 # Note: We could export LD_LIBRARY_PATH instead of passing it in the java command.
 test:
-	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar \
-		-Djava.library.path=$(junixsocketnative) \
-		cucumber.api.cli.Main \
-		--glue scaledmarkets.dabl.test \
-		$(test_src_dir)/features \
-		--tags @task
-		#--tags @inputsandoutputs
-		#--tags @patternsets,@pushlocalrepo
+	$(test) --tags @done
+
+test_smoke:
+	$(test) --tags @smoke
+
+test_docker:
+	$(test) --tags @docker
+
+test_unit:
+	$(test) --tags @unit
+
+test_patternsets:
+	$(test) --tags @patternsets
+
+test_inputsandoutputs:
+	$(test) --tags @inputsandoutputs
+
+test_pushlocalrepo:
+	$(test) --tags @pushlocalrepo
 
 test_exec:
-	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
-		cucumber.api.cli.Main \
-		--glue scaledmarkets.dabl.test \
-		--tags @patternsets,@pushlocalrepo \
-		$(test_src_dir)/features
+	$(test) --tags @exec
+
+test_task:
+	$(test) --tags @task
 
 test_check:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
