@@ -82,7 +82,9 @@ For robust infrastructure code, a better model than current practice is needed, 
 	often forget language nuances. Again, *ambiguity is the enemy of reliability*.
 * **Static analysis**: The build language **lends itself well to static analysis**, for—say—security analysis.
 	(For that to be possible, it is essential that the language is *not merely an
-	extension of a general purpose language*.)
+	extension of a general purpose language*, since a general purpose language would
+	allow one to escape from the design patterns that are defined by the build
+	language, making static analysis of intent much more difficult.)
 * **Backward compatible**: The maintainers of the build language have a high regard for **backward
 	compatibility**, so that language changes do not contribute to the instability
 	of build systems. We (Scaled Markets) plan to use a deprecation approach when
