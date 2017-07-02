@@ -2,7 +2,7 @@
 
 In progress now: Implement version 0.4x beta release.
 
-Complete guides for adding adapters for additional repository types.
+Complete guide for adding adapters for additional repository types.
 
 Add behavioral tests to verify that all semantic rules are obeyed.
 

@@ -53,11 +53,11 @@ There is no reason why it needs to be this way: The current state of affairs ste
 the “guru” culture of system administration, and the still present 1980s era tradition
 that build languages are quick-to-modify scripts that are maintained by sysadmin
 “gurus” who are above accountability for the maintainability of their scripts.
-Yet, infrastructure code definitely warrants high reliability and maintainability,
+Yet, *infrastructure code definitely warrants high reliability and maintainability,*
 and—increasingly—build pipelines are part of infrastructure. Thus, the time for
 reliable, composable, and maintainable build languages has come.
 
-Treating pipeline definition as a first-class design activity, supported by a
+Treating *pipeline definition as a first-class design activity,* supported by a
 *true language*, is consistent with the DevOps philosophy of treating the build
 and deployment pipeline as a system to be designed, coded, and maintained. We
 will note that a "true language" implies a normative language spec; and a "true
