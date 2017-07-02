@@ -166,7 +166,7 @@ you need to add these to the classpath when running DABL. For the required
 third party jars, see the variable `third_party_cp` in
 [`makefile`](makefile).
 
-# Setting Container (Runtime) Properties
+# Setting Container (Task Runtime) Properties
 
 DABL executes tasks in containers. Task execution often involves loading
 resources. You can control resource loading via settings in a `.dabl.container.properties`
