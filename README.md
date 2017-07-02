@@ -97,21 +97,21 @@ For robust infrastructure code, a better model than current practice is needed, 
 * The language definition (formal grammar and
     [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) definition file
     [dabl.sablecc](dabl.sablecc), and [Language Reference](langref/README.md)).
-* A DABL compiler, written in Java using version 3.2 of the
+* A full featured reference implementation of DABL, written in Java using version 3.2 of the
 	[SableCC compiler generation tool](http://www.sablecc.org/).
-	The compiler is a Java package, which has a main method—and so it
+	The implementation binary is a Java package, which has a main method—and so it
 	can be called form a command line—but it can also
-	be called via its API, so that the compiler can be embedded in other
+	be called via its API, so that the component can be embedded in other
 	Java applications.
 	(Java API docs can be found [here](https://scaledmarkets.github.io/dabl/).)
 * A sample DABL file, [example.dabl](example.dabl).
 
-# Installing the DABL Compiler
+# Installing the DABL Reference Implementation
 
 Installation consists of,
 
 * Making sure that the docker daemon is running on the host that will be executing
-	the compiler.
+	the DABL tool.
 * Pulling the required base container image so that it is resident in the host's
 	local docker image repository. [TBD: put the image in dockerhub]
 * Placing the DABL jar file (`dabl.jar`) on the host system.
@@ -121,7 +121,7 @@ Installation consists of,
 	it to the LD_LIBRARY_PATH environment variable. We currently provide compiled
 	binaries for Mac and Linux. [TBD: provide instructions.]
 
-# Using the DABL Compiler
+# Using the DABL Reference Implementation
 
 Command line usage is as follows:
 
@@ -186,13 +186,13 @@ The `dabl.container.properties` file may be in any of the places that the
 `.dabl.properties` file may be. These values may not be set via environment
 variable, however.
 
-# Embedding the Compiler In an Application
+# Embedding the DABL Binary In an Application
 
 The DABL compiler is designed as a self-contained embeddable component that can be
 embedded in Java applications. For a guide on how to embed the DABL compiler,
 see [Embedding the Compiler In an Application](embedding/README.md).
 
-# Compiler Design
+# Reference Implementation Design
 
 See [java/scaledmarkets/dabl](java/scaledmarkets/dabl).
 
@@ -244,5 +244,6 @@ make DABL build itself - i.e., we will create a DABL build file for the `dabl` p
 
 # Binary Download
 
-Binaries of the compiler JAR file can be found [here](https://github.com/Scaled-Markets/dabl/releases).
+Binaries of the reference implementtaion JAR file can be found
+[here](https://github.com/Scaled-Markets/dabl/releases).
 Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
