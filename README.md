@@ -106,7 +106,7 @@ For robust infrastructure code, a better model than current practice is needed, 
 	(Java API docs can be found [here](https://scaledmarkets.github.io/dabl/).)
 * A sample DABL file, [example.dabl](example.dabl).
 
-# Installing the DABL Reference Implementation
+# Installing the Reference Implementation
 
 Installation consists of,
 
@@ -121,11 +121,11 @@ Installation consists of,
 	it to the LD_LIBRARY_PATH environment variable. We currently provide compiled
 	binaries for Mac and Linux. [TBD: provide instructions.]
 
-# Using the DABL Reference Implementation
+# Using the Reference Implementation
 
 Command line usage is as follows:
 
-<code>java -jar dabl.jar</code> [options] <i>filename</i>
+<code>java -jar dabl.jar</code> [ options ] <i>filename</i>
 
 where options can be
 
