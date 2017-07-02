@@ -6,6 +6,8 @@ Complete guide for adding adapters for additional repository types.
 
 Add behavioral tests to verify that all semantic rules are obeyed.
 
+Write a user guide for the language and tool.
+
 Version 0.5 release.
 
 Submit language to standards body or establish a crowd-sourced standardization process.
