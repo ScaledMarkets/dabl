@@ -77,7 +77,9 @@ For robust infrastructure code, a better model than current practice is needed, 
 	and outputs** and **no side effects**. Google refers to this as being *hermetic*.
 * **Unambiguous**: The build language is **concise but not cryptic**, and encourages the definition of
 	**builds that are easy to read and understand**, and that are **unambiguous**.
-	Again, *ambiguity is the enemy of reliability*.
+	Cryptic syntaxes and semantic subtleties are not appropriate for a build language,
+	which is code that not touched on a daily basis and so those who maintain that code
+	often forget language nuances. Again, *ambiguity is the enemy of reliability*.
 * **Static analysis**: The build language **lends itself well to static analysis**, for—say—security analysis.
 	(For that to be possible, it is essential that the language is *not merely an
 	extension of a general purpose language*.)
