@@ -21,7 +21,7 @@ The second form specifies an output that is declared elsewhere inside of a task,
 or is declared in an imported namespace. The *path* is thus a qualified name, such as,
 
 ```
-my_task.my_task_output
+my_other_task.my_other_task_output
 ```
 
 or
