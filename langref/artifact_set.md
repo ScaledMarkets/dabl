@@ -18,8 +18,8 @@ An artifact set has the following syntax:
 The *repository-Id* is the Id of a repository that is defined by
 a [repo declaration](repo_decl.md).
 
-The *project-Id* is the name of a project (e.g., a github "repo") within the
-repository.
+The *project-Id* is a string value, and is the name of a project (e.g., a github "repo")
+within the repository.
 
 *prefer-stmts* serve to specify that if the repository supports DABL's concept of
 artifact versions, that the specified version criteria should be applied.

@@ -9,8 +9,7 @@
 </dl>
 or
 <dl>
-<dd><code>inputs </code> <i>task-Id . task-output-Id</i> [ 
-	<a href="files_stmt.md"><i>files-stmt...</i></a> ]</dd>
+<dd><code>inputs </code> <i>path</i></dd>
 </dl>
 
 The first form is just like a <code><a href="files_decl.md">files</a></code>
@@ -18,7 +17,18 @@ declaration, except that the artifacts that are declared are treated as inputs
 to the task. If an Id is specified, it is visible outside the task, as if it had been declared
 in a <code>files</code> declaration.
 
-The second form specifies an output that is declared elsewhere inside of a task.
+The second form specifies an output that is declared elsewhere inside of a task,
+or is declared in an imported namespace. The *path* is thus a qualified name, such as,
+
+```
+my_task.my_task_output
+```
+
+or
+
+```
+my_other_namespace.other_namespace_files
+```
 
 When a local repository is specifed by a task input, the
 repository files can be accessed from task [procedural statements](procedural_stmt.md)
