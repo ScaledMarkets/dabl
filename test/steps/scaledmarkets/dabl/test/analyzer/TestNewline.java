@@ -28,7 +28,7 @@ public class TestNewline extends TestBase {
 "  abc = \"def\" true"
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 	}
 	

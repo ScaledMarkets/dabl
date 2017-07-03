@@ -29,7 +29,7 @@ public class TestStringExpression extends TestBase {
 "  userid \"johnsmith\" password \"$\" ^ \"MyPassword\""
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 	}
 	
@@ -52,7 +52,7 @@ public class TestStringExpression extends TestBase {
 "    Password\""
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 	}
 	
@@ -74,7 +74,7 @@ public class TestStringExpression extends TestBase {
 "  userid \"johnsmith\" password \"\"\"\"MyPassword\"\"\"\""
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 	}
 	

@@ -42,7 +42,7 @@ public class TestTask extends TestBase {
 "  abc = ff true"
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, false, reader);
 		createHelper(dabl.process());
 		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}
@@ -79,7 +79,7 @@ public class TestTask extends TestBase {
 "  inputs of \"project2\" in my_git \"x\""
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, false, reader);
 		createHelper(dabl.process());
 		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 		
@@ -105,7 +105,7 @@ public class TestTask extends TestBase {
 "  bash echo hello\n"
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, false, reader);
 		createHelper(dabl.process());
 		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}

@@ -38,7 +38,7 @@ public class TestForwardReferences extends TestBase {
 	@Then("^the IdRefAnnotation is correct$")
 	public void the_IdRefAnnotation_is_correct() throws Throwable {
 		
-		Dabl dabl = new Dabl(false, true, this.reader);
+		Dabl dabl = new Dabl(false, true, true, this.reader);
 		createHelper(dabl.process());
 		
 		// Find the Id that references my_repo from the files declaration.

@@ -26,7 +26,7 @@ public class InMemoryImportHandler implements ImportHandler {
 		if (nameScope == null) try {
 			
 			Reader reader = new StringReader(namespaces.get(namespacePath));
-			Dabl dabl = new Dabl(false, true, reader);
+			Dabl dabl = new Dabl(false, true, true, reader);
 			
 			System.out.println("Processing " + namespacePath + "..."); // debug
 			nameScope = dabl.process(new DablAnalyzerFactory(state) {

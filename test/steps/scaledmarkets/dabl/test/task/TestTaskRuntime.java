@@ -49,7 +49,7 @@ public class TestTaskRuntime extends TestBase {
 "  abc = ff true"
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		this.state = dabl.process();
 		createHelper(this.state);
 	}

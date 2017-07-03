@@ -37,7 +37,7 @@ public class TestArtifacts extends TestBase {
 		// First try it with a 'correct' version, to make sure our 'correct'
 		// version does not have an error.
 		Reader r = new StringReader(correct);
-		Dabl dabl = new Dabl(false, true, r);
+		Dabl dabl = new Dabl(false, true, true, r);
 		createHelper(dabl.process());
 		
 		// Now try with the 'incorrect' version - this should generate an error
@@ -48,7 +48,7 @@ public class TestArtifacts extends TestBase {
 	@Then("^a SymbolEntryPresent error is generated when we process it$")
 	public void a_SymbolEntryPresent_error_is_generated_when_we_process_it() throws Throwable {
 
-		Dabl dabl = new Dabl(false, true, this.reader);
+		Dabl dabl = new Dabl(false, true, true, this.reader);
 		try {
 			createHelper(dabl.process());
 		} catch (Exception ex) {
@@ -73,7 +73,7 @@ public class TestArtifacts extends TestBase {
 	@Then("^an error is generated when we process it$")
 	public void an_error_is_generated_when_we_process_it() throws Throwable {
 
-		Dabl dabl = new Dabl(false, true, this.reader);
+		Dabl dabl = new Dabl(false, true, true, this.reader);
 		try {
 			createHelper(dabl.process());
 		} catch (Exception ex) {

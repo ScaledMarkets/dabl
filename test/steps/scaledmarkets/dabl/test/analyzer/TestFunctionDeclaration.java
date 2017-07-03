@@ -28,7 +28,7 @@ public class TestFunctionDeclaration extends TestBase {
 "    returns string"
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 		
 	}

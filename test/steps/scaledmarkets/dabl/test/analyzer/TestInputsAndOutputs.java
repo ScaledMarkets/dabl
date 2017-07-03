@@ -29,7 +29,7 @@ public class TestInputsAndOutputs extends TestBase {
 "    outputs MyOutputs of \"myrepo\" in MyRepository include \"classes/*.class\""
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 		
 	}

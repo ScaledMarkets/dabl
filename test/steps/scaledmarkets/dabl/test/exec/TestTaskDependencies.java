@@ -39,7 +39,7 @@ public class TestTaskDependencies extends TestBase {
 "  outputs of \"repo2\" in my_git include \"y\""
 			);
 		
-		createHelper(Main.compile(false, true, false, true, reader));
+		createHelper(Main.compile(false, true, false, true, true, reader));
 		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}
 	

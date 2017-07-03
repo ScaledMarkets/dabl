@@ -44,7 +44,7 @@ public class TestHelpers extends TestBase {
 "  repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
 		);
 
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		AnalyzerFactory analyzerFactory = new DablAnalyzerFactory() {
 			/** Override to provide a different import handler. */
 			public ImportHandler createImportHandler() {

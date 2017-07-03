@@ -36,7 +36,7 @@ public class TestImport extends TestBase {
 "  public repo my_maven type \"maven\" path \"mymaven.somewhere.com\""
 		);
 
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		
 		dabl.process(new DablAnalyzerFactory() {
 			public ImportHandler createImportHandler() {

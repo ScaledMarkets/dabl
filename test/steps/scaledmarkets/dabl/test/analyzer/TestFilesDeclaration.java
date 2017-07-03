@@ -31,7 +31,7 @@ public class TestFilesDeclaration extends TestBase {
 "    include \"*.java\""
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 	}
 	

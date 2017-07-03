@@ -38,7 +38,7 @@ public class TestNumberFormats extends TestBase {
 "    when 1 < 2"
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 	}
 	

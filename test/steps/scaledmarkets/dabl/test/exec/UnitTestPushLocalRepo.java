@@ -304,7 +304,7 @@ public class UnitTestPushLocalRepo extends TestBase {
 	
 	protected void createDabl(String fileset) throws Exception {
 		Reader reader = new StringReader(base_dabl + fileset);
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 		assertThat(getHelper().getState().getGlobalScope() != null, "global scope is null");
 	}
