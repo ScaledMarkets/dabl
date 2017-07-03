@@ -116,6 +116,7 @@ public class Main
 			"\t\t\t-t or --trace (print stack trace instead of just error msg)\n" +
 			"\t\t\t-a or --analysis (analysis only - do not perform any actions)\n" +
 			"\t\t\t-s or --simulate (simulate only - print tasks instead of executing them)\n" +
+			"\t\t\t-o or --omitstd (do not implicitly import package dabl.standard)\n" +
 			"\t\t\t-h or --help"
 			);
 		return;
