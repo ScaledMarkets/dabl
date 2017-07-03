@@ -30,10 +30,11 @@ public class SmokeTest extends TestBase {
 
 		
 		Reader reader = new StringReader(
-"\n namespace simple task t123"
+" namespace simple task t123"
+//"\n namespace simple task t123"
 			);
 		
-		Dabl dabl = new Dabl(false, true, reader);
+		Dabl dabl = new Dabl(false, true, true, reader);
 		createHelper(dabl.process());
 	}
 	

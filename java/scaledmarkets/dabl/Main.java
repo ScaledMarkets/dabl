@@ -29,6 +29,7 @@ public class Main
 		boolean printTrace = false;
 		boolean analysisOnly = false;
 		boolean simulate = false;
+		boolean omitStandard = false;
 
 		int argno = 0;
 		for (;;)
@@ -44,6 +45,7 @@ public class Main
 			else if (arg.equals("-t") || arg.equals("--trace")) printTrace = true;
 			else if (arg.equals("-a") || arg.equals("--analysis")) analysisOnly = true;
 			else if (arg.equals("-s") || arg.equals("--simulate")) simulate = true;
+			else if (arg.equals("-o") || arg.equals("--omitstd")) omitStandard = true;
 			else if (arg.startsWith("-"))
 			{
 				System.out.println("Unrecognized option: " + arg);
@@ -69,13 +71,14 @@ public class Main
 		// Parse input and perform analysis.
 		System.out.println("Processing file " + filename + "...");
 		Reader reader = new FileReader(filename);
-		compile(print, printTrace, analysisOnly, simulate, reader);
+		compile(print, printTrace, analysisOnly, simulate, omitStandard, reader);
 	}
 	
 	public static CompilerState compile(boolean print, boolean printTrace,
-		boolean analysisOnly, boolean simulate, Reader reader) throws Exception {
+		boolean analysisOnly, boolean simulate, boolean omitPackageStandard,
+		Reader reader) throws Exception {
 		
-		Dabl dabl = new Dabl(print, printTrace, reader);
+		Dabl dabl = new Dabl(print, printTrace, omitPackageStandard, reader);
 		CompilerState state = null;
 		try { state = dabl.process(); }
 		catch (Exception ex)

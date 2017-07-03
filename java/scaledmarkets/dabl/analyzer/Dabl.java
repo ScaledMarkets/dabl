@@ -24,13 +24,15 @@ public class Dabl
 	private boolean print = false;
 	private boolean printTrace = false;
 	private boolean analysisOnly = false;
+	private boolean omitStandard = false;
 	
 	private Reader reader = null;
 	
-	public Dabl(boolean print, boolean printTrace, Reader reader) {
+	public Dabl(boolean print, boolean printTrace, boolean omitPackageStandard, Reader reader) {
 		this.print = print;
 		this.printTrace = printTrace;
 		this.reader = reader;
+		this.omitStandard = omitPackageStandard;
 	}
 	
 	public Dabl(Reader reader) {
@@ -60,8 +62,11 @@ public class Dabl
 		// ....Alert if any template symbols have no value.
 		
 		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
-		Reader r = new StringReader(DablStandard.PackageText);
-		namespaceProcessor.processNamespace(r);
+		
+		if (! omitStandard) {
+			Reader r = new StringReader(DablStandard.PackageText);
+			namespaceProcessor.processNamespace(r);
+		}
 		namespaceProcessor.setPrettyPrint(this.print);
 		NameScope nameScope = namespaceProcessor.processPrimaryNamespace(this.reader);
 		
