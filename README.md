@@ -134,7 +134,7 @@ where options can be
 <dd><code>-t</code> or <code>--trace</code> (print stack trace instead of just error msg)</dd>
 <dd><code>-a</code> or <code>--analysis</code> (analysis only - do not perform any actions)</dd>
 <dd><code>-s</code> or <code>--simulate</code> (simulate only - print tasks instead of executing them)</dd>
-<dd><code>-o</code> or <code>--omitstd</code> (do not implicitly import package dabl.standard)</dd>
+<dd><code>-o</code> or <code>--omitstd</code> (do not implicitly import package <code>dabl.standard</code>)</dd>
 <dd><code>-h</code> or <code>--help</code></dd>
 </dl>
 
