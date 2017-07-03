@@ -27,7 +27,7 @@ my_other_task.my_other_task_output
 or
 
 ```
-my_other_namespace.other_namespace_files
+other_namespace.other_namespace_files
 ```
 
 When a local repository is specifed by a task input, the
