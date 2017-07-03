@@ -141,9 +141,6 @@ test:
 test_smoke:
 	$(test) --tags @smoke
 
-test_docker:
-	$(test) --tags @docker
-
 test_unit:
 	$(test) --tags @unit
 
@@ -155,6 +152,9 @@ test_iao:
 
 test_pushlocalrepo:
 	$(test) --tags @pushlocalrepo
+
+test_docker:
+	$(test) --tags @docker
 
 test_exec:
 	$(test) --tags @exec
