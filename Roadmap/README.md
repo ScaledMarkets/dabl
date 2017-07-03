@@ -1,6 +1,7 @@
 # DABL Roadmap
 
-In progress now: Implement version 0.4x beta release.
+In progress now: Implement the first beta release. This will be DABL version 0.4x.
+(DABL is currently considered alpha.)
 
 Complete guide for adding adapters for additional repository types.
 
