@@ -27,7 +27,11 @@ where,
 <dl>
 <dd><i>name</i> is the name by which the repo will be known in this DABL file.</dd>
 <dd><i>repo_type</i> is a string that identified a supported type of repository, such 
-as <code>"maven"</code> or <code>"git"</code>.</dd>
+as <code>"maven"</code> or <code>"git"</code>. The type must be one of those
+listed as a dabl.repo.providers.<type> setting.
+(See <a href="https://github.com/ScaledMarkets/dabl#using-the-reference-implementation">
+<i>Using the Reference Implementation</i>.)</a>
+</dd>
 <dd><i>tcp_scheme</i> is the TCP <i>scheme</i> by which the repository should be
 accessed, such as <code>"https"</code> or <code>"ssh"</code>.</dd>
 <dd><i>repo-path</i> is the hostname and resource path, with an optional port,
