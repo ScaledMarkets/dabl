@@ -23,6 +23,8 @@ public class TestInputsAndOutputs extends TestBase {
 		
 		Reader reader = new StringReader(
 "namespace simple\n" +
+"  repo MyRepository type \"git\" scheme \"https\" path \"github.com/myteam\"" +
+"    userid \"$GitUserId\" password \"$GitPassword\"" +
 "  task t123\n" +
 "    inputs MyInputs of \"myrepo\" in MyRepository include \"abc.jar\"\n" +
 "    inputs of \"myrepo\" in MyRepository include \"java/*.java\"\n" +
