@@ -28,7 +28,7 @@ where,
 <dd><i>name</i> is the name by which the repo will be known in this DABL file.</dd>
 <dd><i>repo_type</i> is a string that identified a supported type of repository, such 
 as <code>"maven"</code> or <code>"git"</code>. The type must be one of those
-listed as a dabl.repo.providers.<type> setting.
+listed as a <code>dabl.repo.providers.</code><i>type</i> setting.
 (See <a href="https://github.com/ScaledMarkets/dabl#using-the-reference-implementation">
 <i>Using the Reference Implementation</i>.)</a>
 </dd>
