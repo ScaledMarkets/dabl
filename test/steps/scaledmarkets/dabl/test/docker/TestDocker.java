@@ -35,7 +35,7 @@ public class TestDocker extends TestBase {
 	
 	@Before("@docker")
 	public void beforeEachScenario() throws Exception {
-		(new Exception("In TestDocker.beforeEachScenario")).printStackTrace();
+		//(new Exception("In TestDocker.beforeEachScenario")).printStackTrace();
 		initOnce();
 		this.docker = Docker.connect();
 	}
