@@ -33,13 +33,7 @@ to the appropriate Windows commands if you are using Windows.)
 namespace simple
   task Compile  // define a task
     when true
-    bash """
-      echo "#include <stdio.h>" > a.c
-      echo "void main() { println("Hello world"); }" >> a.c
-      cc a.c
-      ./a.out
-    """
-    report "Done"
+    report "Hello world"
     
 ```
 
@@ -52,5 +46,4 @@ namespace simple
 dabl simple.dabl
 ```
 
-DABL should report success, and you should see "Hello world" in the output, followed
-by "Done".
+DABL should report success, and you should see "Hello world" in the output.

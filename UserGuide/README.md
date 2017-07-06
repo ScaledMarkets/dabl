@@ -4,8 +4,6 @@
 
 [Compiling a Source File](Compiling.md)
 
-[Compiling Several Source Files](CompilingMultiple.md)
-
 [Pulling From a Source Repository](PullingFromSourceRepo.md)
 
 [Pushing To an Artifact Repository](PushingToArtifactRepo.md)
