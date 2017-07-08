@@ -68,7 +68,7 @@ public class Standard {
 		throw new RuntimeException("powershell not implemented yet");
 	}
 	
-	public static void deploy(String templateFileFef, String deploymentRef) {
+	public static void deploy(String templateFileRef, String deploymentRef) {
 		
 		// ....
 		throw new RuntimeException("deploy not implemented yet");
@@ -84,5 +84,19 @@ public class Standard {
 		
 		// ....
 		throw new RuntimeException("destroy not implemented yet");
+	}
+	
+	public static String snapshot() {
+		
+		// ....
+		throw new RuntimeException("snapshot not implemented yet");
+	}
+	
+	public static .... sign() {
+		
+	}
+	
+	public static .... post() {
+		
 	}
 }

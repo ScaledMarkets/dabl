@@ -154,6 +154,11 @@ public class TaskExecutor implements Executor {
 						POtypeSpec ptp = funcDecl.getReturnType();
 						ValueType returnType = LanguageCoreAnalyzer.mapTypeSpecToValueType(ptp);
 						returnType.checkNativeTypeAssignabilityFrom(returnType.getClass());
+						
+						....Retrieve the returned value and place it in a runtime variable
+						
+						
+						
 					}
 				} catch (Throwable t) {
 					

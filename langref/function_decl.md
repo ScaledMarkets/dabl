@@ -47,7 +47,7 @@ A function declaration has the following syntax:
 <dd>
 [<code>public</code>] <code>function</code> <i>name</i> [ <i>type</i> [ , <i>type</i>... ] ]
 	<code>binds to</code> <i>target-language</i>
-	<code>method</code> <i>native-method-name</i> <code>returns</code> <i>type</i>
+	<code>method</code> <i>native-method-name</i> [ <code>returns</code> <i>type</i> ]
 </dd>
 </dl>
 

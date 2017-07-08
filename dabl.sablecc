@@ -253,7 +253,10 @@ Productions
       ;
     
     task_decl {-> otask_declaration} =
-        scope_decl open_decl task id use_clause_opt when_clause_opt
+        scope_decl open_decl task id
+            use_clause_opt   ....handle this
+            configure_clause_opt ....handle this
+            when_clause_opt
             input_sets_opt output_sets_opt
             timeout_opt
             procedural_stmts_opt            {-> New otask_declaration(scope_decl.oscope,
@@ -541,7 +544,7 @@ Productions
     
     function_decl {-> ofunction_declaration} =
         scope_decl function [dabl_name]:id type_spec_seq binds to [native_language]:string_literal
-            method [native_name]:string_literal returns type_spec
+            method [native_name]:string_literal returns type_spec  .....make returns optional
                                             {-> New ofunction_declaration(scope_decl.oscope,
                                                     dabl_name, [type_spec_seq.otype_spec],
                                                     native_language.ostring_literal,

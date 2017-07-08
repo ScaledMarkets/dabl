@@ -12,7 +12,7 @@
 
 [Installing Tools](InstallingTools.md)
 
-[Configuring the Task Contaier](ConfiguringContainer.md)
+[Configuring the Task Container](ConfiguringContainer.md)
 
 [Creating a Custom Task Base Image](CustomBaseImage.md)
 

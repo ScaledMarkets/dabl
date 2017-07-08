@@ -82,6 +82,7 @@ The following Java functions are pre-defined in dabl.standard:
 <dd><code>deploy</code> <i>template-file-ref</i> <code>to</code> <i>deployment-ref</i></dd>
 <dd><code>ssh</code> <i>target-host command-string</i></dd>
 <dd><code>destroy</code> <i>deployment-ref</i></dd>
+<dd><code>snapshot</code></dd>
 </dl>
 
 The actual specification of package `dabl.standard` can be found
