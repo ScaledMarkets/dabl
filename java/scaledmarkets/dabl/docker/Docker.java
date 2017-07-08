@@ -38,6 +38,10 @@ import org.glassfish.jersey.CommonProperties;
 	Docker REST API reference:
 	https://docs.docker.com/engine/api/v1.27/
 	
+	Docker privileged container:
+	https://blog.docker.com/2013/09/docker-can-now-run-within-docker/
+	(See more recent info on configuring container capilities.)
+	
 	JSON API:
 	http://docs.oracle.com/javaee/7/tutorial/jsonp003.htm
 	https://docs.oracle.com/javaee/7/api/toc.htm
