@@ -1,10 +1,12 @@
 # User Guide Table Of Contents
 
+[DABL Concepts](Concepts.md) — Skip this if you are impatient ;-)
+
 [The Simplest Case: Print Hello Word](SimplestCase.md)
 — So that you know the basic structure of a DABL specification.
 
 [Compiling a Source File](Compiling.md)
-— So that you know how to make a task do things.
+— So that you know how to make a DABL task do real things.
 
 [Pulling From a Source Repository](PullingFromSourceRepo.md)
 — So that your tasks can obtain source artifacts.
