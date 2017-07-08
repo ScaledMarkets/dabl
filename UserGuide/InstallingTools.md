@@ -1,9 +1,5 @@
 # Installing Tools
 
-All task containers provide access to a container-specific package manager,
-via the Alpine Linux package manager,
-[apk](https://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management).
-
 ## Reusing a Tool Installation
 
 Install the tools.
@@ -18,13 +14,12 @@ repo MyImageRegistry type "docker"
 
 //* needs to be open to access the package repo, and to push the image to the repo. *//
 open task GetTools
-    bash """
-        apk update
-        apk add ...
-    """
+    inputs package ...
+    outputs MyImage to "MyProject" in MyImageRegistry
+    install ...
     //* Create an image of the task container. *//
     MyImage = snapshot as "MyToolsImage:latest"
-    post MyImage to "MyProject" in MyImageRegistry
+    post MyImage
 
 task compileit
     use GetTools.MyImage
