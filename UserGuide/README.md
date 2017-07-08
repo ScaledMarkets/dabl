@@ -10,6 +10,14 @@
 
 [Defining a File Set](DefiningFileSet.md)
 
+[Installing Tools](InstallingTools.md)
+
+[Configuring the Task Contaier](ConfiguringContainer.md)
+
+[Creating a Custom Task Base Image](CustomBaseImage.md)
+
+[Building an Application Image](BuildAppImage.md)
+
 [Calling a Function](CallingFunction.md)
 
 [Importing Another Namespace](Importing.md)

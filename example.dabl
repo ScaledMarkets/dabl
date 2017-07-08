@@ -77,6 +77,7 @@ public task publish
         error. */
 
 task compileit
+    use "registry.hub.docker.com.openjdk:8-jdk-alpine"
     when A newer than outputs
     inputs A $thisdir/**.java from "my_repo" in my_git
     inputs XYZ

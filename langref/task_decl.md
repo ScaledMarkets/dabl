@@ -24,6 +24,7 @@ A task declaration has the following syntax:
 
   [`public`] [`open`] `task` *name* 
     [ [template_section](#task-templates) ]
+    [ [use_clause](use_clause.md) ]
     [ [when_clause](when_clause.md) ]
   	[ [input_set](input_set.md)... ] [ [output_set](output_set.md)... ]
   	[ `timeout` *expression* *time-unit* ]
@@ -31,6 +32,10 @@ A task declaration has the following syntax:
 
 The task template section pertains to tasks that are defined as re-usable
 templates, and is explained [later](#task-templates).
+
+The [use_clause](use_clause.md), if present, specifies a container image to use for
+running the task. If a *use clause* is not specified, a default image is used,
+specified by the DABL property `dabl.task_container_image_name`.
 
 ### Inputs and Outputs
 

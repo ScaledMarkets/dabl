@@ -253,7 +253,8 @@ Productions
       ;
     
     task_decl {-> otask_declaration} =
-        scope_decl open_decl task id when_clause_opt input_sets_opt output_sets_opt
+        scope_decl open_decl task id use_clause_opt when_clause_opt
+            input_sets_opt output_sets_opt
             timeout_opt
             procedural_stmts_opt            {-> New otask_declaration(scope_decl.oscope,
                                                 open_decl.oopen,
@@ -263,6 +264,15 @@ Productions
                                                 [procedural_stmts_opt.oproc_stmt],
                                                 timeout_opt.otimeout)}
         ;
+    
+    use_clause_opt {-> ocontainer_path*} =
+        {use} use_clause                    {-> [use_clause.ocontainer_path]}
+      | {none}                              {-> []}
+      ;
+    
+    use_clause {-> ocontainer_path} =
+        ....                                {-> New ocontainer_path(....)}
+      ;
     
     when_clause_opt {-> oexpr*} =
         {when} when_clause                  {-> [when_clause.oexpr]}
