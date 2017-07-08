@@ -25,7 +25,7 @@ compiling a set of files.
 
 Tasks are containers — when a task executes, a new container is created, using the
 base image specified by the `dabl.task_container_image_name` DABL setting
-(see [Setting Container (Task Runtime) Properties](/README.md#setting-container-task-runtime-properties)).
+(see [Using the Reference Implementation](/README.md#using-the-reference-implementation)).
 
 Tasks are isolated: all inputs come in via the `inputs`, and all outputs exit
 via the `outputs`. It is possible to bypass the isolation, but doing so reduces
