@@ -1,7 +1,7 @@
 # User Guide Table Of Contents
 
 [The Simplest Case: Print Hello Word](SimplestCase.md)
-So that you know the basic structure of a DABL specification.
+—So that you know the basic structure of a DABL specification.
 
 [Compiling a Source File](Compiling.md)
 So that you know how to make a task do things.
