@@ -30,9 +30,12 @@ capabilities.
 — So that your DABL namespace can build applications that are packaged as
 a container image.
 
-[Calling a Function](CallingFunction.md)
+[Calling a Function In Another Language](CallingFunction.md)
 — So that you can extend DABL, without having to call out to a shell, in a
 reasonably safe and language supported manner.
+
+[What Are the DABL Built-In Functions?](BuiltinFunctions.md)
+— So that you can do all the things that you need to do.
 
 [Importing Another Namespace](Importing.md)
 — So that your namespace can use things that are defined in other namespaces,
