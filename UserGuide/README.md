@@ -43,7 +43,8 @@ in a safe, maintainable, language supported manner.
 
 [Defining a Reusable Task Template](TaskTemplate.md)
 — So that other namespaces can instantiate those tasks, in a safe, maintainable,
-language supported manner.
+language supported manner, enabling you to create a complex yet maintainable
+network of build programs.
 
 [Creating a Custom Task Base Image](CustomBaseImage.md)
 — To do things that DABL does not permit.
