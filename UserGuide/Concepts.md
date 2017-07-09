@@ -30,13 +30,13 @@ which by default is set to an Alpine-based image — see
 Tasks are isolated: all inputs come in via the `inputs`, and all outputs exit
 via the `outputs`. It is possible to bypass the isolation, but doing so reduces
 the benefits of DABL, so only do it when necessary. One of the main advantages
-of DABL is that the inputs and outputs of a task are determinable, and so
+of DABL is that the inputs and outputs of a task are explicit, and so
 dependencies are determinable.
 
 ## How tasks work — what triggers them, etc.
 
 A task may define a `when` condition. This is a logical expression. A task's
-when condition is checked when the task's inputs have changed. If the when
-condition is true, the task executes. If a task does not specify a when condition,
+`when` condition is checked when the task's inputs have changed. If the `when`
+condition is true, the task executes. If a task does not specify a `when` condition,
 then an implicit when condition is used, such that the task executes if any
 of its inputs are newer than its outputs.
