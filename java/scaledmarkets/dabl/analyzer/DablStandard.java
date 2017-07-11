@@ -46,6 +46,6 @@ public class DablStandard {
 		
 		"//* Push ..... *// \n" +
 		"public function post \n" +
-		    "\tbinds to java method dabl.task.Standard.post \n"
+		    "\tbinds to java method dabl.task.Standard.post returns array of numeric \n"
 	;
 }

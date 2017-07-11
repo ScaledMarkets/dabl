@@ -4,6 +4,7 @@ import scaledmarkets.dabl.task.FunctionHandler;
 import scaledmarkets.dabl.util.Utilities;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * For calling a Java function from a DABL script.
@@ -43,7 +44,12 @@ public class JavaFunctionHandler implements FunctionHandler {
 			"Method " + funcNativeName + " is not static");
 		
 		// Call the function on the class, passing the argument values.
-		Object result = method.invoke(null, args);
+		Object result;
+		try {
+			result = method.invoke(null, args);
+		} catch (InvocationTargetException ex) {
+			throw ex.getCause();
+		}
 		
 		// Place the return result into the target variable.
 		if (Void.class.isAssignableFrom(method.getReturnType())) {

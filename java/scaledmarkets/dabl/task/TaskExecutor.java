@@ -145,20 +145,15 @@ public class TaskExecutor implements Executor {
 						argValues.toArray(new Object[argValues.size()]), targetVariableRef);
 					
 					if (targetVariableRef != null) { // there is a target
-						// Transfer return value to target.
-						Object returnValue = targetVariableRef[0];
-						this.context.setValueForVariable(ptopt.toString(), returnValue);
-						
 						// Check that the value that was returned conforms to the
 						// declared return type.
+						Object returnValue = targetVariableRef[0];
 						POtypeSpec ptp = funcDecl.getReturnType();
 						ValueType returnType = LanguageCoreAnalyzer.mapTypeSpecToValueType(ptp);
 						returnType.checkNativeTypeAssignabilityFrom(returnType.getClass());
 						
-						....Retrieve the returned value and place it in a runtime variable
-						
-						
-						
+						// Transfer return value to target.
+						this.context.setValueForVariable(ptopt.toString(), returnValue);
 					}
 				} catch (Throwable t) {
 					

@@ -92,11 +92,15 @@ public class Standard {
 		throw new RuntimeException("snapshot not implemented yet");
 	}
 	
-	public static .... sign() {
+	public static byte[] sign() {
 		
+		// ....
+		throw new RuntimeException("snapshot not implemented yet");
 	}
 	
-	public static .... post() {
+	public static void post() throws Exception {
 		
+		// ....
+		throw new RuntimeException("snapshot not implemented yet");
 	}
 }
