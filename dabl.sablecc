@@ -138,6 +138,7 @@ Tokens
     min = 'min';
     hours = 'hours';
     days = 'days';
+    use = 'use';
 
     // Variable Length Sequences:
     whole_number = digit+;
@@ -254,27 +255,28 @@ Productions
     
     task_decl {-> otask_declaration} =
         scope_decl open_decl task id
-            use_clause_opt   ....handle this
-            configure_clause_opt ....handle this
+            use_clause_opt
             when_clause_opt
             input_sets_opt output_sets_opt
             timeout_opt
             procedural_stmts_opt            {-> New otask_declaration(scope_decl.oscope,
                                                 open_decl.oopen,
-                                                id, [when_clause_opt.oexpr],
+                                                id,
+                                                [use_clause_opt.ostring_literal],
+                                                [when_clause_opt.oexpr],
                                                 [input_sets_opt.onamed_artifact_set],
                                                 [output_sets_opt.onamed_artifact_set],
                                                 [procedural_stmts_opt.oproc_stmt],
                                                 timeout_opt.otimeout)}
         ;
     
-    use_clause_opt {-> ocontainer_path*} =
-        {use} use_clause                    {-> [use_clause.ocontainer_path]}
+    use_clause_opt {-> ostring_literal*} =
+        {use} use_clause                    {-> [use_clause.ostring_literal]}
       | {none}                              {-> []}
       ;
     
-    use_clause {-> ocontainer_path} =
-        ....                                {-> New ocontainer_path(....)}
+    use_clause {-> ostring_literal} =
+        use string_literal                  {-> string_literal.ostring_literal}
       ;
     
     when_clause_opt {-> oexpr*} =
@@ -544,13 +546,18 @@ Productions
     
     function_decl {-> ofunction_declaration} =
         scope_decl function [dabl_name]:id type_spec_seq binds to [native_language]:string_literal
-            method [native_name]:string_literal returns type_spec  .....make returns optional
+            method [native_name]:string_literal returns type_spec_opt
                                             {-> New ofunction_declaration(scope_decl.oscope,
                                                     dabl_name, [type_spec_seq.otype_spec],
                                                     native_language.ostring_literal,
                                                     native_name.ostring_literal,
-                                                    type_spec.otype_spec)}
+                                                    [type_spec_opt.otype_spec_opt)}
         ;
+    
+    type_spec_opt {-> otype_spec_opt} =
+        {one} type_spec                     {-> New otype_spec_opt.one(type_spec.otype_spec)}
+      | {none}                              {-> New otype_spec_opt.none()}
+      ;
     
     type_spec_seq {-> otype_spec*} =
         {multiple} type_spec type_spec_separator type_spec_seq
@@ -821,6 +828,11 @@ Abstract Syntax Tree
       | {separator} otype_spec_separator
       ;
     
+    otype_spec_opt =
+        {one} otype_spec
+      | {none}
+      ;
+    
     otype_spec_separator =
         {comma}
       | {preposition} opreposition
@@ -839,7 +851,9 @@ Abstract Syntax Tree
       ;
     
     otask_declaration =
-        oscope oopen [name]:id [when]:oexpr*  // each expr must be a logical valued expr
+        oscope oopen [name]:id
+            [use_clause]:ostring_literal*
+            [when]:oexpr*  // each expr must be a logical valued expr
             [input]:onamed_artifact_set*
             [output]:onamed_artifact_set* oproc_stmt*
             otimeout;
