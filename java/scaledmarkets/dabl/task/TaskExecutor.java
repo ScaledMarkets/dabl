@@ -148,12 +148,20 @@ public class TaskExecutor implements Executor {
 						// Check that the value that was returned conforms to the
 						// declared return type.
 						Object returnValue = targetVariableRef[0];
-						POtypeSpec ptp = funcDecl.getReturnType();
-						ValueType returnType = LanguageCoreAnalyzer.mapTypeSpecToValueType(ptp);
-						returnType.checkNativeTypeAssignabilityFrom(returnType.getClass());
-						
-						// Transfer return value to target.
-						this.context.setValueForVariable(ptopt.toString(), returnValue);
+						List<POtypeSpec> ptps = funcDecl.getReturnType();
+						if (ptps.size() == 0) {
+							Utilities.assertThat(false,
+								"No return value found for function " + funcNativeName);
+						} else if (ptps.size() == 1) {
+							ValueType returnType = LanguageCoreAnalyzer.mapTypeSpecToValueType(ptps.get(0));
+							returnType.checkNativeTypeAssignabilityFrom(returnType.getClass());
+							
+							// Transfer return value to target.
+							this.context.setValueForVariable(ptopt.toString(), returnValue);
+						} else {
+							Utilities.assertThat(false,
+								"More than one return value for function " + funcNativeName);
+						}
 					}
 				} catch (Throwable t) {
 					

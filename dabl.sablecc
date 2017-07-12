@@ -551,12 +551,12 @@ Productions
                                                     dabl_name, [type_spec_seq.otype_spec],
                                                     native_language.ostring_literal,
                                                     native_name.ostring_literal,
-                                                    [type_spec_opt.otype_spec_opt)}
+                                                    [type_spec_opt.otype_spec])}
         ;
     
-    type_spec_opt {-> otype_spec_opt} =
-        {one} type_spec                     {-> New otype_spec_opt.one(type_spec.otype_spec)}
-      | {none}                              {-> New otype_spec_opt.none()}
+    type_spec_opt {-> otype_spec*} =
+        {one} type_spec                     {-> [type_spec.otype_spec]}
+      | {none}                              {-> []}
       ;
     
     type_spec_seq {-> otype_spec*} =
@@ -816,7 +816,7 @@ Abstract Syntax Tree
     
     ofunction_declaration =
         oscope [name]:id otype_spec* [target_language]:ostring_literal [target_name]:ostring_literal
-            [return_type]:otype_spec;
+            [return_type]:otype_spec*;
 
     otype_spec = 
         {string}
@@ -826,11 +826,6 @@ Abstract Syntax Tree
       | {logical}
       | {array} otype_spec
       | {separator} otype_spec_separator
-      ;
-    
-    otype_spec_opt =
-        {one} otype_spec
-      | {none}
       ;
     
     otype_spec_separator =

@@ -48,7 +48,10 @@ public class JavaFunctionHandler implements FunctionHandler {
 		try {
 			result = method.invoke(null, args);
 		} catch (InvocationTargetException ex) {
-			throw ex.getCause();
+			Throwable cause = ex.getCause();
+			if (cause instanceof RuntimeException) throw (RuntimeException)cause;
+			else if (cause instanceof Error) throw (Error)cause;
+			else throw (Exception)cause;
 		}
 		
 		// Place the return result into the target variable.
