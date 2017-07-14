@@ -235,7 +235,11 @@ public class Docker {
 		try (JsonWriter jsonWriter = Json.createWriter(stWriter)) {
 			jsonWriter.writeObject(model);
 		}
-		String jsonPayload = stWriter.toString();	
+		String jsonPayload = stWriter.toString();
+		
+		
+		System.out.println("Sending this payload to docker daemon:\n" + jsonPayload); // debug
+
 		
 		// Tell docker to create container, and get resulting container Id.
 		Response response = makePostRequest(

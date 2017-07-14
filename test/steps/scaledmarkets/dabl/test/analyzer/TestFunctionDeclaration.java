@@ -47,7 +47,11 @@ public class TestFunctionDeclaration extends TestBase {
 		LinkedList<POtypeSpec> argTypes = funcDecl.getOtypeSpec();
 		POstringLiteral targetLangNode = funcDecl.getTargetLanguage();
 		POstringLiteral targetNameNode = funcDecl.getTargetName();
-		POtypeSpec returnType = funcDecl.getReturnType();
+		List<POtypeSpec> returnTypes = funcDecl.getReturnType();
+		assertThat(returnTypes.size() == 1,
+			"Return types of function " + id.getText() + " has size=" + returnTypes.size() +
+				", expected size 1");
+		POtypeSpec returnType = returnTypes.get(0);
 		
 		assertThat(id.getText().equals("f1"), "id is not 'f1'");
 		assertThat(argTypes.size() == 3, () -> { // Note: the second arg is a separator
