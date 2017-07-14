@@ -246,6 +246,9 @@ public class Docker {
 			"v1.24/containers/create?name=" + containerName,
 			jsonPayload);
 		
+		
+		System.out.println("response=" + response.getStatusInfo().getReasonPhrase());  // debug
+		
 		// Verify success and obtain container Id.
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
