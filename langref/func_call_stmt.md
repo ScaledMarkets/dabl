@@ -50,7 +50,7 @@ finding an appropriate class loader for loading the Java class in which the func
 is implemented. For other langauge functions, other kinds of resources might be
 needed. In general, a FunctionHandler must be obtained for the function's language.
 The FunctionHandler decides how to obtain the resources that are needed to load
-and execute the function. FunctionHandlers can be specified in the `.dabl.properties`
+and execute the function. FunctionHandlers can be specified in the `.dabl.container.properties`
 file, via the setting for,
 
 <dl>
@@ -64,7 +64,7 @@ for Java functions is,
 dabl.function_handler.java=scaledmarkets.dabl.handlers.JavaFunctionHandler
 ```
 
-See [Setting Container (Runtime) Properties](https://github.com/ScaledMarkets/dabl#setting-container-runtime-properties).
+See [Setting Container (Runtime) Properties](https://github.com/ScaledMarkets/dabl#setting-container-task-runtime-properties).
 
 ## Built-In Functions
 
@@ -86,4 +86,4 @@ The following Java functions are pre-defined in dabl.standard:
 </dl>
 
 The actual specification of package `dabl.standard` can be found
-[here](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/task/DablStandard.java).
+[here](https://github.com/ScaledMarkets/dabl/blob/master/java/scaledmarkets/dabl/analyzer/DablStandard.java).
