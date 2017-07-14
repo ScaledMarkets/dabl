@@ -206,8 +206,7 @@ public class Docker {
 				if (! (value instanceof String)) throw new Exception(
 					"Property value is not a String: " + value.toString());
 				
-				envVarBuilder.add(Json.createObjectBuilder()
-					.add((String)key, (String)value));
+				envVarBuilder.add((String)key + "=" + (String)value);
 			}
 		}
 	
