@@ -83,9 +83,9 @@ public class TestDocker extends TestBase {
 	// Scenario: Create container
 	@When("^I make a create container request to docker$")
 	public void i_make_a_create_container_request_to_docker() throws Exception {
-		DockerContainer container = docker.createContainer("alpine:latest", "MyContainer",
+		DockerContainer container = docker.createContainer("alpine:latest", "mycontainer",
 			null, null, false, null);
-		docker.destroyContainers("MyContainer", null);
+		docker.destroyContainers("mycontainer", null);
 	}
 	
 	

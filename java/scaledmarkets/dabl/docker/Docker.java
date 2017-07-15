@@ -6,6 +6,7 @@ import java.io.StringReader;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
+import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
@@ -257,9 +258,8 @@ public class Docker {
 		
 		// Tell docker to create container, and get resulting container Id.
 		Response response = makePostRequest(
-			"v1.27/containers/create?name=" + containerName,
-			jsonPayload);
-		
+			"v1.27/containers/create", jsonPayload,
+				new String[] { "name", containerName } );
 		
 		System.out.println("response status=" + response.getStatus());
 		System.out.println("response message=" + response.getStatusInfo().getReasonPhrase());  // debug
@@ -294,14 +294,13 @@ public class Docker {
 		// Attach to container.
 		// Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerAttach
 		
-		String params = "?";
-		params = params + "stream=logs";
-		params = params + "&stdin=true";
-		params = params + "&stdout=true";
-		params = params + "&stderr=true";
-
 		response = makePostRequest(
-			"v1.27/containers/" + containerId + "/attach" + params, stdin);
+			"v1.27/containers/" + containerId + "/attach", stdin,
+			new String[] { "stream", "logs" },
+			new String[] { "stdin", "true" },
+			new String[] { "stdout", "true" },
+			new String[] { "stderr", "true" }
+			);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -536,12 +535,18 @@ public class Docker {
 	}
 	
 	/**
-	 * Perform a POST request to the docker daemon.
-	 * body may be null.
+	 * Perform a POST request to the docker daemon. Query parameters are provided
+	 * as a Map, or may be null. body may be null.
 	 */
-	protected Response makePostRequest(String path, String body) {
+	protected Response makePostRequest(String path, String body, String[]... params) {
 		
 		WebTarget target = this.endpoint.path(path);
+		
+		for (String[] keyValuePair : params) {
+			if (keyValuePair.length != 2) throw new RuntimeException(
+				"Expected a key, value pair; found: " + keyValuePair.toString());
+			target = target.queryParam(keyValuePair[0], keyValuePair[1]);
+		}
 		
 		Invocation.Builder invocationBuilder =
 			target.request(MediaType.TEXT_PLAIN_TYPE);
