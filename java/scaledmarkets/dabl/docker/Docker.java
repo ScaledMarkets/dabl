@@ -261,7 +261,8 @@ public class Docker {
 			jsonPayload);
 		
 		
-		System.out.println("response=" + response.getStatusInfo().getReasonPhrase());  // debug
+		System.out.println("response status=" + response.getStatus());
+		System.out.println("response message=" + response.getStatusInfo().getReasonPhrase());  // debug
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() >= 300) throw new Exception(
