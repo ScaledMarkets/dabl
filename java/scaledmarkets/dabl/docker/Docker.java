@@ -242,7 +242,7 @@ public class Docker {
 		
 		// Tell docker to create container, and get resulting container Id.
 		Response response = makePostRequest(
-			"v1.24/containers/create?name=" + containerName,
+			"v1.27/containers/create?name=" + containerName,
 			jsonPayload);
 		
 		
@@ -270,7 +270,7 @@ public class Docker {
 	public InputStream startContainer(String containerId, String stdin) throws Exception {
 		
 		Response response = makePostRequest(
-			"v1.24/containers/" + containerId + "/start", null);
+			"v1.27/containers/" + containerId + "/start", null);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -285,7 +285,7 @@ public class Docker {
 		params = params + "&stderr=true";
 
 		response = makePostRequest(
-			"v1.24/containers/" + containerId + "/attach" + params, stdin);
+			"v1.27/containers/" + containerId + "/attach" + params, stdin);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -303,7 +303,7 @@ public class Docker {
 	public void stopContainer(String containerId) throws Exception {
 
 		Response response = makePostRequest(
-			"v1.24/containers/" + containerId + "/stop", null);
+			"v1.27/containers/" + containerId + "/stop", null);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -314,7 +314,7 @@ public class Docker {
 	 */
 	public void destroyContainer(String containerId) throws Exception {
 		
-		Response response = makeDeleteRequest("v1.24/containers/" + containerId);
+		Response response = makeDeleteRequest("v1.27/containers/" + containerId);
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
 	}
@@ -342,7 +342,7 @@ public class Docker {
 	public boolean containerIsRunning(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.24/containers/" + containerId + "/json");
+			"v1.27/containers/" + containerId + "/json");
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -363,7 +363,7 @@ public class Docker {
 	public boolean containerExists(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.24/containers/" + containerId + "/json");
+			"v1.27/containers/" + containerId + "/json");
 		
 		if (response.getStatus() >= 500) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -378,7 +378,7 @@ public class Docker {
 	public int getExitStatus(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.24/containers/" + containerId + "/json");
+			"v1.27/containers/" + containerId + "/json");
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -431,7 +431,7 @@ public class Docker {
 		if (label != null) labelFilter = "&filters={\"label\": [" + label + "]}";
 		
 		Response response = makeGetRequest(
-			"v1.24/containers/json?all=true" + labelFilter);
+			"v1.27/containers/json?all=true" + labelFilter);
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() >= 300) throw new Exception(
@@ -473,7 +473,7 @@ public class Docker {
 	 */
 	public List<List<String>> getImages() throws Exception {
 		
-		Response response = makeGetRequest("v1.24/images/json");
+		Response response = makeGetRequest("v1.27/images/json");
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() >= 300) throw new Exception(

@@ -60,12 +60,23 @@ public class TestDocker extends TestBase {
 	
 	// Scenario: List images
 	@When("^I get a list of the images$")
-	public void () throws Exception {
+	public void i_get_a_list_of_the_images() throws Exception {
 		this.allImages = docker.getImages();
+		
+		// debug
+		System.out.println("Images:");
+		for (List<String> image : this.allImages) {
+			System.out.print("\t");
+			for (String name : image) {
+				System.out.print(name + ", ");
+			}
+			System.out.println();
+		}
+		// end debug
 	}
 	
 	@Then("^the list size is greater than 0$")
-	public void () throws Exception {
+	public void the_list_size_is_greater_than_0() throws Exception {
 		assertThat(this.allImages.size() > 0, "Did not find any images");
 	}
 
