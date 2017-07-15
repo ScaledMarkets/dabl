@@ -209,25 +209,37 @@ public class Docker {
 				envVarBuilder.add((String)key + "=" + (String)value);
 			}
 		}
+		
+		JsonObjectBuilder healthcheck = Json.createObjectBuilder()
+			.add("Test", Json.createArrayBuilder().add("NONE"));
 	
 		JsonObject model = Json.createObjectBuilder()
+			.add("Hostname", containerName)
+			.add("Domainname", containerName)
+			.add("User", "root")
+			.add("ExposedPorts", ports)
+			.add("Env", envVarBuilder)
+			.add("Cmd", Json.createArrayBuilder())
+			.add("Healthcheck", healthcheck)
+			//.add("ArgsEscaped", )
+			.add("Image", imageIdOrName)
+			.add("Volumes", Json.createObjectBuilder())
+			.add("WorkingDir", "/")
+			.add("Entrypoint", "")
+			.add("NetworkDisabled", ! enableNetworking)
+			//.add("MacAddress", "01:01:01:01:01:01")
+			.add("OnBuild", Json.createArrayBuilder())
+			.add("Labels", Json.createObjectBuilder())
+			.add("Shell", Json.createArrayBuilder().add("bash"))
+			.add("HostConfig", hostConfig)
+			.add("NetworkingConfig", netConfig)
+			// Optionals:
 			.add("AttachStdin", false)
 			.add("AttachStdout", false)
 			.add("AttachStderr", false)
 			.add("Tty", false)
 			.add("OpenStdin", false)
 			.add("StdinOnce", false)
-			.add("Env", envVarBuilder)
-			.add("Cmd", Json.createArrayBuilder())
-			.add("Entrypoint", "")
-			.add("Image", imageIdOrName)
-			.add("Labels", Json.createObjectBuilder())
-			.add("Volumes", Json.createObjectBuilder())
-			.add("NetworkDisabled", ! enableNetworking)
-			.add("ExposedPorts", ports)
-			.add("StopSignal", "SIGTERM")
-			.add("HostConfig", hostConfig)
-			.add("NetworkingConfig", netConfig)
 			.build();
 		
 		StringWriter stWriter = new StringWriter();
