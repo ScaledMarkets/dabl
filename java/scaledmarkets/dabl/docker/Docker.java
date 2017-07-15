@@ -228,7 +228,7 @@ public class Docker {
 			.add("Image", imageIdOrName)
 			.add("Volumes", Json.createObjectBuilder())
 			.add("WorkingDir", "/")
-			.add("Entrypoint", "")
+			.addNull("Entrypoint")
 			.add("NetworkDisabled", ! enableNetworking)
 			.add("MacAddress", "01:01:01:01:01:01")
 			.add("OnBuild", Json.createArrayBuilder())
