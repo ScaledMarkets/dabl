@@ -24,6 +24,7 @@ public class TestDocker extends TestBase {
 	private DockerContainer container2;
 	private DockerContainer[] containers;
 	private boolean initialized = false;
+	private List<List<String>> allImages;
 	
 	protected void initOnce() throws Exception {
 		if (initialized) return;
@@ -56,12 +57,22 @@ public class TestDocker extends TestBase {
 	@Then("^the response is a success$")
 	public void the_response_is_a_success() throws Exception {
 	}
-
+	
+	// Scenario: List images
+	@When("^I get a list of the images$")
+	public void () throws Exception {
+		this.allImages = docker.getImages();
+	}
+	
+	@Then("^the list size is greater than 0$")
+	public void () throws Exception {
+		assertThat(this.allImages.size() > 0, "Did not find any images");
+	}
 
 	// Scenario: Create container
 	@When("^I make a create container request to docker$")
 	public void i_make_a_create_container_request_to_docker() throws Exception {
-		DockerContainer container = docker.createContainer("alpine", "MyContainer",
+		DockerContainer container = docker.createContainer("alpine:latest", "MyContainer",
 			null, null, false, null);
 		docker.destroyContainers("MyContainer", null);
 	}

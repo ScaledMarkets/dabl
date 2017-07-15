@@ -467,6 +467,39 @@ public class Docker {
 	}
 	
 	/**
+	 * Return a list, for which each element of the list represents an image,
+	 * and is a list of the names of that image.
+	 * See https://docs.docker.com/engine/api/v1.27/#operation/ImageList
+	 */
+	public List<List<String>> getImages() throws Exception {
+		
+		Response response = makeGetRequest("v1.24/images/json");
+		
+		// Verify success and obtain container Id.
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
+		
+		// Parse response.
+		String responseBody = response.readEntity(String.class);
+		JsonReader reader = Json.createReader(new StringReader(responseBody));
+		JsonStructure json = reader.read();
+		
+		JsonArray jsonArray = (JsonArray)json;
+		List<List<String>> images = new LinkedList<List<String>>();
+		for (JsonValue value : jsonArray) {
+			JsonObject imageDesc = (JsonObject)value;
+			
+			JsonArray tags = imageDesc.getJsonArray("RepoTags");
+			List<String> names = new LinkedList<String>();
+			for (JsonValue tag : tags) {
+				names.add(tag.toString());
+			}
+			images.add(names);
+		}
+		return images;
+	}
+	
+	/**
 	 * Return the containers known to the daemon.
 	 */
 	public DockerContainer[] getContainers() throws Exception {

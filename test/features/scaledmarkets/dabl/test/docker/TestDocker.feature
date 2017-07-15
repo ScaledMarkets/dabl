@@ -8,6 +8,10 @@ Feature: TestDocker
 		When I make a ping request to docker
 		Then the response is a success
 
+	Scenario: List images
+		When I get a list of the images
+		Then the list size is greater than 0
+	
 	Scenario: Create container
 		When I make a create container request to docker
 		Then the response is a success
