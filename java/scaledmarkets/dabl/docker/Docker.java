@@ -211,7 +211,10 @@ public class Docker {
 		}
 		
 		JsonObjectBuilder healthcheck = Json.createObjectBuilder()
-			.add("Test", Json.createArrayBuilder().add("NONE"));
+			.add("Test", Json.createArrayBuilder().add("NONE"))
+			.add("Interval", 0)
+			.add("Timeout", 0)
+			.add("Retries", 0);
 	
 		JsonObject model = Json.createObjectBuilder()
 			.add("Hostname", containerName)
