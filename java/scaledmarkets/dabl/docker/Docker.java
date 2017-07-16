@@ -253,7 +253,8 @@ public class Docker {
 		String jsonPayload = stWriter.toString();
 		
 		
-		System.out.println("Sending this payload to docker daemon:\n" + jsonPayload); // debug
+		System.out.println("For createContainer, for name " + containerName +
+			", ending this payload to docker daemon:\n" + jsonPayload); // debug
 
 		
 		// Tell docker to create container, and get resulting container Id.

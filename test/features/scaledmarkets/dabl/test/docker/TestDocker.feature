@@ -35,6 +35,6 @@ Feature: TestDocker
 		And the destroyed container no longer exists
 	
 	Scenario: Get containers
-		Given that I have created two containers and one is running
+		Given that I have created three containers
 		When I request a list of the containers
-		Then the response lists both containers
+		Then the response lists all three containers
