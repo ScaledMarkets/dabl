@@ -90,7 +90,7 @@ public class TestDocker extends TestBase {
 	
 	
 	// Scenario: Start container
-	@Given("^that I have created two containers$")
+	@Given("^that I have created two containers that do nothing$")
 	public void that_i_have_created_two_containers() throws Exception {
 		this.container1 = docker.createContainer("alpine", "MyContainer1",
 			null, null, false, null);
@@ -103,9 +103,9 @@ public class TestDocker extends TestBase {
 		this.container1.start("");  // ....
 	}
 	
-	@And("^the container that I started is running$")
-	public void the_container_that_i_started_is_running() throws Exception {
-		assertThat(this.container1.isRunning(), "container1 is not running");
+	@And("^the container that I started has exited$")
+	public void the_container_that_i_started_has_exited() throws Exception {
+		assertThat(this.container1.exited(), "container1 does not have status 'exited'");
 	}
 	
 	

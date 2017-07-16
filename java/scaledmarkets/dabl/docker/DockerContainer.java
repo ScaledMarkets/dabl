@@ -38,6 +38,10 @@ public class DockerContainer {
 		return this.docker.containerIsRunning(this.containerId);
 	}
 	
+	public boolean exited() throws Exception {
+		return this.docker.containerExited(this.containerId);
+	}
+	
 	public boolean exists() throws Exception {
 		return this.docker.containerExists(this.containerId);
 	}

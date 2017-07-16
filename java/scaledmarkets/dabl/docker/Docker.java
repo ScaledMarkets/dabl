@@ -372,6 +372,24 @@ public class Docker {
 		return running;
 	}
 	
+	public boolean containerExited(String containerId) throws Exception {
+		
+		Response response = makeGetRequest(
+			"v1.27/containers/" + containerId + "/json");
+		
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
+		
+		// Parse response.
+		String responseBody = response.readEntity(String.class);
+		JsonReader reader = Json.createReader(new StringReader(responseBody));
+		JsonObject json = (JsonObject)(reader.read());
+		
+		JsonObject state = json.getJsonObject("State");
+		String status = state.getString("Status");
+		return status.equals("exited");
+	}
+	
 	/**
 	 * Return true if the daemon reports that the specified container exists.
 	 */
