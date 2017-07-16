@@ -117,14 +117,20 @@ public class TestDocker extends TestBase {
 		this.container52 = docker.createContainer("alpine", "MyContainer52",
 			null, null, false, null);
 		this.container51.start("");  // ....
+		System.out.println("Started container 51");  // debug
 		this.container52.start("");  //....
+		System.out.println("Started container 52");  // debug
 		assertThat(this.container51.isRunning(), "container51 is not running");
+		System.out.println("Container 51 is running"); // debug
 		assertThat(this.container52.isRunning(), "container52 is not running");
+		System.out.println("Container 52 is running"); // debug
 	}
 	
 	@When("^I request to stop a container$")
 	public void i_request_to_stop_a_container() throws Exception {
+		System.out.println("Stopping container 51"); // debug
 		this.container51.stop();
+		System.out.println("Container 51 stopped."); // debug
 	}
 	
 	@And("^the container that I stopped is no longer running$")

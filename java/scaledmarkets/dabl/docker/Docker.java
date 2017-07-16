@@ -298,6 +298,8 @@ public class Docker {
 			new String[] { "stderr", "true" }
 			);
 		
+		System.out.println("Attached to " + containerId + ", but should now be detached"); // debug
+		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
 		
