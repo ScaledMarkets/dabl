@@ -252,11 +252,6 @@ public class Docker {
 		}
 		String jsonPayload = stWriter.toString();
 		
-		
-		System.out.println("For createContainer, for name " + containerName +
-			", ending this payload to docker daemon:\n" + jsonPayload); // debug
-
-		
 		// Tell docker to create container, and get resulting container Id.
 		Response response = makePostRequest(
 			"v1.27/containers/create", jsonPayload,
@@ -561,6 +556,18 @@ public class Docker {
 	 */
 	protected Response makePostRequest(String path, String body, String[]... params) {
 		
+		// debug
+		System.out.println("Making post request to docker daemon: " + path);
+		System.out.println("\twith params: ");
+		for (String[] keyValuePair : params) {
+			if (keyValuePair.length != 2) throw new RuntimeException(
+				"Expected a key, value pair; found: " + keyValuePair.toString());
+			System.out.println("\t\t" + keyValuePair[0] + "=" + keyValuePair[1]);
+		}
+		System.out.println("\tand payload: " + body);
+		// end debug
+
+		
 		WebTarget target = this.endpoint.path(path);
 		
 		for (String[] keyValuePair : params) {
@@ -572,13 +579,21 @@ public class Docker {
 		Invocation.Builder invocationBuilder =
 			target.request(MediaType.TEXT_PLAIN_TYPE);
 		
+		Response response;
 		if (body == null) {
-			return invocationBuilder.post(null);
+			response = invocationBuilder.post(null);
 		} else {
 			Entity<String> entity = Entity.json(body);
 			Invocation invocation = invocationBuilder.buildPost(entity);
-			return invocation.invoke();
+			response = invocation.invoke();
 		}
+		
+		// debug
+		System.out.println("Performed post request; return status is " + response.getStatus());
+		// end debug
+		
+		
+		return response;
 	}
 
 	/**
