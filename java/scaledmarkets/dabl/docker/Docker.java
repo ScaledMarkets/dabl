@@ -557,7 +557,7 @@ public class Docker {
 		Response response = invocationBuilder.get();
 		
 		// debug
-		System.out.println("Performed post request; return status is " + response.getStatus());
+		System.out.println("Performed get request; return status is " + response.getStatus());
 		// end debug
 		
 		return response;
