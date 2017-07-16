@@ -329,6 +329,7 @@ public class Docker {
 	 */
 	public void destroyContainer(String containerId) throws Exception {
 		
+		System.out.println("Destroying conatiner " + containerId);  // debug
 		Response response = makeDeleteRequest("v1.27/containers/" + containerId);
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -341,6 +342,7 @@ public class Docker {
 	 */
 	public void destroyContainers(String namePattern, String label) throws Exception {
 		
+		System.out.println("Destroying conatiners matching pattern " + namePattern);  // debug
 		DockerContainer[] containers = null;
 		try { containers = getContainers(namePattern, label); }
 		catch (Exception ex) {
