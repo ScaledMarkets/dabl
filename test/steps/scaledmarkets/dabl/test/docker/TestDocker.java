@@ -12,6 +12,9 @@ import scaledmarkets.dabl.docker.*;
 import scaledmarkets.dabl.test.TestBase;
 
 import java.io.Reader;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.Properties;
 import java.util.List;
@@ -116,10 +119,30 @@ public class TestDocker extends TestBase {
 			null, null, false, null);
 		this.container52 = docker.createContainer("alpine", "MyContainer52",
 			null, null, false, null);
-		this.container51.start("");  // ....
+		InputStream inputStream51 = this.container51.start("");  // ....
 		System.out.println("Started container 51");  // debug
-		this.container52.start("");  //....
+		/*
+		BufferedReader br51 = new BufferedReader(new InputStreamReader(inputStream51));
+		for (;;) {
+			String line = br51.readLine();
+			if (line == null) break;
+			System.out.println(line);
+		}
+		//br51.close();
+		*/
+		
+		InputStream inputStream52 = this.container52.start("");  //....
 		System.out.println("Started container 52");  // debug
+		/*
+		BufferedReader br52 = new BufferedReader(new InputStreamReader(inputStream51));
+		for (;;) {
+			String line = br52.readLine();
+			if (line == null) break;
+			System.out.println(line);
+		}
+		//br52.close();
+		*/
+		
 		assertThat(this.container51.isRunning(), "container51 is not running");
 		System.out.println("Container 51 is running"); // debug
 		assertThat(this.container52.isRunning(), "container52 is not running");

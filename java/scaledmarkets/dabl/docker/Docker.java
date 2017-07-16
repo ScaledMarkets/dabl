@@ -544,12 +544,23 @@ public class Docker {
 	 */
 	protected Response makeGetRequest(String path) {
 		
+		// debug
+		System.out.println("Making get request to docker daemon: " + path);
+		// end debug
+
+		
 		WebTarget target = this.endpoint.path(path);
 		
 		Invocation.Builder invocationBuilder =
 			target.request(MediaType.TEXT_PLAIN_TYPE);
 		
-		return invocationBuilder.get();
+		Response response = invocationBuilder.get();
+		
+		// debug
+		System.out.println("Performed post request; return status is " + response.getStatus());
+		// end debug
+		
+		return response;
 	}
 	
 	/**
