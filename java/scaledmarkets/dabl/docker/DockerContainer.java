@@ -18,9 +18,9 @@ public class DockerContainer {
 	
 	public String getContainerId() { return this.containerId; }
 	
-	public InputStream start(String stdin) throws Exception {
+	public void start() throws Exception {
 		
-		return this.docker.startContainer(this.containerId, stdin);
+		this.docker.startContainer(this.containerId);
 	}
 	
 	public void stop() throws Exception {
@@ -31,6 +31,10 @@ public class DockerContainer {
 	public void destroy() throws Exception {
 		
 		this.docker.destroyContainer(this.containerId);
+	}
+	
+	public InputStream connectTo(InputStream input) throws Exception {
+		return this.docker.connectToContainer(this.containerId, input)
 	}
 	
 	public boolean isRunning() throws Exception {

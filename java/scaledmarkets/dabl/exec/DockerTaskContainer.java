@@ -4,6 +4,8 @@ import scaledmarkets.dabl.docker.*;
 import java.io.File;
 import java.io.PrintStream;
 import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.Charset;
 
 /**
  * Provides ability to control a container, in which a TaskExecutor is running.
@@ -30,11 +32,15 @@ public class DockerTaskContainer extends TaskContainer {
 		
 		// Start the container.
 		// The container starts with its configured entrypoint, which is a
-		// call to the TaskExecutor JAR. Each procedural statement is passed
-		// via stdin. This is a blocking call.
-		InputStream containerOutput = this.dockerContainer.start(task.getTaskProgram());
+		// call to the TaskExecutor JAR.
+		this.dockerContainer.start();
 		
-		return containerOutput;
+		InputStream inputToContainer = new ByteArrayInputStream(
+			task.getTaskProgram().getBytes(Charset.forName("ISO-LATIN-1")));
+		
+		// Each procedural statement is passed via stdin, using the current thread.
+		// The call below will block until the container has read all of the commands.
+		return this.dockerContainer.connectTo(inputToContainer);
 	}
 	
 	public int getExitStatus() throws Exception {

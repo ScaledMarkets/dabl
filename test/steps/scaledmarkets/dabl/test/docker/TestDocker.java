@@ -103,7 +103,8 @@ public class TestDocker extends TestBase {
 	
 	@When("^I request to start a container$")
 	public void i_request_to_start_a_container() throws Exception {
-		this.container41.start("");  // ....
+		this.container41.start();  // ....
+		....this container might exit since it is running bash and we are not connected to it.
 	}
 	
 	@And("^the container that I started has exited$")
@@ -119,7 +120,7 @@ public class TestDocker extends TestBase {
 			null, null, false, null);
 		this.container52 = docker.createContainer("alpine", "MyContainer52",
 			null, null, false, null);
-		InputStream inputStream51 = this.container51.start("");  // ....
+		InputStream inputStream51 = this.container51.start();  // ....
 		System.out.println("Started container 51");  // debug
 		/*
 		BufferedReader br51 = new BufferedReader(new InputStreamReader(inputStream51));
@@ -131,10 +132,10 @@ public class TestDocker extends TestBase {
 		//br51.close();
 		*/
 		
-		InputStream inputStream52 = this.container52.start("");  //....
+		InputStream inputStream52 = this.container52.start();  //....
 		System.out.println("Started container 52");  // debug
 		/*
-		BufferedReader br52 = new BufferedReader(new InputStreamReader(inputStream51));
+		BufferedReader br52 = new BufferedReader(new InputStreamReader(inputStream52));
 		for (;;) {
 			String line = br52.readLine();
 			if (line == null) break;
@@ -142,6 +143,23 @@ public class TestDocker extends TestBase {
 		}
 		//br52.close();
 		*/
+		
+		DockerContainer container53 = docker.createContainer("alpine", "MyContainer53",
+			null, null, false, null);
+		InputStream inputStream53 = container53.start();  //....
+		System.out.println("Started container 53");  // debug
+		/*
+		BufferedReader br53 = new BufferedReader(new InputStreamReader(inputStream53));
+		for (;;) {
+			String line = br53.readLine();
+			if (line == null) break;
+			System.out.println(line);
+		}
+		//br53.close();
+		*/
+		
+		String response = docker.ping();
+		System.out.println("Ping succeeded");
 		
 		assertThat(this.container51.isRunning(), "container51 is not running");
 		System.out.println("Container 51 is running"); // debug
@@ -170,7 +188,7 @@ public class TestDocker extends TestBase {
 			null, null, false, null);
 		this.container62 = docker.createContainer("alpine", "MyContainer62",
 			null, null, false, null);
-		this.container61.start(""); // ....
+		this.container61.start(); // ....
 		assertThat(this.container61.isRunning(), "container61 is not running");
 		assertThat(! this.container62.isRunning(), "container62 is running");
 	}

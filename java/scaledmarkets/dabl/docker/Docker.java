@@ -4,6 +4,8 @@ import java.net.URI;
 import java.io.StringWriter;
 import java.io.StringReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.io.OutputStream;
 import java.util.Properties;
 import java.util.Map;
@@ -279,35 +281,46 @@ public class Docker {
 	/**
 	 * Tell docker to start container, and pass it a string for its stdin.
 	 */
-	public InputStream startContainer(String containerId, String stdin) throws Exception {
+	public void startContainer(String containerId) throws Exception {
 		
 		Response response = makePostRequest(
 			"v1.27/containers/" + containerId + "/start", null);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
+	}
+	
+	/**
+	 * Attach to container.
+	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerAttach
+	 * This method will block until the container has read all of its input.
+	 */
+	public InputStream connectToContainer(String containerId, InputStream input) throws Exception {
 		
-		// Attach to container.
-		// Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerAttach
+		// Read all of the input and forward it to the container.
+		String inputString = "";
+		BufferedReader br = new BufferedReader(new InputStreamReader(input));
+		for (;;) {
+			String line = br.readLine();
+			if (line == null) break;
+			inputString = inputString + line;
+		}
 		
-		response = makePostRequest(
-			"v1.27/containers/" + containerId + "/attach", stdin,
+		Response response = makePostRequest(
+			"v1.27/containers/" + containerId + "/attach", inputString,
 			new String[] { "stream", "logs" },
 			new String[] { "stdin", "true" },
 			new String[] { "stdout", "true" },
 			new String[] { "stderr", "true" }
 			);
 		
-		System.out.println("Attached to " + containerId + ", but should now be detached"); // debug
+		System.out.println("Attached to " + containerId); // debug
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
 		
-		// Connect response output stream to 
-		
-		InputStream inputStream = response.readEntity(InputStream.class);
-		
-		return inputStream;
+		// Return an input stream for reading the container's output.
+		return response.readEntity(InputStream.class);
 	}
 	
 	/**
