@@ -328,6 +328,7 @@ public class Docker {
 	 */
 	public void stopContainer(String containerId) throws Exception {
 
+		System.out.println("Stopping container " + containerId);  // debug
 		Response response = makePostRequest(
 			"v1.27/containers/" + containerId + "/stop", null);
 		
@@ -340,7 +341,9 @@ public class Docker {
 	 */
 	public void destroyContainer(String containerId) throws Exception {
 		
-		System.out.println("Destroying conatiner " + containerId);  // debug
+		if (containerIsRunning(containerId)) stopContainer(containerId);
+		
+		System.out.println("Destroying container " + containerId);  // debug
 		Response response = makeDeleteRequest("v1.27/containers/" + containerId);
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());

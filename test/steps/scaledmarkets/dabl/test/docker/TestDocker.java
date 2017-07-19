@@ -86,8 +86,8 @@ public class TestDocker extends TestBase {
 	// Scenario 3: Create container
 	@When("^I make a create container request to docker$")
 	public void i_make_a_create_container_request_to_docker() throws Exception {
-		DockerContainer container = docker.createContainer("alpine:latest", "MyContainer31",
-			null, null, false, null);
+		DockerContainer container = docker.createContainer(
+			"alpine:latest", "MyContainer31", null, null, false, null);
 		docker.destroyContainers("MyContainer31", null);
 	}
 	
@@ -95,10 +95,10 @@ public class TestDocker extends TestBase {
 	// Scenario 4: Start container
 	@Given("^that I have created two containers that do nothing$")
 	public void that_i_have_created_two_containers() throws Exception {
-		this.container41 = docker.createContainer("alpine", "MyContainer41",
-			null, null, false, null);
-		this.container42 = docker.createContainer("alpine", "MyContainer42",
-			null, null, false, null);
+		this.container41 = docker.createContainer(
+			"alpine", "MyContainer41", null, null, false, null);
+		this.container42 = docker.createContainer(
+			"alpine", "MyContainer42", null, null, false, null);
 	}
 	
 	@When("^I request to start a container$")
@@ -121,44 +121,8 @@ public class TestDocker extends TestBase {
 			"alpine", "MyContainer52", null, null, false, null);
 		this.container51.start();
 		System.out.println("Started container 51");  // debug
-		/*
-		BufferedReader br51 = new BufferedReader(new InputStreamReader(inputStream51));
-		for (;;) {
-			String line = br51.readLine();
-			if (line == null) break;
-			System.out.println(line);
-		}
-		//br51.close();
-		*/
-		
 		this.container52.start();
 		System.out.println("Started container 52");  // debug
-		/*
-		BufferedReader br52 = new BufferedReader(new InputStreamReader(inputStream52));
-		for (;;) {
-			String line = br52.readLine();
-			if (line == null) break;
-			System.out.println(line);
-		}
-		//br52.close();
-		*/
-		
-		DockerContainer container53 = docker.createContainer(
-			"alpine", "MyContainer53", null, null, false, null);
-		container53.start();
-		System.out.println("Started container 53");  // debug
-		/*
-		BufferedReader br53 = new BufferedReader(new InputStreamReader(inputStream53));
-		for (;;) {
-			String line = br53.readLine();
-			if (line == null) break;
-			System.out.println(line);
-		}
-		//br53.close();
-		*/
-		
-		String response = docker.ping();
-		System.out.println("Ping succeeded");
 		
 		assertThat(this.container51.isRunning(), "container51 is not running");
 		System.out.println("Container 51 is running"); // debug
@@ -183,11 +147,11 @@ public class TestDocker extends TestBase {
 	// Sceanrio 6: Destroy containers
 	@Given("^that I have created two containers and one is running$")
 	public void that_i_have_created_two_containers_and_one_is_running() throws Exception {
-		this.container61 = docker.createContainer("alpine", "MyContainer61",
-			null, null, false, null);
-		this.container62 = docker.createContainer("alpine", "MyContainer62",
-			null, null, false, null);
-		this.container61.start(); // ....
+		this.container61 = docker.createContainer(
+			"alpine", "MyContainer61", null, null, false, null);
+		this.container62 = docker.createContainer(
+			"alpine", "MyContainer62", null, null, false, null);
+		this.container61.start();
 		assertThat(this.container61.isRunning(), "container61 is not running");
 		assertThat(! this.container62.isRunning(), "container62 is running");
 	}
@@ -207,12 +171,12 @@ public class TestDocker extends TestBase {
 	// Scenario 7: Get containers
 	@Given("^that I have created three containers$")
 	public void that_I_have_created_three_containers() throws Exception {
-		this.container71 = docker.createContainer("alpine", "MyContainer71",
-			null, null, false, null);
-		this.container72 = docker.createContainer("alpine", "MyContainer72",
-			null, null, false, null);
-		this.container73 = docker.createContainer("alpine", "MyContainer73",
-			null, null, false, null);
+		this.container71 = docker.createContainer(
+			"alpine", "MyContainer71", null, null, false, null);
+		this.container72 = docker.createContainer(
+			"alpine", "MyContainer72", null, null, false, null);
+		this.container73 = docker.createContainer(
+			"alpine", "MyContainer73", null, null, false, null);
 	}
 	
 	@When("^I request a list of the containers$")
