@@ -240,12 +240,12 @@ public class Docker {
 			.add("HostConfig", hostConfig)
 			.add("NetworkingConfig", netConfig)
 			// Optionals:
-			.add("AttachStdin", false)
-			.add("AttachStdout", false)
-			.add("AttachStderr", false)
+			.add("AttachStdin", true)
+			.add("AttachStdout", true)
+			.add("AttachStderr", true)
 			.add("Tty", false)
-			.add("OpenStdin", false)
-			.add("StdinOnce", false)
+			.add("OpenStdin", true)
+			.add("StdinOnce", true)
 			.build();
 		
 		StringWriter stWriter = new StringWriter();
@@ -279,7 +279,7 @@ public class Docker {
 	}
 	
 	/**
-	 * Tell docker to start container, and pass it a string for its stdin.
+	 * Tell docker to start container.
 	 */
 	public void startContainer(String containerId) throws Exception {
 		

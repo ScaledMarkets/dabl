@@ -103,13 +103,12 @@ public class TestDocker extends TestBase {
 	
 	@When("^I request to start a container$")
 	public void i_request_to_start_a_container() throws Exception {
-		this.container41.start();  // ....
-		....this container might exit since it is running bash and we are not connected to it.
+		this.container41.start();
 	}
 	
-	@And("^the container that I started has exited$")
-	public void the_container_that_i_started_has_exited() throws Exception {
-		assertThat(this.container41.exited(), "container41 does not have status 'exited'");
+	@And("^the container that I started is running$")
+	public void the_container_that_i_started_is_running() throws Exception {
+		assertThat(this.container41.isRunning(), "container41 is not running");
 	}
 	
 	
