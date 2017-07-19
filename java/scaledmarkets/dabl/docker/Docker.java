@@ -477,7 +477,8 @@ public class Docker {
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
 		String labelFilter = "";
-		if (label != null) labelFilter = "&filters={\"label\": [" + label + "]}";
+		if (label == null) labelFilter = "all=true";
+		else labelFilter = "filters={\"label\": [" + label + "]}";
 		
 		Response response = makeGetRequest(
 			"v1.27/containers/json?all=true" + labelFilter);
