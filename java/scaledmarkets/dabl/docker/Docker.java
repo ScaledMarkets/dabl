@@ -480,6 +480,9 @@ public class Docker {
 			"v1.27/containers/json?" + labelFilter);
 		
 		// Verify success and obtain container Id.
+		if (response.getStatus() == 404) { // not an error - means no containers found
+			return new DockerContainer[] {};
+		}
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
 		
@@ -488,8 +491,8 @@ public class Docker {
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
 		JsonStructure json = reader.read();
 		
-		JsonArray jsonArray = (JsonArray)json;
 		List<DockerContainer> containers = new LinkedList<DockerContainer>();
+		JsonArray jsonArray = (JsonArray)json;
 		for (JsonValue value : jsonArray) {
 			JsonObject containerDesc = (JsonObject)value;
 			
