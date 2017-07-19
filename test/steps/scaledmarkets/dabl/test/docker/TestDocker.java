@@ -115,11 +115,11 @@ public class TestDocker extends TestBase {
 	// Sceanrio 5: Stop container
 	@Given("^that I have created two containers and both are running$")
 	public void that_i_have_created_two_containers_and_both_are_running() throws Exception {
-		this.container51 = docker.createContainer("alpine", "MyContainer51",
-			null, null, false, null);
-		this.container52 = docker.createContainer("alpine", "MyContainer52",
-			null, null, false, null);
-		InputStream inputStream51 = this.container51.start();  // ....
+		this.container51 = docker.createContainer(
+			"alpine", "MyContainer51", null, null, false, null);
+		this.container52 = docker.createContainer(
+			"alpine", "MyContainer52", null, null, false, null);
+		this.container51.start();
 		System.out.println("Started container 51");  // debug
 		/*
 		BufferedReader br51 = new BufferedReader(new InputStreamReader(inputStream51));
@@ -131,7 +131,7 @@ public class TestDocker extends TestBase {
 		//br51.close();
 		*/
 		
-		InputStream inputStream52 = this.container52.start();  //....
+		this.container52.start();
 		System.out.println("Started container 52");  // debug
 		/*
 		BufferedReader br52 = new BufferedReader(new InputStreamReader(inputStream52));
@@ -143,9 +143,9 @@ public class TestDocker extends TestBase {
 		//br52.close();
 		*/
 		
-		DockerContainer container53 = docker.createContainer("alpine", "MyContainer53",
-			null, null, false, null);
-		InputStream inputStream53 = container53.start();  //....
+		DockerContainer container53 = docker.createContainer(
+			"alpine", "MyContainer53", null, null, false, null);
+		container53.start();
 		System.out.println("Started container 53");  // debug
 		/*
 		BufferedReader br53 = new BufferedReader(new InputStreamReader(inputStream53));
