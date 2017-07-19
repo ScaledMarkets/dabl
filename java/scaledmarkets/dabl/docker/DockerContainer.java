@@ -34,7 +34,7 @@ public class DockerContainer {
 	}
 	
 	public InputStream connectTo(InputStream input) throws Exception {
-		return this.docker.connectToContainer(this.containerId, input)
+		return this.docker.connectToContainer(this.containerId, input);
 	}
 	
 	public boolean isRunning() throws Exception {
