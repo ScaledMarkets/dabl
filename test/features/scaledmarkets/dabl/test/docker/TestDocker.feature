@@ -7,11 +7,13 @@ Feature: TestDocker
 	Scenario: Simple
 		When I make a ping request to docker
 		Then the response is a success
-
+	
+	@done
 	Scenario: List images
 		When I get a list of the images
 		Then the list size is greater than 0
 	
+	@done
 	Scenario: Create container
 		When I make a create container request to docker
 		Then the response is a success
@@ -20,7 +22,7 @@ Feature: TestDocker
 		Given that I have created two containers that do nothing
 		When I request to start a container
 		Then the response is a success
-		And the container that I started has exited
+		And the container that I started is running
 	
 	Scenario: Stop container
 		Given that I have created two containers and both are running

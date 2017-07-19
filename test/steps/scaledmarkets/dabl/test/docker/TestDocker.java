@@ -33,8 +33,21 @@ public class TestDocker extends TestBase {
 		if (initialized) return;
 		initialized = true;
 		Docker docker = Docker.connect();
-		docker.destroyContainers("*", null);
-		docker.close();
+		try {
+			docker.destroyContainers("*", null);
+			System.out.println("Containers all have been destroyed");
+		} catch (RuntimeException rex) {
+			rex.printStackTrace();
+			throw rex;
+		} catch (Error e) {
+			e.printStackTrace();
+			throw e;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		} finally {
+			docker.close();
+		}
 	}
 	
 	@Before("@docker")

@@ -154,7 +154,7 @@ test_pushlocalrepo:
 	$(test) --tags @pushlocalrepo
 
 test_docker:
-	$(test) --tags @docker
+	$(test) --tags @docker --tags @done
 
 test_exec:
 	$(test) --tags @exec
