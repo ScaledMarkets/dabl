@@ -481,7 +481,7 @@ public class Docker {
 		else labelFilter = "filters={\"label\": [" + label + "]}";
 		
 		Response response = makeGetRequest(
-			"v1.27/containers/json?all=true" + labelFilter);
+			"v1.27/containers/json?" + labelFilter);
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() >= 300) throw new Exception(
