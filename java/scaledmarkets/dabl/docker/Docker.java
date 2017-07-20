@@ -352,17 +352,20 @@ public class Docker {
 	/**
 	 * Remove all of the containers that match either the specified regular
 	 * expression for the container name, or match (exactly) the specified
-	 * label, or both.
+	 * label, or both. Return the number of containers that were destroyed.
 	 */
-	public void destroyContainers(String namePattern, String label) throws Exception {
+	public int destroyContainers(String namePattern, String label) throws Exception {
 		
 		System.out.println("Destroying conatiners matching pattern " + namePattern);  // debug
 		DockerContainer[] containers = getContainers(namePattern, label);
 		System.out.println("Destroying " + containers.length + " containers...");
+		int numOfContainersDestroyed = 0;
 		for (DockerContainer container : containers) {
 			destroyContainer(container.getContainerId());
+			numOfContainersDestroyed++;
 		}
 		System.out.println("...containers destroyed.");
+		return numOfContainersDestroyed;
 	}
 	
 	/**

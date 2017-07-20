@@ -34,17 +34,8 @@ public class TestDocker extends TestBase {
 		initialized = true;
 		Docker docker = Docker.connect();
 		try {
-			docker.destroyContainers("*", null);
-			System.out.println("Containers all have been destroyed");
-		} catch (RuntimeException rex) {
-			rex.printStackTrace();
-			throw rex;
-		} catch (Error e) {
-			e.printStackTrace();
-			throw e;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			throw ex;
+			int n = docker.destroyContainers("*", null);
+			System.out.println(n + " containers have been destroyed");
 		} finally {
 			docker.close();
 		}
@@ -59,8 +50,12 @@ public class TestDocker extends TestBase {
 	
 	@After("@docker")
 	public void afterEachScenario() throws Exception {
-		docker.destroyContainers("*", null);
-		docker.close();
+		try {
+			int n = docker.destroyContainers("*", null);
+			System.out.println(n + " containers have been destroyed");
+		} finally {
+			docker.close();
+		}
 	}
 
 	
