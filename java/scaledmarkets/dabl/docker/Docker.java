@@ -477,12 +477,12 @@ public class Docker {
 	 */
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
-		String statusFilter = "\"status\":[" +
-			"\"created\",\"restarting\",\"running\",\"paused\"," +
-			"\"exited\",\"dead\"]";
+		String statusFilter = "%22status%22:[" +
+			"%22created%22,%22restarting%22,%22running%22,%22paused%22," +
+			"%22exited%22,%22dead%22]";
 
 		String labelFilter = "";
-		if (label != null) labelFilter = ",\"label\":[" + label + "]";
+		if (label != null) labelFilter = ",%22label%22:[" + label + "]";
 		
 		Response response = makeGetRequest(
 			"v1.27/containers/json?filters={" + statusFilter + labelFilter + "}");
