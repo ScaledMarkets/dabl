@@ -477,12 +477,15 @@ public class Docker {
 	 */
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
+		String statusFilter = "\"status\": [" +
+			"\"created\", \"restarting\", \"running\", \"paused\", " +
+			"\"exited\", \"dead\"]";
+
 		String labelFilter = "";
-		if (label == null) labelFilter = "all=true";
-		else labelFilter = "filters={\"label\": [" + label + "]}";
+		if (label != null) labelFilter = ", \"label\": [" + label + "]";
 		
 		Response response = makeGetRequest(
-			"v1.27/containers/json?" + labelFilter);
+			"v1.27/containers/json?filters={" + statusFilter + labelFilter + "}");
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() == 404) { // not an error - means no containers found
