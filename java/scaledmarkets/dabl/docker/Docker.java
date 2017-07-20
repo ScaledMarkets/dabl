@@ -358,9 +358,11 @@ public class Docker {
 		
 		System.out.println("Destroying conatiners matching pattern " + namePattern);  // debug
 		DockerContainer[] containers = getContainers(namePattern, label);
+		System.out.println("Destroying " + containers.length + " containers...");
 		for (DockerContainer container : containers) {
 			destroyContainer(container.getContainerId());
 		}
+		System.out.println("...containers destroyed.");
 	}
 	
 	/**
