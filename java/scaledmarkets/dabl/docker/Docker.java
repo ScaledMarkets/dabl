@@ -484,8 +484,8 @@ public class Docker {
 		String labelFilter = "";
 		if (label != null) labelFilter = ",%22label%22:[" + label + "]";
 		
-		Response response = makeGetRequest(
-			"v1.27/containers/json?filters={" + statusFilter + labelFilter + "}");
+		Response response = makeGetRequest("v1.27/containers/json",
+			new String[] { "filters", "{" + statusFilter + labelFilter + "}" } );
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() == 404) { // not an error - means no containers found
@@ -566,7 +566,7 @@ public class Docker {
 	/**
 	 * Perform a GET request to the docker daemon.
 	 */
-	protected Response makeGetRequest(String path) {
+	protected Response makeGetRequest(String path, String[]... params) {
 		
 		// debug
 		System.out.println("Making get request to docker daemon: " + path);
@@ -574,6 +574,12 @@ public class Docker {
 
 		
 		WebTarget target = this.endpoint.path(path);
+		
+		for (String[] keyValuePair : params) {
+			if (keyValuePair.length != 2) throw new RuntimeException(
+				"Expected a key, value pair; found: " + keyValuePair.toString());
+			target = target.queryParam(keyValuePair[0], keyValuePair[1]);
+		}
 		
 		Invocation.Builder invocationBuilder =
 			target.request(MediaType.TEXT_PLAIN_TYPE);
