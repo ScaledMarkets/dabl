@@ -477,20 +477,22 @@ public class Docker {
 	 * matching is done using the Java regex Pattern methods.
 	 * Label may be a key name, or a key=value string.
 	 * Docker code is at:
+	 	https://github.com/moby/moby/blob/master/api/server/httputils/httputils.go
 	 	https://github.com/moby/moby/blob/ff4f700f74450018f36d014f3cde0ff1b9c17fb3/api/server/router/container/container_routes.go
 	 */
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
 		String statusFilter = "\"status\":[" +
-//			"\"created\",\"restarting\",\"running\",\"paused\",\"dead\"," +
-			"\"exited\"]";
+//			"\"created\",\"restarting\",\"exited\",\"paused\",\"dead\"," +
+			"\"running\"]";
 
 		String labelFilter = "";
 		if (label != null) labelFilter = ",\"label\":[" + label + "]";
 		
 		Response response = makePostRequest("v1.27/containers/json",
 			MediaType.APPLICATION_JSON_TYPE,
-			"\"filters\": {" + statusFilter + labelFilter + "}" );
+			"\"filters\": {" + statusFilter + labelFilter + "}",
+			new String[] { "all", "true" } );
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() == 404) { // not an error - means no containers found
