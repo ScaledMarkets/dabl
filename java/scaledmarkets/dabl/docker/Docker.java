@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
-//import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.client.*;
@@ -28,7 +27,6 @@ import javax.json.JsonValue;
 import javax.json.JsonArray;
 import javax.json.JsonNumber;
 import javax.json.JsonString;
-
 
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.Registry;
@@ -484,8 +482,8 @@ public class Docker {
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
 		String statusFilter = "\"status\":[" +
-			"\"created\",\"restarting\",\"running\",\"paused\"," +
-			"\"exited\",\"dead\"]";
+//			"\"created\",\"restarting\",\"running\",\"paused\",\"dead\"," +
+			"\"exited\"]";
 
 		String labelFilter = "";
 		if (label != null) labelFilter = ",\"label\":[" + label + "]";
