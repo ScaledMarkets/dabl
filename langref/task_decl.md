@@ -254,7 +254,7 @@ still a path for data to enter the task.
 
 ### Task Lifecycle Model
 
-A task is only executed if its `when` condition is met.
+A task is only executed if its inputs change, and its `when` condition is then met.
 
 If an error occurs while performing a task procedural statement, the default behavior
 is to terminate the task. However, an error handler can be installed using the `on` keyword.
