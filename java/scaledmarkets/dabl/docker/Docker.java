@@ -474,6 +474,8 @@ public class Docker {
 	 * Obtain the containers with the specified name pattern or label. Pattern
 	 * matching is done using the Java regex Pattern methods.
 	 * Label may be a key name, or a key=value string.
+	 * Docker code is at:
+	 	https://github.com/moby/moby/blob/ff4f700f74450018f36d014f3cde0ff1b9c17fb3/api/server/router/container/container_routes.go
 	 */
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
@@ -484,7 +486,7 @@ public class Docker {
 		String labelFilter = "";
 		if (label != null) labelFilter = ",\"label\":[" + label + "]";
 		
-		Response response = makeGetRequest("v1.27/containers/json",
+		Response response = makePostRequest("v1.27/containers/json", null,
 			new String[] { "filters", "{" + statusFilter + labelFilter + "}" } );
 		
 		// Verify success and obtain container Id.
