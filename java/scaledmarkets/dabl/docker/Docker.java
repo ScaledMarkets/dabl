@@ -12,8 +12,9 @@ import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
-import javax.ws.rs.core.*;
+//import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.client.*;
 
 import javax.json.Json;
@@ -27,6 +28,7 @@ import javax.json.JsonValue;
 import javax.json.JsonArray;
 import javax.json.JsonNumber;
 import javax.json.JsonString;
+
 
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.Registry;
@@ -51,6 +53,7 @@ import org.glassfish.jersey.CommonProperties;
 	
 	Jersey API reference:
 	https://jersey.java.net/apidocs/latest/jersey/index.html
+	https://docs.oracle.com/javaee/7/api/
 	
 	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/UnixConnectionSocketFactory.java
 	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/DockerCmdExecFactoryImpl.java
@@ -256,7 +259,7 @@ public class Docker {
 		
 		// Tell docker to create container, and get resulting container Id.
 		Response response = makePostRequest(
-			"v1.27/containers/create", jsonPayload,
+			"v1.27/containers/create", MediaType.APPLICATION_JSON_TYPE, jsonPayload,
 				new String[] { "name", containerName } );
 		
 		System.out.println("response status=" + response.getStatus());
@@ -284,7 +287,7 @@ public class Docker {
 	public void startContainer(String containerId) throws Exception {
 		
 		Response response = makePostRequest(
-			"v1.27/containers/" + containerId + "/start", null);
+			"v1.27/containers/" + containerId + "/start", null, null);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -307,7 +310,8 @@ public class Docker {
 		}
 		
 		Response response = makePostRequest(
-			"v1.27/containers/" + containerId + "/attach", inputString,
+			"v1.27/containers/" + containerId + "/attach", 
+			MediaType.TEXT_PLAIN_TYPE, inputString,
 			new String[] { "stream", "logs" },
 			new String[] { "stdin", "true" },
 			new String[] { "stdout", "true" },
@@ -330,7 +334,7 @@ public class Docker {
 
 		System.out.println("Stopping container " + containerId);  // debug
 		Response response = makePostRequest(
-			"v1.27/containers/" + containerId + "/stop", null);
+			"v1.27/containers/" + containerId + "/stop", null, null);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -486,8 +490,9 @@ public class Docker {
 		String labelFilter = "";
 		if (label != null) labelFilter = ",\"label\":[" + label + "]";
 		
-		Response response = makePostRequest("v1.27/containers/json", null,
-			new String[] { "filters", "{" + statusFilter + labelFilter + "}" } );
+		Response response = makePostRequest("v1.27/containers/json",
+			MediaType.APPLICATION_JSON_TYPE,
+			"\"filters\": {" + statusFilter + labelFilter + "}" );
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() == 404) { // not an error - means no containers found
@@ -599,7 +604,8 @@ public class Docker {
 	 * Perform a POST request to the docker daemon. Query parameters are provided
 	 * as a Map, or may be null. body may be null.
 	 */
-	protected Response makePostRequest(String path, String body, String[]... params) {
+	protected Response makePostRequest(String path, MediaType contentType,
+		String body, String[]... params) {
 		
 		// debug
 		System.out.println("Making post request to docker daemon: " + path);
@@ -628,7 +634,7 @@ public class Docker {
 		if (body == null) {
 			response = invocationBuilder.post(null);
 		} else {
-			Entity<String> entity = Entity.json(body);
+			Entity<String> entity = Entity.entity(body, contentType);
 			Invocation invocation = invocationBuilder.buildPost(entity);
 			response = invocation.invoke();
 		}
