@@ -39,7 +39,7 @@ import org.glassfish.jersey.CommonProperties;
 
 /*
 	Docker REST API reference:
-	https://docs.docker.com/engine/api/v1.27/
+	https://docs.docker.com/engine/api/v1.30/
 	
 	Docker privileged container:
 	https://blog.docker.com/2013/09/docker-can-now-run-within-docker/
@@ -65,6 +65,8 @@ import org.glassfish.jersey.CommonProperties;
  * by DABL.
  */
 public class Docker {
+	
+	private static final String DockerEngineAPIVersion = "v1.30";
 	
 	/** Normally, this is a unix socket URL. */
 	public static String DefaultDockerURL = "unix:///var/run/docker.sock";
@@ -149,7 +151,7 @@ public class Docker {
 	
 	/**
 	 * 
-	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
+	 * Ref: https://docs.docker.com/engine/api/v1.30/#operation/ContainerCreate
 	 */
 	public DockerContainer createContainer2(String imageIdOrName, String containerName,
 		String hostPathToMap, String containerPathToMap, boolean enableNetworking,
@@ -162,7 +164,7 @@ public class Docker {
 	
 	/**
 	 * 
-	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerCreate
+	 * Ref: https://docs.docker.com/engine/api/v1.30/#operation/ContainerCreate
 	 */
 	public DockerContainer createContainer(String imageIdOrName, String containerName,
 		String[] hostPathsToMap, String[] containerPathsToMap, boolean enableNetworking,
@@ -257,8 +259,8 @@ public class Docker {
 		
 		// Tell docker to create container, and get resulting container Id.
 		Response response = makePostRequest(
-			"v1.27/containers/create", MediaType.APPLICATION_JSON_TYPE, jsonPayload,
-				new String[] { "name", containerName } );
+			DockerEngineAPIVersion + "/containers/create", MediaType.APPLICATION_JSON_TYPE,
+				jsonPayload, new String[] { "name", containerName } );
 		
 		System.out.println("response status=" + response.getStatus());
 		System.out.println("response message=" + response.getStatusInfo().getReasonPhrase());  // debug
@@ -285,7 +287,7 @@ public class Docker {
 	public void startContainer(String containerId) throws Exception {
 		
 		Response response = makePostRequest(
-			"v1.27/containers/" + containerId + "/start", null, null);
+			DockerEngineAPIVersion + "/containers/" + containerId + "/start", null, null);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -293,7 +295,7 @@ public class Docker {
 	
 	/**
 	 * Attach to container.
-	 * Ref: https://docs.docker.com/engine/api/v1.27/#operation/ContainerAttach
+	 * Ref: https://docs.docker.com/engine/api/v1.30/#operation/ContainerAttach
 	 * This method will block until the container has read all of its input.
 	 */
 	public InputStream connectToContainer(String containerId, InputStream input) throws Exception {
@@ -308,7 +310,7 @@ public class Docker {
 		}
 		
 		Response response = makePostRequest(
-			"v1.27/containers/" + containerId + "/attach", 
+			DockerEngineAPIVersion + "/containers/" + containerId + "/attach", 
 			MediaType.TEXT_PLAIN_TYPE, inputString,
 			new String[] { "stream", "logs" },
 			new String[] { "stdin", "true" },
@@ -332,7 +334,7 @@ public class Docker {
 
 		System.out.println("Stopping container " + containerId);  // debug
 		Response response = makePostRequest(
-			"v1.27/containers/" + containerId + "/stop", null, null);
+			DockerEngineAPIVersion + "/containers/" + containerId + "/stop", null, null);
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -346,7 +348,8 @@ public class Docker {
 		if (containerIsRunning(containerId)) stopContainer(containerId);
 		
 		System.out.println("Destroying container " + containerId);  // debug
-		Response response = makeDeleteRequest("v1.27/containers/" + containerId);
+		Response response = makeDeleteRequest(
+			DockerEngineAPIVersion + "/containers/" + containerId);
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
 	}
@@ -376,7 +379,7 @@ public class Docker {
 	public boolean containerIsRunning(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.27/containers/" + containerId + "/json");
+			DockerEngineAPIVersion + "/containers/" + containerId + "/json");
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -394,7 +397,7 @@ public class Docker {
 	public boolean containerExited(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.27/containers/" + containerId + "/json");
+			DockerEngineAPIVersion + "/containers/" + containerId + "/json");
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -415,7 +418,7 @@ public class Docker {
 	public boolean containerExists(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.27/containers/" + containerId + "/json");
+			DockerEngineAPIVersion + "/containers/" + containerId + "/json");
 		
 		if (response.getStatus() >= 500) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -430,7 +433,7 @@ public class Docker {
 	public int getExitStatus(String containerId) throws Exception {
 		
 		Response response = makeGetRequest(
-			"v1.27/containers/" + containerId + "/json");
+			DockerEngineAPIVersion + "/containers/" + containerId + "/json");
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -479,6 +482,9 @@ public class Docker {
 	 * Docker code is at:
 	 	https://github.com/moby/moby/blob/master/api/server/httputils/httputils.go
 	 	https://github.com/moby/moby/blob/ff4f700f74450018f36d014f3cde0ff1b9c17fb3/api/server/router/container/container_routes.go
+	 	https://github.com/moby/moby/blob/f96d45dc8ac21db1f082230e2f828a86e15cad46/client/container_list.go
+	 	https://github.com/moby/moby/blob/f96d45dc8ac21db1f082230e2f828a86e15cad46/api/types/filters/parse.go
+	 	https://github.com/moby/moby/blob/ff4f700f74450018f36d014f3cde0ff1b9c17fb3/client/request.go
 	 */
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
@@ -489,9 +495,12 @@ public class Docker {
 		String labelFilter = "";
 		if (label != null) labelFilter = ",\"label\":[" + label + "]";
 		
-		Response response = makePostRequest("v1.27/containers/json",
-			MediaType.APPLICATION_JSON_TYPE,
-			"\"filters\": {" + statusFilter + labelFilter + "}",
+		Response response = makeGetRequest(DockerEngineAPIVersion + "/containers/json",
+//			MediaType.APPLICATION_JSON_TYPE,
+//"\"filters\": {}"
+//			"\"filters\": {" + statusFilter + labelFilter + "}"
+//, new String[] { "limit", "-1" }
+//,
 			new String[] { "all", "true" } );
 		
 		// Verify success and obtain container Id.
@@ -533,11 +542,11 @@ public class Docker {
 	/**
 	 * Return a list, for which each element of the list represents an image,
 	 * and is a list of the names of that image.
-	 * See https://docs.docker.com/engine/api/v1.27/#operation/ImageList
+	 * See https://docs.docker.com/engine/api/v1.30/#operation/ImageList
 	 */
 	public List<List<String>> getImages() throws Exception {
 		
-		Response response = makeGetRequest("v1.27/images/json");
+		Response response = makeGetRequest(DockerEngineAPIVersion + "/images/json");
 		
 		// Verify success and obtain container Id.
 		if (response.getStatus() >= 300) throw new Exception(

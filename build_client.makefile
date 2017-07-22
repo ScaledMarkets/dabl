@@ -6,7 +6,7 @@
 #	jar_dir, main_class, PRODUCT_NAME, DABL_VERSION, ORG, BUILD_TAG, JAR_NAME,
 #	classfiles, JAR, javadoc_dir, JAVADOC, src_dir, sable_dabl_out_dir, package_name
 
-all: clean jar javadoc
+all: clean jar #javadoc
 
 .PHONY: compile clean manifest javadoc
 
