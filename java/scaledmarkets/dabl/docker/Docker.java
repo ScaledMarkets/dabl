@@ -479,6 +479,8 @@ public class Docker {
 	 * Obtain the containers with the specified name pattern or label. Pattern
 	 * matching is done using the Java regex Pattern methods.
 	 * Label may be a key name, or a key=value string.
+	 * To list all containers using curl:
+	 *	curl --unix-socket /var/run/docker.sock -X GET "http:/v1.24/containers/json?all=true"
 	 * Docker code is at:
 	 	https://github.com/moby/moby/blob/master/api/server/httputils/httputils.go
 	 	https://github.com/moby/moby/blob/ff4f700f74450018f36d014f3cde0ff1b9c17fb3/api/server/router/container/container_routes.go
