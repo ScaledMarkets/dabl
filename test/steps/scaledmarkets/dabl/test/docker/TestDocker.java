@@ -31,31 +31,37 @@ public class TestDocker extends TestBase {
 	
 	protected void initOnce() throws Exception {
 		if (initialized) return;
+		System.out.println("Initializing TestDocker...");
 		initialized = true;
 		Docker docker = Docker.connect();
 		try {
-			int n = docker.destroyContainers("*", null);
+			int n = docker.destroyContainers(".+", null);
 			System.out.println(n + " containers have been destroyed");
 		} finally {
 			docker.close();
 		}
+		System.out.println("...TestDocker initialized.");
 	}
 	
 	@Before("@docker")
 	public void beforeEachScenario() throws Exception {
 		//(new Exception("In TestDocker.beforeEachScenario")).printStackTrace();
 		initOnce();
+		System.out.println("Initializing scenario...");
 		this.docker = Docker.connect();
+		System.out.println("...scenario initialized.");
 	}
 	
 	@After("@docker")
 	public void afterEachScenario() throws Exception {
+		System.out.println("Finalizing scenario...");
 		try {
-			int n = docker.destroyContainers("*", null);
+			int n = docker.destroyContainers(".+", null);
 			System.out.println(n + " containers have been destroyed");
 		} finally {
 			docker.close();
 		}
+		System.out.println("...scenario finalized.");
 	}
 
 	
@@ -96,7 +102,7 @@ public class TestDocker extends TestBase {
 	public void i_make_a_create_container_request_to_docker() throws Exception {
 		DockerContainer container = docker.createContainer(
 			"alpine:latest", "MyContainer31", null, null, false, null);
-		docker.destroyContainers("MyContainer31", null);
+		docker.destroyContainers("/MyContainer31", null);
 	}
 	
 	
@@ -155,6 +161,7 @@ public class TestDocker extends TestBase {
 	// Sceanrio 6: Destroy containers
 	@Given("^that I have created two containers and one is running$")
 	public void that_i_have_created_two_containers_and_one_is_running() throws Exception {
+		System.out.println("Entered Scenario 6 Given condition...");
 		this.container61 = docker.createContainer(
 			"alpine", "MyContainer61", null, null, false, null);
 		this.container62 = docker.createContainer(
@@ -162,17 +169,22 @@ public class TestDocker extends TestBase {
 		this.container61.start();
 		assertThat(this.container61.isRunning(), "container61 is not running");
 		assertThat(! this.container62.isRunning(), "container62 is running");
+		System.out.println("...leaving Scenario 6 Given condition.");
 	}
 	
 	@When("^I request to destroy the stopped container$")
 	public void i_request_to_destroy_the_stopped_container() throws Exception {
+		System.out.println("Entered Scenario 6 When condition...");
 		this.container62.destroy();
+		System.out.println("...leaving Scenario 6 When condition.");
 	}
 	
 	@And("^the destroyed container no longer exists$")
 	public void the_destroyed_container_no_longer_exists() throws Exception {
+		System.out.println("Entered Scenario 6 And condition...");
 		assertThat(container61.exists(), "container61 does not exist");
 		assertThat(! container62.exists(), "container62 exists");
+		System.out.println("...leaving Scenario 6 And condition.");
 	}
 	
 	

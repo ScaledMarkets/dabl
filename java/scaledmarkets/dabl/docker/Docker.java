@@ -526,6 +526,8 @@ public class Docker {
 			if (namePattern != null) {
 				for (JsonValue v : names) {
 					String name = ((JsonString)v).getString();
+					System.out.println("namePattern=" + namePattern); // debug
+					System.out.println("name=" + name); // debug
 					if (Pattern.matches(namePattern, name)) {
 						String id = containerDesc.getString("Id");
 						containers.add(new DockerContainer(this, id));
