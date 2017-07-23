@@ -50,7 +50,7 @@ import org.glassfish.jersey.CommonProperties;
 	https://docs.oracle.com/javaee/7/api/toc.htm
 	
 	Jersey API reference:
-	https://jersey.java.net/apidocs/latest/jersey/index.html
+	https://jersey.github.io/apidocs/1.19.1/jersey/index.html
 	https://docs.oracle.com/javaee/7/api/
 	
 	https://github.com/oleg-nenashev/docker-java-1.6/blob/master/src/main/java/com/github/dockerjava/jaxrs/UnixConnectionSocketFactory.java
@@ -143,6 +143,7 @@ public class Docker {
 	public String ping() throws Exception {
 		
 		Response response = makeGetRequest("_ping");
+		response.close();
 		
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
@@ -258,22 +259,28 @@ public class Docker {
 		String jsonPayload = stWriter.toString();
 		
 		// Tell docker to create container, and get resulting container Id.
-		Response response = makePostRequest(
-			DockerEngineAPIVersion + "/containers/create", MediaType.APPLICATION_JSON_TYPE,
-				jsonPayload, new String[] { "name", containerName } );
-		
-		System.out.println("response status=" + response.getStatus());
-		System.out.println("response message=" + response.getStatusInfo().getReasonPhrase());  // debug
-		
-		// Verify success and obtain container Id.
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
-		
-		// Parse response and obtain the Id of the new container.
-		String responseBody = response.readEntity(String.class);
-		JsonReader reader = Json.createReader(new StringReader(responseBody));
-		JsonStructure json = reader.read();
-		String containerId = ((JsonObject)json).getString("Id");
+		String containerId;
+		Response response = null;
+		try {
+			response = makePostRequest(
+				DockerEngineAPIVersion + "/containers/create", MediaType.APPLICATION_JSON_TYPE,
+					jsonPayload, new String[] { "name", containerName } );
+			
+			System.out.println("response status=" + response.getStatus());
+			System.out.println("response message=" + response.getStatusInfo().getReasonPhrase());  // debug
+			
+			// Verify success and obtain container Id.
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+			
+			// Parse response and obtain the Id of the new container.
+			String responseBody = response.readEntity(String.class);
+			JsonReader reader = Json.createReader(new StringReader(responseBody));
+			JsonStructure json = reader.read();
+			containerId = ((JsonObject)json).getString("Id");
+		} finally {
+			response.close();
+		}
 		
 		// Wrap the container Id in an object that we can return.
 		DockerContainer container = new DockerContainer(this, containerId);
@@ -286,11 +293,16 @@ public class Docker {
 	 */
 	public void startContainer(String containerId) throws Exception {
 		
-		Response response = makePostRequest(
-			DockerEngineAPIVersion + "/containers/" + containerId + "/start", null, null);
-		
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
+		Response response = null;
+		try {
+			response = makePostRequest(
+				DockerEngineAPIVersion + "/containers/" + containerId + "/start", null, null);
+			
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+		} finally {
+			response.close();
+		}
 	}
 	
 	/**
@@ -333,11 +345,16 @@ public class Docker {
 	public void stopContainer(String containerId) throws Exception {
 
 		System.out.println("Stopping container " + containerId);  // debug
-		Response response = makePostRequest(
-			DockerEngineAPIVersion + "/containers/" + containerId + "/stop", null, null);
-		
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
+		Response response = null;
+		try {
+			response = makePostRequest(
+				DockerEngineAPIVersion + "/containers/" + containerId + "/stop", null, null);
+			
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+		} finally {
+			response.close();
+		}
 	}
 	
 	/**
@@ -348,10 +365,15 @@ public class Docker {
 		if (containerIsRunning(containerId)) stopContainer(containerId);
 		
 		System.out.println("Destroying container " + containerId);  // debug
-		Response response = makeDeleteRequest(
+		Response response = null;
+		try {
+			response = makeDeleteRequest(
 			DockerEngineAPIVersion + "/containers/" + containerId);
 		if (response.getStatus() >= 300) throw new Exception(
 			response.getStatusInfo().getReasonPhrase());
+		} finally {
+			response.close();
+		}
 	}
 	
 	/**
@@ -378,16 +400,22 @@ public class Docker {
 	 */
 	public boolean containerIsRunning(String containerId) throws Exception {
 		
-		Response response = makeGetRequest(
-			DockerEngineAPIVersion + "/containers/" + containerId + "/json");
+		Response response = null;
+		JsonObject json;
+		try {
+			response = makeGetRequest(
+				DockerEngineAPIVersion + "/containers/" + containerId + "/json");
 		
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
-		
-		// Parse response.
-		String responseBody = response.readEntity(String.class);
-		JsonReader reader = Json.createReader(new StringReader(responseBody));
-		JsonObject json = (JsonObject)(reader.read());
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+			
+			// Parse response.
+			String responseBody = response.readEntity(String.class);
+			JsonReader reader = Json.createReader(new StringReader(responseBody));
+			json = (JsonObject)(reader.read());
+		} finally {
+			response.close();
+		}
 		
 		JsonObject state = json.getJsonObject("State");
 		boolean running = state.getBoolean("Running");
@@ -396,16 +424,22 @@ public class Docker {
 	
 	public boolean containerExited(String containerId) throws Exception {
 		
-		Response response = makeGetRequest(
-			DockerEngineAPIVersion + "/containers/" + containerId + "/json");
+		Response response = null;
+		JsonObject json;
+		try {
+			response = makeGetRequest(
+				DockerEngineAPIVersion + "/containers/" + containerId + "/json");
 		
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
-		
-		// Parse response.
-		String responseBody = response.readEntity(String.class);
-		JsonReader reader = Json.createReader(new StringReader(responseBody));
-		JsonObject json = (JsonObject)(reader.read());
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+			
+			// Parse response.
+			String responseBody = response.readEntity(String.class);
+			JsonReader reader = Json.createReader(new StringReader(responseBody));
+			json = (JsonObject)(reader.read());
+		} finally {
+			response.close();
+		}
 		
 		JsonObject state = json.getJsonObject("State");
 		String status = state.getString("Status");
@@ -417,48 +451,61 @@ public class Docker {
 	 */
 	public boolean containerExists(String containerId) throws Exception {
 		
-		Response response = makeGetRequest(
-			DockerEngineAPIVersion + "/containers/" + containerId + "/json");
+		Response response = null;
+		try {
+			response = makeGetRequest(
+				DockerEngineAPIVersion + "/containers/" + containerId + "/json");
 		
-		if (response.getStatus() >= 500) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
+			if (response.getStatus() >= 500) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+			
+			if (response.getStatus() >= 400) return false;
+			
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+		} finally {
+			response.close();
+		}
 		
-		if (response.getStatus() >= 400) return false;
-		
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
 		return true;
 	}
 	
 	public int getExitStatus(String containerId) throws Exception {
 		
-		Response response = makeGetRequest(
-			DockerEngineAPIVersion + "/containers/" + containerId + "/json");
+		Response response = null;
+		String responseBody;
+		try {
+			response = makeGetRequest(
+				DockerEngineAPIVersion + "/containers/" + containerId + "/json");
 		
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
-		
-		// Obtain the "State" JSON object, and from that obtain the
-		// "Status" and the ExitCode.
-		/*
-		"State": 
-		{
-			"Error": "",
-			"ExitCode": 9,
-			"FinishedAt": "2015-01-06T15:47:32.080254511Z",
-			"OOMKilled": false,
-			"Dead": false,
-			"Paused": false,
-			"Pid": 0,
-			"Restarting": false,
-			"Running": true,
-			"StartedAt": "2015-01-06T15:47:32.072697474Z",
-			"Status": "running"
-		},
-		*/
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+			
+			// Obtain the "State" JSON object, and from that obtain the
+			// "Status" and the ExitCode.
+			/*
+			"State": 
+			{
+				"Error": "",
+				"ExitCode": 9,
+				"FinishedAt": "2015-01-06T15:47:32.080254511Z",
+				"OOMKilled": false,
+				"Dead": false,
+				"Paused": false,
+				"Pid": 0,
+				"Restarting": false,
+				"Running": true,
+				"StartedAt": "2015-01-06T15:47:32.072697474Z",
+				"Status": "running"
+			},
+			*/
+			
+			responseBody = response.readEntity(String.class);
+		} finally {
+			response.close();
+		}
 		
 		// Parse response.
-		String responseBody = response.readEntity(String.class);
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
 		JsonObject json = (JsonObject)(reader.read());
 		
@@ -497,23 +544,30 @@ public class Docker {
 		String labelFilter = "";
 		if (label != null) labelFilter = ",\"label\":[" + label + "]";
 		
-		Response response = makeGetRequest(DockerEngineAPIVersion + "/containers/json",
+		Response response = null;
+		String responseBody;
+		try {
+			response = makeGetRequest(DockerEngineAPIVersion + "/containers/json",
 //			MediaType.APPLICATION_JSON_TYPE,
 //"\"filters\": {}"
 //			"\"filters\": {" + statusFilter + labelFilter + "}"
 //, new String[] { "limit", "-1" }
 //,
-			new String[] { "all", "true" } );
+				new String[] { "all", "true" } );
 		
-		// Verify success and obtain container Id.
-		if (response.getStatus() == 404) { // not an error - means no containers found
-			return new DockerContainer[] {};
+			// Verify success and obtain container Id.
+			if (response.getStatus() == 404) { // not an error - means no containers found
+				return new DockerContainer[] {};
+			}
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+			
+			responseBody = response.readEntity(String.class);
+		} finally {
+			response.close();
 		}
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
 		
 		// Parse response.
-		String responseBody = response.readEntity(String.class);
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
 		JsonStructure json = reader.read();
 		
@@ -550,14 +604,21 @@ public class Docker {
 	 */
 	public List<List<String>> getImages() throws Exception {
 		
-		Response response = makeGetRequest(DockerEngineAPIVersion + "/images/json");
+		Response response = null;
+		String responseBody;
+		try {
+			response = makeGetRequest(DockerEngineAPIVersion + "/images/json");
 		
-		// Verify success and obtain container Id.
-		if (response.getStatus() >= 300) throw new Exception(
-			response.getStatusInfo().getReasonPhrase());
+			// Verify success and obtain container Id.
+			if (response.getStatus() >= 300) throw new Exception(
+				response.getStatusInfo().getReasonPhrase());
+			
+			responseBody = response.readEntity(String.class);
+		} finally {
+			response.close();
+		}
 		
 		// Parse response.
-		String responseBody = response.readEntity(String.class);
 		JsonReader reader = Json.createReader(new StringReader(responseBody));
 		JsonStructure json = reader.read();
 		
@@ -590,6 +651,12 @@ public class Docker {
 		
 		// debug
 		System.out.println("Making get request to docker daemon: " + path);
+		System.out.println("\twith params: ");
+		for (String[] keyValuePair : params) {
+			if (keyValuePair.length != 2) throw new RuntimeException(
+				"Expected a key, value pair; found: " + keyValuePair.toString());
+			System.out.println("\t\t" + keyValuePair[0] + "=" + keyValuePair[1]);
+		}
 		// end debug
 
 		
@@ -601,10 +668,12 @@ public class Docker {
 			target = target.queryParam(keyValuePair[0], keyValuePair[1]);
 		}
 		
+		System.out.println("\t...creating invocation builder...");  // debug
 		Invocation.Builder invocationBuilder =
 			target.request(MediaType.TEXT_PLAIN_TYPE);
 		
-		Response response = invocationBuilder.get();
+		System.out.println("\t...performing invocation...");  // debug
+		Response response = invocationBuilder.buildGet().invoke();
 		
 		// debug
 		System.out.println("Performed get request; return status is " + response.getStatus());
@@ -643,9 +712,9 @@ public class Docker {
 		Invocation.Builder invocationBuilder =
 			target.request(MediaType.TEXT_PLAIN_TYPE);
 		
-		Response response;
+		Response response = null;
 		if (body == null) {
-			response = invocationBuilder.post(null);
+			response = invocationBuilder.buildPost(null).invoke();
 		} else {
 			Entity<String> entity = Entity.entity(body, contentType);
 			Invocation invocation = invocationBuilder.buildPost(entity);

@@ -22,33 +22,32 @@ import java.util.LinkedList;
 
 public class TestDocker extends TestBase {
 	
-	private Docker docker;
+	private static Docker docker;
 	private DockerContainer container41, container51, container61, container71;
 	private DockerContainer container42, container52, container62, container72, container73;
 	private DockerContainer[] containers;
-	private boolean initialized = false;
 	private List<List<String>> allImages;
 	
-	protected void initOnce() throws Exception {
-		if (initialized) return;
-		System.out.println("Initializing TestDocker...");
-		initialized = true;
-		Docker docker = Docker.connect();
+	static {
 		try {
-			int n = docker.destroyContainers(".+", null);
-			System.out.println(n + " containers have been destroyed");
-		} finally {
-			docker.close();
+			System.out.println("Initializing TestDocker...");
+			TestDocker.docker = Docker.connect();
+			try {
+				int n = TestDocker.docker.destroyContainers(".+", null);
+				System.out.println(n + " containers have been destroyed");
+			} finally {
+	//			TestDocker.docker.close();
+			}
+			System.out.println("...TestDocker initialized.");
 		}
-		System.out.println("...TestDocker initialized.");
+		catch (Exception ex) { throw new Error(ex); }
 	}
 	
 	@Before("@docker")
 	public void beforeEachScenario() throws Exception {
 		//(new Exception("In TestDocker.beforeEachScenario")).printStackTrace();
-		initOnce();
 		System.out.println("Initializing scenario...");
-		this.docker = Docker.connect();
+//		this.docker = Docker.connect();
 		System.out.println("...scenario initialized.");
 	}
 	
@@ -56,10 +55,10 @@ public class TestDocker extends TestBase {
 	public void afterEachScenario() throws Exception {
 		System.out.println("Finalizing scenario...");
 		try {
-			int n = docker.destroyContainers(".+", null);
+			int n = TestDocker.docker.destroyContainers(".+", null);
 			System.out.println(n + " containers have been destroyed");
 		} finally {
-			docker.close();
+//			TestDocker.docker.close();
 		}
 		System.out.println("...scenario finalized.");
 	}
@@ -68,7 +67,7 @@ public class TestDocker extends TestBase {
 	// Scenario 1: Simple
 	@When("^I make a ping request to docker$")
 	public void i_make_a_ping_request_to_docker() throws Exception {
-		String response = docker.ping();
+		String response = TestDocker.docker.ping();
 	}
 	
 	@Then("^the response is a success$")
@@ -78,7 +77,7 @@ public class TestDocker extends TestBase {
 	// Scenario 2: List images
 	@When("^I get a list of the images$")
 	public void i_get_a_list_of_the_images() throws Exception {
-		this.allImages = docker.getImages();
+		this.allImages = TestDocker.docker.getImages();
 		
 		// debug
 		System.out.println("Images:");
@@ -100,18 +99,18 @@ public class TestDocker extends TestBase {
 	// Scenario 3: Create container
 	@When("^I make a create container request to docker$")
 	public void i_make_a_create_container_request_to_docker() throws Exception {
-		DockerContainer container = docker.createContainer(
+		DockerContainer container = TestDocker.docker.createContainer(
 			"alpine:latest", "MyContainer31", null, null, false, null);
-		docker.destroyContainers("/MyContainer31", null);
+		TestDocker.docker.destroyContainers("/MyContainer31", null);
 	}
 	
 	
 	// Scenario 4: Start container
 	@Given("^that I have created two containers that do nothing$")
 	public void that_i_have_created_two_containers() throws Exception {
-		this.container41 = docker.createContainer(
+		this.container41 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer41", null, null, false, null);
-		this.container42 = docker.createContainer(
+		this.container42 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer42", null, null, false, null);
 	}
 	
@@ -129,9 +128,9 @@ public class TestDocker extends TestBase {
 	// Sceanrio 5: Stop container
 	@Given("^that I have created two containers and both are running$")
 	public void that_i_have_created_two_containers_and_both_are_running() throws Exception {
-		this.container51 = docker.createContainer(
+		this.container51 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer51", null, null, false, null);
-		this.container52 = docker.createContainer(
+		this.container52 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer52", null, null, false, null);
 		this.container51.start();
 		System.out.println("Started container 51");  // debug
@@ -162,9 +161,9 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers and one is running$")
 	public void that_i_have_created_two_containers_and_one_is_running() throws Exception {
 		System.out.println("Entered Scenario 6 Given condition...");
-		this.container61 = docker.createContainer(
+		this.container61 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer61", null, null, false, null);
-		this.container62 = docker.createContainer(
+		this.container62 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer62", null, null, false, null);
 		this.container61.start();
 		assertThat(this.container61.isRunning(), "container61 is not running");
@@ -191,21 +190,26 @@ public class TestDocker extends TestBase {
 	// Scenario 7: Get containers
 	@Given("^that I have created three containers$")
 	public void that_I_have_created_three_containers() throws Exception {
-		this.container71 = docker.createContainer(
+		System.out.println("Entered Scenario 7 Given condition...");
+		this.container71 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer71", null, null, false, null);
-		this.container72 = docker.createContainer(
+		this.container72 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer72", null, null, false, null);
-		this.container73 = docker.createContainer(
+		this.container73 = TestDocker.docker.createContainer(
 			"alpine", "MyContainer73", null, null, false, null);
+		System.out.println("...leaving Scenario 7 Given condition.");
 	}
 	
 	@When("^I request a list of the containers$")
 	public void i_request_a_list_of_the_containers() throws Exception {
-		this.containers = this.docker.getContainers();
+		System.out.println("Entered Scenario 7 When condition...");
+		this.containers = TestDocker.docker.getContainers();
+		System.out.println("...leaving Scenario 7 When condition.");
 	}
 	
 	@Then("^the response lists all three containers$")
 	public void the_response_lists_all_three_containers() throws Exception {
+		System.out.println("Entered Scenario 7 Then condition...");
 		List<String> ids = new LinkedList<String>();
 		for (DockerContainer container : this.containers) {
 			ids.add(container.getContainerId());
@@ -215,5 +219,6 @@ public class TestDocker extends TestBase {
 			ids.contains(this.container72.getContainerId()) &&
 			ids.contains(this.container73.getContainerId()),
 			"response does not list all three containers");
+		System.out.println("...leaving Scenario 7 Then condition.");
 	}
 }

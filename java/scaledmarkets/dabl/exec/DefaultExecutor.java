@@ -160,6 +160,7 @@ public class DefaultExecutor implements Executor {
 					
 					// Send the container's output to this process's stdout.
 					Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
+					containerOutput.close();
 				} finally {
 					if (timer != null) timer.cancel();
 					// Obtain the container's exit status.
