@@ -47,7 +47,7 @@ the [SafeHarbor](https://github.com/ScaledMarkets/SafeHarbor) tool suite.
 Existing “build” languages (e.g., make, ant, maven, gradle, Jenkins “pipeline”)
 leave much to be desired. They tend to be non-[composable](https://en.wikipedia.org/wiki/Composability),
 weakly typed, and have poor extensibility features. As such, they make build processes
-brittle and unreliable and also limit reusability. They also implement a dependency
+brittle and unreliable and also limit reusability. Some (e.g. `gradle`) also implement a dependency
 model in which one defines dependencies between tasks; but what is actually needed
 is a model in which a task depends on artifacts. `make` has such a model, but
 `make`'s model is insufficient for today's complex package hierarchies and today's
