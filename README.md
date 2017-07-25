@@ -47,7 +47,12 @@ the [SafeHarbor](https://github.com/ScaledMarkets/SafeHarbor) tool suite.
 Existing “build” languages (e.g., make, ant, maven, gradle, Jenkins “pipeline”)
 leave much to be desired. They tend to be non-[composable](https://en.wikipedia.org/wiki/Composability),
 weakly typed, and have poor extensibility features. As such, they make build processes
-brittle and unreliable and also limit reusability. Some (e.g. `gradle`) also implement a dependency
+brittle and unreliable and also limit reusability.
+
+Dependency modeling is another problem area. Some tools (e.g., `maven`) do an
+excellent job of modeling dependencies between projects, and we want to provide
+that with DABL. However, dependencies within a project are another matter:
+some (e.g. `gradle`) implement a dependency
 model in which one defines dependencies between tasks; but what is actually needed
 is a model in which a task depends on artifacts. `make` has such a model, but
 `make`'s model is insufficient for today's complex package hierarchies and today's
@@ -218,8 +223,9 @@ Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
 The third party components that are required for building or running DABL are,
 
 * [Jersey](https://jersey.java.net/)
-* JaxRS-RI (part of Jersey 2.0)
-* A modified version of JUnixSocket, obtainable from here (TBD)
+* JaxRS-RI (part of [Jersey](https://jersey.github.io/) 2.0)
+* A modified version of [JUnixSocket](https://github.com/kohlschutter/junixsocket}.
+  The modified version is obtainable from here (TBD).
 * [Apache HTTP client library](https://hc.apache.org/)
 * [JavaxJSON](https://jsonp.java.net/)
 
