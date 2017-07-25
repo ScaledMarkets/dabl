@@ -47,7 +47,11 @@ the [SafeHarbor](https://github.com/ScaledMarkets/SafeHarbor) tool suite.
 Existing “build” languages (e.g., make, ant, maven, gradle, Jenkins “pipeline”)
 leave much to be desired. They tend to be non-[composable](https://en.wikipedia.org/wiki/Composability),
 weakly typed, and have poor extensibility features. As such, they make build processes
-brittle and unreliable and also limit reusability.
+brittle and unreliable and also limit reusability. They also implement a dependency
+model in which one defines dependencies between tasks; but what is actually needed
+is a model in which a task depends on artifacts. `make` has such a model, but
+`make`'s model is insufficient for today's complex package hierarchies and today's
+repositories.
 
 Another problem with existing build languages is that they don't promote idempotency.
 That is, it is common that build systems operate on a "workspace" or current
@@ -83,6 +87,8 @@ For robust infrastructure code, a better model than current practice is needed, 
 	in order to promote reuse, *extensibility, composability, and idempotency*.
 * **Provides isolation**: The build language defines **isolation for tasks**, with **clearly defined inputs
 	and outputs** and **no side effects**. Google refers to this as being *hermetic*.
+* **Artifact centric**: Dependencies on artifacts can be easily specified, including
+	artifacts that exist in repositories, and that consist of file hierarchies.
 * **Unambiguous**: The build language is **concise but not cryptic**, and encourages the definition of
 	**builds that are easy to read and understand**, and that are **unambiguous**.
 	Cryptic syntaxes and semantic subtleties are not appropriate for a build language,
