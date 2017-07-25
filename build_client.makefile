@@ -57,9 +57,9 @@ manifest:
 	echo "Implementation-Vendor: $(ORG)" >> Manifest
 
 $(jar_dir)/$(JAR_NAME).jar: manifest compile $(jar_dir)
-	$(JAR) cvfm $(jar_dir)/$(JAR_NAME).jar Manifest .dabl.properties \
+	$(JAR) cfm $(jar_dir)/$(JAR_NAME).jar Manifest .dabl.properties \
 		-C $(client_build_dir) scaledmarkets
-	$(JAR) uvf $(jar_dir)/$(JAR_NAME).jar \
+	$(JAR) uf $(jar_dir)/$(JAR_NAME).jar \
 		-C $(parser_build_dir) scaledmarkets
 	rm Manifest
 

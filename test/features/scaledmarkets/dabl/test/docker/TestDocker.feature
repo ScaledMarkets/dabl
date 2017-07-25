@@ -44,3 +44,33 @@ Feature: TestDocker
 		Given that I have created three containers
 		When I request a list of the containers
 		Then the response lists all three containers
+	
+	Scenario: Test getting a list of the containers that match a name pattern
+	
+	Scenario: Test use of getContainers with a label argument
+	
+	Scenario: Test connecting to a container
+	
+	Scenario: Test destrying containers that match a name pattern
+	
+	Scenario: Test checking if a container is running
+	
+	Scenario: Test checking if a container has exited
+	
+	Scenario: Test checking if a container exists
+	
+	Scenario: Test obtaining a container's exit status
+	
+	Scenario: Test providing environment variables when creating a container
+	
+	Scenario: Test providing a directory mapping when creating a container
+	
+	Scenario: Test providing multiple directory mappings when creating a container
+	
+	Scenario: Test creating a container with networking enabled
+	
+	Scenario: Verify that a container without networking cannot access a network
+	
+	
+	
+	

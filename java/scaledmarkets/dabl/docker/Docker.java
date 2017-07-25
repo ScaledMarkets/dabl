@@ -537,22 +537,13 @@ public class Docker {
 	 */
 	public DockerContainer[] getContainers(String namePattern, String label) throws Exception {
 		
-		String statusFilter = "\"status\":[" +
-//			"\"created\",\"restarting\",\"exited\",\"paused\",\"dead\"," +
-			"\"running\"]";
-
 		String labelFilter = "";
-		if (label != null) labelFilter = ",\"label\":[" + label + "]";
+		if (label != null) labelFilter = "\"label\":[" + label + "]";
 		
 		Response response = null;
 		String responseBody;
 		try {
 			response = makeGetRequest(DockerEngineAPIVersion + "/containers/json",
-//			MediaType.APPLICATION_JSON_TYPE,
-//"\"filters\": {}"
-//			"\"filters\": {" + statusFilter + labelFilter + "}"
-//, new String[] { "limit", "-1" }
-//,
 				new String[] { "all", "true" } );
 		
 			// Verify success and obtain container Id.
@@ -646,6 +637,7 @@ public class Docker {
 	
 	/**
 	 * Perform a GET request to the docker daemon.
+	 * IMPORTANT: It is essential to call close() on the Response object.
 	 */
 	protected Response makeGetRequest(String path, String[]... params) {
 		
@@ -685,6 +677,7 @@ public class Docker {
 	/**
 	 * Perform a POST request to the docker daemon. Query parameters are provided
 	 * as a Map, or may be null. body may be null.
+	 * IMPORTANT: It is essential to call close() on the Response object.
 	 */
 	protected Response makePostRequest(String path, MediaType contentType,
 		String body, String[]... params) {
@@ -731,6 +724,7 @@ public class Docker {
 
 	/**
 	 * Perform a DELETE request to the docker daemon.
+	 * IMPORTANT: It is essential to call close() on the Response object.
 	 */
 	protected Response makeDeleteRequest(String path) {
 		

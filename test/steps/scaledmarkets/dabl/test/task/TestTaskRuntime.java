@@ -40,13 +40,9 @@ public class TestTaskRuntime extends TestBase {
 		
 		Reader reader = new StringReader(
 "namespace simple \n" +
-"repo my_repository type \"" + this.repoType + "\" scheme \"https\" path \"github.com/myteam\"\n" +
-"  userid \"GitUserId\" password \"GitPassword\" \n" +
 "task " + TaskName + "\n" +
 "  when true\n" +
-"  inputs of \"project1\" in my_git include \"x\"\n" +
-"  outputs of \"project2\" in my_git include \"y\"\n" +
-"  abc = ff true"
+"  report \"task " + TaskName + " done.\""
 			);
 		
 		Dabl dabl = new Dabl(false, true, true, reader);

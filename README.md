@@ -4,6 +4,10 @@
 
 Under active development. See the [DABL Roadmap](Roadmap).
 
+# Open Source License
+
+See [package-info.java](java/scaledmarkets/dabl/package-info.java).
+
 # What Is DABL?
 
 DABL stands for "Dependent Artifact Build Language". It is a language for defining

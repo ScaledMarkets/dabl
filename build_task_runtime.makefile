@@ -36,7 +36,7 @@ task_manifest:
 taskjar: $(jar_dir)/$(TASK_JAR_NAME).jar $(jar_dir)
 
 $(jar_dir)/$(TASK_JAR_NAME).jar: $(task_classfiles) task_manifest $(jar_dir)
-	$(JAR) cvfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest -C $(task_build_dir) scaledmarkets
+	$(JAR) cfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest -C $(task_build_dir) scaledmarkets
 	rm Manifest
 
 # Build and push container image for task runtime.
