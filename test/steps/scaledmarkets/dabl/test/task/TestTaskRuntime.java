@@ -41,8 +41,7 @@ public class TestTaskRuntime extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple \n" +
 "task " + TaskName + "\n" +
-"  when true\n" +
-"  report \"task " + TaskName + " done.\""
+"  when true\n"
 			);
 		
 		Dabl dabl = new Dabl(false, true, true, reader);

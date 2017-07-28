@@ -116,22 +116,28 @@ public class DefaultExecutor implements Executor {
 				Set<Artifact> outputs = task.getOutputs();
 				
 				// Create a new private temp directory.
+				if (verbose) System.out.print("Creating private temp directory for workspace...");
 				Set<PosixFilePermission> permSet = PosixFilePermissions.fromString("rwx------");
 				FileAttribute<Set<PosixFilePermission>> attr =
 					PosixFilePermissions.asFileAttribute(permSet);
 				File workspace = Files.createTempDirectory("dabl", attr).toFile();
+				if (verbose) System.out.println("created workspace.");
 				
 				// Obtain inputs and copy them into the workspace.
+				if (verbose) System.out.print("Copying inputs to workspace...");
 				(new ArtifactOperator(this.helper) {
 					protected void operation(PatternSets patternSets) throws Exception {
 						patternSets.getRepo().getFiles(patternSets, workspace);
 					}
 				}).operateOnArtifacts(helper.getPrimaryNamespaceFullName(), task.getName(), inputs);
+				if (verbose) System.out.println("copied inputs.");
 				
 				// Create a container.
+				if (verbose) System.out.print("Creating container for task " + task.getName() + "...");
 				TaskContainer taskContainer =
 					this.taskContainerFactory.createTaskContainer(
 						task, workspace, Utilities.getContainerProperties());
+				if (verbose) System.out.println("created container.");
 				
 				// Set a timer to interrupt the task after the timeout period.
 				Timer timer = null;
@@ -153,7 +159,8 @@ public class DefaultExecutor implements Executor {
 					};
 					timer.schedule(timerTask, ms);
 				}
-		
+				
+				if (verbose) System.out.print("Executing container...");
 				try {
 					// Execute the task in the container.
 					InputStream containerOutput = taskContainer.execute();
@@ -162,6 +169,7 @@ public class DefaultExecutor implements Executor {
 					Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
 					containerOutput.close();
 				} finally {
+					if (verbose) System.out.println("container exited.");
 					if (timer != null) timer.cancel();
 					// Obtain the container's exit status.
 					int exitStatus = taskContainer.getExitStatus();
@@ -171,18 +179,24 @@ public class DefaultExecutor implements Executor {
 				}
 				
 				// Write the outputs from the workspace to the output directories.
+				if (verbose) System.out.print("Transferring container outputs...");
 				(new ArtifactOperator(this.helper) {
 					protected void operation(PatternSets patternSets) throws Exception {
 						patternSets.getRepo().putFiles(workspace, patternSets);
 					}
 				}).operateOnArtifacts(helper.getPrimaryNamespaceFullName(), task.getName(), outputs);
+				if (verbose) System.out.println("outputs transferred.");
 				
 				// Destroy the container, if desired.
+				if (verbose) System.out.print("Destroying container...");
 				taskContainer.destroy();
 				this.taskContainerFactory.containerWasDestroyed(taskContainer);
+				if (verbose) System.out.println("container destroyed.");
 				
 				// Clean up files.
+				if (verbose) System.out.print("Cleaning up...");
 				Utilities.deleteDirectoryTree(workspace.toPath());
+				if (verbose) System.out.println("cleaned up.");
 			}
 			
 			for (Task t_o : task.getConsumers()) {

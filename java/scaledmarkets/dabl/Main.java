@@ -30,6 +30,7 @@ public class Main
 		boolean analysisOnly = false;
 		boolean simulate = false;
 		boolean omitStandard = false;
+		boolean verbose = false;
 
 		int argno = 0;
 		for (;;)
@@ -46,6 +47,7 @@ public class Main
 			else if (arg.equals("-a") || arg.equals("--analysis")) analysisOnly = true;
 			else if (arg.equals("-s") || arg.equals("--simulate")) simulate = true;
 			else if (arg.equals("-o") || arg.equals("--omitstd")) omitStandard = true;
+			else if (arg.equals("-v") || arg.equals("--verbose")) verbose = true;
 			else if (arg.startsWith("-"))
 			{
 				System.out.println("Unrecognized option: " + arg);
@@ -71,11 +73,11 @@ public class Main
 		// Parse input and perform analysis.
 		System.out.println("Processing file " + filename + "...");
 		Reader reader = new FileReader(filename);
-		compile(print, printTrace, analysisOnly, simulate, omitStandard, reader);
+		compile(print, printTrace, analysisOnly, simulate, omitStandard, verbose, reader);
 	}
 	
 	public static CompilerState compile(boolean print, boolean printTrace,
-		boolean analysisOnly, boolean simulate, boolean omitPackageStandard,
+		boolean analysisOnly, boolean simulate, boolean omitPackageStandard, boolean verbose,
 		Reader reader) throws Exception {
 		
 		Dabl dabl = new Dabl(print, printTrace, omitPackageStandard, reader);
@@ -95,7 +97,7 @@ public class Main
 		TaskContainerFactory taskContainerFactory;
 		if (simulate) taskContainerFactory = new TaskSimulatorFactory();
 		else taskContainerFactory = new TaskDockerContainerFactory();
-		Executor exec = new DefaultExecutor(state, taskContainerFactory, simulate);
+		Executor exec = new DefaultExecutor(state, taskContainerFactory, verbose);
 		try {
 			exec.execute();
 		} catch (Exception ex) {
@@ -117,6 +119,7 @@ public class Main
 			"\t\t\t-a or --analysis (analysis only - do not perform any actions)\n" +
 			"\t\t\t-s or --simulate (simulate only - print tasks instead of executing them)\n" +
 			"\t\t\t-o or --omitstd (do not implicitly import package dabl.standard)\n" +
+			"\t\t\t-v or --verbose (print details of each action performed)\n" +
 			"\t\t\t-h or --help"
 			);
 		return;
