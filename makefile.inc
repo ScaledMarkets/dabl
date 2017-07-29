@@ -14,8 +14,14 @@ export TASK_RUNTIME_IMAGE_NAME = scaledmarkets/taskruntime
 
 # Output directories.
 export build_dir = /Transient/dabl
-export task_build_dir = /Transient/dabl_task
 export jar_dir = /Transient/dabl/jars
+
+# User executing this script.
+UserHome := /Users/cliffordberg
+
+# Secrets. (For local use only - if this script is run in a build pipeline,
+# the secrets should be obtained opaquely from a keystore.)
+export DockerhubCredentials = $(UserHome)/Documents/ScaledMarkets/Credentials/SetDockerhubCredentials.sh
 
 # Locations of tools:
 export Library := /Users/cliffordberg/Library

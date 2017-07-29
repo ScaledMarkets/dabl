@@ -37,6 +37,7 @@ export CurDir := $(shell pwd)
 export src_dir := $(CurDir)/java
 export parser_build_dir := $(build_dir)/parser
 export client_build_dir := $(build_dir)/client
+export task_runtime_build_dir := $(build_dir)/task_runtime
 export test_src_dir := $(CurDir)/test
 export test_build_dir := $(CurDir)/buildtest
 export test_package = $(package)/test
@@ -47,8 +48,9 @@ export sable_task_out_dir := $(CurDir)/SableCCTaskOutput
 export javadoc_dir := $(CurDir)/docs
 
 # Java classpaths:
-export buildcp := $(parser_build_dir):$(client_build_dir)
-export compile_tests_cp := $(CUCUMBER_CLASSPATH):$(buildcp)
+export client_compile_cp := $(parser_build_dir):$(client_build_dir)
+export task_runtime_compile_cp := $(parser_build_dir):$(task_runtime_build_dir)
+export compile_tests_cp := $(CUCUMBER_CLASSPATH):$(client_compile_cp)
 export test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
 export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
 
@@ -94,9 +96,18 @@ clean_parser:
 # Build compilers.
 
 
-# Create the directory that will contain the compiled class files.
+# Create the directories that will contain the compiled class files.
 $(build_dir):
 	mkdir $(build_dir)
+
+$(client_build_dir):
+	mkdir $(client_build_dir)
+
+$(task_runtime_build_dir):
+	mkdir $(task_runtime_build_dir)
+
+$(parser_build_dir):
+	mkdir $(parser_build_dir)
 
 # Create the directory that will contain the jar files that are created.
 $(jar_dir):
@@ -122,7 +133,7 @@ task_runtime: $(jar_dir)
 # can recognize the language.
 check:
 	echo "\n         namespace simple import abc      \n" > simple.dabl
-	$(JAVA) -classpath $(buildcp) scaledmarkets.dabl.Main -t simple.dabl
+	$(JAVA) -classpath $(client_compile_cp) scaledmarkets.dabl.Main -t simple.dabl
 
 # Compile the test source files.
 compile_tests: $(test_build_dir)

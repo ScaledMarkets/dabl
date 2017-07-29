@@ -1,7 +1,7 @@
 # Do not run this makefile alone. Can only be run from the main makefile.
 
 # Uses variables:
-#	JAVAC, maxerrs, buildcp, third_party_cp, parser_build_dir, client_build_dir,
+#	JAVAC, maxerrs, client_compile_cp, third_party_cp, parser_build_dir, client_build_dir,
 #	src_dir, package, CurDir,
 #	jar_dir, main_class, PRODUCT_NAME, DABL_VERSION, ORG, BUILD_TAG, JAR_NAME,
 #	classfiles, JAR, javadoc_dir, JAVADOC, src_dir, sable_dabl_out_dir, package_name
@@ -27,7 +27,7 @@ export classfiles := \
 
 # 
 compile: 
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp):$(third_party_cp) -d $(client_build_dir) \
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(client_compile_cp):$(third_party_cp) -d $(client_build_dir) \
 		$(src_dir)/$(package)/*.java \
 		$(src_dir)/$(package)/analyzer/*.java \
 		$(src_dir)/$(package)/docker/*.java \
@@ -73,7 +73,7 @@ $(javadoc_dir):
 javadoc: $(javadoc_dir)
 	rm -rf $(javadoc_dir)/*
 	$(JAVADOC) -protected -d $(javadoc_dir) \
-		-classpath $(buildcp) \
+		-classpath $(client_compile_cp) \
 		-sourcepath $(src_dir):$(sable_dabl_out_dir) \
 		-subpackages $(package_name) \
 		-exclude $(test_package_name)
