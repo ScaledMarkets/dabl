@@ -22,7 +22,7 @@ export task_classfiles := \
 	$(client_build_dir)/$(package)/task/*.class \
 	$(client_build_dir)/$(package)/util/*.class
 
-all: task_manifest taskjar image
+all: image
 
 # Create the manifest file for the task JAR.
 task_manifest:
@@ -35,7 +35,7 @@ task_manifest:
 	echo "Implementation-Vendor: $(ORG)" >> Manifest
 
 # 
-compile: 
+compile: $(task_runtime_build_dir)
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(task_runtime_compile_cp):$(third_party_cp) -d $(task_runtime_build_dir) \
 		$(src_dir)/$(package)/analyzer/*.java \
 		$(src_dir)/$(package)/docker/*.java \
@@ -46,14 +46,14 @@ compile:
 	cp $(CurDir)/.dabl.container.properties $(task_runtime_build_dir)
 
 # Package task runtime into a JAR file.
-taskjar: $(jar_dir)/$(TASK_JAR_NAME).jar $(jar_dir)
+taskjar: task_manifest $(jar_dir)/$(TASK_JAR_NAME).jar $(jar_dir)
 
-$(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest $(jar_dir)
+$(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest compile $(jar_dir)
 	$(JAR) cfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest -C $(task_runtime_build_dir) scaledmarkets
 	rm Manifest
 
 # Build and push container image for task runtime.
-image:
+image: taskjar
 	cp $(jar_dir)/$(TASK_JAR_NAME).jar taskruntime
 	source $(DockerhubCredentials)
 	docker build --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime

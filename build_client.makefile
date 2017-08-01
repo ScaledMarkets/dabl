@@ -15,6 +15,7 @@ export classfiles := \
 	$(client_build_dir)/$(package)/*.class \
 	$(client_build_dir)/$(package)/analysis/*.class \
 	$(client_build_dir)/$(package)/analyzer/*.class \
+	$(client_build_dir)/$(package)/client/*.class \
 	$(client_build_dir)/$(package)/docker/*.class \
 	$(client_build_dir)/$(package)/exec/*.class \
 	$(client_build_dir)/$(package)/handlers/*.class \
@@ -26,10 +27,11 @@ export classfiles := \
 	$(client_build_dir)/$(package)/util/*.class
 
 # 
-compile: 
+compile: $(client_build_dir) manifest
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(client_compile_cp):$(third_party_cp) -d $(client_build_dir) \
 		$(src_dir)/$(package)/*.java \
 		$(src_dir)/$(package)/analyzer/*.java \
+		$(src_dir)/$(package)/client/*.java \
 		$(src_dir)/$(package)/docker/*.java \
 		$(src_dir)/$(package)/exec/*.java \
 		$(src_dir)/$(package)/handlers/*.java \

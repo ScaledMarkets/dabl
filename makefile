@@ -93,33 +93,33 @@ clean_parser:
 
 
 # ------------------------------------------------------------------------------
-# Build compilers.
+# Build client and task runtime.
 
 
 # Create the directories that will contain the compiled class files.
 $(build_dir):
-	mkdir $(build_dir)
+	mkdir -p $(build_dir)
 
 $(client_build_dir):
-	mkdir $(client_build_dir)
+	mkdir -p $(client_build_dir)
 
 $(task_runtime_build_dir):
-	mkdir $(task_runtime_build_dir)
+	mkdir -p $(task_runtime_build_dir)
 
 $(parser_build_dir):
-	mkdir $(parser_build_dir)
+	mkdir -p $(parser_build_dir)
 
 # Create the directory that will contain the jar files that are created.
 $(jar_dir):
 	mkdir -p $(jar_dir)
 
-client: $(jar_dir)
+client: $(jar_dir) $(client_build_dir)
 	make -f build_client.makefile all
 
 clean_client:
 	make -f build_client.makefile clean
 
-task_runtime: $(jar_dir)
+task_runtime: $(jar_dir) $(task_runtime_build_dir)
 	make -f build_task_runtime.makefile all
 
 

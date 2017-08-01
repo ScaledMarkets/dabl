@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.analyzer;
+package scaledmarkets.dabl.client;
 
 import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
