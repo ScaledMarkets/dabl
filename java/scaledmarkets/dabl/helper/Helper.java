@@ -4,6 +4,7 @@ import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.util.Utilities;
 import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analyzer.*;
+import scaledmarkets.dabl.client.LanguageAnalyzer;
 import scaledmarkets.dabl.exec.PatternSets;
 import scaledmarkets.dabl.exec.Repo;
 import scaledmarkets.dabl.exec.LocalRepo;

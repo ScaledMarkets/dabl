@@ -23,7 +23,7 @@ public abstract class SymbolEntry implements Annotation
 	
 	public boolean isDeclaredPublic() { return declaredPublic; }
 	
-	protected void setDeclaredPublic() { declaredPublic = true; }
+	public void setDeclaredPublic() { declaredPublic = true; }
 	
 	public String toString()
 	{

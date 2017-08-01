@@ -120,7 +120,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	 * is matched with the symbol declaration. Only one semantic handler can be
 	 * registered for a given node.
 	 */
-	void registerSemanticHandlerFor(AOidRef ref, IdentSemanticHandler handler) {
+	public void registerSemanticHandlerFor(AOidRef ref, IdentSemanticHandler handler) {
 		
     	assertThat(this.identSemanticHandlers.get(ref) == null,
     		"A semantic handler for node '" + ref.toString() + "' is already registered");
@@ -136,7 +136,7 @@ public abstract class DablBaseAdapter extends DepthFirstAdapter implements Analy
 	public abstract class IdentSemanticHandler {
 		private AOidRef ref;
 		
-		IdentSemanticHandler(AOidRef ref) {
+		public IdentSemanticHandler(AOidRef ref) {
 			this.ref = ref;
 			DablBaseAdapter.this.registerSemanticHandlerFor(ref, this);
 		}

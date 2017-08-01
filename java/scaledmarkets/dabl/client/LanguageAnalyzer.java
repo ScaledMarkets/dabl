@@ -1,6 +1,7 @@
 package scaledmarkets.dabl.client;
 
 import scaledmarkets.dabl.node.*;
+import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.util.Utilities;
 
 import java.util.List;

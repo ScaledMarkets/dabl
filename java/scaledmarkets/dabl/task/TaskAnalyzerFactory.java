@@ -6,7 +6,7 @@ import scaledmarkets.dabl.analyzer.Analyzer;
 import scaledmarkets.dabl.analyzer.ImportHandler;
 import scaledmarkets.dabl.analyzer.FileImportHandler;
 import scaledmarkets.dabl.analyzer.CompilerState;
-import scaledmarkets.dabl.analyzer.ClientState;
+import scaledmarkets.dabl.client.ClientState;
 import scaledmarkets.dabl.util.Utilities;
 
 /**

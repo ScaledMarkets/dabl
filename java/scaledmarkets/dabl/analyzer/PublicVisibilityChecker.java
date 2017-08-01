@@ -10,7 +10,7 @@ import scaledmarkets.dabl.util.Utilities;
  */
 public class PublicVisibilityChecker implements VisibilityChecker {
 	
-	PublicVisibilityChecker(List<TId> path) { this.path = path; }
+	public PublicVisibilityChecker(List<TId> path) { this.path = path; }
 	private List<TId> path;
 	
 	public void check(NameScope refScope, SymbolEntry entry) {

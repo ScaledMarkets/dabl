@@ -1,5 +1,7 @@
 package scaledmarkets.dabl.client;
 
+import scaledmarkets.dabl.analyzer.*;
+
 /**
  * For creating analysis components that analyze DABL input in a client context.
  */
