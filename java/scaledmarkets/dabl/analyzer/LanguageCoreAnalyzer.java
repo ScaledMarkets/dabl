@@ -144,5 +144,33 @@ public class LanguageCoreAnalyzer extends DablBaseAdapter {
 		if (typeSpec instanceof AArrayOtypeSpec) return ValueType.array;
 		throw new RuntimeException("Unexpected typespec: " + typeSpec.getClass().getName());
 	}
+	
+	/**
+	 * Return the types of the arguments of the specified function declaration.
+	 */
+	public static List<ValueType> getFunctionDeclTypes(AOfunctionDeclaration funcDecl) {
+		
+		List<ValueType> declaredArgTypes = new LinkedList<ValueType>();
+		for /* each formal argument */ (POtypeSpec typeSpec : funcDecl.getOtypeSpec()) {
+			declaredArgTypes.add(LanguageCoreAnalyzer.mapTypeSpecToValueType(typeSpec));
+		}
+		return declaredArgTypes;
+	}
+	
+	/**
+	 * Return the actual types of the argument expressions of the specified
+	 * function call. Assumes that the function call has already been analyzed.
+	 */
+	public static List<ValueType> getFunctionCallTypes(CompilerState state,
+			AFuncCallOprocStmt funcCall) {
+		List<ValueType> argValueTypes = new LinkedList<ValueType>();
+		for /* each actual argument */ (POexpr arg : funcCall.getOexpr()) {
+			
+			ExprAnnotation annot = state.getExprAnnotation(arg);
+			ValueType type = annot.getType();
+			argValueTypes.add(type);
+		}
+		return argValueTypes;
+	}
 }
 

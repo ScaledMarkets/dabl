@@ -26,7 +26,7 @@ public class DefaultExecutor implements Executor {
 	private TaskContainerFactory taskContainerFactory;
 	private DablContext dablContext;
 	private boolean verbose;
-	private Helper helper;
+	private ExecHelper helper;
 
 	/**
 	 * If 'verbose' is true, then print the actions
@@ -37,13 +37,13 @@ public class DefaultExecutor implements Executor {
 		this.state = state;
 		this.taskContainerFactory = taskContainerFactory;
 		this.verbose = verbose;
-		this.helper = new Helper(state);
+		this.helper = new ExecHelper(state);
 		this.dablContext = new DablContext(this.helper);
 	}
 	
 	public void execute() throws Exception {
 		System.out.println("Determining dependency graph...");
-		DependencyGraph graph = DependencyGraph.genDependencySet(new Helper(state));
+		DependencyGraph graph = DependencyGraph.genDependencySet(new ExecHelper(state));
 
 		System.out.println("Executing tasks...");
 		executeAll(graph);

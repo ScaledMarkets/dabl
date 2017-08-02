@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.analyzer.NameScope;
 import scaledmarkets.dabl.analyzer.DeclaredEntry;
+import scaledmarkets.dabl.analyzer.ExpressionContext;
 import scaledmarkets.dabl.helper.Helper;
 import java.util.Map;
 import java.util.HashMap;
@@ -13,12 +14,12 @@ import java.util.Date;
  */
 public class DablContext extends ExpressionContext {
 	
-	DablContext(Helper helper) {
+	DablContext(ExecHelper helper) {
 		this.helper = helper;
 	}
 	
 	private Map<String, Integer> taskStatus = new HashMap<String, Integer>();
-	private Helper helper;
+	private ExecHelper helper;
 	
 	public Object getValueForVariable(String variableName) {
 		throw new RuntimeException("Variables are only available in a task's runtime context");

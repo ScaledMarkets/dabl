@@ -21,17 +21,17 @@ import java.nio.file.attribute.BasicFileAttributes;
  */
 public class TestBase {
 
-	protected Helper helper;
+	protected ExecHelper helper;
 	
 	public TestBase() {
 	}
 	
-	protected Helper createHelper(CompilerState state) {
-		this.helper = new Helper(state);
+	protected ExecHelper createHelper(CompilerState state) {
+		this.helper = new ExecHelper(state);
 		return this.helper;
 	}
 	
-	protected Helper getHelper() {
+	protected ExecHelper getHelper() {
 		return this.helper;
 	}
 	

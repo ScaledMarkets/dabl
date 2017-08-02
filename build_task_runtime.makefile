@@ -37,6 +37,7 @@ task_manifest:
 # 
 compile: $(task_runtime_build_dir)
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(task_runtime_compile_cp):$(third_party_cp) -d $(task_runtime_build_dir) \
+		$(src_dir)/$(package)/Executor.java \
 		$(src_dir)/$(package)/analyzer/*.java \
 		$(src_dir)/$(package)/docker/*.java \
 		$(src_dir)/$(package)/handlers/*.java \

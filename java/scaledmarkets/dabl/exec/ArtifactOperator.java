@@ -14,9 +14,9 @@ import java.util.LinkedList;
  */
 public abstract class ArtifactOperator {
 	
-	protected Helper helper;
+	protected ExecHelper helper;
 	
-	public ArtifactOperator(Helper helper) { this.helper = helper; }
+	public ArtifactOperator(ExecHelper helper) { this.helper = helper; }
 
 	/**
 	 * The operation to perform on the artifacts, once the includes and exclude

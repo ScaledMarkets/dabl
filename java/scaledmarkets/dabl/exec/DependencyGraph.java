@@ -20,7 +20,7 @@ import java.util.LinkedList;
  */
 public class DependencyGraph {
 
-	private Helper helper;
+	private ExecHelper helper;
 	private Map<AOtaskDeclaration, Task> tasks = new HashMap<AOtaskDeclaration, Task>();
 	private Map<POartifactSet, Artifact> artifacts = new HashMap<POartifactSet, Artifact>();
 	private Set<Task> rootTasks = new HashSet<Task>();
@@ -29,7 +29,7 @@ public class DependencyGraph {
 	 * Create a dependency graph that explicitly models the producer/consumer
 	 * relationships between tasks.
 	 */
-	public static DependencyGraph genDependencySet(Helper helper) {
+	public static DependencyGraph genDependencySet(ExecHelper helper) {
 		
 		DependencyGraph graph = new DependencyGraph(helper);
 		graph.genDependencies();
@@ -54,7 +54,7 @@ public class DependencyGraph {
 		return artifacts.get(a);
 	}
 	
-	protected DependencyGraph(Helper helper) {
+	protected DependencyGraph(ExecHelper helper) {
 		this.helper = helper;
 	}
 	
