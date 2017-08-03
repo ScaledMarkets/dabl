@@ -61,6 +61,7 @@ public class DependencyGraph {
 	/**
 	 * Build a dependency graph consisting of Artifacts and Tasks, based on
 	 * the task inputs and outputs that are defined in the AST.
+	 * See https://github.com/ScaledMarkets/dabl/tree/master/java/scaledmarkets/dabl#dependency-graph
 	 */
 	protected void genDependencies() {
 		

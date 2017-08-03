@@ -50,7 +50,7 @@ TBD
 ### Key Dynamic Structures
 
 The compiler's dynamic structure is completely encapsulated in the
-[`CompilerState`](analysis/CompilerState.java) object.
+[`CompilerState`](analyzer/CompilerState.java) object.
 The argument-less `process()` method creates a `CompilerState` instance and provides
 it when constructing a `LanguageAnalyzer`.
 

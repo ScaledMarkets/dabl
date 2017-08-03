@@ -1,7 +1,6 @@
 package scaledmarkets.dabl.exec;
 
 import scaledmarkets.dabl.Executor;
-import scaledmarkets.dabl.helper.Helper;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.analyzer.TimeUnit;
@@ -85,7 +84,7 @@ public class DefaultExecutor implements Executor {
 	}
 	
 	/**
-	 * 
+	 * See https://github.com/ScaledMarkets/dabl/tree/master/java/scaledmarkets/dabl#execution-phase
 	 */
 	protected void executeTaskTree(DependencyGraph graph, Task task) throws Exception {
 		
