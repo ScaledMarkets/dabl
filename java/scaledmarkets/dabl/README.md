@@ -62,7 +62,7 @@ object is returned by the compiler.
 ### Language Analyzer
 
 The [`LanguageAnalyzer`](analysis/LanguageAnalyzer.java) class performs the Analysis processing phase
-(see [./langref/#processing-phases](./langref/#processing-phases)).
+(see [./langref/README.md#processing-phases](./langref/README.md#processing-phases)).
 
 The Analysis phase walks the tree in a depth-first manner, visiting each `Node`,
 calling the `in`*Node-Type*(`Node`) method on entry to each Node, and the
