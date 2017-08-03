@@ -56,8 +56,8 @@ $(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest compile $(jar_dir)
 # Build and push container image for task runtime.
 image: taskjar
 	cp $(jar_dir)/$(TASK_JAR_NAME).jar taskruntime
-	source $(DockerhubCredentials)
+	. $(DockerhubCredentials)
 	docker build --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime
-	docker login -u $(DockerhubUserId) -p $(DockerhubPassword) $(IMAGE_REGISTRY)
+	docker login -u $(DockerhubUserId) -p $(DockerhubPassword)
 	docker push $(TASK_RUNTIME_IMAGE_NAME)
-	docker logout $(IMAGE_REGISTRY)
+	docker logout
