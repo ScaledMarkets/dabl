@@ -159,9 +159,9 @@ public class DefaultExecutor implements Executor {
 					timer.schedule(timerTask, ms);
 				}
 				
+				// Execute the task in the container.
 				if (verbose) System.out.print("Executing container...");
 				try {
-					// Execute the task in the container.
 					InputStream containerOutput = taskContainer.execute();
 					
 					// Send the container's output to this process's stdout.

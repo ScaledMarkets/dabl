@@ -88,7 +88,7 @@ public class TaskExecutor implements Executor {
 	 * procedural statment may invoke a error handler - which contains 
 	 * procedural statements. If 'recover' is true, then an error results
 	 * in the invocation of the current error handler; otherwise, the error
-	 * is thrown. Recursive.
+	 * is thrown.
 	 */
 	protected void performProcStmts(List<POprocStmt> procStmts, boolean recover) throws Exception {
 		

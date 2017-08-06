@@ -257,7 +257,8 @@ still a path for data to enter the task.
 A task is only executed if its inputs change, and its `when` condition is then met.
 
 If an error occurs while performing a task procedural statement, the default behavior
-is to terminate the task. However, an error handler can be installed using the `on` keyword.
+is to terminate the task. However, an error handler can be installed using the 
+[`if error`](if_error_stmt.md) statement.
 Once an error handler is installed, the error handler is triggered if the task
 performs a procedural statement that returns a non-zero process status. A
 procedural statement can obtain the error status via the built-in function `error_status()`.
