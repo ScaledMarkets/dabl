@@ -1,5 +1,6 @@
 package scaledmarkets.dabl.test.exec;
 
+import scaledmarkets.dabl.client.*;
 import scaledmarkets.dabl.exec.LocalRepo;
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.exec.*;

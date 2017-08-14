@@ -28,11 +28,5 @@ public class TestTaskTemplates extends TestBase {
 
 	// Scenario: Simple
 	
-	@Given("^Docker is running$")
-	public void docker_is_running() throws Exception {
-		Docker docker = Docker.connect();
-		docker.ping();
-		docker.close();
-	}
 	
 }

@@ -57,7 +57,7 @@ $(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest compile $(jar_dir)
 image: taskjar
 	cp $(jar_dir)/$(TASK_JAR_NAME).jar taskruntime
 	. $(DockerhubCredentials)
-	docker build --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime
-	docker login -u $(DockerhubUserId) -p $(DockerhubPassword)
+	docker build --no-cache --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime
+	@docker login -u $(DockerhubUserId) -p $(DockerhubPassword)
 	docker push $(TASK_RUNTIME_IMAGE_NAME)
 	docker logout

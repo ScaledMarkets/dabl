@@ -5,12 +5,12 @@ import scaledmarkets.dabl.util.Utilities;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.io.File;
 
 public class TaskDockerContainerFactory extends TaskContainerFactory {
 	
-	private Map<TaskContainer, TaskContainer> taskContainers = new TreeMap<TaskContainer, TaskContainer>();
+	private Map<TaskContainer, TaskContainer> taskContainers = new HashMap<TaskContainer, TaskContainer>();
 	private Docker docker;
 	
 	public TaskDockerContainerFactory() throws Exception {

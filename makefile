@@ -123,7 +123,6 @@ task_runtime: $(jar_dir) $(task_runtime_build_dir)
 	make -f build_task_runtime.makefile all
 
 
-
 # ------------------------------------------------------------------------------
 # Tests
 #	Gherkin tags: done, smoke, notdone, docker, exec, unit, pushlocalrepo, task,
@@ -171,7 +170,7 @@ test_exec:
 	$(test) --tags @exec
 
 test_task:
-	$(test) --tags @task
+	$(test) --tags @task --tags @done
 
 test_check:
 	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \

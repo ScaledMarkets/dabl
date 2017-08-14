@@ -8,6 +8,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.And;
 
+import scaledmarkets.dabl.client.*;
 import scaledmarkets.dabl.Executor;
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.exec.*;

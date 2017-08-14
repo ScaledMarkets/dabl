@@ -1,5 +1,6 @@
 package scaledmarkets.dabl.test;
 
+import scaledmarkets.dabl.client.*;
 import scaledmarkets.dabl.analyzer.*;
 
 import java.util.Map;

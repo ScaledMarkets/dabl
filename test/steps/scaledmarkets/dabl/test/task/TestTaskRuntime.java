@@ -8,6 +8,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.And;
 
+import scaledmarkets.dabl.client.*;
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.docker.*;
 import scaledmarkets.dabl.exec.*;
@@ -41,7 +42,7 @@ public class TestTaskRuntime extends TestBase {
 		Reader reader = new StringReader(
 "namespace simple \n" +
 "task " + TaskName + "\n" +
-"  when true\n"
+"  when true \n"
 			);
 		
 		Dabl dabl = new Dabl(false, true, true, reader);
@@ -54,9 +55,15 @@ public class TestTaskRuntime extends TestBase {
 		
 		TaskContainerFactory taskContainerFactory = new TaskDockerContainerFactory();
 
+		System.out.println("Creating Executor...");
 		DefaultExecutor executor = new DefaultExecutor(this.state,
 			taskContainerFactory, true);
+		System.out.println("Executing executor...");
+		executor.execute();
+		System.out.println("...execution completed.");
 		int status = executor.getTaskStatus(this.TaskName, true);
+		System.out.println("Retrieved status...");
 		assertThat(status == 0, "Task completed with status=" + status);
+		System.out.println("Successful completion.");
 	}
 }

@@ -201,7 +201,7 @@ public class Utilities {
 		if (dirstr == null) throw new RuntimeException("No current working directory");
 		File curdir = new File(dirstr);
 		if (! curdir.exists()) throw new RuntimeException("Current directory not found");
-		File curdirPropertyFile = new File(curdir, PropertyFileName);
+		File curdirPropertyFile = new File(curdir, propertyFileName);
 		if (curdirPropertyFile.exists()) {
 			Properties properties = new Properties();
 			properties.load(new FileReader(curdirPropertyFile));
@@ -216,7 +216,7 @@ public class Utilities {
 		if (homestr == null) throw new RuntimeException("No user home");
 		File home = new File(homestr);
 		if (! home.exists()) throw new RuntimeException("User home directory not found");
-		File homePropertyFile = new File(home, PropertyFileName);
+		File homePropertyFile = new File(home, propertyFileName);
 		if (homePropertyFile.exists()) {
 			Properties properties = new Properties();
 			properties.load(new FileReader(homePropertyFile));
@@ -229,7 +229,8 @@ public class Utilities {
 		
 		try {
 			Properties properties = new Properties();
-			InputStream is = Utilities.class.getResourceAsStream("/" + PropertyFileName);
+			InputStream is = Utilities.class.getResourceAsStream("/" + propertyFileName);
+			if (is == null) return null;
 			properties.load(is);
 			return properties;
 		} catch (FileNotFoundException e) {

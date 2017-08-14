@@ -173,8 +173,12 @@ public class DefaultExecutor implements Executor {
 					// Obtain the container's exit status.
 					int exitStatus = taskContainer.getExitStatus();
 					setTaskStatus(task.getName(), exitStatus);
-					notify();  // notify any threads that called getTaskStatus with
-						// block set to true.
+					
+					// notify any threads that called getTaskStatus with block set to true.
+					try { notify(); } catch (IllegalMonitorStateException ex) {
+						// This error only occurs if there is no thread waiting
+						// on a call to getTaskStatus.
+					}
 				}
 				
 				// Write the outputs from the workspace to the output directories.
