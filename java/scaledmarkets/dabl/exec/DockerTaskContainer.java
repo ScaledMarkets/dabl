@@ -35,8 +35,9 @@ public class DockerTaskContainer extends TaskContainer {
 		// call to the TaskExecutor JAR.
 		this.dockerContainer.start();
 		
+		// See https://docs.oracle.com/javase/7/docs/api/java/nio/charset/Charset.html
 		InputStream inputToContainer = new ByteArrayInputStream(
-			task.getTaskProgram().getBytes(Charset.forName("ISO-LATIN-1")));
+			task.getTaskProgram().getBytes(Charset.forName("ISO-8859-1")));
 		
 		// Each procedural statement is passed via stdin, using the current thread.
 		// The call below will block until the container has read all of the commands.
