@@ -113,12 +113,14 @@ $(parser_build_dir):
 $(jar_dir):
 	mkdir -p $(jar_dir)
 
+# Create the end user command line application.
 client: $(jar_dir) $(client_build_dir)
 	make -f build_client.makefile all
 
 clean_client:
 	make -f build_client.makefile clean
 
+# Create the container image that is invoked by the command line application.
 task_runtime: $(jar_dir) $(task_runtime_build_dir)
 	make -f build_task_runtime.makefile all
 

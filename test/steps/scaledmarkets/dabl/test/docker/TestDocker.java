@@ -100,7 +100,7 @@ public class TestDocker extends TestBase {
 	@When("^I make a create container request to docker$")
 	public void i_make_a_create_container_request_to_docker() throws Exception {
 		DockerContainer container = TestDocker.docker.createContainer(
-			"alpine:latest", "MyContainer31", null, null, false, null);
+			"alpine:latest", "MyContainer31", null, null, false, true, null);
 		TestDocker.docker.destroyContainers("/MyContainer31", null);
 	}
 	
@@ -109,14 +109,14 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers that do nothing$")
 	public void that_i_have_created_two_containers() throws Exception {
 		this.container41 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer41", null, null, false, null);
+			"alpine", "MyContainer41", null, null, false, true, null);
 		this.container42 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer42", null, null, false, null);
+			"alpine", "MyContainer42", null, null, false, true, null);
 	}
 	
 	@When("^I request to start a container$")
 	public void i_request_to_start_a_container() throws Exception {
-		this.container41.start();
+		this.container41.start(null);
 	}
 	
 	@And("^the container that I started is running$")
@@ -129,12 +129,12 @@ public class TestDocker extends TestBase {
 	@Given("^that I have created two containers and both are running$")
 	public void that_i_have_created_two_containers_and_both_are_running() throws Exception {
 		this.container51 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer51", null, null, false, null);
+			"alpine", "MyContainer51", null, null, false, true, null);
 		this.container52 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer52", null, null, false, null);
-		this.container51.start();
+			"alpine", "MyContainer52", null, null, false, true, null);
+		this.container51.start(null);
 		System.out.println("Started container 51");  // debug
-		this.container52.start();
+		this.container52.start(null);
 		System.out.println("Started container 52");  // debug
 		
 		assertThat(this.container51.isRunning(), "container51 is not running");
@@ -162,10 +162,10 @@ public class TestDocker extends TestBase {
 	public void that_i_have_created_two_containers_and_one_is_running() throws Exception {
 		System.out.println("Entered Scenario 6 Given condition...");
 		this.container61 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer61", null, null, false, null);
+			"alpine", "MyContainer61", null, null, false, true, null);
 		this.container62 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer62", null, null, false, null);
-		this.container61.start();
+			"alpine", "MyContainer62", null, null, false, true, null);
+		this.container61.start(null);
 		assertThat(this.container61.isRunning(), "container61 is not running");
 		assertThat(! this.container62.isRunning(), "container62 is running");
 		System.out.println("...leaving Scenario 6 Given condition.");
@@ -192,11 +192,11 @@ public class TestDocker extends TestBase {
 	public void that_I_have_created_three_containers() throws Exception {
 		System.out.println("Entered Scenario 7 Given condition...");
 		this.container71 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer71", null, null, false, null);
+			"alpine", "MyContainer71", null, null, false, true, null);
 		this.container72 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer72", null, null, false, null);
+			"alpine", "MyContainer72", null, null, false, true, null);
 		this.container73 = TestDocker.docker.createContainer(
-			"alpine", "MyContainer73", null, null, false, null);
+			"alpine", "MyContainer73", null, null, false, true, null);
 		System.out.println("...leaving Scenario 7 Given condition.");
 	}
 	

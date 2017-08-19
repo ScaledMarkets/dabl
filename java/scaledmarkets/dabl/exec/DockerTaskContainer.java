@@ -30,18 +30,18 @@ public class DockerTaskContainer extends TaskContainer {
 	 */
 	public InputStream execute() throws Exception {
 		
-		// Start the container.
-		// The container starts with its configured entrypoint, which is a
-		// call to the TaskExecutor JAR.
-		this.dockerContainer.start();
-		
 		// See https://docs.oracle.com/javase/7/docs/api/java/nio/charset/Charset.html
 		InputStream inputToContainer = new ByteArrayInputStream(
 			task.getTaskProgram().getBytes(Charset.forName("ISO-8859-1")));
 		
+		System.out.println("About to execute task program...");
+		
+		// Start the container.
+		// The container starts with its configured entrypoint, which is a
+		// call to the TaskExecutor JAR.
 		// Each procedural statement is passed via stdin, using the current thread.
 		// The call below will block until the container has read all of the commands.
-		return this.dockerContainer.connectTo(inputToContainer);
+		return this.dockerContainer.start(inputToContainer);
 	}
 	
 	public int getExitStatus() throws Exception {

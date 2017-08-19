@@ -78,6 +78,7 @@ public class Docker {
 	private URI uri;
 	private WebTarget endpoint;
 	private Client client;
+	
 	private static String containerPortStr = String.valueOf(ContainerPort);
 	private static String hostPortStr = "22";
 	
@@ -156,11 +157,11 @@ public class Docker {
 	 */
 	public DockerContainer createContainer2(String imageIdOrName, String containerName,
 		String hostPathToMap, String containerPathToMap, boolean enableNetworking,
-		Properties envVariables)
+		boolean connectOnStart, Properties envVariables)
 	throws Exception {
 		
 		return createContainer(imageIdOrName, containerName, new String[] {hostPathToMap},
-			new String[] {containerPathToMap}, enableNetworking, envVariables);
+			new String[] {containerPathToMap}, enableNetworking, connectOnStart, envVariables);
 	}
 	
 	/**
@@ -169,7 +170,7 @@ public class Docker {
 	 */
 	public DockerContainer createContainer(String imageIdOrName, String containerName,
 		String[] hostPathsToMap, String[] containerPathsToMap, boolean enableNetworking,
-		Properties envVariables)
+		boolean connectOnStart, Properties envVariables)
 	throws Exception {
 		
 		if ((hostPathsToMap == null) || (containerPathsToMap == null))
@@ -244,9 +245,9 @@ public class Docker {
 			.add("HostConfig", hostConfig)
 			.add("NetworkingConfig", netConfig)
 			// Optionals:
-			.add("AttachStdin", true)
-			.add("AttachStdout", true)
-			.add("AttachStderr", true)
+			.add("AttachStdin", connectOnStart)
+			.add("AttachStdout", connectOnStart)
+			.add("AttachStderr", connectOnStart)
 			.add("Tty", false)
 			.add("OpenStdin", true)
 			.add("StdinOnce", true)
@@ -303,6 +304,34 @@ public class Docker {
 		} finally {
 			response.close();
 		}
+	}
+	
+	/**
+	 * Tell docker to start container, and connect to the container's input and output.
+	 * It is assumed that the container was created with AttachStdin, AttachStdout,
+	 * and AttachStderr set to true.
+	 * This method will block until the container has read all of its input.
+	 */
+	public InputStream startContainer(String containerId, InputStream input) throws Exception {
+		
+		// Read all of the input and forward it to the container.
+		String inputString = "";
+		BufferedReader br = new BufferedReader(new InputStreamReader(input));
+		for (;;) {
+			String line = br.readLine();
+			if (line == null) break;
+			inputString = inputString + line;
+		}
+		
+		Response response = null;
+		response = makePostRequest(
+			DockerEngineAPIVersion + "/containers/" + containerId + "/start", null, null);
+		
+		if (response.getStatus() >= 300) throw new Exception(
+			response.getStatusInfo().getReasonPhrase());
+		
+		// Return an input stream for reading the container's output.
+		return response.readEntity(InputStream.class);
 	}
 	
 	/**

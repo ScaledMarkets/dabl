@@ -1,5 +1,4 @@
 # Container for running a DABL task.
-# Requres the environment variable $jar_dir to be set.
 
 #FROM alpine
 FROM anapsix/alpine-java

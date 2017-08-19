@@ -248,9 +248,13 @@ public class Utilities {
 		
 		byte[] buffer = new byte[1024];
 		while(true) {
+			System.out.println("reading output...");  // debug
 			int n = istream.read(buffer);
 			if (n <= 0) break;
+			System.out.println("writing output...");  // debug
 			ostream.write(buffer, 0, n);
+			System.out.println("wrote output...");  // debug
 		}
+		System.out.println("done writing output.");  // debug
 	}
 }

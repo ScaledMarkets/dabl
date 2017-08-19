@@ -165,7 +165,9 @@ public class DefaultExecutor implements Executor {
 					InputStream containerOutput = taskContainer.execute();
 					
 					// Send the container's output to this process's stdout.
+					System.out.println("Writing container output to stdout...");
 					Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
+					System.out.println("...wrote container output to stdout.");
 					containerOutput.close();
 				} finally {
 					if (verbose) System.out.println("container exited.");

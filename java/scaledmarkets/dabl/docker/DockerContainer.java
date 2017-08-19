@@ -10,6 +10,7 @@ public class DockerContainer {
 	
 	private Docker docker;
 	private String containerId;
+	private InputStream containerOutput;
 	
 	public DockerContainer(Docker docker, String containerId) {
 		this.docker = docker;
@@ -18,14 +19,27 @@ public class DockerContainer {
 	
 	public String getContainerId() { return this.containerId; }
 	
-	public void start() throws Exception {
+	public InputStream start(InputStream input) throws Exception {
 		
-		this.docker.startContainer(this.containerId);
+		if (input == null) {
+			this.containerOutput = null;
+			this.docker.startContainer(this.containerId);
+		} else {
+			this.containerOutput = this.docker.startContainer(this.containerId, input);
+		}
+		
+		return this.containerOutput;
 	}
 	
 	public void stop() throws Exception {
 		
 		this.docker.stopContainer(this.containerId);
+		if (this.containerOutput != null) try {
+			this.containerOutput.close();
+		} catch (Exception ex) {
+			System.err.println("Error flushing or closing container output stream:");
+			ex.printStackTrace();
+		}
 	}
 	
 	public void destroy() throws Exception {
