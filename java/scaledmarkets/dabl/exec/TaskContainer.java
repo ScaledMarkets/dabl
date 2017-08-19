@@ -14,6 +14,8 @@ public abstract class TaskContainer {
 	 */
 	public abstract InputStream execute() throws Exception;
 	
+	public abstract int waitForContainerToExit(long maxMilliseconds) throws Exception;
+	
 	public abstract int getExitStatus() throws Exception;
 	
 	public abstract void stop() throws Exception;

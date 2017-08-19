@@ -61,7 +61,7 @@ public class TestTaskRuntime extends TestBase {
 		System.out.println("Executing executor...");
 		executor.execute();
 		System.out.println("...execution completed.");
-		int status = executor.getTaskStatus(this.TaskName, true);
+		int status = executor.getTaskStatus(this.TaskName, false);
 		System.out.println("Retrieved status...");
 		assertThat(status == 0, "Task completed with status=" + status);
 		System.out.println("Successful completion.");

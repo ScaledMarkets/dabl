@@ -169,6 +169,7 @@ public class DefaultExecutor implements Executor {
 					Utilities.pipeInputStreamToOutputStream(containerOutput, System.out);
 					System.out.println("...wrote container output to stdout.");
 					containerOutput.close();
+					//taskContainer.waitForContainerToExit(4000);  // wait up to four seconds
 				} finally {
 					if (verbose) System.out.println("container exited.");
 					if (timer != null) timer.cancel();
