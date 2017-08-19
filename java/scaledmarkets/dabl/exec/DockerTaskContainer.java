@@ -44,6 +44,7 @@ public class DockerTaskContainer extends TaskContainer {
 		return this.dockerContainer.start(inputToContainer);
 	}
 	
+	/*
 	public int waitForContainerToExit(long maxMilliseconds) throws Exception {
 		
 		long ms = 0;
@@ -58,6 +59,7 @@ public class DockerTaskContainer extends TaskContainer {
 			}
 		}
 	}
+	*/
 	
 	public int getExitStatus() throws Exception {
 		return dockerContainer.getExitStatus();
