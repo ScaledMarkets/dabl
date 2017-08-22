@@ -154,8 +154,9 @@ where options can be
 <dd><code>-a</code> or <code>--analysis</code> (analysis only - do not perform any actions)</dd>
 <dd><code>-s</code> or <code>--simulate</code> (simulate only - print tasks instead of executing them)</dd>
 <dd><code>-o</code> or <code>--omitstd</code> (do not implicitly import package <code>dabl.standard</code>)</dd>
-<dd><code>-k</code> <i>task-name</i> or <code>--keep</code> <i>task-name</i> (keep - i.e., don't delete - the specified container;
-	option may be specified more than once)</dd>
+<dd><code>-k</code> <i>task-name</i> or <code>--keep</code> <i>task-name</i> (keep - i.e.,
+	don't delete - the specified container after execution;
+	option may be specified more than once in order to keep multiple containers)</dd>
 <dd><code>-h</code> or <code>--help</code></dd>
 </dl>
 
