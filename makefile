@@ -23,7 +23,7 @@ export package_name = scaledmarkets.dabl
 export task_package_name = scaledmarkets.dabl.task
 export test_package_name = scaledmarkets.dabl.test
 export main_class := $(package_name).Main
-export task_main_class := $(task_package_name).Main
+export task_main_class := $(task_package_name).TaskExecutor
 
 # Command aliases:
 export SHELL = /bin/sh

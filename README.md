@@ -154,6 +154,8 @@ where options can be
 <dd><code>-a</code> or <code>--analysis</code> (analysis only - do not perform any actions)</dd>
 <dd><code>-s</code> or <code>--simulate</code> (simulate only - print tasks instead of executing them)</dd>
 <dd><code>-o</code> or <code>--omitstd</code> (do not implicitly import package <code>dabl.standard</code>)</dd>
+<dd><code>-k</code> or <code>--keep</code> (keep - i.e., don't delete - the specified container;
+	option may be specified more than once)</dd>
 <dd><code>-h</code> or <code>--help</code></dd>
 </dl>
 
@@ -205,6 +207,9 @@ load classes in the container. See [Binding to a Function at Runtime](https://gi
 The `dabl.container.properties` file may be in any of the places that the
 `.dabl.properties` file may be. These values may not be set via environment
 variable, however.
+
+The special environment variable OmitPackageStandard is used by the reference
+implementation to control whether the container processes DABL package `Standard`.
 
 # Embedding the DABL Binary In an Application
 

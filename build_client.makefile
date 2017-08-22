@@ -63,6 +63,8 @@ $(jar_dir)/$(JAR_NAME).jar: manifest compile $(jar_dir)
 		-C $(client_build_dir) scaledmarkets
 	$(JAR) uf $(jar_dir)/$(JAR_NAME).jar \
 		-C $(parser_build_dir) scaledmarkets
+	$(JAR) uf $(jar_dir)/$(JAR_NAME).jar \
+		-C $(client_build_dir) dabl
 	rm Manifest
 
 jar: $(jar_dir)/$(JAR_NAME).jar

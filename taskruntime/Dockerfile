@@ -8,4 +8,5 @@ FROM anapsix/alpine-java
 # See https://hub.docker.com/r/anapsix/alpine-java/
 # See https://github.com/anapsix/docker-alpine-java
 
+ADD ["taskruntime.jar", "taskruntime.jar"]
 ENTRYPOINT ["java", "-jar", "taskruntime.jar"]

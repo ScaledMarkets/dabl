@@ -26,7 +26,7 @@ all: image
 
 # Create the manifest file for the task JAR.
 task_manifest:
-	echo "Main-Class: $(main_class)" > Manifest
+	echo "Main-Class: $(task_main_class)" > Manifest
 	echo "Specification-Title: $(PRODUCT_NAME) Task Execution Engine" >> Manifest
 	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
 	echo "Specification-Vendor: $(ORG)" >> Manifest
@@ -50,7 +50,12 @@ compile: $(task_runtime_build_dir)
 taskjar: task_manifest $(jar_dir)/$(TASK_JAR_NAME).jar $(jar_dir)
 
 $(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest compile $(jar_dir)
-	$(JAR) cfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest -C $(task_runtime_build_dir) scaledmarkets
+	$(JAR) cfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest \
+		-C $(task_runtime_build_dir) scaledmarkets
+	$(JAR) uf $(jar_dir)/$(TASK_JAR_NAME).jar \
+		-C $(task_runtime_build_dir) scaledmarkets
+	$(JAR) uf $(jar_dir)/$(TASK_JAR_NAME).jar \
+		-C $(task_runtime_build_dir) dabl
 	rm Manifest
 
 # Build and push container image for task runtime.

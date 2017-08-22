@@ -31,14 +31,29 @@ public class TaskExecutor implements Executor {
 	
 	public static void main(String[] args) {
 
+		java.io.File f = new java.io.File("output.txt");  // debug
+		java.io.PrintWriter w;    // debug
+		try {  // debug
+			w = new java.io.PrintWriter(f);  // debug
+		} catch (Exception ex) {  // debug
+			ex.printStackTrace();  // debug
+			return;  // debug
+		}  // debug
+		
+		
 		System.out.println("Beginning execution of task...");
+		w.println("Beginning exec of task...");  // debug
 		TaskAnalyzerFactory analyzerFactory = new TaskAnalyzerFactory();
 		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
 
 		// Process the Dabl standard package.
-		Reader r = new StringReader(DablStandard.PackageText);
-		namespaceProcessor.processNamespace(r);
-		System.out.println("Processed DablStandard.");
+		String omitPackageStandardStr = System.getenv("OmitPackageStandard");
+		if ((omitPackageStandardStr == null) || (! omitPackageStandardStr.equals("true"))) {
+			Reader r = new StringReader(DablStandard.PackageText);
+			namespaceProcessor.processNamespace(r);
+			System.out.println("Processed DablStandard.");
+			w.println("Processed DablStandard.");  // debug
+		}
 		
 		// Obtain the program to run, containing only function declarations and
 		// procedural statements (AST defined by task.sablecc).
@@ -47,6 +62,7 @@ public class TaskExecutor implements Executor {
 		// Parse and analyze the input.
 		NameScope nameScope = namespaceProcessor.processPrimaryNamespace(reader);
 		System.out.println("Parsed input.");
+		w.println("Parsed input.");  // debug
 		
 		// Create a TaskExecutor, which will execute the actions defined by
 		// the analyzed AST. If task execution produces an error, set the
@@ -70,6 +86,7 @@ public class TaskExecutor implements Executor {
 		}
 		finally {
 			System.out.println("Executed task.");
+			w.println("Executed task.");  // debug
 			Runtime.getRuntime().exit(status);
 		}
 	}

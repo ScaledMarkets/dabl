@@ -15,6 +15,7 @@ public class DockerTaskContainer extends TaskContainer {
 	private Task task;
 	private DockerContainer dockerContainer;
 	private File workspace;
+	private boolean omitPackageStandard;
 	
 	public DockerTaskContainer(Task task, DockerContainer dockerContainer, File workspace) {
 		

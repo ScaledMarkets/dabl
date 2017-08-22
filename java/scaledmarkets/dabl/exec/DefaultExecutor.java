@@ -6,8 +6,10 @@ import scaledmarkets.dabl.analyzer.CompilerState;
 import scaledmarkets.dabl.analyzer.TimeUnit;
 import scaledmarkets.dabl.util.Utilities;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Properties;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -24,7 +26,9 @@ public class DefaultExecutor implements Executor {
 	private CompilerState state;
 	private TaskContainerFactory taskContainerFactory;
 	private DablContext dablContext;
+	private boolean omitPackageStandard;
 	private boolean verbose;
+	private Set<String> keepSet; // may be null
 	private ExecHelper helper;
 
 	/**
@@ -32,12 +36,19 @@ public class DefaultExecutor implements Executor {
 	 * that are performed as they are performed.
 	 */
 	public DefaultExecutor(CompilerState state, TaskContainerFactory taskContainerFactory,
-		boolean verbose) {
+		boolean omitPackageStandard, boolean verbose, Set<String> keepSet) {
 		this.state = state;
 		this.taskContainerFactory = taskContainerFactory;
+		this.omitPackageStandard = omitPackageStandard;
 		this.verbose = verbose;
+		this.keepSet = keepSet;
 		this.helper = new ExecHelper(state);
 		this.dablContext = new DablContext(this.helper);
+	}
+	
+	public DefaultExecutor(CompilerState state, TaskContainerFactory taskContainerFactory,
+		boolean omitPackageStandard, boolean verbose) {
+		this(state, taskContainerFactory, omitPackageStandard, verbose, null);
 	}
 	
 	public void execute() throws Exception {
@@ -133,9 +144,15 @@ public class DefaultExecutor implements Executor {
 				
 				// Create a container.
 				if (verbose) System.out.print("Creating container for task " + task.getName() + "...");
+				
+				Properties properties = Utilities.getContainerProperties();
+				if (omitPackageStandard) {
+					properties.put("OmitPackageStandard", "true");
+				}
+				
 				TaskContainer taskContainer =
 					this.taskContainerFactory.createTaskContainer(
-						task, workspace, Utilities.getContainerProperties());
+						task, workspace, properties);
 				if (verbose) System.out.println("created container.");
 				
 				// Set a timer to interrupt the task after the timeout period.
@@ -194,10 +211,12 @@ public class DefaultExecutor implements Executor {
 				if (verbose) System.out.println("outputs transferred.");
 				
 				// Destroy the container, if desired.
-				if (verbose) System.out.print("Destroying container...");
-				taskContainer.destroy();
-				this.taskContainerFactory.containerWasDestroyed(taskContainer);
-				if (verbose) System.out.println("container destroyed.");
+				if ((keepSet == null) || (! keepSet.contains(task.getName()))) {
+					if (verbose) System.out.print("Destroying container...");
+					taskContainer.destroy();
+					this.taskContainerFactory.containerWasDestroyed(taskContainer);
+					if (verbose) System.out.println("container destroyed.");
+				}
 				
 				// Clean up files.
 				if (verbose) System.out.print("Cleaning up...");

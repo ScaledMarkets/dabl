@@ -11,6 +11,8 @@ import scaledmarkets.dabl.Config;
 
 import java.io.Reader;
 import java.io.FileReader;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * DABL command line processor.
@@ -32,6 +34,7 @@ public class Main
 		boolean simulate = false;
 		boolean omitStandard = false;
 		boolean verbose = false;
+		Set<String> keepSet = new HashSet<String>();
 
 		int argno = 0;
 		for (;;)
@@ -49,6 +52,14 @@ public class Main
 			else if (arg.equals("-s") || arg.equals("--simulate")) simulate = true;
 			else if (arg.equals("-o") || arg.equals("--omitstd")) omitStandard = true;
 			else if (arg.equals("-v") || arg.equals("--verbose")) verbose = true;
+			else if (arg.equals("-k") || arg.equals("--keep")) {
+				argno++;
+				if (argno == args.length) {
+					System.out.println("Missing argument for '-k/--keep' option");
+					return;
+				}
+				keepSet.add(args[argno]);
+			}
 			else if (arg.startsWith("-"))
 			{
 				System.out.println("Unrecognized option: " + arg);
@@ -74,12 +85,13 @@ public class Main
 		// Parse input and perform analysis.
 		System.out.println("Processing file " + filename + "...");
 		Reader reader = new FileReader(filename);
-		compile(print, printTrace, analysisOnly, simulate, omitStandard, verbose, reader);
+		compile(print, printTrace, analysisOnly, simulate, omitStandard, verbose,
+			keepSet, reader);
 	}
 	
 	public static CompilerState compile(boolean print, boolean printTrace,
 		boolean analysisOnly, boolean simulate, boolean omitPackageStandard, boolean verbose,
-		Reader reader) throws Exception {
+		Set<String> keepSet, Reader reader) throws Exception {
 		
 		Dabl dabl = new Dabl(print, printTrace, omitPackageStandard, reader);
 		CompilerState state = null;
@@ -98,7 +110,8 @@ public class Main
 		TaskContainerFactory taskContainerFactory;
 		if (simulate) taskContainerFactory = new TaskSimulatorFactory();
 		else taskContainerFactory = new TaskDockerContainerFactory();
-		Executor exec = new DefaultExecutor(state, taskContainerFactory, verbose);
+		Executor exec = new DefaultExecutor(state, taskContainerFactory,
+			omitPackageStandard, verbose, keepSet);
 		try {
 			exec.execute();
 		} catch (Exception ex) {
@@ -121,6 +134,8 @@ public class Main
 			"\t\t\t-s or --simulate (simulate only - print tasks instead of executing them)\n" +
 			"\t\t\t-o or --omitstd (do not implicitly import package dabl.standard)\n" +
 			"\t\t\t-v or --verbose (print details of each action performed)\n" +
+			"\t\t\t-k or --keep (keep - i.e., don't delete - the specified container;\n" +
+				"\t\t\t\toption may be specified more than once)\n" +
 			"\t\t\t-h or --help"
 			);
 		return;

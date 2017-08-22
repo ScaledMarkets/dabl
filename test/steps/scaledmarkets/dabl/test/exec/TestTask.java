@@ -114,7 +114,8 @@ public class TestTask extends TestBase {
 	@When("^I compile the task$")
 	public void i_compile_the_task() throws Throwable {
 		TaskContainerFactory taskContainerFactory = new TaskDockerContainerFactory();
-		Executor exec = new DefaultExecutor(getHelper().getState(), taskContainerFactory, false);
+		Executor exec = new DefaultExecutor(getHelper().getState(), taskContainerFactory,
+			false, false);
 		exec.execute();
 	}
 	

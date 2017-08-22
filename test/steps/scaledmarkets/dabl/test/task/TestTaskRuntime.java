@@ -20,6 +20,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.HashSet;
 
 public class TestTaskRuntime extends TestBase {
 	
@@ -56,8 +58,10 @@ public class TestTaskRuntime extends TestBase {
 		TaskContainerFactory taskContainerFactory = new TaskDockerContainerFactory();
 
 		System.out.println("Creating Executor...");
+		Set<String> keepSet = new HashSet<String>();
+		keepSet.add(TaskName);
 		DefaultExecutor executor = new DefaultExecutor(this.state,
-			taskContainerFactory, true);
+			taskContainerFactory, true, true, keepSet);
 		System.out.println("Executing executor...");
 		executor.execute();
 		System.out.println("...execution completed.");
