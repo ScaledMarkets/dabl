@@ -223,6 +223,7 @@ public class Helper {
 	 * Return the task declarations in the primary namespace.
 	 */
 	public List<AOtaskDeclaration> getTaskDeclarations() throws Exception {
+		assertThat(state.getASTs().size() > 0, "state does not reference any ASTs");
 		Start start = state.getASTs().get(0);
 		return getTaskDeclarations(start);
 	}

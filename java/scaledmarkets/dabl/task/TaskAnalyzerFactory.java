@@ -22,7 +22,7 @@ public class TaskAnalyzerFactory implements AnalyzerFactory {
 	public TaskContext getTaskContext() { return this.taskContext; }
 	
 	public NamespaceProcessor createNamespaceProcessor() {
-		TaskContext taskContext = new TaskContext();
+		//TaskContext taskContext = new TaskContext();
 		return new NamespaceProcessor(createAnalyzer(taskContext));
 	}
 	

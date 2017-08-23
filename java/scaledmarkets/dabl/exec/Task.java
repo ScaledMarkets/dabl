@@ -3,6 +3,7 @@ package scaledmarkets.dabl.exec;
 import scaledmarkets.dabl.node.*;
 import scaledmarkets.dabl.Config;
 import scaledmarkets.dabl.analyzer.TimeUnit;
+import scaledmarkets.dabl.analyzer.NameScopeEntry;
 import scaledmarkets.dabl.analyzer.ExpressionContext;
 import scaledmarkets.dabl.analyzer.ExpressionEvaluator;
 import scaledmarkets.dabl.util.Utilities;
@@ -14,9 +15,9 @@ import java.util.LinkedList;
 
 public class Task {
 	
-	public Task(AOtaskDeclaration taskDecl, ExpressionContext exprContext) {
+	public Task(AOtaskDeclaration taskDecl, DablContext dablContext) {
 		this.taskDecl = taskDecl;
-		this.exprContext = exprContext;
+		this.dablContext = dablContext;
 		this.timeUnit = retrieveTimeUnit();
 		this.timeout = retrieveTimeout();
 	}
@@ -24,7 +25,7 @@ public class Task {
 	public String getName() { return taskDecl.getName().getText(); }
 		
 	private AOtaskDeclaration taskDecl;
-	private ExpressionContext exprContext;
+	private DablContext dablContext;
 	private Set<Artifact> inputs = new HashSet<Artifact>();
 	private Set<Artifact> outputs = new HashSet<Artifact>();
 	
@@ -106,12 +107,23 @@ public class Task {
 	}
 	
 	/**
-	 * Return the task's statement sequence as a DABL syntax fragment. This is the
-	 * program that the task will execute in the container.
+	 * Return the task's statement sequence as a legal DABL task declaration,
+	 * but omitting all non-executable statements, and prepended with the
+	 * namespace declaration. This is the program that the task will execute
+	 * in the container.
 	 */
 	public String getTaskProgram() {
 		
 		String taskProgram = "";
+
+		// Write the namespace declaration.
+		NameScopeEntry entry = this.dablContext.getExecHelper()
+			.getState().getPrimaryNamespaceSymbolEntry();
+		taskProgram += ("namespace " + entry.getName() + "\n");
+		
+		// Write a task keyword.
+		taskProgram += ("task " + getName() + "\n");
+		
 		LinkedList<POprocStmt> plist = this.taskDecl.getOprocStmt();
 		for (POprocStmt p : plist) {
 			
@@ -139,7 +151,7 @@ public class Task {
 		if (pt instanceof ASpecifiedOtimeout) {
 			ASpecifiedOtimeout spect = (ASpecifiedOtimeout)pt;
 			POexpr expr = spect.getOexpr();
-			Object result = (new ExpressionEvaluator(this.exprContext)).evaluateExpr(expr);
+			Object result = (new ExpressionEvaluator(this.dablContext)).evaluateExpr(expr);
 			Utilities.assertThat(result instanceof Number,
 				"Timeout expression is not numeric: it is " + result.getClass().getName());
 			if (result instanceof Double) return (Double)result;

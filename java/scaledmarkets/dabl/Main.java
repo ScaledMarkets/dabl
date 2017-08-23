@@ -134,8 +134,8 @@ public class Main
 			"\t\t\t-s or --simulate (simulate only - print tasks instead of executing them)\n" +
 			"\t\t\t-o or --omitstd (do not implicitly import package dabl.standard)\n" +
 			"\t\t\t-v or --verbose (print details of each action performed)\n" +
-			"\t\t\t-k or --keep (keep - i.e., don't delete - the specified container;\n" +
-				"\t\t\t\toption may be specified more than once)\n" +
+			"\t\t\t-k <task-name> or --keep <task-name> (keep - i.e., don't delete - the\n" +
+				"\t\t\t\tspecified container; option may be specified more than once)\n" +
 			"\t\t\t-h or --help"
 			);
 		return;

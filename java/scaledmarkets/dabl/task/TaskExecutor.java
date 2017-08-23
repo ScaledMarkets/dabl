@@ -43,12 +43,16 @@ public class TaskExecutor implements Executor {
 		
 		System.out.println("Beginning execution of task...");
 		w.println("Beginning exec of task...");  // debug
+		
+		// Create a factory for creating a namespace processor.
 		TaskAnalyzerFactory analyzerFactory = new TaskAnalyzerFactory();
 		NamespaceProcessor namespaceProcessor = analyzerFactory.createNamespaceProcessor();
 
 		// Process the Dabl standard package.
 		String omitPackageStandardStr = System.getenv("OmitPackageStandard");
-		if ((omitPackageStandardStr == null) || (! omitPackageStandardStr.equals("true"))) {
+		if ((omitPackageStandardStr != null) && omitPackageStandardStr.equals("true")) {
+			System.out.println("Skipping package Standard.");
+		} else {
 			Reader r = new StringReader(DablStandard.PackageText);
 			namespaceProcessor.processNamespace(r);
 			System.out.println("Processed DablStandard.");

@@ -21,6 +21,8 @@ public class DablContext extends ExpressionContext {
 	private Map<String, Integer> taskStatus = new HashMap<String, Integer>();
 	private ExecHelper helper;
 	
+	public ExecHelper getExecHelper() { return helper; }
+	
 	public Object getValueForVariable(String variableName) {
 		throw new RuntimeException("Variables are only available in a task's runtime context");
 	}

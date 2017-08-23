@@ -55,6 +55,8 @@ $(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest compile $(jar_dir)
 	$(JAR) uf $(jar_dir)/$(TASK_JAR_NAME).jar \
 		-C $(task_runtime_build_dir) scaledmarkets
 	$(JAR) uf $(jar_dir)/$(TASK_JAR_NAME).jar \
+		-C $(parser_build_dir) scaledmarkets
+	$(JAR) uf $(jar_dir)/$(TASK_JAR_NAME).jar \
 		-C $(task_runtime_build_dir) dabl
 	rm Manifest
 
