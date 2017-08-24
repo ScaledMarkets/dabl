@@ -5,15 +5,26 @@ Feature: TestTaskRuntime
 	
 	@done
 	Scenario: Simple
-		Given Docker is running
-		When a task should execute
+		Given a trivial task
+		When the namespace is processed
 		Then the task executes
 	
+	@done
 	Scenario: Test that a true When condition causes task to execute
+		Given a task with a true when condition
+		When the namespace is processed
+		Then the task executes
+	
 	
 	Scenario: Test that a false When condition prevents task from executing
+		Given a task with a false when condition
+		When the namespace is processed
+		Then the task does not execute
 	
 	Scenario: Test that absence of a When condition behaves in the default manner
+		Given a task without a when condition and inputs that are newer than the outputs
+		When the namespace is processed
+		Then the task executes
 	
 	Scenario: Test that inputs are available to the task runtime
 	

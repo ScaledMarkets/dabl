@@ -122,7 +122,7 @@ public class Task {
 		taskProgram += ("namespace " + entry.getName() + "\n");
 		
 		// Write a task keyword.
-		taskProgram += ("task " + getName() + "\n");
+		taskProgram += ("task " + getName() + " when true\n");
 		
 		LinkedList<POprocStmt> plist = this.taskDecl.getOprocStmt();
 		for (POprocStmt p : plist) {
