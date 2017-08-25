@@ -2,7 +2,7 @@
 
 # Uses variables:
 #	jar_dir, JAR_NAME, sable_out_dir, package, JAVA, sable, grammar_file, JAVAC,
-#	maxerrs, buildcp, parser_build_dir
+#	maxerrs, parser_compile_cp, parser_build_dir
 
 all: clean compile
 
@@ -30,7 +30,7 @@ gen: $(grammar_file) $(sable_out_dir)
 
 # Compile the generated code for the task parser.
 compile: gen
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(buildcp) -d $(parser_build_dir) \
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(parser_compile_cp) -d $(parser_build_dir) \
 		$(sable_out_dir)/$(package)/node/*.java \
 		$(sable_out_dir)/$(package)/lexer/*.java \
 		$(sable_out_dir)/$(package)/analysis/*.java \

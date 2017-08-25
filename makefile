@@ -48,6 +48,7 @@ export sable_task_out_dir := $(CurDir)/SableCCTaskOutput
 export javadoc_dir := $(CurDir)/docs
 
 # Java classpaths:
+export parser_compile_cp := $(parser_build_dir)
 export client_compile_cp := $(parser_build_dir):$(client_build_dir)
 export task_runtime_compile_cp := $(parser_build_dir):$(task_runtime_build_dir)
 export compile_tests_cp := $(CUCUMBER_CLASSPATH):$(client_compile_cp)
