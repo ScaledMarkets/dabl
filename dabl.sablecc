@@ -329,9 +329,9 @@ Productions
       ;
     
     input_set {-> onamed_artifact_set} =
-        {named} inputs id artifact_set      {-> New onamed_artifact_set.named(id,
+        {named} inputs id artifact_spec     {-> New onamed_artifact_set.named(id,
                                                 artifact_set.oartifact_set)}
-      | {anonymous} inputs artifact_set     {-> New onamed_artifact_set.anonymous(
+      | {anonymous} inputs artifact_spec    {-> New onamed_artifact_set.anonymous(
                                                 artifact_set.oartifact_set)}
       | {ref} inputs path                   {-> New onamed_artifact_set.ref(New oid_ref([path.id]))}
         ;
@@ -348,17 +348,23 @@ Productions
       ;
     
     output_set {-> onamed_artifact_set} =
-        {named} outputs id artifact_set     {-> New onamed_artifact_set.named(id,
-                                                artifact_set.oartifact_set)}
-      | {anonymous} outputs artifact_set    {-> New onamed_artifact_set.anonymous(
-                                                artifact_set.oartifact_set)}
+        {named} outputs id artifact_spec    {-> New onamed_artifact_set.named(id,
+                                                artifact_spec.oartifact_spec)}
+      | {anonymous} outputs artifact_spec   {-> New onamed_artifact_set.anonymous(
+                                                artifact_spec.oartifact_spec)}
       | {ref} outputs path                  {-> New onamed_artifact_set.ref(New oid_ref([path.id]))}
         ;
+    
+    artifact_spec {-> oartifact_spec} =
+        artifact_set                        {-> New artifact_spec.inline(artifact_set.oartifact_set)}
+      | fileset_spec                        {-> New artifact_spec.local_files(fileset_spec.ostring_literal)}
+      | [files_ref]:path                    {-> New artifact_spec.files_ref(New oid_ref([files_ref.id]))}
+      ;
       
     //artifact_sets {-> oartifact_set*} =
     //    {multiple} artifact_set comma_char artifact_sets
-    //                                        {-> [artifact_set.oartifact_set, artifact_sets.oartifact_set]}
-    //  | {one} artifact_set                  {-> [artifact_set.oartifact_set]}
+    //                                      {-> [artifact_set.oartifact_set, artifact_sets.oartifact_set]}
+    //  | {one} artifact_set                {-> [artifact_set.oartifact_set]}
     //  ;
     
     artifact_set {-> oartifact_set} =
@@ -877,14 +883,20 @@ Abstract Syntax Tree
       ;
     
     onamed_artifact_set =
-        {named} id oartifact_set
-      | {anonymous} oartifact_set
+        {named} id oartifact_spec
+      | {anonymous} oartifact_spec
       | {ref} oid_ref
       ;
     
     oartifact_set =
         {remote} ofileset_operation* [project]:ostring_literal [repository_id]:oid_ref
       | {local} ofileset_operation*
+      ;
+    
+    oartifact_spec =
+        {inline} oartifact_set
+      | {local_files} ostring_literal
+      | {files_ref} oid_ref
       ;
     
     oproc_stmt =

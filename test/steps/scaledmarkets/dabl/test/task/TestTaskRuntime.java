@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
+import java.io.File;
+import java.io.PrintWriter;
 
 public class TestTaskRuntime extends TestBase {
 	
@@ -121,5 +123,21 @@ public class TestTaskRuntime extends TestBase {
 	@Given("^a task without a when condition and inputs that are newer than the outputs$")
 	public void a_task_without_a_when_condition_and_inputs_that_are_newer_than_the_outputs() throws Exception {
 		
+		File x = new File("x.txt");
+		File y = new File("y.txt");
+		PrintWriter xw = new PrintWriter(x);
+		PrintWriter yw = new PrintWriter(y);
+		xw.println();
+		yw.println();
+		xw.flush();
+		yw.flush();
+		xw.close();
+		yw.close();
+		this.reader = new StringReader(
+"namespace simple \n" +
+"task " + Task1Name + "\n" +
+"  inputs \"y.txt\" \n" +
+"  outputs \"x.txt\" \n"  // x.txt is older than y.txt
+			);
 	}
 }
