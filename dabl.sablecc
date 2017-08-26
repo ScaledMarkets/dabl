@@ -357,15 +357,9 @@ Productions
     
     artifact_spec {-> oartifact_spec} =
         {artifact_set} artifact_set         {-> New oartifact_spec.inline(artifact_set.oartifact_set)}
-      | {fileset_spec} fileset_spec         {-> New oartifact_spec.local_files(fileset_spec.ostring_literal)}
+      | {files_ref} use [files_name]:path   {-> New oartifact_spec.files_ref(New oid_ref([files_name.id]))}
       ;
       
-    //artifact_sets {-> oartifact_set*} =
-    //    {multiple} artifact_set comma_char artifact_sets
-    //                                      {-> [artifact_set.oartifact_set, artifact_sets.oartifact_set]}
-    //  | {one} artifact_set                {-> [artifact_set.oartifact_set]}
-    //  ;
-    
     artifact_set {-> oartifact_set} =
         {remote} of [project]:string_literal in [repository]:path prefer_stmt_opt files_stmts_opt
                                             {-> New oartifact_set.remote(
@@ -373,10 +367,6 @@ Productions
                                                 project.ostring_literal, New oid_ref([repository.id]))}
       | {local} new local files_stmts_opt   {-> New oartifact_set.local(
                                                 [files_stmts_opt.ofileset_operation])}
-        ;
-    
-    fileset_spec {-> ostring_literal} =
-        string_literal                      {-> string_literal.ostring_literal}
         ;
     
     files_decl {-> ofiles_declaration} =
@@ -435,12 +425,14 @@ Productions
       ;
     
     include_stmt {-> ofileset_operation} =
-        include fileset_spec                {-> New ofileset_operation.include(
+        include [fileset_spec]:string_literal
+                                            {-> New ofileset_operation.include(
                                                 fileset_spec.ostring_literal)}
         ;
     
     exclude_stmt {-> ofileset_operation} =
-        exclude fileset_spec                {-> New ofileset_operation.exclude(
+        exclude [fileset_spec]:string_literal
+                                            {-> New ofileset_operation.exclude(
                                                 fileset_spec.ostring_literal)}
         ;
     
@@ -887,15 +879,14 @@ Abstract Syntax Tree
       | {ref} oid_ref
       ;
     
+    oartifact_spec =
+        {inline} oartifact_set
+      | {files_ref} oid_ref
+      ;
+    
     oartifact_set =
         {remote} ofileset_operation* [project]:ostring_literal [repository_id]:oid_ref
       | {local} ofileset_operation*
-      ;
-    
-    oartifact_spec =
-        {inline} oartifact_set
-      | {local_files} ostring_literal
-      | {files_ref} oid_ref
       ;
     
     oproc_stmt =
