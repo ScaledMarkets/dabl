@@ -73,8 +73,12 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 			POidRef idRef = ((AFilesRefOidRef)p).getOidRef();
 			
 			// The id ref refers to a files declaration.
+			Annotation annot = getState().getOut(idRef);
+			assertThat(annot instanceof DeclaredEntry,
+				"Execpted Annotation to be a DeclaredEntry, but it is a " + annot.getClass().getName());
 			entry = new FilesRefEntry(id.getText(), getCurrentNameScope(), node,
-				....the file declaration''s symbol entry);
+				(DeclaredEntry)annot // the file declaration's symbol entry
+				);
 			
 		} else throw new RuntimeException(
 			"Unexpected Node kind: " + p.getClass().getName());
