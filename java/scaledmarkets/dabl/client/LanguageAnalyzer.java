@@ -58,13 +58,26 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 		TId id = node.getId();
 		
 		DeclaredEntry entry;
-		POartifactSet p = node.getOartifactSet();
-		if (p instanceof ALocalOartifactSet) {
-			entry = new LocalRepoEntry(id.getText(), getCurrentNameScope(), node);
-		} else if (p instanceof ARemoteOartifactSet) {
-			entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+		POartifactSpec p = node.getOartifactSpec();
+		if (p instanceof AInlineOartifactSet) {
+			PArtifactSet artifactSet = ((AInlineOartifactSet)p).getArtifactSet();
+
+			if (artifactSet instanceof ALocalOartifactSet) {
+				entry = new LocalRepoEntry(id.getText(), getCurrentNameScope(), node);
+			} else if (p instanceof ARemoteOartifactSet) {
+				entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
+			} else throw new RuntimeException(
+				"Unexpected Node kind: " + node.getClass().getName());
+
+		} else if (p instanceof AFilesRefOidRef) {
+			POidRef idRef = ((AFilesRefOidRef)p).getOidRef();
+			
+			// The id ref refers to a files declaration.
+			entry = new ....FilesRefEntry(id.getText(), getCurrentNameScope(), node,
+				....the id ref''s defining node);
+			
 		} else throw new RuntimeException(
-			"Unexpected Node kind: " + node.getClass().getName());
+			"Unexpected Node kind: " + p.getClass().getName());
 		
 		try {
 			addSymbolEntry(entry, id);
