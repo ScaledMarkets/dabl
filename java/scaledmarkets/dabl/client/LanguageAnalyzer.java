@@ -73,8 +73,8 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 			POidRef idRef = ((AFilesRefOidRef)p).getOidRef();
 			
 			// The id ref refers to a files declaration.
-			entry = new ....FilesRefEntry(id.getText(), getCurrentNameScope(), node,
-				....the id ref''s defining node);
+			entry = new FilesRefEntry(id.getText(), getCurrentNameScope(), node,
+				....the file declaration''s symbol entry);
 			
 		} else throw new RuntimeException(
 			"Unexpected Node kind: " + p.getClass().getName());
