@@ -26,7 +26,7 @@ export classfiles := \
 	$(client_build_dir)/$(package)/repos/*.class \
 	$(client_build_dir)/$(package)/util/*.class
 
-# 
+# Change to use maven.
 compile: $(client_build_dir) manifest
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(client_compile_cp):$(third_party_cp) -d $(client_build_dir) \
 		$(src_dir)/$(package)/*.java \
