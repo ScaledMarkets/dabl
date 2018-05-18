@@ -255,9 +255,9 @@ process, so do not edit it by hand.
 
 ## Why We Did Not Use Maven or Gradle To Build the Project
 
-Building this project entails more than compilation and packaging in a JAR:
-we need to run a compiler generation tool. In addition, the test suite is not
-a unit test suite, but instead is a behavioral test suite, which does not fit
+We do - our makefiles call maven. However, maven does not do everything we need
+to do - e.g., we need to run a compiler generation tool. In addition, the test suite
+is not a unit test suite, but instead is a behavioral test suite, which does not fit
 well with `maven`'s phases, because for behavioral tests, one has to deploy
 before one tests. The Java-centric nature of `maven` is also an issue, because
 this project requires some native (platform-specific) code.
@@ -266,7 +266,9 @@ Gradle also is not a good fit because there is no
 writing a new `gradle` task is not that simple. Indeed, these deficiencies are
 part of the motivation for creating DABL. We decided that `make` is actually
 the best tool for this project, because its core model is artifact-centric
-rather than task-centric, and it is also language-neutral. At some point we will
+rather than task-centric, and it is also language-neutral. However, we use maven
+for the things that maven is good at - namely pulling the third party projects
+and compiling everything. At some point we will
 make DABL build itself - i.e., we will create a DABL build file for the `dabl` project.
 
 # Binary Download
