@@ -1,0 +1,75 @@
+<!--
+
+	This pom relies on several environment variables.
+
+	This pom does not rely on a maven configuration (settings.xml).
+	
+	This pom overrides the standard source and target locations.
+	-->
+
+<project>
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>common</artifactId>
+	<version>${env.DABL_VERSION}</version>
+	<name>${env.PRODUCT_NAME}</name>
+	
+	<parent>
+		<groupId>${env.GroupId}</groupId>
+		<artifactId>${env.MavenBaseArtifactId}</artifactId>
+		<version>${env.DABL_VERSION}</version>
+	</parent>
+	
+	<properties>
+		<sourceDirectory>java</sourceDirectory>
+		<targetDirectory>maven</targetDirectory>
+	</properties>
+		
+	<dependencies>
+		
+		<!-- See https://jersey.github.io/documentation/latest/modules-and-dependencies.html -->
+		
+		<dependency>
+			<groupId>org.glassfish.jersey.bundles</groupId>
+			<artifactId>jaxrs-ri</artifactId>
+			<version>2.27</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.5</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.json</groupId>
+			<artifactId>javax.json-api</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+	
+		<sourceDirectory>${sourceDirectory}</sourceDirectory>
+		<directory>${targetDirectory}</directory>
+		
+		<plugins>
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<compilerArguments>
+						<Xmaxerrs>${env.maxerrs}</Xmaxerrs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+
+		</plugins>
+		
+	</build>
+	
+</project>

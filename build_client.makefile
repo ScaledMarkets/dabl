@@ -3,50 +3,30 @@
 # Uses variables:
 #	JAVAC, maxerrs, client_compile_cp, third_party_cp, parser_build_dir, client_build_dir,
 #	src_dir, package, CurDir,
-#	jar_dir, main_class, PRODUCT_NAME, DABL_VERSION, ORG, BUILD_TAG, JAR_NAME,
+#	jar_dir, main_class, PRODUCT_NAME, DABL_VERSION, ORG, BUILD_TAG, CLIENT_JAR_NAME,
 #	classfiles, JAR, javadoc_dir, JAVADOC, src_dir, sable_dabl_out_dir, package_name
 
 all: clean jar #javadoc
 
 .PHONY: compile clean manifest javadoc
 
-# Intermediate artifacts:
-export classfiles := \
-	$(client_build_dir)/$(package)/*.class \
-	$(client_build_dir)/$(package)/analysis/*.class \
-	$(client_build_dir)/$(package)/analyzer/*.class \
-	$(client_build_dir)/$(package)/client/*.class \
-	$(client_build_dir)/$(package)/docker/*.class \
-	$(client_build_dir)/$(package)/exec/*.class \
-	$(client_build_dir)/$(package)/handlers/*.class \
-	$(client_build_dir)/$(package)/helper/*.class \
-	$(client_build_dir)/$(package)/lexer/*.class \
-	$(client_build_dir)/$(package)/node/*.class \
-	$(client_build_dir)/$(package)/parser/*.class \
-	$(client_build_dir)/$(package)/repos/*.class \
-	$(client_build_dir)/$(package)/util/*.class
+# Create a Config.java file that contains the current application version.
+config:
+	echo "package scaledmarkets.dabl.client;" > $(src_dir)/$(package)/Config.java
+	echo "public class Config {" >> $(src_dir)/$(package)/Config.java
+	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(src_dir)/$(package)/Config.java
+	echo "}" >> $(src_dir)/$(package)/Config.java
 
-# Change to use maven.
 compile: $(client_build_dir) manifest
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(client_compile_cp):$(third_party_cp) -d $(client_build_dir) \
-		$(src_dir)/$(package)/*.java \
-		$(src_dir)/$(package)/analyzer/*.java \
-		$(src_dir)/$(package)/client/*.java \
-		$(src_dir)/$(package)/docker/*.java \
-		$(src_dir)/$(package)/exec/*.java \
-		$(src_dir)/$(package)/handlers/*.java \
-		$(src_dir)/$(package)/helper/*.java \
-		$(src_dir)/$(package)/repos/*.java \
-		$(src_dir)/$(package)/task/*.java \
-		$(src_dir)/$(package)/util/*.java
+	$(MVN) compile --projects client
 	cp $(CurDir)/.dabl.properties $(client_build_dir)
 
 clean:
 	if [ -z "$(client_build_dir)" ]; then echo "ERROR: client_build_dir variable is not set"; exit 1; fi
 	rm -r -f $(client_build_dir)/*
 	if [ -z "$(jar_dir)" ]; then echo "ERROR: jar_dir variable is not set"; exit 1; fi
-	if [ -z "$(JAR_NAME)" ]; then echo "ERROR: JAR_NAME variable is not set"; exit 1; fi
-	rm -r -f $(jar_dir)/$(JAR_NAME).jar
+	if [ -z "$(CLIENT_JAR_NAME)" ]; then echo "ERROR: CLIENT_JAR_NAME variable is not set"; exit 1; fi
+	rm -r -f $(jar_dir)/$(CLIENT_JAR_NAME).jar
 
 # Create the manifest file for the JAR.
 manifest:
@@ -58,16 +38,16 @@ manifest:
 	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
 	echo "Implementation-Vendor: $(ORG)" >> Manifest
 
-$(jar_dir)/$(JAR_NAME).jar: manifest compile $(jar_dir)
-	$(JAR) cfm $(jar_dir)/$(JAR_NAME).jar Manifest .dabl.properties \
+$(jar_dir)/$(CLIENT_JAR_NAME).jar: manifest compile $(jar_dir)
+	$(JAR) cfm $(jar_dir)/$(CLIENT_JAR_NAME).jar Manifest .dabl.properties \
 		-C $(client_build_dir) scaledmarkets
-	$(JAR) uf $(jar_dir)/$(JAR_NAME).jar \
+	$(JAR) uf $(jar_dir)/$(CLIENT_JAR_NAME).jar \
 		-C $(parser_build_dir) scaledmarkets
-	$(JAR) uf $(jar_dir)/$(JAR_NAME).jar \
+	$(JAR) uf $(jar_dir)/$(CLIENT_JAR_NAME).jar \
 		-C $(client_build_dir) dabl
 	rm Manifest
 
-jar: $(jar_dir)/$(JAR_NAME).jar
+jar: $(jar_dir)/$(CLIENT_JAR_NAME).jar
 
 # Create the directory that will contain the javadocs.
 $(javadoc_dir):

@@ -230,7 +230,7 @@ The third party components that are required for building or running DABL are,
 
 * [Jersey](https://jersey.java.net/)
 * JaxRS-RI (part of [Jersey](https://jersey.github.io/) 2.0)
-* A modified version of [JUnixSocket](https://github.com/kohlschutter/junixsocket}.
+* A modified version of [JUnixSocket](https://github.com/kohlschutter/junixsocket).
   The modified version is obtainable from here (TBD).
 * [Apache HTTP client library](https://hc.apache.org/)
 * [JavaxJSON](https://jsonp.java.net/)

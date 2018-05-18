@@ -1,0 +1,84 @@
+<!--
+
+	This pom relies on several environment variables.
+
+	This pom does not rely on a maven configuration (settings.xml).
+	
+	This pom overrides the standard source and target locations.
+	-->
+
+<project>
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>${env.ProjectName}</artifactId>
+	<version>${env.Version}</version>
+	<name></name>
+	
+	<parent>
+		<groupId>${env.GroupId}</groupId>
+		<artifactId>${env.ProjectName}-parent</artifactId>
+		<version>${env.Version}</version>
+	</parent>
+	
+	<properties>
+		<sourceDirectory>java</sourceDirectory>
+		<targetDirectory>maven</targetDirectory>
+	</properties>
+		
+	<dependencies>
+		
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>1.2.5</version>
+			<scope>provided</scope>
+		</dependency>		
+		
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-core</artifactId>
+			<version>1.2.5</version>
+			<scope>provided</scope>
+		</dependency>		
+		
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-jvm-deps</artifactId>
+			<version>1.0.5</version>
+			<scope>provided</scope>
+		</dependency>		
+		
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>gherkin</artifactId>
+			<version>2.12.2</version>
+			<scope>provided</scope>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+	
+		<sourceDirectory>${sourceDirectory}</sourceDirectory>
+		<directory>${targetDirectory}</directory>
+		<testSourceDirectory>${testSourceDirectory}</testSourceDirectory>
+		
+		<plugins>
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<compilerArguments>
+						<Xmaxerrs>${Xmaxerrs}</Xmaxerrs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+
+		</plugins>
+		
+	</build>
+	
+</project>

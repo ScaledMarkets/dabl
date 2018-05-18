@@ -1,7 +1,7 @@
 # Do not run this makefile alone. Can only be run from the main makefile.
 
 # Uses variables:
-#	jar_dir, JAR_NAME, sable_out_dir, package, JAVA, sable, grammar_file, JAVAC,
+#	jar_dir, PARSER_JAR_NAME, sable_out_dir, package, JAVA, sable, grammar_file, JAVAC,
 #	maxerrs, parser_compile_cp, parser_build_dir
 
 all: clean compile
@@ -13,7 +13,7 @@ all: clean compile
 dist: jar
 
 # Create 'jar' target so we can reference it in 'all' target.
-jar: $(jar_dir)/$(JAR_NAME).jar
+jar: $(jar_dir)/$(PARSER_JAR_NAME).jar
 
 # Create the directory that will contain the parser source files.
 $(sable_out_dir):
@@ -30,7 +30,7 @@ gen: $(grammar_file) $(sable_out_dir)
 
 # Compile the generated code for the task parser.
 compile: gen
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(parser_compile_cp) -d $(parser_build_dir) \
+	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(parser_build_dir) -d $(parser_build_dir) \
 		$(sable_out_dir)/$(package)/node/*.java \
 		$(sable_out_dir)/$(package)/lexer/*.java \
 		$(sable_out_dir)/$(package)/analysis/*.java \

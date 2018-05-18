@@ -11,8 +11,13 @@ include makefile.inc
 
 # Artifact names:
 export ORG = Scaled Markets
+export GroupId = scaledmarkets
+export MavenBaseArtifactId = dabl
 export PRODUCT_NAME = Dabl
-export JAR_NAME = dabl
+export Description = "Dependent Artifact Build Language"
+export COMMON_JAR_NAME = common
+export PARSER_JAR_NAME = parser
+export CLIENT_JAR_NAME = client
 export TASK_JAR_NAME = taskruntime
 
 # Output artifact names:
@@ -20,9 +25,10 @@ export package := scaledmarkets/dabl
 export task_parser_package := $(package)/task
 export test_package=scaledmarkets/dabl/test
 export package_name = scaledmarkets.dabl
+export client_package_name = $(package_name).client
 export task_package_name = scaledmarkets.dabl.task
 export test_package_name = scaledmarkets.dabl.test
-export main_class := $(package_name).Main
+export main_class := $(client_package_name).Main
 export task_main_class := $(task_package_name).TaskExecutor
 
 # Command aliases:
@@ -36,6 +42,7 @@ export JAVADOC = javadoc
 export CurDir := $(shell pwd)
 export src_dir := $(CurDir)/java
 export parser_build_dir := $(build_dir)/parser
+export common_build_dir := $(build_dir)/common
 export client_build_dir := $(build_dir)/client
 export task_runtime_build_dir := $(build_dir)/task_runtime
 export test_src_dir := $(CurDir)/test
@@ -46,14 +53,6 @@ export testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_
 export sable_dabl_out_dir := $(CurDir)/SableCCOutput
 export sable_task_out_dir := $(CurDir)/SableCCTaskOutput
 export javadoc_dir := $(CurDir)/docs
-
-# Java classpaths:
-export parser_compile_cp := $(parser_build_dir)
-export client_compile_cp := $(parser_build_dir):$(client_build_dir)
-export task_runtime_compile_cp := $(parser_build_dir):$(task_runtime_build_dir)
-export compile_tests_cp := $(CUCUMBER_CLASSPATH):$(client_compile_cp)
-export test_cp := $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar
-export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
 
 # Aliases:
 test := java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar
@@ -68,29 +67,10 @@ test := $(test) $(test_src_dir)/features
 
 .PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
 	task_manifest task_jar image \
-	check compile_tests test runsonar javadoc clean_parser clean_task_parser info
+	check compile_tests test runsonar javadoc clean_parser clean_task_parser info \
+	common
 
 all: clean parser compile jar task_jar task_runtime image compile_tests test
-
-# Create a Config.java file that contains the current application version.
-config:
-	echo "package scaledmarkets.dabl;" > $(src_dir)/$(package)/Config.java
-	echo "public class Config {" >> $(src_dir)/$(package)/Config.java
-	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(src_dir)/$(package)/Config.java
-	echo "}" >> $(src_dir)/$(package)/Config.java
-
-# ------------------------------------------------------------------------------
-# Create parser.
-
-parser: config
-	sable_out_dir=$(sable_dabl_out_dir) \
-		package=$(package) \
-		parser_build_dir=$(parser_build_dir) \
-		grammar_file=dabl.sablecc \
-		make -f make_parser.makefile all
-
-clean_parser:
-	make -f make_parser.makefile clean
 
 
 # ------------------------------------------------------------------------------
@@ -101,18 +81,44 @@ clean_parser:
 $(build_dir):
 	mkdir -p $(build_dir)
 
+$(parser_build_dir):
+	mkdir -p $(parser_build_dir)
+
+$(common_build_dir):
+	mkdir -p $(common_build_dir)
+
 $(client_build_dir):
 	mkdir -p $(client_build_dir)
 
 $(task_runtime_build_dir):
 	mkdir -p $(task_runtime_build_dir)
 
-$(parser_build_dir):
-	mkdir -p $(parser_build_dir)
-
 # Create the directory that will contain the jar files that are created.
 $(jar_dir):
 	mkdir -p $(jar_dir)
+
+# ------------------------------------------------------------------------------
+# Build the various four components.
+
+# Create parser.
+parser: config
+	sable_out_dir=$(sable_dabl_out_dir) \
+		package=$(package) \
+		parser_build_dir=$(parser_build_dir) \
+		grammar_file=dabl.sablecc \
+		make -f build_parser.makefile all
+
+clean_parser:
+	make -f build_parser.makefile clean
+
+
+# Create the common module that is shared by all components.
+common:
+	make -f build_common.makefile all
+
+clean_common:
+	make -f build_common.makefile clean
+
 
 # Create the end user command line application.
 client: $(jar_dir) $(client_build_dir)
@@ -121,9 +127,13 @@ client: $(jar_dir) $(client_build_dir)
 clean_client:
 	make -f build_client.makefile clean
 
+
 # Create the container image that is invoked by the command line application.
 task_runtime: $(jar_dir) $(task_runtime_build_dir)
 	make -f build_task_runtime.makefile all
+
+clean_task_runtime:
+	make -f build_task_runtime.makefile clean
 
 
 # ------------------------------------------------------------------------------
@@ -182,10 +192,6 @@ test_check:
 
 test_clean:
 	rm -r -f $(test_build_dir)/*
-
-# Perform code quality scans.
-runsonar:
-	$(SONAR_RUNNER)
 
 cukehelp:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help

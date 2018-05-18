@@ -1,5 +1,11 @@
-# Environment configurations for makefile.
-# Edit this file to specify the locations of required tools and build directory.
+# Configurations for makefile.
+# Edit this file to specify the paths and versions of required tools and directories.
+
+ifdef env
+	include $(env)
+else
+	include env.mac
+endif
 
 # Configurations particular to why this build is being run:
 export maxerrs = 5
@@ -17,34 +23,24 @@ export build_dir = /Transient/dabl
 export jar_dir = /Transient/dabl/jars
 
 # User executing this script.
-UserHome := /Users/cliffordberg
+UserHome := $(HOME)
 
-# Secrets. (For local use only - if this script is run in a build pipeline,
-# the secrets should be obtained opaquely from a keystore.)
-export DockerhubCredentials = $(UserHome)/Documents/ScaledMarkets/Credentials/SetDockerhubCredentials.sh
-
-# Locations of tools:
-export Library := /Users/cliffordberg/Library
-export SONAR_RUNNER := $(Library)/sonar-runner-2.4/bin/sonar-runner
-export sable := $(Library)/sablecc-3.2
-export junit_dir := $(Library)/JUnit
-export log4jcore := $(Library)/apache-log4j-2.0.2-bin/log4j-core-2.0.2.jar
-export log4japi := $(Library)/apache-log4j-2.0.2-bin/log4j-1.2-api-2.0.2.jar
-export commonslogging12 := $(Library)/commons-logging-1.2/commons-logging-1.2.jar
-jaxrs := $(Library)/jaxrs-ri/api/*
-jaxrs := $(jaxrs):$(Library)/jaxrs-ri/lib/*
-jaxrs := $(jaxrs):$(Library)/jaxrs-ri/ext/*
+# Locations of dev tools:
+export DevLibrary := $(UserHome)/Library
+export sable := $(DevLibrary)/sablecc-3.2
+jaxrs := $(DevLibrary)/jaxrs-ri/api/*
+jaxrs := $(jaxrs):$(DevLibrary)/jaxrs-ri/lib/*
+jaxrs := $(jaxrs):$(DevLibrary)/jaxrs-ri/ext/*
 export jaxrs
-export jersey := $(Library)/jersey/*
-#export apache_http := $(Library)/httpcomponents-client-4.4.6/lib/*
-export apache_http := $(Library)/httpcomponents-client-4.5.3/lib/*
+export jersey := $(DevLibrary)/jersey/*
+export apache_http := $(DevLibrary)/httpcomponents-client-4.5.3/lib/*
 export junixsocket := /Users/cliffordberg/Documents/ScaledMarkets/DABL/junixsocket/lib/junixsocket.jar
 export junixsocketnative := /Users/cliffordberg/Documents/ScaledMarkets/DABL/junixsocket/classes
-export javaxjson := $(Library)/javax.json/*
-CUCUMBER_CLASSPATH := $(Library)/Cucumber/cucumber-core-1.1.8.jar
-CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-java-1.1.8.jar
-CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/cucumber-jvm-deps-1.0.3.jar
-CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(Library)/Cucumber/gherkin-2.12.2.jar
+export javaxjson := $(DevLibrary)/javax.json/*
+CUCUMBER_CLASSPATH := $(DevLibrary)/Cucumber/cucumber-core-1.1.8.jar
+CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(DevLibrary)/Cucumber/cucumber-java-1.1.8.jar
+CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(DevLibrary)/Cucumber/cucumber-jvm-deps-1.0.3.jar
+CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(DevLibrary)/Cucumber/gherkin-2.12.2.jar
 export CUCUMBER_CLASSPATH
 
 # Java compatibility: Requires Java 8.
