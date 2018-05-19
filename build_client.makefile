@@ -16,10 +16,10 @@ manifest:
 
 # Create a Config.java file that contains the current application version.
 config:
-	echo "package scaledmarkets.dabl.client;" > $(client_src_dir)/$(package)/Config.java
-	echo "public class Config {" >> $(client_src_dir)/$(package)/client/Config.java
-	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(client_src_dir)/$(package)/client/Config.java
-	echo "}" >> $(client_src_dir)/$(package)/client/Config.java
+	echo "package scaledmarkets.dabl;" > $(client_src_dir)/$(package)/ClientConfig.java
+	echo "public class ClientConfig {" >> $(client_src_dir)/$(package)/ClientConfig.java
+	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(client_src_dir)/$(package)/ClientConfig.java
+	echo "}" >> $(client_src_dir)/$(package)/ClientConfig.java
 
 compile: $(client_build_dir) manifest config
 	$(MVN) compile --projects client

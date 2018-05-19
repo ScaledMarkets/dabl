@@ -41,7 +41,7 @@ export JAVADOC = javadoc
 # Relative locations:
 export ThisDir := $(shell pwd)
 #export src_dir := $(ThisDir)/java
-export parser_src_dir := $(ThisDir)/SableCCOutput
+export sable_dabl_out_dir := $(ThisDir)/SableCCOutput
 export common_src_dir := $(ThisDir)/common/java
 export client_src_dir := $(ThisDir)/client/java
 export task_runtime_src_dir := $(ThisDir)/task_runtime/java
@@ -54,7 +54,6 @@ export test_build_dir := $(ThisDir)/buildtest
 export test_package = $(package)/test
 export testsourcefiles := $(test_src_dir)/$(test_package)/*.java
 export testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/exec/*.class
-export sable_dabl_out_dir := $(ThisDir)/SableCCOutput
 export sable_task_out_dir := $(ThisDir)/SableCCTaskOutput
 export javadoc_dir := $(ThisDir)/docs
 
