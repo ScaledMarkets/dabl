@@ -1,12 +1,3 @@
-<!--
-
-	This pom relies on several environment variables.
-
-	This pom does not rely on a maven configuration (settings.xml).
-	
-	This pom overrides the standard source and target locations.
-	-->
-
 <project>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -20,13 +11,15 @@
 	
 	<parent>
 		<groupId>scaledmarkets</groupId>
-		<artifactId>Dabl</artifactId>
+		<artifactId>dabl</artifactId>
 		<version>${revision}</version>
 	</parent>
 	
 	<properties>
 		<sourceDirectory>java</sourceDirectory>
 		<targetDirectory>maven</targetDirectory>
+		<JavaSourceVersion>${javaversion}</JavaSourceVersion>
+		<JavaTargetVersion>${javaversion}</JavaTargetVersion>
 	</properties>
 		
 	<dependencies>
@@ -65,8 +58,10 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 				<configuration>
+					<source>${JavaSourceVersion}</source>
+					<target>${JavaTargetVersion}</target>
 					<compilerArguments>
-						<Xmaxerrs>${env.maxerrs}</Xmaxerrs>
+						<Xmaxerrs>${Xmaxerrs}</Xmaxerrs>
 					</compilerArguments>
 				</configuration>
 			</plugin>

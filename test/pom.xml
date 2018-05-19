@@ -1,24 +1,15 @@
-<!--
-
-	This pom relies on several environment variables.
-
-	This pom does not rely on a maven configuration (settings.xml).
-	
-	This pom overrides the standard source and target locations.
-	-->
-
 <project>
 
 	<modelVersion>4.0.0</modelVersion>
 	
-	<artifactId>${env.ProjectName}</artifactId>
-	<version>${env.Version}</version>
-	<name></name>
+	<artifactId>test</artifactId>
+	<version>${revision}</version>
+	<name>test</name>
 	
 	<parent>
-		<groupId>${env.GroupId}</groupId>
-		<artifactId>${env.ProjectName}-parent</artifactId>
-		<version>${env.Version}</version>
+		<groupId>scaledmarkets</groupId>
+		<artifactId>dabl</artifactId>
+		<version>${revision}</version>
 	</parent>
 	
 	<properties>

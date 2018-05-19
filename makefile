@@ -41,7 +41,7 @@ export JAVADOC = javadoc
 # Relative locations:
 export ThisDir := $(shell pwd)
 #export src_dir := $(ThisDir)/java
-export sable_dabl_out_dir := $(ThisDir)/SableCCOutput
+export sable_dabl_out_dir := $(ThisDir)/parser
 export common_src_dir := $(ThisDir)/common/java
 export client_src_dir := $(ThisDir)/client/java
 export task_runtime_src_dir := $(ThisDir)/task_runtime/java
@@ -87,8 +87,8 @@ $(build_dir):
 	mkdir -p $(build_dir)
 
 # Create the directory that will contain the parser source files.
-$(sable_out_dir):
-	mkdir -p $(sable_out_dir)/$(package)
+$(sable_dabl_out_dir):
+	mkdir -p $(sable_dabl_out_dir)/$(package)
 
 $(parser_build_dir):
 	mkdir -p $(parser_build_dir)
@@ -111,7 +111,7 @@ $(jar_dir):
 
 # Create parser.
 parser: $(jar_dir) $(parser_build_dir)
-	sable_out_dir=$(sable_dabl_out_dir) \
+	sable_dabl_out_dir=$(sable_dabl_out_dir) \
 		package=$(package) \
 		parser_build_dir=$(parser_build_dir) \
 		grammar_file=dabl.sablecc \

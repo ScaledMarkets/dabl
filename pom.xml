@@ -12,22 +12,30 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<groupId>scaledmarkets</groupId>
-	<artifactId>Dabl</artifactId>
+	<artifactId>dabl</artifactId>
 	<version>${revision}</version>
 	<name>${env.Description}</name>
 	<packaging>pom</packaging>
 	
 	<properties>
 		<revision>${env.DABL_VERSION}</revision>
+		<javaversion>${env.JavaVersion}</javaversion>
 		<Xmaxerrs>${env.maxerrs}</Xmaxerrs>
-		<JarDir>${env.jar_dir}</JarDir>
-		<ImageBuildDir>${env.ImageBuildDir}</ImageBuildDir>
-		
-		<maven.compiler.source>${env.JavaVersion}</maven.compiler.source>
-		<maven.compiler.target>${env.JavaVersion}</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<modules>
+		<module>parser</module>
+		
+		<module>common</module>
+		
+		<module>client</module>
+		
+		<module>task_runtime</module>
+		
+		<!-- For integration testing -->
+		<module>test</module>
+	</modules>
+	
 	<repositories>
 	
 		<repository>
@@ -70,19 +78,6 @@
 		
 	</repositories>
 	
-	<modules>
-		<module>SableCCOutput</module>
-		
-		<module>client</module>
-		
-		<module>task_runtime</module>
-		
-		<module>common</module>
-		
-		<!-- For integration testing -->
-		<module>dabl-bdd</module>
-	</modules>
-	
 	<build>
 		
 		<plugins>
@@ -103,7 +98,7 @@
 				<configuration>
 					<toolchains>
 						<jdk>
-							<version>8</version>
+							<version>1.8</version>
 							<vendor>oracle</vendor>
 						</jdk>
 					</toolchains>
