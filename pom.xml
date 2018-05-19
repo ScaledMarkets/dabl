@@ -11,13 +11,14 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>${env.GroupId}</groupId>
-	<artifactId>${env.PRODUCT_NAME}-parent</artifactId>
-	<version>${env.DABL_VERSION}</version>
+	<groupId>scaledmarkets</groupId>
+	<artifactId>Dabl</artifactId>
+	<version>${revision}</version>
 	<name>${env.Description}</name>
 	<packaging>pom</packaging>
 	
 	<properties>
+		<revision>${env.DABL_VERSION}</revision>
 		<Xmaxerrs>${env.maxerrs}</Xmaxerrs>
 		<JarDir>${env.jar_dir}</JarDir>
 		<ImageBuildDir>${env.ImageBuildDir}</ImageBuildDir>
@@ -112,9 +113,5 @@
 		</plugins>
 		
 	</build>
-	
-	<dependencies>
-	
-	</dependencies>
 
 </project>

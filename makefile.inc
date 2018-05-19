@@ -19,8 +19,8 @@ export IMAGE_REGISTRY = registry.hub.docker.com
 export TASK_RUNTIME_IMAGE_NAME = scaledmarkets/taskruntime
 
 # Output directories.
-export build_dir = /Transient/dabl
-export jar_dir = /Transient/dabl/jars
+export build_dir = $(HOME)/Transient/dabl
+export jar_dir = $(HOME)/Transient/dabl/jars
 
 # User executing this script.
 UserHome := $(HOME)

@@ -20,7 +20,8 @@ config:
 	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(client_src_dir)/$(package)/CommonConfig.java
 	echo "}" >> $(client_src_dir)/$(package)/CommonConfig.java
 
-compile: "$(common_build_dir)" manifest config
+compile: manifest config
+	@echo "Compiling common-----------------------------------------------------"
 	$(MVN) compile --projects common
 
 clean:
@@ -38,3 +39,4 @@ $(jar_dir)/$(COMMON_JAR_NAME).jar: task_manifest compile $(jar_dir)
 	$(JAR) cfm $(jar_dir)/$(COMMON_JAR_NAME).jar Manifest \
 		-C $(common_build_dir) scaledmarkets
 	rm Manifest
+

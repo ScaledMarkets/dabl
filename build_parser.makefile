@@ -4,21 +4,14 @@
 
 all: clean compile
 
-# Create the directory that will contain the parser source files.
-$(sable_out_dir):
-	mkdir -p $(sable_out_dir)/$(package)
-
-# Create the directory that will contain the parser's compiled class files.
-$(parser_build_dir):
-	mkdir -p $(parser_build_dir)
-
 # Generate the task parser.
 # Generates task compiler tables and classes.
-gen: $(grammar_file) $(sable_out_dir)
+gen: $(grammar_file)
 	$(JAVA) -jar $(sable)/lib/sablecc.jar -d $(sable_out_dir) --no-inline $(grammar_file)
 
 # Compile the generated code for the task parser.
 compile: gen
+	@echo "Compiling parser-----------------------------------------------------"
 	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(parser_build_dir) -d $(parser_build_dir) \
 		$(sable_out_dir)/$(package)/node/*.java \
 		$(sable_out_dir)/$(package)/lexer/*.java \
@@ -33,3 +26,4 @@ clean:
 
 # Create 'jar' target so we can reference it in 'all' target.
 jar: $(jar_dir)/$(PARSER_JAR_NAME).jar
+

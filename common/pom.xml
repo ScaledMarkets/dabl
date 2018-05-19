@@ -11,14 +11,17 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	
+	<!-- Inheriting by child module: see
+		https://www.igorkromin.net/index.php/2017/06/16/multi-module-builds-with-maven-35-and-the-parent-child-pom-version-management/
+	-->
 	<artifactId>common</artifactId>
-	<version>${env.DABL_VERSION}</version>
-	<name>${env.PRODUCT_NAME}</name>
+	<version>${revision}</version>
+	<name>common</name>
 	
 	<parent>
-		<groupId>${env.GroupId}</groupId>
-		<artifactId>${env.MavenBaseArtifactId}</artifactId>
-		<version>${env.DABL_VERSION}</version>
+		<groupId>scaledmarkets</groupId>
+		<artifactId>Dabl</artifactId>
+		<version>${revision}</version>
 	</parent>
 	
 	<properties>

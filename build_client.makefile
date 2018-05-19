@@ -21,7 +21,8 @@ config:
 	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(client_src_dir)/$(package)/ClientConfig.java
 	echo "}" >> $(client_src_dir)/$(package)/ClientConfig.java
 
-compile: $(client_build_dir) manifest config
+compile: manifest config
+	@echo "Compiling client-----------------------------------------------------"
 	$(MVN) compile --projects client
 	cp $(ThisDir)/.dabl.properties $(client_build_dir)
 
@@ -54,3 +55,4 @@ $(jar_dir)/$(CLIENT_JAR_NAME).jar: manifest compile $(jar_dir)
 	$(JAR) cfm $(jar_dir)/$(CLIENT_JAR_NAME).jar Manifest .dabl.properties \
 		-C $(client_build_dir) scaledmarkets
 	rm Manifest
+

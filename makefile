@@ -73,8 +73,10 @@ test := $(test) $(test_src_dir)/features
 	check compile_tests test runsonar javadoc clean_parser clean_task_parser info \
 	common
 
-all: clean parser compile jar task_jar task_runtime image compile_tests test
+all: clean parser compile jar task_jar task_runtime image compile_tests test mvnversion
 
+mvnversion:
+	$(MVN) --version
 
 # ------------------------------------------------------------------------------
 # Build client and task runtime.
@@ -83,6 +85,10 @@ all: clean parser compile jar task_jar task_runtime image compile_tests test
 # Create the directories that will contain the compiled class files.
 $(build_dir):
 	mkdir -p $(build_dir)
+
+# Create the directory that will contain the parser source files.
+$(sable_out_dir):
+	mkdir -p $(sable_out_dir)/$(package)
 
 $(parser_build_dir):
 	mkdir -p $(parser_build_dir)
@@ -104,7 +110,7 @@ $(jar_dir):
 # Build the various four components.
 
 # Create parser.
-parser: config
+parser: $(jar_dir) $(parser_build_dir)
 	sable_out_dir=$(sable_dabl_out_dir) \
 		package=$(package) \
 		parser_build_dir=$(parser_build_dir) \
@@ -116,7 +122,7 @@ clean_parser:
 
 
 # Create the common module that is shared by all components.
-common:
+common: $(jar_dir) $(common_build_dir)
 	make -f build_common.makefile all
 
 clean_common:
@@ -140,8 +146,8 @@ clean_task_runtime:
 
 
 # Build and push container image for task runtime.
-....image:
-	....cp $(jar_dir)/$(TASK_JAR_NAME).jar taskruntime
+image:
+	cp $(jar_dir)/*.jar taskruntime
 	. $(DockerhubCredentials)
 	docker build --no-cache --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime
 	@docker login -u $(DockerhubUserId) -p $(DockerhubPassword)

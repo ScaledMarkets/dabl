@@ -28,7 +28,8 @@ config:
 	echo "}" >> $(client_src_dir)/$(package)/TaskRuntimeConfig.java
 
 # 
-compile: $(task_runtime_build_dir) manifest config
+compile: manifest config
+	@echo "Compiling task runtime-----------------------------------------------------"
 	$(MVN) compile --projects take_runtime
 	cp $(ThisDir)/.dabl.container.properties $(task_runtime_build_dir)
 
@@ -42,3 +43,4 @@ $(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest compile $(jar_dir)
 	$(JAR) cfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest \
 		-C $(task_runtime_build_dir) scaledmarkets
 	rm Manifest
+

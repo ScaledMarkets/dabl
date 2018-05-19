@@ -4,7 +4,8 @@
 
 all: clean compile
 
-compile: $(common_build_dir)
+compile:
+	@echo "Compiling tests-----------------------------------------------------"
 	$(MVN) compile --projects test
 
-....clean:
+clean:
