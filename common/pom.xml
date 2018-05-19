@@ -18,8 +18,6 @@
 	<properties>
 		<sourceDirectory>java</sourceDirectory>
 		<targetDirectory>maven</targetDirectory>
-		<JavaSourceVersion>${javaversion}</JavaSourceVersion>
-		<JavaTargetVersion>${javaversion}</JavaTargetVersion>
 	</properties>
 		
 	<dependencies>
@@ -58,8 +56,6 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
 				<configuration>
-					<source>${JavaSourceVersion}</source>
-					<target>${JavaTargetVersion}</target>
 					<compilerArguments>
 						<Xmaxerrs>${Xmaxerrs}</Xmaxerrs>
 					</compilerArguments>

@@ -23,11 +23,11 @@ export build_dir = $(HOME)/Transient/dabl
 export jar_dir = $(HOME)/Transient/dabl/jars
 
 # User executing this script.
-UserHome := $(HOME)
+export UserHome := $(HOME)
 
 # Locations of dev tools:
 export DevLibrary := $(UserHome)/Library
-export sable := $(DevLibrary)/sablecc-3.2
+export sable := $(DevLibrary)/sablecc-3.6
 jaxrs := $(DevLibrary)/jaxrs-ri/api/*
 jaxrs := $(jaxrs):$(DevLibrary)/jaxrs-ri/lib/*
 jaxrs := $(jaxrs):$(DevLibrary)/jaxrs-ri/ext/*
@@ -42,10 +42,3 @@ CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(DevLibrary)/Cucumber/cucumber-java
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(DevLibrary)/Cucumber/cucumber-jvm-deps-1.0.3.jar
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(DevLibrary)/Cucumber/gherkin-2.12.2.jar
 export CUCUMBER_CLASSPATH
-
-# Java compatibility: Requires Java 8.
-# For Mac:
-export JAVA_HOME := $(shell /usr/libexec/java_home)
-#export JAVA_HOME := /Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home
-# For other than Mac:
-#export JAVA_HOME = ....
