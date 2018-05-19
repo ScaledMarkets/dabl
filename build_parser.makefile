@@ -1,19 +1,8 @@
 # Do not run this makefile alone. Can only be run from the main makefile.
 
-# Uses variables:
-#	jar_dir, PARSER_JAR_NAME, sable_out_dir, package, JAVA, sable, grammar_file, JAVAC,
-#	maxerrs, parser_compile_cp, parser_build_dir
+.PHONY: all gen compile clean jar
 
 all: clean compile
-
-.PHONY: dist jar gen compile clean
-
-
-# Define 'dist' target so we can reference it in 'all' target.
-dist: jar
-
-# Create 'jar' target so we can reference it in 'all' target.
-jar: $(jar_dir)/$(PARSER_JAR_NAME).jar
 
 # Create the directory that will contain the parser source files.
 $(sable_out_dir):
@@ -41,3 +30,6 @@ compile: gen
 clean:
 	if [ -z "$(sable_out_dir)" ]; then echo "ERROR: sable_out_dir variable is not set"; exit 1; else rm -r -f $(sable_out_dir)/*; fi
 	if [ -z "$(parser_build_dir)" ]; then echo "ERROR: parser_build_dir variable is not set"; exit 1; else rm -r -f $(parser_build_dir)/*; fi
+
+# Create 'jar' target so we can reference it in 'all' target.
+jar: $(jar_dir)/$(PARSER_JAR_NAME).jar

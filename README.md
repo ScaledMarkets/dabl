@@ -255,7 +255,7 @@ process, so do not edit it by hand.
 
 ## Why We Do Not Use Maven or Gradle To Build the Project
 
-We do - our makefiles call maven. However, maven does not do everything we need
+We do - our makefiles call `maven`. However, `maven` does not do everything we need
 to do - e.g., we need to run a compiler generation tool. In addition, the test suite
 is not a unit test suite, but instead is a behavioral test suite, which does not fit
 well with `maven`'s phases, because for behavioral tests, one has to deploy

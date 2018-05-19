@@ -28,7 +28,7 @@ export package_name = scaledmarkets.dabl
 export client_package_name = $(package_name).client
 export task_package_name = scaledmarkets.dabl.task
 export test_package_name = scaledmarkets.dabl.test
-export main_class := $(client_package_name).Main
+export client_main_class := $(client_package_name).Main
 export task_main_class := $(task_package_name).TaskExecutor
 
 # Command aliases:
@@ -39,20 +39,24 @@ export JAR = jar
 export JAVADOC = javadoc
 
 # Relative locations:
-export CurDir := $(shell pwd)
-export src_dir := $(CurDir)/java
+export ThisDir := $(shell pwd)
+#export src_dir := $(ThisDir)/java
+export parser_src_dir := $(ThisDir)/SableCCOutput
+export common_src_dir := $(ThisDir)/common/java
+export client_src_dir := $(ThisDir)/client/java
+export task_runtime_src_dir := $(ThisDir)/task_runtime/java
 export parser_build_dir := $(build_dir)/parser
 export common_build_dir := $(build_dir)/common
 export client_build_dir := $(build_dir)/client
 export task_runtime_build_dir := $(build_dir)/task_runtime
-export test_src_dir := $(CurDir)/test
-export test_build_dir := $(CurDir)/buildtest
+export test_src_dir := $(ThisDir)/test
+export test_build_dir := $(ThisDir)/buildtest
 export test_package = $(package)/test
 export testsourcefiles := $(test_src_dir)/$(test_package)/*.java
 export testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/exec/*.class
-export sable_dabl_out_dir := $(CurDir)/SableCCOutput
-export sable_task_out_dir := $(CurDir)/SableCCTaskOutput
-export javadoc_dir := $(CurDir)/docs
+export sable_dabl_out_dir := $(ThisDir)/SableCCOutput
+export sable_task_out_dir := $(ThisDir)/SableCCTaskOutput
+export javadoc_dir := $(ThisDir)/docs
 
 # Aliases:
 test := java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar
@@ -134,6 +138,16 @@ task_runtime: $(jar_dir) $(task_runtime_build_dir)
 
 clean_task_runtime:
 	make -f build_task_runtime.makefile clean
+
+
+# Build and push container image for task runtime.
+....image:
+	....cp $(jar_dir)/$(TASK_JAR_NAME).jar taskruntime
+	. $(DockerhubCredentials)
+	docker build --no-cache --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime
+	@docker login -u $(DockerhubUserId) -p $(DockerhubPassword)
+	docker push $(TASK_RUNTIME_IMAGE_NAME)
+	docker logout
 
 
 # ------------------------------------------------------------------------------

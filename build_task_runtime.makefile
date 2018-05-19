@@ -6,10 +6,12 @@
 #	jar_dir, TASK_JAR_NAME, task_classfiles, JAR, task_runtime_build_dir, 
 #	task_runtime_compile_cp, IMAGE_REGISTRY, TASK_RUNTIME_IMAGE_NAME
 
-all: image
+.PHONY: all manifest config compile clean javadoc jar
+
+all: clean compile jar
 
 # Create the manifest file for the task JAR.
-task_manifest:
+manifest:
 	echo "Main-Class: $(task_main_class)" > Manifest
 	echo "Specification-Title: $(PRODUCT_NAME) Task Execution Engine" >> Manifest
 	echo "Specification-Version: $(DABL_VERSION)" >> Manifest
@@ -18,13 +20,24 @@ task_manifest:
 	echo "Implementation-Version: $(BUILD_TAG)" >> Manifest
 	echo "Implementation-Vendor: $(ORG)" >> Manifest
 
+# Create a Config.java file that contains the current application version.
+....config:
+	echo "package scaledmarkets.dabl.client;" > $(client_src_dir)/$(package)/Config.java
+	echo "public class Config {" >> $(client_src_dir)/$(package)/client/Config.java
+	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(client_src_dir)/$(package)/client/Config.java
+	echo "}" >> $(client_src_dir)/$(package)/client/Config.java
+
 # 
-compile: $(task_runtime_build_dir)
+compile: $(task_runtime_build_dir) manifest config
 	$(MVN) compile --projects take_runtime
-	cp $(CurDir)/.dabl.container.properties $(task_runtime_build_dir)
+	cp $(ThisDir)/.dabl.container.properties $(task_runtime_build_dir)
+
+....clean:
+
+....javadoc:
 
 # Package task runtime into a JAR file.
-taskjar: task_manifest $(jar_dir)/$(TASK_JAR_NAME).jar $(jar_dir)
+jar: task_manifest $(jar_dir)/$(TASK_JAR_NAME).jar $(jar_dir)
 
 $(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest compile $(jar_dir)
 	$(JAR) cfm $(jar_dir)/$(TASK_JAR_NAME).jar Manifest \
@@ -36,12 +49,3 @@ $(jar_dir)/$(TASK_JAR_NAME).jar: task_manifest compile $(jar_dir)
 	$(JAR) uf $(jar_dir)/$(TASK_JAR_NAME).jar \
 		-C $(task_runtime_build_dir) dabl
 	rm Manifest
-
-# Build and push container image for task runtime.
-image: taskjar
-	cp $(jar_dir)/$(TASK_JAR_NAME).jar taskruntime
-	. $(DockerhubCredentials)
-	docker build --no-cache --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime
-	@docker login -u $(DockerhubUserId) -p $(DockerhubPassword)
-	docker push $(TASK_RUNTIME_IMAGE_NAME)
-	docker logout
