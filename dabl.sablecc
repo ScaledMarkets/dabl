@@ -333,9 +333,6 @@ Productions
                                                 artifact_spec.oartifact_spec)}
       | {anonymous} inputs artifact_spec    {-> New onamed_artifact_set.anonymous(
                                                 artifact_spec.oartifact_spec)}
-                                                
-      | {ref} inputs path                   // path must be the name/path of a files_decl
-                                            {-> New onamed_artifact_set.ref(New oid_ref([path.id]))}
         ;
     
     output_sets_opt {-> onamed_artifact_set*} =
@@ -354,7 +351,6 @@ Productions
                                                 artifact_spec.oartifact_spec)}
       | {anonymous} outputs artifact_spec   {-> New onamed_artifact_set.anonymous(
                                                 artifact_spec.oartifact_spec)}
-      | {ref} outputs [spec_ref]:path       {-> New onamed_artifact_set.ref(New oid_ref([spec_ref.id]))}
         ;
     
     artifact_spec {-> oartifact_spec} =
@@ -880,12 +876,11 @@ Abstract Syntax Tree
     onamed_artifact_set =
         {named} id oartifact_spec
       | {anonymous} oartifact_spec
-      | {ref} oid_ref  // name/path of a files_decl
       ;
     
     oartifact_spec =
         {inline} oartifact_set
-      | {files_ref} oid_ref
+      | {files_ref} oid_ref  // name/path of a files_decl
       ;
     
     oartifact_set =

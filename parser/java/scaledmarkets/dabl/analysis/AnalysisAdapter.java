@@ -423,12 +423,6 @@ public class AnalysisAdapter implements Analysis
     }
 
     @Override
-    public void caseARefOnamedArtifactSet(ARefOnamedArtifactSet node)
-    {
-        defaultCase(node);
-    }
-
-    @Override
     public void caseAInlineOartifactSpec(AInlineOartifactSpec node)
     {
         defaultCase(node);

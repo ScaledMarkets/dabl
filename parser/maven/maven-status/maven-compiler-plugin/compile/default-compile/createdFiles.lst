@@ -148,7 +148,6 @@ scaledmarkets/dabl/node/AAnonymousOnamedArtifactSet.class
 scaledmarkets/dabl/node/TDays.class
 scaledmarkets/dabl/node/TOlder.class
 scaledmarkets/dabl/node/POlogicLiteral.class
-scaledmarkets/dabl/node/ARefOnamedArtifactSet.class
 scaledmarkets/dabl/node/TInclude.class
 scaledmarkets/dabl/node/AFilenameOtranslationStmt.class
 scaledmarkets/dabl/node/AFailedOsuccessExpr.class

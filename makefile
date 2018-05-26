@@ -119,22 +119,23 @@ compile:
 
 # Create parser.
 parser: $(jar_dir) $(parser_build_dir)
-	$(MVN) install --projects parser
+	rm -rf parser/java/*
+	$(MVN) clean install --projects parser
 
 
 # Create the common module that is shared by all components.
 common: $(jar_dir) $(common_build_dir)
-	$(MVN) install --projects common
+	$(MVN) clean install --projects common
 
 
 # Create the end user command line application.
 client: $(jar_dir) $(client_build_dir)
-	$(MVN) install --projects client
+	$(MVN) clean install --projects client
 
 
 # Create the container image that is invoked by the command line application.
 task_runtime: $(jar_dir) $(task_runtime_build_dir)
-	$(MVN) install --projects task_runtime
+	$(MVN) clean install --projects task_runtime
 
 
 # Build and push container image for task runtime.

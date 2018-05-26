@@ -1330,27 +1330,6 @@ public class ReversedDepthFirstAdapter extends AnalysisAdapter
         outAAnonymousOnamedArtifactSet(node);
     }
 
-    public void inARefOnamedArtifactSet(ARefOnamedArtifactSet node)
-    {
-        defaultIn(node);
-    }
-
-    public void outARefOnamedArtifactSet(ARefOnamedArtifactSet node)
-    {
-        defaultOut(node);
-    }
-
-    @Override
-    public void caseARefOnamedArtifactSet(ARefOnamedArtifactSet node)
-    {
-        inARefOnamedArtifactSet(node);
-        if(node.getOidRef() != null)
-        {
-            node.getOidRef().apply(this);
-        }
-        outARefOnamedArtifactSet(node);
-    }
-
     public void inAInlineOartifactSpec(AInlineOartifactSpec node)
     {
         defaultIn(node);

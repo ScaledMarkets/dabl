@@ -70,7 +70,6 @@ public interface Analysis extends Switch
     void caseAClosedOopen(AClosedOopen node);
     void caseANamedOnamedArtifactSet(ANamedOnamedArtifactSet node);
     void caseAAnonymousOnamedArtifactSet(AAnonymousOnamedArtifactSet node);
-    void caseARefOnamedArtifactSet(ARefOnamedArtifactSet node);
     void caseAInlineOartifactSpec(AInlineOartifactSpec node);
     void caseAFilesRefOartifactSpec(AFilesRefOartifactSpec node);
     void caseARemoteOartifactSet(ARemoteOartifactSet node);
