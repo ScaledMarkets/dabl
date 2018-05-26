@@ -414,13 +414,23 @@ public class Helper {
 	 */
 	public POartifactSet getArtifactSet(POnamedArtifactSet p) {
 		
+		POartifactSpec spec;
 		POartifactSet pas;
 		
 		if (p instanceof AAnonymousOnamedArtifactSet) {
-			return ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
+			spec = ((AAnonymousOnamedArtifactSet)p).getOartifactSpec();
+			if (spec instanceof AInlineOartifactSpec) {
+				
+			} else if (spec instanceof AFilesRefOartifactSpec) {
+				
+			} else throw new RuntimeException(
+				"Unexpected Node type: " + spec.getClass().getName());
 		} else if (p instanceof ANamedOnamedArtifactSet) {
-			return ((ANamedOnamedArtifactSet)p).getOartifactSet();
+			spec = ((ANamedOnamedArtifactSet)p).getOartifactSpec();
 		} else if (p instanceof ARefOnamedArtifactSet) {
+			
+			// Resolve the referenced file set.
+			
 			POidRef oidRef = ((ARefOnamedArtifactSet)p).getOidRef();
 			
 			POnamedArtifactSet naSet =

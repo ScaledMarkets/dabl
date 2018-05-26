@@ -5,10 +5,11 @@ simple.dabl
 *.marks
 *.class
 *.jar
-*~
+*[~]
 Manifest
 maven/
 build-taskruntime/
 buildtest/
 simple/
 .vagrant/
+[#]*[#]
