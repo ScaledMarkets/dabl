@@ -1,5 +1,14 @@
 buildtest/
 SableCCOutput/
-java/scaledmarkets/dabl/Config.java
+*Config.java
 simple.dabl
 *.marks
+*.class
+*.jar
+*~
+Manifest
+maven/
+build-taskruntime/
+buildtest/
+simple/
+.vagrant/
