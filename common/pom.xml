@@ -2,24 +2,17 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	
-	<!-- Inheriting by child module: see
-		https://www.igorkromin.net/index.php/2017/06/16/multi-module-builds-with-maven-35-and-the-parent-child-pom-version-management/
-	-->
 	<artifactId>common</artifactId>
-	<version>${revision}</version>
+	<version>0.1</version>
 	<name>common</name>
+	<packaging>jar</packaging>
 	
 	<parent>
 		<groupId>scaledmarkets</groupId>
 		<artifactId>dabl</artifactId>
-		<version>${revision}</version>
+		<version>0.1</version>
 	</parent>
 	
-	<properties>
-		<sourceDirectory>java</sourceDirectory>
-		<targetDirectory>maven</targetDirectory>
-	</properties>
-		
 	<dependencies>
 		
 		<!-- See https://jersey.github.io/documentation/latest/modules-and-dependencies.html -->
@@ -27,6 +20,12 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.bundles</groupId>
 			<artifactId>jaxrs-ri</artifactId>
+			<version>2.27</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.glassfish.jersey.connectors</groupId>
+			<artifactId>jersey-apache-connector</artifactId>
 			<version>2.27</version>
 		</dependency>
 		
@@ -41,13 +40,26 @@
 			<artifactId>javax.json-api</artifactId>
 			<version>1.1.2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>scaledmarkets</groupId>
+			<artifactId>parser</artifactId>
+			<version>0.1</version>
+		</dependency>
+		
+		<!-- JUnixSocket (modified to not use Nar system) -->
+		<dependency>
+			<groupId>scaledmarkets</groupId>
+			<artifactId>junixsocket-common-modified</artifactId>
+			<version>0.1</version>
+		</dependency>		
 
 	</dependencies>
 
 	<build>
 	
-		<sourceDirectory>${sourceDirectory}</sourceDirectory>
-		<directory>${targetDirectory}</directory>
+		<sourceDirectory>java</sourceDirectory>
+		<directory>maven</directory>
 		
 		<plugins>
 		
@@ -57,7 +69,7 @@
 				<version>3.7.0</version>
 				<configuration>
 					<compilerArguments>
-						<Xmaxerrs>${Xmaxerrs}</Xmaxerrs>
+						<Xmaxerrs>5</Xmaxerrs>
 					</compilerArguments>
 				</configuration>
 			</plugin>

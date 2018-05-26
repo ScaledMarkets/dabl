@@ -79,8 +79,11 @@ public class UnitTestPatternSets extends TestBase {
 		createDabl(pattern);
 
 		// Find the task's local artifact set.
-		ALocalOartifactSet localArtifactSet = getHelper().findLocalArtifactSetForTask(
+		POartifactSpec artifactSpec = getHelper().findArtifactSpecForTask(
 			TaskName, OutputsName);
+		AInlineOartifactSpec inlineArtifactSpec = (AInlineOartifactSpec)artifactSpec;
+		POartifactSet artifactSet = inlineArtifactSpec.getOartifactSet();
+		ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)artifactSet;
 
 		// Create a local repo.
 		this.repo = LocalRepo.createRepo(NamespaceName, TaskName, OutputsName,

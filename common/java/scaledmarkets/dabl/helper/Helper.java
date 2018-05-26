@@ -266,14 +266,12 @@ public class Helper {
 	 * Given a task name, and the name of a named local outputs clause, find the 
 	 * LocalArtifactSet for the outputs clause.
 	 */
-	public ALocalOartifactSet findLocalArtifactSetForTask(String taskName,
+	public POartifactSpec findArtifactSpecForTask(String taskName,
 			String outputsName) throws Exception {
 		ANamedOnamedArtifactSet namedArtifactSet = getNamedOutput(
 			taskName, outputsName);
-		POartifactSet p = namedArtifactSet.getOartifactSet();
-		assertThat(p instanceof ALocalOartifactSet, "p is a " + p.getClass().getName());
-		ALocalOartifactSet localArtifactSet = (ALocalOartifactSet)p;
-		return localArtifactSet;
+		POartifactSpec p = namedArtifactSet.getOartifactSpec();
+		return p;
 	}
 	
 	/**

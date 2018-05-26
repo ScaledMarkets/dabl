@@ -1,0 +1,117 @@
+<project>
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<artifactId>parser</artifactId>
+	<version>0.1</version>
+	<name>parser</name>
+	<packaging>jar</packaging>
+	
+	<parent>
+		<groupId>scaledmarkets</groupId>
+		<artifactId>dabl</artifactId>
+		<version>0.1</version>
+	</parent>
+	
+	<dependencies>
+	
+		<dependency>
+			<groupId>com.peterlavalle</groupId>
+			<artifactId>sablecc-maven.sablecc</artifactId>
+			<version>3.7</version>
+		</dependency>
+
+	</dependencies>
+		
+	<build>
+	
+		<sourceDirectory>java</sourceDirectory>
+		<directory>maven</directory>
+		
+		<plugins>
+		
+			<!-- Generate parser source code -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>java</executable>
+					<arguments>
+						<argument>-classpath</argument>
+						<classpath>
+							<dependency>com.peterlavalle:sablecc-maven.sablecc</dependency>
+						</classpath>
+						<argument>org.sablecc.sablecc.SableCC</argument>
+						<argument>-d</argument>
+						<argument>java</argument>
+						<argument>--no-inline</argument>
+						<argument>../dabl.sablecc</argument>
+					</arguments>
+				</configuration>
+			</plugin>
+
+			<!-- Make maven aware of the generated code -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>parser/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- Compile the generated code -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<compilerArguments>
+						<Xmaxerrs>5</Xmaxerrs>
+					</compilerArguments>
+				</configuration>
+
+			</plugin>
+			
+		</plugins>
+		
+		<resources>
+			<resource>
+				<directory>java</directory>
+				<includes>
+					<include> **/*.dat </include>
+				</includes>
+			</resource>
+		</resources>
+		
+	</build>
+	
+</project>

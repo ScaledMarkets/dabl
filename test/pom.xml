@@ -3,20 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<artifactId>test</artifactId>
-	<version>${revision}</version>
+	<version>0.1</version>
 	<name>test</name>
-	
+	<packaging>jar</packaging>
+
 	<parent>
 		<groupId>scaledmarkets</groupId>
 		<artifactId>dabl</artifactId>
-		<version>${revision}</version>
+		<version>0.1</version>
 	</parent>
 	
-	<properties>
-		<sourceDirectory>java</sourceDirectory>
-		<targetDirectory>maven</targetDirectory>
-	</properties>
-		
 	<dependencies>
 		
 		<dependency>
@@ -51,9 +47,7 @@
 
 	<build>
 	
-		<sourceDirectory>${sourceDirectory}</sourceDirectory>
-		<directory>${targetDirectory}</directory>
-		<testSourceDirectory>${testSourceDirectory}</testSourceDirectory>
+		<testSourceDirectory>steps</testSourceDirectory>
 		
 		<plugins>
 		
@@ -63,7 +57,7 @@
 				<version>3.7.0</version>
 				<configuration>
 					<compilerArguments>
-						<Xmaxerrs>${Xmaxerrs}</Xmaxerrs>
+						<Xmaxerrs>5</Xmaxerrs>
 					</compilerArguments>
 				</configuration>
 			</plugin>

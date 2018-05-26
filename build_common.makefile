@@ -22,11 +22,10 @@ config:
 
 compile: manifest config
 	@echo "Compiling common-----------------------------------------------------"
-	$(MVN) compile --projects common
+	$(MVN) install --projects common
 
 clean:
-	if [ -z "$(common_build_dir)" ]; then echo "ERROR: common_build_dir variable is not set"; exit 1; fi
-	rm -r -f $(common_build_dir)/*
+	$(MVN) --projects common clean
 	if [ -z "$(jar_dir)" ]; then echo "ERROR: jar_dir variable is not set"; exit 1; fi
 	if [ -z "$(COMMON_JAR_NAME)" ]; then echo "ERROR: COMMON_JAR_NAME variable is not set"; exit 1; fi
 	rm -r -f $(jar_dir)/$(COMMON_JAR_NAME).jar

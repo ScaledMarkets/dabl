@@ -45,10 +45,10 @@ export sable_dabl_out_dir := $(ThisDir)/parser/java
 export common_src_dir := $(ThisDir)/common/java
 export client_src_dir := $(ThisDir)/client/java
 export task_runtime_src_dir := $(ThisDir)/task_runtime/java
-export parser_build_dir := $(build_dir)/parser
-export common_build_dir := $(build_dir)/common
-export client_build_dir := $(build_dir)/client
-export task_runtime_build_dir := $(build_dir)/task_runtime
+#export parser_build_dir := $(build_dir)/parser
+#export common_build_dir := $(build_dir)/common
+#export client_build_dir := $(build_dir)/client
+#export task_runtime_build_dir := $(build_dir)/task_runtime
 export test_src_dir := $(ThisDir)/test
 export test_build_dir := $(ThisDir)/buildtest
 export test_package = $(package)/test
@@ -106,43 +106,35 @@ $(task_runtime_build_dir):
 $(jar_dir):
 	mkdir -p $(jar_dir)
 
+# Install junixsocket.
+install_junixsocket:
+	$(MVN) install:install-file -Dfile=${junixsocket} -DgroupId=scaledmarkets -DartifactId=junixsocket-common-modified -Dversion=0.1 -Dpackaging=jar
+
 # ------------------------------------------------------------------------------
 # Build the various four components.
 
+compile:
+	$(MVN) install
+
+
 # Create parser.
 parser: $(jar_dir) $(parser_build_dir)
-	sable_dabl_out_dir=$(sable_dabl_out_dir) \
-		package=$(package) \
-		parser_build_dir=$(parser_build_dir) \
-		grammar_file=dabl.sablecc \
-		make -f build_parser.makefile all
-
-clean_parser:
-	make -f build_parser.makefile clean
+	$(MVN) install --projects parser
 
 
 # Create the common module that is shared by all components.
 common: $(jar_dir) $(common_build_dir)
-	make -f build_common.makefile all
-
-clean_common:
-	make -f build_common.makefile clean
+	$(MVN) install --projects common
 
 
 # Create the end user command line application.
 client: $(jar_dir) $(client_build_dir)
-	make -f build_client.makefile all
-
-clean_client:
-	make -f build_client.makefile clean
+	$(MVN) install --projects client
 
 
 # Create the container image that is invoked by the command line application.
 task_runtime: $(jar_dir) $(task_runtime_build_dir)
-	make -f build_task_runtime.makefile all
-
-clean_task_runtime:
-	make -f build_task_runtime.makefile clean
+	$(MVN) install --projects task_runtime
 
 
 # Build and push container image for task runtime.

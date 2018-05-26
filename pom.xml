@@ -13,12 +13,11 @@
 	
 	<groupId>scaledmarkets</groupId>
 	<artifactId>dabl</artifactId>
-	<version>${revision}</version>
+	<version>0.1</version>
 	<name>${env.Description}</name>
 	<packaging>pom</packaging>
 	
 	<properties>
-		<revision>${env.DABL_VERSION}</revision>
 		<Xmaxerrs>${env.maxerrs}</Xmaxerrs>
 		<JarDir>${env.jar_dir}</JarDir>
 		<ImageBuildDir>${env.ImageBuildDir}</ImageBuildDir>
@@ -28,9 +27,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<!-- Inheriting by child module: see
+		https://www.igorkromin.net/index.php/2017/06/16/multi-module-builds-with-maven-35-and-the-parent-child-pom-version-management/
+	-->
 	<modules>
 		<module>parser</module>
-		
+				
 		<module>common</module>
 		
 		<module>client</module>

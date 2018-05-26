@@ -23,12 +23,11 @@ config:
 
 compile: manifest config
 	@echo "Compiling client-----------------------------------------------------"
-	$(MVN) compile --projects client
+	$(MVN) install --projects client
 	cp $(ThisDir)/.dabl.properties $(client_build_dir)
 
 clean:
-	if [ -z "$(client_build_dir)" ]; then echo "ERROR: client_build_dir variable is not set"; exit 1; fi
-	rm -r -f $(client_build_dir)/*
+	$(MVN) --projects client clean
 	if [ -z "$(jar_dir)" ]; then echo "ERROR: jar_dir variable is not set"; exit 1; fi
 	if [ -z "$(CLIENT_JAR_NAME)" ]; then echo "ERROR: CLIENT_JAR_NAME variable is not set"; exit 1; fi
 	rm -r -f $(jar_dir)/$(CLIENT_JAR_NAME).jar

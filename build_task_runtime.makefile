@@ -30,11 +30,14 @@ config:
 # 
 compile: manifest config
 	@echo "Compiling task runtime-----------------------------------------------------"
-	$(MVN) compile --projects take_runtime
+	$(MVN) install --projects take_runtime
 	cp $(ThisDir)/.dabl.container.properties $(task_runtime_build_dir)
 
 clean:
-	if [ -z "$(task_runtime_build_dir)" ]; then echo "ERROR: task_runtime_build_dir variable is not set"; exit 1; else rm -r -f $(task_runtime_build_dir)/*; fi
+	$(MVN) --projects task_runtime clean
+	if [ -z "$(jar_dir)" ]; then echo "ERROR: jar_dir variable is not set"; exit 1; fi
+	if [ -z "$(TASK_JAR_NAME)" ]; then echo "ERROR: TASK_JAR_NAME variable is not set"; exit 1; fi
+	rm -r -f $(jar_dir)/$(TASK_JAR_NAME).jar
 
 # Package task runtime into a JAR file.
 jar: task_manifest $(jar_dir)/$(TASK_JAR_NAME).jar $(jar_dir)
