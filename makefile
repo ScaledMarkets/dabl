@@ -126,7 +126,6 @@ gen_config:
 jars:
 	$(MVN) install
 
-
 # For development: Create only the parser.
 parser: $(jar_dir) $(parser_build_dir)
 	rm -rf parser/java/*
@@ -147,7 +146,8 @@ client: $(jar_dir) $(client_build_dir)
 task_runtime: $(jar_dir) $(task_runtime_build_dir)
 	$(MVN) clean install --projects task_runtime
 
-
+# ------------------------------------------------------------------------------
+# Generate javadocs for all modules.
 javadoc:
 	$(MVN) javadoc:javadoc
 
@@ -155,12 +155,14 @@ javadoc:
 # Build and push container image for task runtime.
 # It is assumed that Dockerhub credentials have been added to the shell env.
 image:
-	cp $(jar_dir)/*.jar taskruntime
+	rm build-taskruntime/*.jar
+	cp $(jar_dir)/*.jar build-taskruntime
 	. $(DockerhubCredentials)
 	docker build --no-cache --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime
 	@docker login -u $(DockerhubUserId) -p $(DockerhubPassword)
 	docker push $(TASK_RUNTIME_IMAGE_NAME)
 	docker logout
+	rm build-taskruntime/*
 
 
 # ------------------------------------------------------------------------------
