@@ -78,17 +78,16 @@ all: gen_config jars image
 mvnversion:
 	$(MVN) --version
 
+
 # ------------------------------------------------------------------------------
-# Build client and task runtime.
-
-
-# Create the directories that will contain the compiled class files.
-$(build_dir):
-	mkdir -p $(build_dir)
-
 # Create the directory that will contain the parser source files.
 $(sable_dabl_out_dir):
 	mkdir -p $(sable_dabl_out_dir)/$(package)
+
+# ------------------------------------------------------------------------------
+# Create the directories that will contain the compiled class files.
+$(build_dir):
+	mkdir -p $(build_dir)
 
 $(parser_build_dir):
 	mkdir -p $(parser_build_dir)
@@ -102,49 +101,59 @@ $(client_build_dir):
 $(task_runtime_build_dir):
 	mkdir -p $(task_runtime_build_dir)
 
+# ------------------------------------------------------------------------------
 # Create the directory that will contain the jar files that are created.
 $(jar_dir):
 	mkdir -p $(jar_dir)
 
-# Install junixsocket.
+# ------------------------------------------------------------------------------
+# Install junixsocket - needed by common. It is assumed that junixsocket is
+# located at ${junixsocket}. Note that this fork of junixsocket does not use
+# the NAR system.
 install_junixsocket:
 	$(MVN) install:install-file -Dfile=${junixsocket} -DgroupId=scaledmarkets -DartifactId=junixsocket-common-modified -Dversion=0.1 -Dpackaging=jar
 
 # ------------------------------------------------------------------------------
-# Build the various four components.
-
+# Generate the Config class that the runtime uses to determine the version of DABL.
 gen_config:
 	echo "package scaledmarkets.dabl;" > $(common_src_dir)/$(package)/Config.java
 	echo "public class Config {" >> $(common_src_dir)/$(package)/Config.java
 	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(common_src_dir)/$(package)/Config.java
 	echo "}" >> $(common_src_dir)/$(package)/Config.java
 
+# ------------------------------------------------------------------------------
+# Build all four components.
 jars:
 	$(MVN) install
 
 
-# Create only the parser.
+# For development: Create only the parser.
 parser: $(jar_dir) $(parser_build_dir)
 	rm -rf parser/java/*
 	$(MVN) clean install --projects parser
 
 
-# Create only the common module that is shared by all components.
+# For development: Create only the common module that is shared by all components.
 common: $(jar_dir) $(common_build_dir)
 	$(MVN) clean install --projects common
 
 
-# Create only the end user command line application.
+# For development: Create only the end user command line application.
 client: $(jar_dir) $(client_build_dir)
 	$(MVN) clean install --projects client
 
 
-# Create only the runtime that is invoked by the command line application.
+# For development: Create only the runtime that is invoked by the command line application.
 task_runtime: $(jar_dir) $(task_runtime_build_dir)
 	$(MVN) clean install --projects task_runtime
 
 
+javadoc:
+	$(MVN) javadoc:javadoc
+
+# ------------------------------------------------------------------------------
 # Build and push container image for task runtime.
+# It is assumed that Dockerhub credentials have been added to the shell env.
 image:
 	cp $(jar_dir)/*.jar taskruntime
 	. $(DockerhubCredentials)

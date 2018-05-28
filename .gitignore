@@ -13,3 +13,6 @@ buildtest/
 simple/
 .vagrant/
 [#]*[#]
+docs/
+*/target/
+target/
