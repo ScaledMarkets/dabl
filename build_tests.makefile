@@ -1,4 +1,4 @@
-# Do not run this makefile alone. Can only be run from the main makefile.
+# Not used anymore
 
 .PHONY: all compile
 

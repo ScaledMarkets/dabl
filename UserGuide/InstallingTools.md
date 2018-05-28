@@ -10,6 +10,7 @@ Install the tools.
 Create an image of the container.
 Specify that image in tasks that require the tools.
 
+```
 namespace mynamespace
 
 repo MyImageRegistry type "docker"
@@ -40,6 +41,7 @@ task compileit3
     use "MyProject/MyToolsImage:latest" from MyImageRegistry
         /// Must use this form if the image is 
     ...
+```
 
 =====
 
@@ -51,6 +53,7 @@ Install the tools.
 Create an image of the container.
 Specify that image in tasks that require the tools.
 
+```
 namespace mynamespace
 
 repo MyImageRegistry type "docker"
@@ -78,3 +81,4 @@ task compileit3
     use "MyProject/MyToolsImage:latest" from MyImageRegistry
         /// Must use this form if the image is 
     ...
+```

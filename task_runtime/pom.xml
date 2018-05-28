@@ -15,6 +15,18 @@
 	
 	<dependencies>
 		
+		<dependency>
+			<groupId>scaledmarkets</groupId>
+			<artifactId>parser</artifactId>
+			<version>0.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>scaledmarkets</groupId>
+			<artifactId>common</artifactId>
+			<version>0.1</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

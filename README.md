@@ -54,9 +54,27 @@ excellent job of modeling dependencies between projects, and we want to provide
 that with DABL. However, dependencies within a project are another matter:
 some (e.g. `gradle`) implement a dependency
 model in which one defines dependencies between tasks; but what is actually needed
-is a model in which a task depends on artifacts. `make` has such a model, but
+is a model in which a task depends on *artifacts* - not tasks. The task dependency
+approach makes it difficult to avoid executing every task every time you run
+the build. `make` has an artifact oriented model, but
 `make`'s model is insufficient for today's complex package hierarchies and today's
 repositories.
+
+Maven is interesting because while it models project level dependencies well, it tends
+to be complicated to use if one is doing anything out of the ordinary. This is partyly
+because maven has a very complex execution model - the "maven lifecycle" - and so one
+has to consider which "phase" a task ("goal") should execute it. If one searches online
+for maven troubles, a very common one is "my maven task should execute, but it doesn't".
+A build tool should not add ambiguity or complexity to a project - it should make
+things simpler. Maven also has a habit of generating a huge amount of output, 
+pulling hundreds of artifacts when you run it, so that one has a feeling of not 
+understandind what is
+happening or being in control of the build. This is because maven's dependency
+mechanism is working; but it would be more user friendly if it simply listed each
+project that it pulls, instead of the enormously verbose output that it generates.
+From a reliability perspective, a build process should do exactly what you expect:
+it should not try to be "smart" - it should be obvious and straightforward.
+Uncertainty is the enemy of reliability.
 
 Another problem with existing build languages is that they don't promote idempotency.
 That is, it is common that build systems operate on a "workspace" or current
@@ -116,7 +134,7 @@ For robust infrastructure code, a better model than current practice is needed, 
 * The language definition (formal grammar and
     [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) definition file
     [dabl.sablecc](dabl.sablecc), and [Language Reference](langref/README.md)).
-* A full featured reference implementation of DABL, written in Java using version 3.2 of the
+* A full featured reference implementation of DABL, written in Java using version 3 of the
 	[SableCC compiler generation tool](http://www.sablecc.org/).
 	The implementation binary is a Java package, which has a main method—and so it
 	can be called form a command line—but it can also

@@ -46,30 +46,7 @@ public class DablContext extends ExpressionContext {
 		// Identify the declaration of the input or output.
 		POnamedArtifactSet namedArtifactSet =
 			this.helper.getNamedArtifactDeclFromArtfiactRef(inputOrOutputName);
-		
-		if (namedArtifactSet instanceof ANamedOnamedArtifactSet) {
-		} else if (namedArtifactSet instanceof ARefOnamedArtifactSet) {
-			POidRef idRef = ((ARefOnamedArtifactSet)namedArtifactSet).getOidRef();
-			DeclaredEntry entry = this.helper.getDeclaredEntryForIdRef((AOidRef)idRef);
-			if (entry == null) throw new RuntimeException(
-				"No symbol entry found for " + idRef.toString());
-
-			// Find the corresponding artifact set declaration, and create a
-			// pattern set for that.
-			Node artifactDef = entry.getDefiningNode();
-			if (artifactDef instanceof POnamedArtifactSet) {
-				namedArtifactSet = (POnamedArtifactSet)artifactDef;
-			} else throw new RuntimeException(
-				"artifact def is an unexpected type: " + artifactDef.getClass().getName());
-		
-		} else throw new RuntimeException(
-			"named artifact set is an unexpected type: " + namedArtifactSet.getClass().getName());
-		
-		if (! (namedArtifactSet instanceof ANamedOnamedArtifactSet)) throw new RuntimeException(
-			"Unexpected type for named artifact set: " + namedArtifactSet.getClass().getName());
-		
-		POartifactSet artifactSet = 
-			((ANamedOnamedArtifactSet)namedArtifactSet).getOartifactSet();
+		POartifactSet artifactSet = this.helper.getArtifactSet(namedArtifactSet);
 		
 		/* Obtain the namespace name, and the name of the task that owns the
 			input or output. */

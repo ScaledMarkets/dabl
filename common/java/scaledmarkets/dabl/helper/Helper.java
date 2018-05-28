@@ -491,6 +491,13 @@ public class Helper {
 	}
 	
 	/**
+	 * If the node is not class c, throw an exception.
+	 */
+	public static void assertIsA(Object n, Class c) throws Exception {
+		Utilities.assertIsA(n, c);
+	}
+	
+	/**
 	 * If expr is false, perform the specified action and then throw an Exception.
 	 */
 	public static void assertThat(boolean expr, Runnable action) throws Exception {

@@ -59,18 +59,18 @@ public class LanguageAnalyzer extends LanguageCoreAnalyzer
 		
 		DeclaredEntry entry;
 		POartifactSpec p = node.getOartifactSpec();
-		if (p instanceof AInlineOartifactSet) {
-			PArtifactSet artifactSet = ((AInlineOartifactSet)p).getArtifactSet();
+		if (p instanceof AInlineOartifactSpec) {
+			POartifactSet artifactSet = ((AInlineOartifactSpec)p).getOartifactSet();
 
 			if (artifactSet instanceof ALocalOartifactSet) {
 				entry = new LocalRepoEntry(id.getText(), getCurrentNameScope(), node);
-			} else if (p instanceof ARemoteOartifactSet) {
+			} else if (artifactSet instanceof ARemoteOartifactSet) {
 				entry = new DeclaredEntry(id.getText(), getCurrentNameScope(), node);
 			} else throw new RuntimeException(
 				"Unexpected Node kind: " + node.getClass().getName());
 
-		} else if (p instanceof AFilesRefOidRef) {
-			POidRef idRef = ((AFilesRefOidRef)p).getOidRef();
+		} else if (p instanceof AFilesRefOartifactSpec) {
+			POidRef idRef = ((AFilesRefOartifactSpec)p).getOidRef();
 			
 			// The id ref refers to a files declaration.
 			Annotation annot = getState().getOut(idRef);

@@ -1,4 +1,4 @@
-# Do not run this makefile alone. Can only be run from the main makefile.
+# Not used anymore
 
 .PHONY: all task_manifest compile jar
 

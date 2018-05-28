@@ -68,12 +68,12 @@ test := $(test) $(test_src_dir)/features
 # Tasks
 
 
-.PHONY: all manifest config gen_parser compile_parser parser jar compile dist \
+.PHONY: all jars parser common client task_runtime \
+	manifest config gen_parser compile_parser parser jar compile dist \
 	task_manifest task_jar image \
-	check compile_tests test runsonar javadoc clean_parser clean_task_parser info \
-	common
+	check compile_tests test runsonar javadoc clean_parser clean_task_parser info
 
-all: clean parser compile jar task_jar task_runtime image compile_tests test mvnversion
+all: gen_config jars image
 
 mvnversion:
 	$(MVN) --version
@@ -113,27 +113,33 @@ install_junixsocket:
 # ------------------------------------------------------------------------------
 # Build the various four components.
 
-compile:
+gen_config:
+	echo "package scaledmarkets.dabl;" > $(common_src_dir)/$(package)/Config.java
+	echo "public class Config {" >> $(common_src_dir)/$(package)/Config.java
+	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(common_src_dir)/$(package)/Config.java
+	echo "}" >> $(common_src_dir)/$(package)/Config.java
+
+jars:
 	$(MVN) install
 
 
-# Create parser.
+# Create only the parser.
 parser: $(jar_dir) $(parser_build_dir)
 	rm -rf parser/java/*
 	$(MVN) clean install --projects parser
 
 
-# Create the common module that is shared by all components.
+# Create only the common module that is shared by all components.
 common: $(jar_dir) $(common_build_dir)
 	$(MVN) clean install --projects common
 
 
-# Create the end user command line application.
+# Create only the end user command line application.
 client: $(jar_dir) $(client_build_dir)
 	$(MVN) clean install --projects client
 
 
-# Create the container image that is invoked by the command line application.
+# Create only the runtime that is invoked by the command line application.
 task_runtime: $(jar_dir) $(task_runtime_build_dir)
 	$(MVN) clean install --projects task_runtime
 

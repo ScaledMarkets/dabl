@@ -43,6 +43,13 @@ public class Utilities {
 	}
 	
 	/**
+	 * If the node is not class c, throw an exception.
+	 */
+	public static void assertIsA(Object n, Class c) {
+		if (! c.isAssignableFrom(n.getClass())) throw new RuntimeException("Assertion violation");
+	}
+	
+	/**
 	 * If expr is false, perform the specified action and then throw an Exception.
 	 */
 	public static void assertThat(boolean expr, Runnable action) {

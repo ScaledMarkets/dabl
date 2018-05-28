@@ -96,14 +96,31 @@ public class DependencyGraph {
 			LinkedList<POnamedArtifactSet> outputs = taskDecl.getOutput();
 			for (POnamedArtifactSet p : outputs) {
 				
-				POartifactSet pas;
-				
+				POartifactSpec spec;
 				if (p instanceof AAnonymousOnamedArtifactSet) {
-					pas = ((AAnonymousOnamedArtifactSet)p).getOartifactSet();
+					spec = ((AAnonymousOnamedArtifactSet)p).getOartifactSpec();
 				} else if (p instanceof ANamedOnamedArtifactSet) {
-					pas = ((ANamedOnamedArtifactSet)p).getOartifactSet();
+					spec = ((ANamedOnamedArtifactSet)p).getOartifactSpec();
 				} else throw new RuntimeException(
 					"Unexpected Node type: " + p.getClass().getName());
+				
+				POartifactSet pas;
+				if (spec instanceof AInlineOartifactSpec) {
+					pas = ((AInlineOartifactSpec)spec).getOartifactSet();
+				} else if (spec instanceof AFilesRefOartifactSpec) {
+					// 
+					POidRef pr = ((AFilesRefOartifactSpec)spec).getOidRef();
+					AOidRef oidRef = (AOidRef)pr;
+					DeclaredEntry refEntry = this.helper.getDeclaredEntryForIdRef(oidRef);
+					Utilities.assertIsA(refEntry, FilesRefEntry.class);
+					FilesRefEntry filesRefEntry = (FilesRefEntry)refEntry;
+					DeclaredEntry filesDeclEntry = filesRefEntry.getFilesDeclEntry();
+					Node definingNode = filesDeclEntry.getDefiningNode();
+					Utilities.assertIsA(definingNode, POartifactSet.class);
+					pas = (POartifactSet)definingNode;
+					
+				} else throw new RuntimeException(
+					"Unexpected Node type: " + spec.getClass().getName());
 				
 				// 1. If the output Artifact does not exist, then create a new Artifact.
 				Artifact artifact = artifacts.get(pas);

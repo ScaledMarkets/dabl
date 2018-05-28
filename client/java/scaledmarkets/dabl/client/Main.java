@@ -1,5 +1,7 @@
 package scaledmarkets.dabl.client;
 
+import scaledmarkets.dabl.Config;
+import scaledmarkets.dabl.Executor;
 import scaledmarkets.dabl.analysis.*;
 import scaledmarkets.dabl.lexer.*;
 import scaledmarkets.dabl.node.*;
@@ -7,7 +9,6 @@ import scaledmarkets.dabl.parser.*;
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.client.*;
 import scaledmarkets.dabl.exec.*;
-import scaledmarkets.dabl.Config;
 
 import java.io.Reader;
 import java.io.FileReader;
