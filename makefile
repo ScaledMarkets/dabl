@@ -152,13 +152,18 @@ javadoc:
 	$(MVN) javadoc:javadoc
 
 # ------------------------------------------------------------------------------
+# This must be run on a machine with docker.
 # Build and push container image for task runtime.
 # It is assumed that Dockerhub credentials have been added to the shell env.
 image:
-	rm build-taskruntime/*.jar
-	cp $(jar_dir)/*.jar build-taskruntime
+	rm -f build-taskruntime/*.jar
+	cp $(HOME)/.m2/repository/scaledmarkets/parser/$(DABL_VERSION)/parser-$(DABL_VERSION).jar build-taskruntime
+	cp $(HOME)/.m2/repository/scaledmarkets/common/$(DABL_VERSION)/common-$(DABL_VERSION).jar build-taskruntime
+	cp $(HOME)/.m2/repository/scaledmarkets/client/$(DABL_VERSION)/client-$(DABL_VERSION).jar build-taskruntime
+	cp $(HOME)/.m2/repository/scaledmarkets/task_runtime/$(DABL_VERSION)/task_runtime-$(DABL_VERSION).jar build-taskruntime
+	cp $(HOME)/.m2/repository/scaledmarkets/junixsocket-common-modified/0.1/junixsocket-common-modified-0.1.jar build-taskruntime
 	. $(DockerhubCredentials)
-	docker build --no-cache --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) taskruntime
+	docker build --no-cache --file taskruntime/Dockerfile --tag=$(TASK_RUNTIME_IMAGE_NAME) build-taskruntime
 	@docker login -u $(DockerhubUserId) -p $(DockerhubPassword)
 	docker push $(TASK_RUNTIME_IMAGE_NAME)
 	docker logout
