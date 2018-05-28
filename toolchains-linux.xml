@@ -1,6 +1,7 @@
 <toolchains xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/TOOLCHAINS/1.1.0 https://maven.apache.org/xsd/toolchains-1.1.0.xsd">
+	
 	<toolchain>
 		<type>jdk</type>
 		<provides>
@@ -11,4 +12,17 @@
 			<jdkHome>/home/vagrant/java-se-9-ri/jdk-9</jdkHome>
 		</configuration>
 	</toolchain>
+	
+	<toolchain>
+		<type>jdk</type>
+		<provides>
+			<version>1.8</version>
+			<vendor>oracle</vendor>
+			<id>jdk8</id>
+		</provides>
+		<configuration>
+			<jdkHome>/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.171-7.b10.el7.x86_64</jdkHome>
+		</configuration>
+	</toolchain>
+	
 </toolchains>

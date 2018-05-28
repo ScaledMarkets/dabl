@@ -10,7 +10,7 @@ import cucumber.api.java.en.When;
 import scaledmarkets.dabl.analyzer.*;
 import scaledmarkets.dabl.exec.*;
 import scaledmarkets.dabl.node.*;
-import scaledmarkets.dabl.Main;
+import scaledmarkets.dabl.client.Main;
 import scaledmarkets.dabl.test.TestBase;
 
 import java.io.Reader;

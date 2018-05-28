@@ -146,20 +146,24 @@ client: $(jar_dir) $(client_build_dir)
 task_runtime: $(jar_dir) $(task_runtime_build_dir)
 	$(MVN) clean install --projects task_runtime
 
+
+# For development: Compile only the behavioral tests.
+test: $(jar_dir) $(task_runtime_build_dir)
+	$(MVN) clean install --projects test
+
 # ------------------------------------------------------------------------------
 # Generate javadocs for all modules.
 javadoc:
 	$(MVN) javadoc:javadoc
 
 # ------------------------------------------------------------------------------
-# This must be run on a machine with docker.
 # Build and push container image for task runtime.
+# This must be run on a machine with docker.
 # It is assumed that Dockerhub credentials have been added to the shell env.
 image:
 	rm -f build-taskruntime/*.jar
 	cp $(HOME)/.m2/repository/scaledmarkets/parser/$(DABL_VERSION)/parser-$(DABL_VERSION).jar build-taskruntime
 	cp $(HOME)/.m2/repository/scaledmarkets/common/$(DABL_VERSION)/common-$(DABL_VERSION).jar build-taskruntime
-	cp $(HOME)/.m2/repository/scaledmarkets/client/$(DABL_VERSION)/client-$(DABL_VERSION).jar build-taskruntime
 	cp $(HOME)/.m2/repository/scaledmarkets/task_runtime/$(DABL_VERSION)/task_runtime-$(DABL_VERSION).jar build-taskruntime
 	cp $(HOME)/.m2/repository/scaledmarkets/junixsocket-common-modified/0.1/junixsocket-common-modified-0.1.jar build-taskruntime
 	. $(DockerhubCredentials)
@@ -192,7 +196,7 @@ compile_tests: $(test_build_dir)
 
 # Run Cucumber tests.
 # Note: We could export LD_LIBRARY_PATH instead of passing it in the java command.
-test:
+test_all:
 	$(test) --tags @done
 
 test_smoke:

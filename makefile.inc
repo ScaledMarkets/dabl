@@ -34,8 +34,6 @@ jaxrs := $(jaxrs):$(DevLibrary)/jaxrs-ri/ext/*
 export jaxrs
 export jersey := $(DevLibrary)/jersey/*
 export apache_http := $(DevLibrary)/httpcomponents-client-4.5.3/lib/*
-export junixsocket := /Users/cliffordberg/Transient/junixsocket/lib/junixsocket.jar
-export junixsocketnative := /Users/cliffordberg/Transient/junixsocket/classes
 export javaxjson := $(DevLibrary)/javax.json/*
 CUCUMBER_CLASSPATH := $(DevLibrary)/Cucumber/cucumber-core-1.1.8.jar
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(DevLibrary)/Cucumber/cucumber-java-1.1.8.jar
