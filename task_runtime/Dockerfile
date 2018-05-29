@@ -10,5 +10,9 @@ FROM anapsix/alpine-java
 # See https://hub.docker.com/r/anapsix/alpine-java/
 # See https://github.com/anapsix/docker-alpine-java
 
-ADD ["taskruntime.jar", "taskruntime.jar"]
-ENTRYPOINT ["java", "-jar", "taskruntime.jar"]
+ADD ["parser.jar", "parser.jar"]
+ADD ["common.jar", "common.jar"]
+ADD ["task_runtime.jar", "task_runtime.jar"]
+ADD ["junixsocket.jar", "junixsocket.jar"]
+
+ENTRYPOINT ["java", "-jar", "task_runtime.jar"]

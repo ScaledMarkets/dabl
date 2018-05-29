@@ -54,14 +54,15 @@ excellent job of modeling dependencies between projects, and we want to provide
 that with DABL. However, dependencies within a project are another matter:
 some (e.g. `gradle`) implement a dependency
 model in which one defines dependencies between tasks; but what is actually needed
-is a model in which a task depends on *artifacts* - not tasks. The task dependency
+is a model in which *artifacts* depend on a task, and also tasks can depend
+on other artifacts (the task's inputs). The direct task-to-task dependency
 approach makes it difficult to avoid executing every task every time you run
 the build. `make` has an artifact oriented model, but
 `make`'s model is insufficient for today's complex package hierarchies and today's
 repositories.
 
 Maven is interesting because while it models project level dependencies well, it tends
-to be complicated to use if one is doing anything out of the ordinary. This is partyly
+to be complicated to use if one is doing anything out of the ordinary. This is partly
 because maven has a very complex execution model - the "maven lifecycle" - and so one
 has to consider which "phase" a task ("goal") should execute it. If one searches online
 for maven troubles, a very common one is "my maven task should execute, but it doesn't".
