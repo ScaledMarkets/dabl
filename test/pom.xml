@@ -71,7 +71,8 @@
 
 	<build>
 	
-		<testSourceDirectory>steps</testSourceDirectory>
+		<sourceDirectory>steps</sourceDirectory>
+		<directory>maven</directory>
 		
 		<plugins>
 		

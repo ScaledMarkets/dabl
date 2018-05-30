@@ -15,10 +15,6 @@ export GroupId = scaledmarkets
 export MavenBaseArtifactId = dabl
 export PRODUCT_NAME = Dabl
 export Description = "Dependent Artifact Build Language"
-export COMMON_JAR_NAME = common
-export PARSER_JAR_NAME = parser
-export CLIENT_JAR_NAME = client
-export TASK_JAR_NAME = taskruntime
 
 # Output artifact names:
 export package := scaledmarkets/dabl
@@ -45,17 +41,18 @@ export common_src_dir := $(ThisDir)/common/java
 export client_src_dir := $(ThisDir)/client/java
 export task_runtime_src_dir := $(ThisDir)/task_runtime/java
 export test_src_dir := $(ThisDir)/test
-export test_build_dir := $(ThisDir)/buildtest
 export test_package = $(package)/test
-export testsourcefiles := $(test_src_dir)/$(test_package)/*.java
-export testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/exec/*.class
-export sable_task_out_dir := $(ThisDir)/SableCCTaskOutput
 export javadoc_dir := $(ThisDir)/docs
 export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(javaxjson)
-#export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
+export parser_jar := $(MVN_REPO)/scaledmarkets/parser/$(DABL_VERSION)/parser-$(DABL_VERSION).jar
+export common_jar := $(MVN_REPO)/scaledmarkets/common/$(DABL_VERSION)/common-$(DABL_VERSION).jar
+export client_jar := $(MVN_REPO)/scaledmarkets/client/$(DABL_VERSION)/client-$(DABL_VERSION).jar
+export task_runtime_jar := $(MVN_REPO)/scaledmarkets/task_runtime/$(DABL_VERSION)/task_runtime-$(DABL_VERSION).jar
+export test_jar := $(MVN_REPO)/scaledmarkets/test/$(DABL_VERSION)/test-$(DABL_VERSION).jar
+export client_cp := $(client_jar):$(common_jar):$(parser_jar)
 
 # Aliases:
-test := java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar
+test := java -cp $(CUCUMBER_CLASSPATH):$(test_jar):$(client_cp):$(third_party_cp)
 test := $(test) -Djava.library.path=$(junixsocketnative)
 test := $(test) cucumber.api.cli.Main --glue scaledmarkets.dabl.test
 test := $(test) $(test_src_dir)/features
@@ -184,15 +181,6 @@ check:
 	echo "\n         namespace simple import abc      \n" > simple.dabl
 	$(JAVA) -classpath $(client_compile_cp) scaledmarkets.dabl.Main -t simple.dabl
 
-# Compile the test source files.
-compile_tests: $(test_build_dir)
-	$(JAVAC) -Xmaxerrs $(maxerrs) -cp $(compile_tests_cp) -d $(test_build_dir) \
-		$(test_src_dir)/steps/$(test_package)/*.java \
-		$(test_src_dir)/steps/$(test_package)/analyzer/*.java \
-		$(test_src_dir)/steps/$(test_package)/docker/*.java \
-		$(test_src_dir)/steps/$(test_package)/exec/*.java \
-		$(test_src_dir)/steps/$(test_package)/task/*.java
-
 # Run Cucumber tests.
 # Note: We could export LD_LIBRARY_PATH instead of passing it in the java command.
 test_all:
@@ -221,14 +209,6 @@ test_exec:
 
 test_task:
 	$(test) --tags @task --tags @done
-
-test_check:
-	java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(jar_dir)/$(JAR_NAME).jar \
-		cucumber.api.cli.Main \
-		$(test_src_dir)/features \
-
-test_clean:
-	rm -r -f $(test_build_dir)/*
 
 cukehelp:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help

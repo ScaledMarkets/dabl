@@ -4,7 +4,7 @@ SableCCOutput/
 simple.dabl
 *.marks
 *.class
-*.jar
+**/*.jar
 *[~]
 Manifest
 maven/
@@ -16,3 +16,4 @@ simple/
 docs/
 */target/
 target/
+**/*.lst
