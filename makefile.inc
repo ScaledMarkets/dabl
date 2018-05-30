@@ -1,11 +1,17 @@
 # Configurations for makefile.
 # Edit this file to specify the paths and versions of required tools and directories.
 
-ifdef env
-	include $(env)
-else
+export os := $(shell uname)
+
+ifeq ($(os),Darwin)
 	include env.mac
 endif
+
+ifeq ($(os),Linux)
+	include env.linux
+endif
+
+
 
 # Configurations particular to why this build is being run:
 export maxerrs = 5
