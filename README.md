@@ -248,8 +248,8 @@ Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
 # Third Party Components
 
 The third party components that are required for building or running the DABL client are
-listed in the pom files for the sub-projects parser, common, client, task_runtime, and test.
-Note that test is a separate sub-project, since it is an integration test.
+listed in the pom files for the sub-projects `parser`, `common`, `client`, `task_runtime`,
+and `test`. Note that test is a separate sub-project, since it is an integration test.
 
 # Project Build Structure
 
