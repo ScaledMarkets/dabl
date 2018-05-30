@@ -40,15 +40,10 @@ export JAVADOC = javadoc
 
 # Relative locations:
 export ThisDir := $(shell pwd)
-#export src_dir := $(ThisDir)/java
 export sable_dabl_out_dir := $(ThisDir)/parser/java
 export common_src_dir := $(ThisDir)/common/java
 export client_src_dir := $(ThisDir)/client/java
 export task_runtime_src_dir := $(ThisDir)/task_runtime/java
-#export parser_build_dir := $(build_dir)/parser
-#export common_build_dir := $(build_dir)/common
-#export client_build_dir := $(build_dir)/client
-#export task_runtime_build_dir := $(build_dir)/task_runtime
 export test_src_dir := $(ThisDir)/test
 export test_build_dir := $(ThisDir)/buildtest
 export test_package = $(package)/test
@@ -56,6 +51,8 @@ export testsourcefiles := $(test_src_dir)/$(test_package)/*.java
 export testclassfiles := $(test_build_dir)/$(test_package)/*.class $(test_build_dir)/$(test_package)/exec/*.class
 export sable_task_out_dir := $(ThisDir)/SableCCTaskOutput
 export javadoc_dir := $(ThisDir)/docs
+export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(javaxjson)
+#export third_party_cp := $(jaxrs):$(junixsocket):$(apache_http):$(jersey):$(javaxjson)
 
 # Aliases:
 test := java -cp $(CUCUMBER_CLASSPATH):$(test_build_dir):$(third_party_cp):$(jar_dir)/$(JAR_NAME).jar
