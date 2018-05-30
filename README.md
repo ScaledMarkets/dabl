@@ -245,12 +245,6 @@ See [java/scaledmarkets/dabl](java/scaledmarkets/dabl).
 
 Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
 
-# Third Party Components
-
-The third party components that are required for building or running the DABL client are
-listed in the pom files for the sub-projects `parser`, `common`, `client`, `task_runtime`,
-and `test`. Note that test is a separate sub-project, since it is an integration test.
-
 # Project Build Structure
 
 The main maven pom file defines five sub-projects (modules):
@@ -262,6 +256,12 @@ The main maven pom file defines five sub-projects (modules):
 * task_runtime - this is what executes each DABL task in a separate container; it
 	has a main method as well.
 * test - this is the suite of behavioral tests for DABL.
+
+# Third Party Components
+
+The third party components that are required for building or running the DABL client are
+listed in the pom files for the sub-projects `parser`, `common`, `client`, `task_runtime`,
+and `test`. Note that test is a separate sub-project, since it is an integration test.
 
 # Building the Project
 
@@ -288,8 +288,6 @@ for the things that maven is good at - namely pulling the third party projects
 and compiling everything. At some point we will
 make DABL build itself - i.e., we will create a DABL build file for the `dabl` project.
 
-# Binary Download
+# Javadocs
 
-Binaries of the reference implementtaion JAR file can be found
-[here](https://github.com/Scaled-Markets/dabl/releases).
 Javadocs can be found [here](https://scaledmarkets.github.io/dabl/).
