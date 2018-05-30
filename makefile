@@ -167,12 +167,13 @@ image:
 	cp $(HOME)/.m2/repository/scaledmarkets/task_runtime/$(DABL_VERSION)/task_runtime-$(DABL_VERSION).jar build-taskruntime/task_runtime.jar
 	cp $(HOME)/.m2/repository/scaledmarkets/junixsocket-common-modified/0.1/junixsocket-common-modified-0.1.jar build-taskruntime/junixsocket.jar
 	cp task_runtime/Dockerfile build-taskruntime
+	if [ ! -n $$DockerhubUserId ] || [ ! -n $$DockerhubPassword ]; then { echo "Dockerhub credentials not set"; exit; } fi
 	. $(DockerhubCredentials)
 	sudo docker build --no-cache --tag=$(TASK_RUNTIME_IMAGE_NAME) build-taskruntime
-	sudo docker login -u $(DockerhubUserId) -p $(DockerhubPassword)
+	sudo docker login -u $$DockerhubUserId -p $$DockerhubPassword
 	sudo docker push $(TASK_RUNTIME_IMAGE_NAME)
 	sudo docker logout
-	#rm build-taskruntime/*
+	rm build-taskruntime/*
 
 
 # ------------------------------------------------------------------------------
