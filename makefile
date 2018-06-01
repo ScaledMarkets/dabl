@@ -36,6 +36,7 @@ export JAVADOC = javadoc
 
 # Relative locations:
 export ThisDir := $(shell pwd)
+export ThirdPartyJarDir := $(jar_dir)/third_party
 export sable_dabl_out_dir := $(ThisDir)/parser/java
 export common_src_dir := $(ThisDir)/common/java
 export client_src_dir := $(ThisDir)/client/java
@@ -43,7 +44,7 @@ export task_runtime_src_dir := $(ThisDir)/task_runtime/java
 export test_src_dir := $(ThisDir)/test
 export test_package = $(package)/test
 export javadoc_dir := $(ThisDir)/docs
-export third_party_cp := $(jaxrs):$(junixsocket):$(javax_ws):$(javax_json_glassfish):$(jersey_inject):$(javax_named):$(apache_http_client):$(apache_http_core):$(jersey_client):$(jersey_common):$(hk2):$(hk2_api):$(hk2_utils):$(hk2_locator):$(javassist):$(commons_logging):$(javax_annotation):$(javaxjson)
+export third_party_cp := $(junixsocket):$(javax_ws):$(jersey)
 export parser_jar := $(MVN_REPO)/scaledmarkets/parser/$(DABL_VERSION)/parser-$(DABL_VERSION).jar
 export common_jar := $(MVN_REPO)/scaledmarkets/common/$(DABL_VERSION)/common-$(DABL_VERSION).jar
 export client_jar := $(MVN_REPO)/scaledmarkets/client/$(DABL_VERSION)/client-$(DABL_VERSION).jar
@@ -52,7 +53,7 @@ export test_jar := $(MVN_REPO)/scaledmarkets/test/$(DABL_VERSION)/test-$(DABL_VE
 export client_cp := $(client_jar):$(common_jar):$(parser_jar)
 
 # Aliases:
-test := java -cp $(CUCUMBER_CLASSPATH):$(test_jar):$(client_cp):$(third_party_cp)
+test := java -cp $(CUCUMBER_CLASSPATH):$(test_jar):$(client_cp):$(ThirdPartyJarDir)/*
 test := $(test) -Djava.library.path=$(junixsocketnative)
 test := $(test) cucumber.api.cli.Main --glue scaledmarkets.dabl.test
 test := $(test) $(test_src_dir)/features
@@ -101,11 +102,17 @@ $(jar_dir):
 	mkdir -p $(jar_dir)
 
 # ------------------------------------------------------------------------------
+# Create directory for third party jars - needed to assemble jars for image.
+$(ThirdPartyJarDir):
+	mkdir -p $(ThirdPartyJarDir)
+
+
+# ------------------------------------------------------------------------------
 # Install junixsocket - needed by common. It is assumed that junixsocket is
 # located at ${junixsocket}. Note that this fork of junixsocket does not use
 # the NAR system.
 install_junixsocket:
-	$(MVN) install:install-file -Dfile=${junixsocket} -DgroupId=scaledmarkets -DartifactId=junixsocket-common-modified -Dversion=0.1 -Dpackaging=jar
+	$(MVN) install:install-file -Dfile=$(junixsocket) -DgroupId=scaledmarkets -DartifactId=junixsocket-common-modified -Dversion=0.1 -Dpackaging=jar
 
 # ------------------------------------------------------------------------------
 # Generate the Config class that the runtime uses to determine the version of DABL.
@@ -149,6 +156,24 @@ test: $(jar_dir) $(task_runtime_build_dir)
 # Generate javadocs for all modules.
 javadoc:
 	$(MVN) javadoc:javadoc
+
+
+showdeps:
+	$(MVN) dependency:build-classpath --projects client | tail -n $(mvn_spaces) | head -n 1 | tr ":" "\n" > client_jars.txt
+	$(MVN) dependency:build-classpath --projects common | tail -n $(mvn_spaces) | head -n 1 | tr ":" "\n" > common_jars.txt
+	sort -u client_jars.txt common_jars.txt
+
+# ------------------------------------------------------------------------------
+# Identify the jar files that need to be added to the image.
+copydeps: $(ThirdPartyJarDir)
+	# Note: Use 'mvn dependency:build-classpath' to obtain dependencies.
+	$(MVN) dependency:build-classpath --projects client | tail -n $(mvn_spaces) | head -n 1 | tr ":" "\n" > client_jars.txt
+	$(MVN) dependency:build-classpath --projects common | tail -n $(mvn_spaces) | head -n 1 | tr ":" "\n" > common_jars.txt
+	{ \
+	cp=`sort -u client_jars.txt common_jars.txt` ; \
+	for path in $$cp; do cp $$path $$ThirdPartyJarDir; done; \
+	}
+
 
 # ------------------------------------------------------------------------------
 # Build and push container image for task runtime.
@@ -208,7 +233,7 @@ test_exec:
 	$(test) --tags @exec
 
 test_task:
-	$(test) --tags @task --tags @done
+	sudo $(test) --tags @task --tags @done
 
 cukehelp:
 	java -cp $(CUCUMBER_CLASSPATH) cucumber.api.cli.Main --help

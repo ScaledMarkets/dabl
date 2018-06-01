@@ -25,8 +25,8 @@ export IMAGE_REGISTRY = registry.hub.docker.com
 export TASK_RUNTIME_IMAGE_NAME = scaledmarkets/taskruntime
 
 # Output directories.
-export build_dir = $(HOME)/Transient/dabl
-export jar_dir = $(HOME)/Transient/dabl/jars
+export build_dir = $(Transient)
+export jar_dir = $(Transient)/jars
 
 # User executing this script.
 export UserHome := $(HOME)
@@ -34,10 +34,13 @@ export UserHome := $(HOME)
 # Locations of dev tools:
 export MVN_REPO := $(HOME)/.m2/repository
 #export sable := $(DevLibrary)/sablecc-3.6
-#jaxrs := $(MVN_REPO)/org/glassfish/jersey/bundles/jaxrs-ri/2.27/jaxrs-ri-2.27.jar
+export jaxrs_ri := $(MVN_REPO)/org/glassfish/jersey/bundles/jaxrs-ri/2.27/jaxrs-ri-2.27.jar
 export jersey_common := $(MVN_REPO)/org/glassfish/jersey/core/jersey-common/2.27/jersey-common-2.27.jar
-export jersey_client := $(MVN_REPO)/org/glassfish/jersey/core/jersey-client/2.27/jersey-client-2.27.jar
-export jaxrs := $(MVN_REPO)/org/glassfish/jersey/connectors/jersey-apache-connector/2.27/jersey-apache-connector-2.27.jar
+export jersey_client := $(MVN_REPO)/org/glassfish/jersey/core/jersey-client/2.21/jersey-client-2.21.jar
+#export jersey_client := $(MVN_REPO)/org/glassfish/jersey/core/jersey-client/2.27/jersey-client-2.27.jar
+export jersey_grizzly_connector := $(MVN_REPO)/org/glassfish/jersey/connectors/jersey-grizzly-connector/2.21/jersey-grizzly-connector-2.21.jar
+export jersey_apache_connector := $(MVN_REPO)/org/glassfish/jersey/connectors/jersey-apache-connector/2.21/jersey-apache-connector-2.21.jar
+export jersey_jetty_connector := $(MVN_REPO)/org/glassfish/jersey/connectors/jersey-jetty-connector/2.21/jersey-jetty-connector-2.21.jar
 export apache_http_client := $(MVN_REPO)/org/apache/httpcomponents/httpclient/4.5.5/httpclient-4.5.5.jar
 export apache_http_core := $(MVN_REPO)/org/apache/httpcomponents/httpcore/4.4.9/httpcore-4.4.9.jar
 export commons_logging := $(MVN_REPO)/commons-logging/commons-logging/1.2/commons-logging-1.2.jar
@@ -52,7 +55,21 @@ export javax_ws := $(MVN_REPO)/javax/ws/rs/javax.ws.rs-api/2.1/javax.ws.rs-api-2
 export javax_json_glassfish := $(MVN_REPO)/org/glassfish/javax.json/1.1.2/javax.json-1.1.2.jar
 export jersey_inject := $(MVN_REPO)/org/glassfish/jersey/inject/jersey-hk2/2.27/jersey-hk2-2.27.jar
 export javax_named := $(MVN_REPO)/javax/inject/javax.inject/1/javax.inject-1.jar
-#export jersey := $(DevLibrary)/jersey/*
+
+
+
+
+
+jersey := ""
+jersey := $(jersey):$(jersey_client)
+jersey := $(jersey):$(jersey_connector)
+jersey := $(jersey):$(jersey_apache_connector)
+jersey := $(jersey):$(jersey_jetty_connector)
+
+export jersey
+#export jersey := $(jersey_connector):$(javax_json_glassfish):$(jersey_inject):$(javax_named):$(apache_http_client):$(apache_http_core):$(jersey_client):$(jersey_common):$(hk2):$(hk2_api):$(hk2_utils):$(hk2_locator):$(javassist):$(commons_logging):$(javax_annotation):$(javaxjson)
+
+
 CUCUMBER_CLASSPATH := $(MVN_REPO)/info/cukes/cucumber-java/1.2.5/cucumber-java-1.2.5.jar
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(MVN_REPO)/info/cukes/cucumber-core/1.2.5/cucumber-core-1.2.5.jar
 CUCUMBER_CLASSPATH := $(CUCUMBER_CLASSPATH):$(MVN_REPO)/info/cukes/cucumber-jvm-deps/1.0.5/cucumber-jvm-deps-1.0.5.jar
