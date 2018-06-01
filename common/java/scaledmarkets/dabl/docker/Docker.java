@@ -267,6 +267,9 @@ public class Docker {
 				DockerEngineAPIVersion + "/containers/create", MediaType.APPLICATION_JSON_TYPE,
 					jsonPayload, new String[] { "name", containerName } );
 			
+			if (response == null) throw new Exception(
+				"POST request to Docker daemon did not return a response");
+			
 			System.out.println("response status=" + response.getStatus());
 			System.out.println("response message=" + response.getStatusInfo().getReasonPhrase());  // debug
 			
