@@ -283,7 +283,7 @@ public class Docker {
 			JsonStructure json = reader.read();
 			containerId = ((JsonObject)json).getString("Id");
 		} finally {
-			response.close();
+			if (response != null) response.close();
 		}
 		
 		// Wrap the container Id in an object that we can return.
