@@ -31,6 +31,8 @@ public class TestTaskRuntime extends TestBase {
 	private String repoType;
 	CompilerState state;
 	private static String Task1Name = "task1";
+	private static String Task2Name = "task2";
+	private static String Task3Name = "task3";
 
 	// Scenario: Simple
 	
@@ -78,7 +80,7 @@ public class TestTaskRuntime extends TestBase {
 		
 		this.reader = new StringReader(
 "namespace simple \n" +
-"task " + Task1Name + "\n" +
+"task " + Task2Name + "\n" +
 "  when true \n"
 			);
 	}
@@ -135,7 +137,7 @@ public class TestTaskRuntime extends TestBase {
 		yw.close();
 		this.reader = new StringReader(
 "namespace simple \n" +
-"task " + Task1Name + "\n" +
+"task " + Task3Name + "\n" +
 "  inputs \"y.txt\" \n" +
 "  outputs \"x.txt\" \n"  // x.txt is older than y.txt
 			);

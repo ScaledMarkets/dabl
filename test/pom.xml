@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>scaledmarkets</groupId>
+		<groupId>com.scaledmarkets.dabl</groupId>
 		<artifactId>dabl</artifactId>
 		<version>0.1</version>
 	</parent>
@@ -44,25 +44,25 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>scaledmarkets</groupId>
+			<groupId>com.scaledmarkets.dabl</groupId>
 			<artifactId>parser</artifactId>
 			<version>0.1</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>scaledmarkets</groupId>
+			<groupId>com.scaledmarkets.dabl</groupId>
 			<artifactId>common</artifactId>
 			<version>0.1</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>scaledmarkets</groupId>
+			<groupId>com.scaledmarkets.dabl</groupId>
 			<artifactId>client</artifactId>
 			<version>0.1</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>scaledmarkets</groupId>
+			<groupId>com.scaledmarkets.dabl</groupId>
 			<artifactId>task_runtime</artifactId>
 			<version>0.1</version>
 		</dependency>

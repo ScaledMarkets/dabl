@@ -7,6 +7,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.HashMap;
 import java.io.File;
+import java.io.IOException;
 
 public class TaskDockerContainerFactory extends TaskContainerFactory {
 	
@@ -30,10 +31,14 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 		if ((dockerImageName == null) || dockerImageName.equals("")) throw new Exception(
 			"Unable to identify container image to use");
 		
+		// Create a name for the container that will be unique in the container's
+		// environment.
+		String containerUniqueName = createUniqueContainerName(task.getName());
+		
 		// Create a container for performing a task. (Do not start the container.)
 		// The container maps the temp directory.
 		DockerContainer dockerContainer = this.docker.createContainer2(
-			dockerImageName, task.getName(), workspace.getCanonicalPath(),
+			dockerImageName, containerUniqueName, workspace.getCanonicalPath(),
 			workspace.getCanonicalPath(), task.isOpen(), true, containerProperties); 
 		
 		// Return an object that can be used to control the container.
@@ -54,6 +59,14 @@ public class TaskDockerContainerFactory extends TaskContainerFactory {
 	
 	public Set<TaskContainer> getTaskContainers() {
 		return taskContainers.keySet();
+	}
+	
+	/**
+	 * Create a container name that is unique in the container's environment.
+	 */
+	public String createUniqueContainerName(String baseName) throws IOException {
+		File file = File.createTempFile(baseName, "");
+		return file.getName();
 	}
 
 	public boolean isASimulation() { return false; }

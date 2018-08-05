@@ -1,5 +1,6 @@
 # language: en
 
+@analyzer
 @helpers
 Feature: TestHelpers
 	

@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	
 	<parent>
-		<groupId>scaledmarkets</groupId>
+		<groupId>com.scaledmarkets.dabl</groupId>
 		<artifactId>dabl</artifactId>
 		<version>0.1</version>
 	</parent>
@@ -41,14 +41,6 @@
 			<version>2.21</version>
 		</dependency>
 
-
-		
-		
-		
-		
-		
-		
-		
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -93,14 +85,14 @@
 		</dependency>	
 		
 		<dependency>
-			<groupId>scaledmarkets</groupId>
+			<groupId>com.scaledmarkets.dabl</groupId>
 			<artifactId>parser</artifactId>
 			<version>0.1</version>
 		</dependency>
 		
 		<!-- JUnixSocket (modified to not use Nar system) -->
 		<dependency>
-			<groupId>scaledmarkets</groupId>
+			<groupId>com.scaledmarkets</groupId>
 			<artifactId>junixsocket-common-modified</artifactId>
 			<version>0.1</version>
 		</dependency>		

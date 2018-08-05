@@ -125,7 +125,7 @@ gen_config:
 # ------------------------------------------------------------------------------
 # Build all four components.
 jars:
-	$(MVN) install
+	$(MVN) clean install
 
 # For development: Create only the parser.
 parser: $(jar_dir) $(parser_build_dir)
@@ -135,7 +135,7 @@ parser: $(jar_dir) $(parser_build_dir)
 
 # For development: Create only the common module that is shared by all components.
 common: $(jar_dir) $(common_build_dir)
-	$(MVN) clean install --projects common
+	$(MVN) clean compile --projects common -X -e
 
 
 # For development: Create only the end user command line application.
@@ -214,11 +214,14 @@ test_all:
 test_smoke:
 	$(test) --tags @smoke
 
+test_analyzer:
+	$(test) --tags @analyzer --tags @done
+
 test_unit:
 	$(test) --tags @unit
 
 test_psets:
-	$(test) --tags @patternsets
+	$(test) --tags @patternsets --tags @done
 
 test_iao:
 	$(test) --tags @inputsandoutputs

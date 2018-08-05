@@ -1,5 +1,6 @@
 # language: en
 
+@analyzer
 @import
 Feature: TestImport
 	

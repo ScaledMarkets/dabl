@@ -1,5 +1,6 @@
 # language: en
 
+@analyzer
 Feature: TestArtifacts
 	
 	@done

@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	
 	<parent>
-		<groupId>scaledmarkets</groupId>
+		<groupId>com.scaledmarkets.dabl</groupId>
 		<artifactId>dabl</artifactId>
 		<version>0.1</version>
 	</parent>

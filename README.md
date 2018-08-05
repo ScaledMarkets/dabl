@@ -151,9 +151,9 @@ Installation consists of,
 * Making sure that the docker daemon is running on the host that will be executing
 	the DABL tool.
 * Pulling the container image scaledmarkets/taskruntime from dockerhub so that it is
-	resident in the host's local docker image repository.
+	resident in the host's local container image repository.
 * Placing the DABL jar files `parser.jar`, `common.jar`, and `client.jar` on the host system.
-	These can be obtained from [Maven Central](http://repo1.maven.org/maven2)
+	TBD: These can be obtained from [Maven Central](http://repo1.maven.org/maven2)
 	in the scaledmarkets group Id.
 * Obtaining the third party components and adding them to the classpath used
 	to run DABL. See [Third Party Components](#third-party-components).
