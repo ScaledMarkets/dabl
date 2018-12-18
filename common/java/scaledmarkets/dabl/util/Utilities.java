@@ -1,6 +1,6 @@
-package scaledmarkets.dabl.util;
+package com.scaledmarkets.dabl.util;
 
-import scaledmarkets.dabl.node.*;
+import com.scaledmarkets.dabl.node.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;

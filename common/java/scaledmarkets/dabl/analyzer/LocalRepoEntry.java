@@ -1,6 +1,6 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
-import scaledmarkets.dabl.node.*;
+import com.scaledmarkets.dabl.node.*;
 
 /**
  * A LocalRepoEntry declares a local repository for DABL to create. Local repositories

@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
 /**
  * A symbol table entry. Each entry defines a symbol (identifer) that was declared

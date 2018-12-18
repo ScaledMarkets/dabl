@@ -76,12 +76,6 @@ public task publish
     report "Success"  /* This is performed when the task completes without
         error. */
 
-//* Create a container image that contains the required build tools. *//
-task gettools
-    use
-    bash """
-        "registry.hub.docker.com.openjdk:8-jdk-alpine"
-
 task compileit
     use "registry.hub.docker.com.openjdk:8-jdk-alpine"
     when A newer than outputs

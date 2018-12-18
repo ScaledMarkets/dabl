@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
 import java.util.Map;
 import java.util.HashMap;

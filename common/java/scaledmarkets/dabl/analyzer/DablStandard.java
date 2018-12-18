@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
 public class DablStandard {
 	public static final String PackageText = "package dabl.standard\n" +

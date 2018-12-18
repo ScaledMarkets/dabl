@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
 import java.io.File;
 import java.io.Reader;
@@ -27,7 +27,7 @@ public class FileImportHandler implements ImportHandler {
 		}
 		
 		// Split the DABL path into its parts.
-		String[] pathDirs = path.split(":");
+		String[] pathDirs = dablPath.split(":");
 		
 		// Construct file path represented by the namespace path. I.e.,
 		// convert periods to slashes.

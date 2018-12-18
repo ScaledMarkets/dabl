@@ -1,6 +1,6 @@
 package dabl.task;
 
-import scaledmarkets.dabl.util.Utilities;
+import com.scaledmarkets.dabl.util.Utilities;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.BufferedInputStream;

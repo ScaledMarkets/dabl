@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
 /**
  * Finds the DABL source code for a specified namespace, and then parses and

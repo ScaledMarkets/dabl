@@ -11,7 +11,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>com.scaledmarkets/dabl</groupId>
+	<groupId>com.scaledmarkets.dabl</groupId>
 	<artifactId>dabl</artifactId>
 	<version>0.1</version>
 	<name>${env.Description}</name>

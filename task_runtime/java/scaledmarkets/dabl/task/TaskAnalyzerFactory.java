@@ -1,12 +1,12 @@
-package scaledmarkets.dabl.task;
+package com.scaledmarkets.dabl.task;
 
-import scaledmarkets.dabl.analyzer.AnalyzerFactory;
-import scaledmarkets.dabl.analyzer.NamespaceProcessor;
-import scaledmarkets.dabl.analyzer.Analyzer;
-import scaledmarkets.dabl.analyzer.ImportHandler;
-import scaledmarkets.dabl.analyzer.FileImportHandler;
-import scaledmarkets.dabl.analyzer.CompilerState;
-import scaledmarkets.dabl.util.Utilities;
+import com.scaledmarkets.dabl.analyzer.AnalyzerFactory;
+import com.scaledmarkets.dabl.analyzer.NamespaceProcessor;
+import com.scaledmarkets.dabl.analyzer.Analyzer;
+import com.scaledmarkets.dabl.analyzer.ImportHandler;
+import com.scaledmarkets.dabl.analyzer.FileImportHandler;
+import com.scaledmarkets.dabl.analyzer.CompilerState;
+import com.scaledmarkets.dabl.util.Utilities;
 
 /**
  * For creating analysis components that analyze DABL input in a task execution context.

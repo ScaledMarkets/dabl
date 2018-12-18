@@ -1,10 +1,10 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
 import java.io.Reader;
 import java.io.PushbackReader;
-import scaledmarkets.dabl.lexer.Lexer;
-import scaledmarkets.dabl.parser.Parser;
-import scaledmarkets.dabl.node.Start;
+import com.scaledmarkets.dabl.lexer.Lexer;
+import com.scaledmarkets.dabl.parser.Parser;
+import com.scaledmarkets.dabl.node.Start;
 
 /**
  * Parses and analyzes DABL source code. The source code is provided as input.
@@ -48,6 +48,10 @@ public class NamespaceProcessor {
 		try { start = parser.parse(); } catch (Exception ex) { throw new RuntimeException(ex); }
 		if (prettyPrint) PrettyPrint.pp(start);
 		
+		int numErrors = parser.getNumberOfSyntaxErrors();
+		System.err.println(numErrors + " syntax errors");
+		if (numErrors > 0) throw new RuntimeException(numErrors + " syntax errors");
+
 		// Analyze the AST.
 		analyzer.getState().getASTs().add(start);
 		start.apply(this.analyzer);

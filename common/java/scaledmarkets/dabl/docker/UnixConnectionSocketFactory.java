@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.docker;
+package com.scaledmarkets.dabl.docker;
 /*
  * Copyright (c) 2014 Spotify AB.
  *

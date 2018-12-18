@@ -11,19 +11,18 @@ include makefile.inc
 
 # Artifact names:
 export ORG = Scaled Markets
-export GroupId = scaledmarkets
-export MavenBaseArtifactId = dabl
+export GroupId = com.scaledmarkets.dabl
 export PRODUCT_NAME = Dabl
 export Description = "Dependent Artifact Build Language"
 
 # Output artifact names:
-export package := scaledmarkets/dabl
+export package := com/scaledmarkets/dabl
 export task_parser_package := $(package)/task
-export test_package=scaledmarkets/dabl/test
-export package_name = scaledmarkets.dabl
+export test_package=com/scaledmarkets/dabl/test
+export package_name = com.scaledmarkets.dabl
 export client_package_name = $(package_name).client
-export task_package_name = scaledmarkets.dabl.task
-export test_package_name = scaledmarkets.dabl.test
+export task_package_name = com.scaledmarkets.dabl.task
+export test_package_name = com.scaledmarkets.dabl.test
 export client_main_class := $(client_package_name).Main
 export task_main_class := $(task_package_name).TaskExecutor
 
@@ -45,17 +44,17 @@ export test_src_dir := $(ThisDir)/test
 export test_package = $(package)/test
 export javadoc_dir := $(ThisDir)/docs
 export third_party_cp := $(junixsocket):$(javax_ws):$(jersey)
-export parser_jar := $(MVN_REPO)/scaledmarkets/parser/$(DABL_VERSION)/parser-$(DABL_VERSION).jar
-export common_jar := $(MVN_REPO)/scaledmarkets/common/$(DABL_VERSION)/common-$(DABL_VERSION).jar
-export client_jar := $(MVN_REPO)/scaledmarkets/client/$(DABL_VERSION)/client-$(DABL_VERSION).jar
-export task_runtime_jar := $(MVN_REPO)/scaledmarkets/task_runtime/$(DABL_VERSION)/task_runtime-$(DABL_VERSION).jar
-export test_jar := $(MVN_REPO)/scaledmarkets/test/$(DABL_VERSION)/test-$(DABL_VERSION).jar
+export parser_jar := $(MVN_REPO)/com/scaledmarkets/dabl/parser/$(DABL_VERSION)/parser-$(DABL_VERSION).jar
+export common_jar := $(MVN_REPO)/com/scaledmarkets/dabl/common/$(DABL_VERSION)/common-$(DABL_VERSION).jar
+export client_jar := $(MVN_REPO)/com/scaledmarkets/dabl/client/$(DABL_VERSION)/client-$(DABL_VERSION).jar
+export task_runtime_jar := $(MVN_REPO)/com/scaledmarkets/dabl/task_runtime/$(DABL_VERSION)/task_runtime-$(DABL_VERSION).jar
+export test_jar := $(MVN_REPO)/com/scaledmarkets/dabl/test/$(DABL_VERSION)/test-$(DABL_VERSION).jar
 export client_cp := $(client_jar):$(common_jar):$(parser_jar)
 
 # Aliases:
 test := java -cp $(CUCUMBER_CLASSPATH):$(test_jar):$(client_cp):$(ThirdPartyJarDir)/*
 test := $(test) -Djava.library.path=$(junixsocketnative)
-test := $(test) cucumber.api.cli.Main --glue scaledmarkets.dabl.test
+test := $(test) cucumber.api.cli.Main --glue com.scaledmarkets.dabl.test
 test := $(test) $(test_src_dir)/features
 
 
@@ -112,12 +111,12 @@ $(ThirdPartyJarDir):
 # located at ${junixsocket}. Note that this fork of junixsocket does not use
 # the NAR system.
 install_junixsocket:
-	$(MVN) install:install-file -Dfile=$(junixsocket) -DgroupId=scaledmarkets -DartifactId=junixsocket-common-modified -Dversion=0.1 -Dpackaging=jar
+	$(MVN) install:install-file -Dfile=$(junixsocket) -DgroupId=com.scaledmarkets -DartifactId=junixsocket-common-modified -Dversion=0.1 -Dpackaging=jar
 
 # ------------------------------------------------------------------------------
 # Generate the Config class that the runtime uses to determine the version of DABL.
 gen_config:
-	echo "package scaledmarkets.dabl;" > $(common_src_dir)/$(package)/Config.java
+	echo "package com.scaledmarkets.dabl;" > $(common_src_dir)/$(package)/Config.java
 	echo "public class Config {" >> $(common_src_dir)/$(package)/Config.java
 	echo "public static final String DablVersion = \"$(DABL_VERSION)\";" >> $(common_src_dir)/$(package)/Config.java
 	echo "}" >> $(common_src_dir)/$(package)/Config.java
@@ -181,10 +180,10 @@ copydeps: $(ThirdPartyJarDir)
 # It is assumed that Dockerhub credentials have been added to the shell env.
 image:
 	rm -f build-taskruntime/*
-	cp $(HOME)/.m2/repository/scaledmarkets/parser/$(DABL_VERSION)/parser-$(DABL_VERSION).jar build-taskruntime/parser.jar
-	cp $(HOME)/.m2/repository/scaledmarkets/common/$(DABL_VERSION)/common-$(DABL_VERSION).jar build-taskruntime/common.jar
-	cp $(HOME)/.m2/repository/scaledmarkets/task_runtime/$(DABL_VERSION)/task_runtime-$(DABL_VERSION).jar build-taskruntime/task_runtime.jar
-	cp $(HOME)/.m2/repository/scaledmarkets/junixsocket-common-modified/0.1/junixsocket-common-modified-0.1.jar build-taskruntime/junixsocket.jar
+	cp $(HOME)/.m2/repository/com/scaledmarkets/parser/$(DABL_VERSION)/parser-$(DABL_VERSION).jar build-taskruntime/parser.jar
+	cp $(HOME)/.m2/repository/com/scaledmarkets/common/$(DABL_VERSION)/common-$(DABL_VERSION).jar build-taskruntime/common.jar
+	cp $(HOME)/.m2/repository/com/scaledmarkets/task_runtime/$(DABL_VERSION)/task_runtime-$(DABL_VERSION).jar build-taskruntime/task_runtime.jar
+	cp $(HOME)/.m2/repository/com/scaledmarkets/junixsocket-common-modified/0.1/junixsocket-common-modified-0.1.jar build-taskruntime/junixsocket.jar
 	cp task_runtime/Dockerfile build-taskruntime
 	if [ ! -n $$DockerhubUserId ] || [ ! -n $$DockerhubPassword ]; then { echo "Dockerhub credentials not set"; exit; } fi
 	. $(DockerhubCredentials)
@@ -204,7 +203,7 @@ image:
 # can recognize the language.
 check:
 	echo "\n         namespace simple import abc      \n" > simple.dabl
-	$(JAVA) -classpath $(client_compile_cp) scaledmarkets.dabl.Main -t simple.dabl
+	$(JAVA) -classpath $(client_compile_cp) com.scaledmarkets.dabl.Main -t simple.dabl
 
 # Run Cucumber tests.
 # Note: We could export LD_LIBRARY_PATH instead of passing it in the java command.

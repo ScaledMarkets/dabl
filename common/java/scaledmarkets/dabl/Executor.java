@@ -1,4 +1,4 @@
-package scaledmarkets.dabl;
+package com.scaledmarkets.dabl;
 
 /**
  * A "back end" for a DABL compiler should implement this interface.

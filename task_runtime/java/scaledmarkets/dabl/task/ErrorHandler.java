@@ -1,4 +1,4 @@
-package scaledmarkets.dabl.task;
+package com.scaledmarkets.dabl.task;
 
 public abstract class ErrorHandler {
 	

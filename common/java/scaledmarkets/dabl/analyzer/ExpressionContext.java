@@ -1,6 +1,6 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
-import scaledmarkets.dabl.node.AOidRef;
+import com.scaledmarkets.dabl.node.AOidRef;
 import java.util.HashMap;
 import java.util.Date;
 

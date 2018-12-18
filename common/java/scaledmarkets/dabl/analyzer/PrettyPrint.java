@@ -1,9 +1,9 @@
-package scaledmarkets.dabl.analyzer;
+package com.scaledmarkets.dabl.analyzer;
 
-import scaledmarkets.dabl.analysis.*;
-import scaledmarkets.dabl.lexer.*;
-import scaledmarkets.dabl.node.*;
-import scaledmarkets.dabl.parser.*;
+import com.scaledmarkets.dabl.analysis.*;
+import com.scaledmarkets.dabl.lexer.*;
+import com.scaledmarkets.dabl.node.*;
+import com.scaledmarkets.dabl.parser.*;
 
 /**
  * Output a hierarchical depication of a SableCC AST.

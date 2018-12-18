@@ -1,9 +1,9 @@
-package scaledmarkets.dabl.task;
+package com.scaledmarkets.dabl.task;
 
-import scaledmarkets.dabl.analyzer.LanguageCoreAnalyzer;
-import scaledmarkets.dabl.analyzer.NamespaceProcessor;
-import scaledmarkets.dabl.analyzer.ImportHandler;
-import scaledmarkets.dabl.node.*;
+import com.scaledmarkets.dabl.analyzer.LanguageCoreAnalyzer;
+import com.scaledmarkets.dabl.analyzer.NamespaceProcessor;
+import com.scaledmarkets.dabl.analyzer.ImportHandler;
+import com.scaledmarkets.dabl.node.*;
 import java.io.Reader;
 import java.io.StringReader;
 
