@@ -1,5 +1,7 @@
 # Dependent Artifact Build Language (DABL) <img src="duck.png" />
 
+![](PDD_Example.svg)
+
 # Project Status
 
 Under active development. See the [DABL Roadmap](Roadmap).
