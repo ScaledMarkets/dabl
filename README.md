@@ -2,7 +2,7 @@
 
 # Project Status
 
-Under active development. See the [DABL Roadmap](Roadmap).
+No longer under development. Reason: Google came out with Bazel. (For the original roadmap, see the [DABL Roadmap](Roadmap) ).
 
 # Open Source License
 
